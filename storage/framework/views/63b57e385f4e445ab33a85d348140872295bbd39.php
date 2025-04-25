@@ -13,6 +13,9 @@
             <div class="col-md-12">
                 <div class="" style="text-align:center;width:100%;max-width:600px;margin:0 auto;">
                     <div class="">
+                        <!-- resources/views/welcome.blade.php -->
+                        <h1><?php echo app('translator')->get('messages.welcome'); ?></h1>
+                        
                         <img src="images/logo.png" class="img-responsive" style="margin:0 auto">
                         
                         <form class="form-horizontal">

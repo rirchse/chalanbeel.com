@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Router;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Lang;
 use App\Users;
 use App\PaymentMethod;
 use App\ActiveService;
@@ -59,8 +60,10 @@ class HomeController extends Controller
 
     public function index()
     {
+        $message = Lang::get('messages.welcome');
+        // dd($message);
         // $pppoe_users = Router::Connect()->setMenu('/ppp secret')->getAll();
-        return view('homes.index');
+        return view('homes.index', ['message' => $message]);
     }
 
     public function check_package()

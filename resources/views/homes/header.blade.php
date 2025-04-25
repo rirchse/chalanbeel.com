@@ -15,6 +15,13 @@
                     <li><a href="/register/create">Sign Up</a></li>
                     <li><a href="/login">Login</a></li>
                     <li><a href="/#">Help</a></li>
+                    <li>
+                        <select onchange="location = this.value;">
+                            <option value="{{ route('changeLanguage', ['locale' => 'en']) }}" @if(app()->getLocale() == 'en') selected @endif>English</option>
+                            <option value="{{ route('changeLanguage', ['locale' => 'bn']) }}" @if(app()->getLocale() == 'fr') selected @endif>Bengali</option>
+                            <!-- Add more language options as needed... -->
+                        </select>
+                    </li>
                 </ul>
             </div>
         </div>

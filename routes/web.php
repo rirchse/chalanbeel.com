@@ -39,6 +39,7 @@ Route::group(['middleware' => ['web']], function()
 			'index' => 'getPackages'
 			]
 	])->only(['index', 'create']);
+	Route::get('/lang', 'HomeController@index')->name('changeLanguage');
 
 	// Route::prefix('user-package')
 	// ->name('package.')

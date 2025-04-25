@@ -15,6 +15,13 @@
                     <li><a href="/register/create">Sign Up</a></li>
                     <li><a href="/login">Login</a></li>
                     <li><a href="/#">Help</a></li>
+                    <li>
+                        <select onchange="location = this.value;">
+                            <option value="<?php echo e(route('changeLanguage', ['locale' => 'en'])); ?>" <?php if(app()->getLocale() == 'en'): ?> selected <?php endif; ?>>English</option>
+                            <option value="<?php echo e(route('changeLanguage', ['locale' => 'bn'])); ?>" <?php if(app()->getLocale() == 'fr'): ?> selected <?php endif; ?>>Bengali</option>
+                            <!-- Add more language options as needed... -->
+                        </select>
+                    </li>
                 </ul>
             </div>
         </div>

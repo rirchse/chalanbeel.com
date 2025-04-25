@@ -13,6 +13,9 @@
             <div class="col-md-12">
                 <div class="" style="text-align:center;width:100%;max-width:600px;margin:0 auto;">
                     <div class="">
+                        <!-- resources/views/welcome.blade.php -->
+                        <h1>@lang('messages.welcome')</h1>
+                        
                         <img src="images/logo.png" class="img-responsive" style="margin:0 auto">
                         {{-- <h3>{{bcrypt('tstadmin')}}</h3> --}}
                         <form class="form-horizontal">
