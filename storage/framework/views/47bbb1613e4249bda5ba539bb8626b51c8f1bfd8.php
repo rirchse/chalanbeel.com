@@ -1,15 +1,15 @@
 <script src="<?php echo e('/js/jquery-3.1.1.min.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo e('/js/angular.min.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo e('/js/angular.customization.js'); ?>" type="text/javascript"></script>
+
+
 <!--Angular App-->
 <script src="<?php echo e('/js/app/app.js'); ?>" type="text/javascript"></script>
 <!--Angular Controllers-->
 
-<script src="<?php echo e('/js/app/controllers/angularController.js'); ?>" type="text/javascript"></script>
+
 <script src="<?php echo e('/js/app/controllers/registerController.js'); ?>" type="text/javascript"></script>
 <!--Angular App Services-->
 <script src="<?php echo e('/js/app/services/registerService.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo e('/js/app/services/angularService.js'); ?>" type="text/javascript"></script>
+
 
 
 <script src="<?php echo e('/js/jquery-ui.min.js'); ?>" type="text/javascript"></script>

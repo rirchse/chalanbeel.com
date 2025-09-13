@@ -11,7 +11,7 @@
                 <h4 class="card-title">User Details</h4> 
                 <div class="col-md-12">
                     <div class="action-tools" style="text-align:right; margin-bottom:10px">
-                        <a class="text-success" title="View Active Users" href="/admin/user/view_active_users"><i class="material-icons">assignment</i></a>
+                        <a class="text-success" title="View Active Users" href="/admin/view_active_users"><i class="material-icons">assignment</i></a>
                         <a class="text-primary" title="View All Users" href="/admin/user"><i class="material-icons">assignment</i></a>
                         <a class="text-warning" title="Edit" href="/admin/user/<?php echo e($user->id); ?>/edit"><i class="material-icons">edit</i></a>
                         
@@ -61,8 +61,8 @@
                         </tr>
                         <tr>
                             <th>Location</th>
-                            <td><?php if($user->left_long): ?>
-                            <a target="_blank" href="https://www.google.com/maps/place/<?php echo e($user->left_long); ?>">View On Map</a>
+                            <td><?php if($user->lat): ?>
+                            <a target="_blank" href="https://www.google.com/maps/place/<?php echo e($user->lat.', '.$user->lng); ?>">View On Map</a>
                             <?php else: ?>
                             Unavailable
                             <?php endif; ?></td>

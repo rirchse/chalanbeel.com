@@ -10,7 +10,7 @@
         <div class="sidebar-wrapper">
             <div class="user">
                 <div class="photo">
-                    <img src="/images/{{($admin->image)? 'profile/'.$admin->image : 'avatar.png'}}" />
+                    <img src="{{$admin->image? $admin->image : 'avatar.png'}}" />
                 </div>
                 <div class="info">
                     <a data-toggle="collapse" href="#profile" class="collapsed">
@@ -46,6 +46,7 @@
                             <li><a href="/admin/user/create">Create New user</a></li>
                             <li><a href="/admin/view_active_users">View Active users</a></li>
                             <li><a href="/admin/user">View All users</a></li>
+                            <li><a href="{{route('map.index')}}">On Map</a></li>
                         </ul>
                     </div>
                 </li>

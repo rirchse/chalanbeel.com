@@ -12,7 +12,7 @@
                 <h4 class="card-title">User Details</h4> 
                 <div class="col-md-12">
                     <div class="action-tools" style="text-align:right; margin-bottom:10px">
-                        <a class="text-success" title="View Active Users" href="/admin/user/view_active_users"><i class="material-icons">assignment</i></a>
+                        <a class="text-success" title="View Active Users" href="/admin/view_active_users"><i class="material-icons">assignment</i></a>
                         <a class="text-primary" title="View All Users" href="/admin/user"><i class="material-icons">assignment</i></a>
                         <a class="text-warning" title="Edit" href="/admin/user/{{$user->id}}/edit"><i class="material-icons">edit</i></a>
                         {{-- <a class="text-info" title="View Services" href="/admin/service/{{$user->id}}/all"><i class="material-icons">subject</i></a> --}}
@@ -62,8 +62,8 @@
                         </tr>
                         <tr>
                             <th>Location</th>
-                            <td>@if($user->left_long)
-                            <a target="_blank" href="https://www.google.com/maps/place/{{$user->left_long}}">View On Map</a>
+                            <td>@if($user->lat)
+                            <a target="_blank" href="https://www.google.com/maps/place/{{$user->lat.', '.$user->lng}}">View On Map</a>
                             @else
                             Unavailable
                             @endif</td>

@@ -63,6 +63,10 @@
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
                 </div>
+                <div class="form-group">
+                  <label class="control-label">Lat Lang</label>
+                  <input type="text" name="lat_long" class="form-control" placeholder="00.00000, 00.00000" value="<?php echo e($user->lat ? $user->lat.', '.$user->lng:''); ?>">
+                </div>
                 <div class="form-group label-floating">
                     <?php echo e(Form::label('date_of_birth', 'Date of Birth (Y-m-d)', ['class' => 'control-label'])); ?>
 
@@ -109,11 +113,24 @@
             <div class="clearfix"></div>
             <div class="col-md-6">
                 <div class="form-group label-floating">
-                    <label>Status</label><br>
-                    <label><input type="radio" name="status" value="0" <?php echo e($user->status == 0? 'checked':''); ?>><span class="text-warning"> New</span> </label>
-                    <label><input type="radio" name="status" value="1" <?php echo e($user->status == 1? 'checked':''); ?>> <span class="text-success"> Active </label>
-                    <label><input type="radio" name="status" value="2" <?php echo e($user->status == 2? 'checked':''); ?>> <span class="text-primary"> Free </label>
-                    <label><input type="radio" name="status" value="3" <?php echo e($user->status == 3? 'checked':''); ?>> <span class="text-danger"> Cancel </label>
+                    <label>Status</label>
+                    <br>
+                    <label>
+                      <input type="radio" name="status" value="Active" <?php echo e($user->status == 'Active'? 'checked':''); ?>> 
+                      <span class="text-success"> Active </span>
+                    </label>
+                    <label>
+                      <input type="radio" name="status" value="Deactive" <?php echo e($user->status == 'Deactive'? 'checked':''); ?>>
+                      <span class="text-warning"> Deactive</span> 
+                    </label>
+                    <label>
+                      <input type="radio" name="status" value="2" <?php echo e($user->status == 2? 'checked':''); ?>> 
+                      <span class="text-primary"> Free </span>
+                    </label>
+                    <label>
+                      <input type="radio" name="status" value="3" <?php echo e($user->status == 3? 'checked':''); ?>> 
+                      <span class="text-danger"> Cancel </span>
+                    </label>
                 </div>
             </div>
             <div class="col-md-12">

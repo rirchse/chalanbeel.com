@@ -270,28 +270,36 @@ class UsersController extends Controller
         $user_id = Auth::guard('admin')->user()->id;
         //validate the data        
         $this->validate($request, array(
-
             'full_name'     => 'required|min:2|max:32',
             'email'         => 'email|max:50|nullable',
             'contact'       => 'required|min:11|max:11',
-            'work_at'       => 'max:255',
-            'profession'    => 'max:255',
-            'join_date'     => 'max:255',
-            'location'      => 'max:255',
-            'details'       => 'max:500',
-            'mac_address'   => 'max:255',
-            'left_long'     => 'max:255',
-            'date_of_birth' => 'max:30',
-            'NID'           => 'max:17',
-            'details'       => 'max:999',
-            'nid_image'     => 'image',
-            'profile_image' => 'image'
+            'work_at'       => 'max:255|nullable',
+            'profession'    => 'max:255|nullable',
+            'join_date'     => 'max:255|nullable',
+            'location'      => 'max:255|nullable',
+            'details'       => 'max:500|nullable',
+            'mac_address'   => 'max:255|nullable',
+            'left_long'     => 'max:255|nullable',
+            'date_of_birth' => 'max:30|nullable',
+            'NID'           => 'max:17|nullable',
+            'details'       => 'max:999|nullable',
+            'nid_image'     => 'image|nullable',
+            'profile_image' => 'image|nullable'
 
         ));
 
         //get exists image
         $exuser = User::find($id);
-        // $exists_nid = User::find($id)->nid_image;
+
+        $lat = $lng = null;
+
+        if(isset($request->lat_long))
+        {
+          $arr = explode(',', str_replace(' ', '', $request->lat_long));
+          $lat = $arr[0];
+          $long = $arr[1];
+          // dd($lat, $long);
+        }
 
         //save the data to the database
         $update = User::find($id);
@@ -310,6 +318,8 @@ class UsersController extends Controller
         $update->nid_no          = $request->NID;
         $update->updated_by      = $user_id;
         $update->status          = $request->status;
+        $update->lat          = $lat;
+        $update->lng          = $long;
 
         //save image//
         if($request->hasFile('profile_image')){
@@ -331,6 +341,7 @@ class UsersController extends Controller
         }
 
         $update->save();
+
         if($request->hasFile('profile_image')){
             //delete exists image
             $ex_img = 'images/profile/'.$exuser->image;

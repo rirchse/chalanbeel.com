@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\Bkash\BkashController;
 use App\Http\Controllers\Payment\BkashPaymentController;
+use App\Http\Controllers\MapController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -182,6 +183,11 @@ Route::group(['middleware' => ['web']], function()
 
 		//Graph chart from the begening
 		Route::get('/graph_from_beginning', 'Admin\AdminHomeController@graph');
+
+    // user view on map
+    // Route::get('/dashboard/map', [MapController::class,'index'])->name('dashboard.map');
+    // Route::get('/api/customers/map', [MapController::class,'customers'])->name('api.customers.map');
+    Route::get('/map', [MapController::class, 'index'])->name('map.index');
 
 	});
 

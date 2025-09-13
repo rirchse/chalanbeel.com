@@ -50,6 +50,10 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="form-group">
+                  <label class="control-label">Lat Lang</label>
+                  <input type="text" name="lat_long" class="form-control" placeholder="00.00000, 00.00000" value="{{$user->lat ? $user->lat.', '.$user->lng:''}}">
+                </div>
                 <div class="form-group label-floating">
                     {{ Form::label('date_of_birth', 'Date of Birth (Y-m-d)', ['class' => 'control-label']) }}
                     {{ Form::text('date_of_birth', $user->date_of_birth, ['class' => 'form-control datepicker']) }}
@@ -92,11 +96,24 @@
             <div class="clearfix"></div>
             <div class="col-md-6">
                 <div class="form-group label-floating">
-                    <label>Status</label><br>
-                    <label><input type="radio" name="status" value="0" {{$user->status == 0? 'checked':''}}><span class="text-warning"> New</span> </label>
-                    <label><input type="radio" name="status" value="1" {{$user->status == 1? 'checked':''}}> <span class="text-success"> Active </label>
-                    <label><input type="radio" name="status" value="2" {{$user->status == 2? 'checked':''}}> <span class="text-primary"> Free </label>
-                    <label><input type="radio" name="status" value="3" {{$user->status == 3? 'checked':''}}> <span class="text-danger"> Cancel </label>
+                    <label>Status</label>
+                    <br>
+                    <label>
+                      <input type="radio" name="status" value="Active" {{$user->status == 'Active'? 'checked':''}}> 
+                      <span class="text-success"> Active </span>
+                    </label>
+                    <label>
+                      <input type="radio" name="status" value="Deactive" {{$user->status == 'Deactive'? 'checked':''}}>
+                      <span class="text-warning"> Deactive</span> 
+                    </label>
+                    <label>
+                      <input type="radio" name="status" value="2" {{$user->status == 2? 'checked':''}}> 
+                      <span class="text-primary"> Free </span>
+                    </label>
+                    <label>
+                      <input type="radio" name="status" value="3" {{$user->status == 3? 'checked':''}}> 
+                      <span class="text-danger"> Cancel </span>
+                    </label>
                 </div>
             </div>
             <div class="col-md-12">
