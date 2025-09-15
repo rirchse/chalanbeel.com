@@ -20,8 +20,8 @@
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Contact</th>
-                                <th>Email</th>
                                 <th>Location</th>
+                                <th>Lat, Long</th>
                                 <th>Join Date</th>
                                 <th>Status</th>
                                 <th class="disabled-sorting text-right">Actions</th>
@@ -32,42 +32,32 @@
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Contact</th>
-                                <th>Email</th>
                                 <th>Location</th>
+                                <th>Lat, Long</th>
                                 <th>Join Date</th>
                                 <th>Status</th>
-                                <th class="text-right">Actions</th>
+                                <th class="text-right" width="180">Actions</th>
                             </tr>
                         </tfoot>
                         <tbody>
 
-                            <?php $r = 0; ?>
-
-                            @foreach($users as $user)
-
-                            <?php $r++; ?>
+                            @foreach($users as $key => $user)
 
                             <tr>
-                                <td>{{$r}}</td>
+                                <td>{{$key+1}}</td>
                                 <td>{{ $user->full_name }}</td>
                                 <td>{{ $user->contact }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->station }}</td>
+                                <td>{{ $user->address }}</td>
+                                <td>{{ $user->lat.' '. $user->lng }}</td>
                                 <td title="{{ date('h:i:s', strtotime($user->join_date)) }}">{{ date('d M Y', strtotime($user->join_date)) }}</td>
                                 <td>
-                                    @if($user->status == 0)
-                                    <i class="material-icons text-warning">people</i>
-                                    @elseif($user->status == 1)
-                                    <i class="material-icons text-success">people</i>
-                                    @elseif($user->status == 2)
-                                    <i class="material-icons text-primary">people</i>
-                                    @else
-                                    <i class="material-icons text-danger">people</i>
-                                    @endif
+                                    {{$user->status}}
                                 </td>
                                 <td class="text-right">
-                                    <a href="/admin/user/{{ $user->id }}" class="btn btn-simple btn-info btn-icon"><i class="material-icons">dvr</i></a>
-                                    <a href="/admin/user/{{$user->id}}/edit" class="btn btn-simple btn-warning btn-icon" title="Edit the record"><i class="material-icons">mode_edit</i></a>
+                                    <a href="{{route('user.show', $user->id)}}" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
+                                    
+                                    <a class="btn btn-xs btn-warning" title="Edit the record" onclick="showModal(this)"><i class="fa fa-pencil"></i></a>
+
                                     <a href="/admin/create/{{$user->id}}/service" class="btn btn-simple btn-success btn-icon" title="Add New Servcie"><i class="material-icons">add_circle</i></a>
                                 </td>
                             </tr>
@@ -77,12 +67,150 @@
                         </tbody>
                     </table>
                 </div>
+            </div> <!-- end content-->
+        </div> <!--  end card  -->
+    </div> <!-- end col-md-12 -->
+</div> <!-- end row -->
+
+<!-- Modal -->
+<div class="modal fade" id="editForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">User Information</h4>
+      </div>
+      <div class="modal-body">
+        <form id="submitEditForm" method="post" enctype="multipart/form-data">
+          @csrf
+          <div class="col-md-12">
+            <div class="form-group label-floating">
+              <label for="" class="control-label">Name</label>
+              <input type="text" name="name" class="form-control">
             </div>
-            <!-- end content-->
-        </div>
-        <!--  end card  -->
+            <div class="form-group label-floating">
+              <label for="" class="control-label">Contact</label>
+              <input type="text" name="contact" class="form-control">
+            </div>
+            <div class="form-group label-floating">
+              <label for="" class="control-label">Address</label>
+              <input type="text" name="address" class="form-control">
+            </div>
+            <div class="form-group label-floating">
+              <label for="" class="control-label">Lat Long</label>
+              <input type="text" name="lat_long" id="lat_long" class="form-control">
+            </div>
+            <div class="form-group label-floating">
+              <label for="" class="control-label">Join Date</label>
+              <input type="date" name="join_date" class="form-control">
+            </div>
+          </div>
+
+          <div id="map" style="width:100%; height:400px;"></div>
+        </form>
+
+        {{-- <form id="myForm">
+          <label>Latitude:</label>
+          <input type="text" id="latitude" name="latitude" readonly><br><br>
+        
+          <label>Longitude:</label>
+          <input type="text" id="longitude" name="longitude" readonly><br><br>
+        
+          <div id="map" style="width:100%; height:400px;"></div><br>
+        
+          <button type="submit">Submit</button>
+        </form> --}}
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
     </div>
-    <!-- end col-md-12 -->
+  </div>
 </div>
-<!-- end row --> 
+
+<script>
+  function showModal()
+  {
+    $('#editForm').modal('show');
+  }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeoMZGKjy_MlK9Jhh8TWgEIHSHa4Mm7Yg"></script>
+<script>
+  let map;
+  let marker;
+
+  let latlong = document.getElementById('lat_long');
+
+  function initMap() {
+    // Default location (Dhaka for example)
+    const defaultLocation = { lat: 24.4322, lng: 89.2091 };
+
+    // Create map
+    map = new google.maps.Map(document.getElementById("map"), {
+      center: defaultLocation,
+      zoom: 15,
+      mapTypeId: "roadmap", // default
+      mapTypeControl: true, // enable switcher
+      mapTypeControlOptions: {
+        style: google.maps.MapTypeControlStyle.DROPDOWN_MENU, // or HORIZONTAL_BAR
+        position: google.maps.ControlPosition.TOP_RIGHT,      // position of control
+        mapTypeIds: [
+          "roadmap",
+          "satellite",
+          "hybrid",
+          "terrain"
+        ]
+      }
+    });
+
+    // Place initial marker
+    marker = new google.maps.Marker({
+      position: defaultLocation,
+      map: map,
+      draggable: true,
+    });
+
+    // Try HTML5 geolocation
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          const userLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+
+          map.setCenter(userLocation);
+          marker.setPosition(userLocation);
+
+          latlong.value = userLocation.replace(/\(|\)/g, "");
+        },
+        function() {
+          alert("Geolocation failed. Using default location.");
+        }
+      );
+    } else {
+      alert("Your browser doesn’t support geolocation.");
+    }
+
+    // Update input fields when dragging marker
+    google.maps.event.addListener(marker, "dragend", function (event) {
+      latlong.value = event.latLng;
+    });
+
+    // Update marker & input fields when clicking map
+    google.maps.event.addListener(map, "click", function (event) {
+      marker.setPosition(event.latLng);
+      latlong.value = event.latLng;
+    });
+
+    // Set default input values
+    latlong.value = event.latLng;
+  }
+
+  // Load map
+  window.onload = initMap;
+</script>
+
 @endsection

@@ -21,4 +21,9 @@ class Users extends Model
     {
     	return $this->hasMany('App\Payment');
     }
+
+    // public function admin()
+    // {
+    //   return $this->hasOne(Admins::class);
+    // }
 }

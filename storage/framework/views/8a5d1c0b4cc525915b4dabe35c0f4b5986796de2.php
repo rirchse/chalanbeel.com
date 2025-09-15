@@ -1,3 +1,9 @@
+<?php
+use \App\Http\Controllers\SourceCtrl;
+$source = new SourceCtrl;
+?>
+
+
 <?php $__env->startSection('title', 'User Details'); ?>
 <?php $__env->startSection('content'); ?>
     
@@ -11,10 +17,15 @@
                 <h4 class="card-title">User Details</h4> 
                 <div class="col-md-12">
                     <div class="action-tools" style="text-align:right; margin-bottom:10px">
+                        <a class="btn btn-sm btn-success" title="View All Users" href="<?php echo e(route('user.index')); ?>"><i class="fa fa-list"></i></a>
                         <a class="text-success" title="View Active Users" href="/admin/view_active_users"><i class="material-icons">assignment</i></a>
                         <a class="text-primary" title="View All Users" href="/admin/user"><i class="material-icons">assignment</i></a>
                         <a class="text-warning" title="Edit" href="/admin/user/<?php echo e($user->id); ?>/edit"><i class="material-icons">edit</i></a>
-                        
+                        <form class="pull-right" action="<?php echo e(route('user.destroy', $user->id)); ?>" method="post">
+                          <?php echo csrf_field(); ?>
+                          <?php echo method_field('DELETE'); ?>
+                          <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this?')"><i class="fa fa-trash"></i></button>
+                        </form>
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -45,7 +56,7 @@
                         </tr>
                         <tr>
                             <th>Join Date</th>
-                            <td><?php echo e($user->join_date); ?></td>
+                            <td><?php echo e($source->dtformat($user->join_date)); ?></td>
                         </tr>
                         <tr>
                             <th>Devie MAC</th>
@@ -69,15 +80,15 @@
                         </tr>
                         <tr>
                             <th>Created At</th>
-                            <td><?php echo e($user->created_at); ?></td>
+                            <td><?php echo e($source->dtformat($user->created_at)); ?></td>
                         </tr>
                         <tr>
                             <th>Created By</th>
-                            <td><?php echo e($user->created_by); ?></td>
+                            <td><?php echo e($user->admin); ?></td>
                         </tr>
                         <tr>
                             <th>Updated By</th>
-                            <td><?php echo e($user->updated_by); ?></td>
+                            <td><?php echo e($user->admin); ?></td>
                         </tr>
                     </table>
                 </div>

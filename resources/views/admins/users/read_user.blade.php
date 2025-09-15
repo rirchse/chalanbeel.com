@@ -1,3 +1,8 @@
+@php
+use \App\Http\Controllers\SourceCtrl;
+$source = new SourceCtrl;
+@endphp
+
 @extends('admin')
 @section('title', 'User Details')
 @section('content')
@@ -12,10 +17,15 @@
                 <h4 class="card-title">User Details</h4> 
                 <div class="col-md-12">
                     <div class="action-tools" style="text-align:right; margin-bottom:10px">
+                        <a class="btn btn-sm btn-success" title="View All Users" href="{{route('user.index')}}"><i class="fa fa-list"></i></a>
                         <a class="text-success" title="View Active Users" href="/admin/view_active_users"><i class="material-icons">assignment</i></a>
                         <a class="text-primary" title="View All Users" href="/admin/user"><i class="material-icons">assignment</i></a>
                         <a class="text-warning" title="Edit" href="/admin/user/{{$user->id}}/edit"><i class="material-icons">edit</i></a>
-                        {{-- <a class="text-info" title="View Services" href="/admin/service/{{$user->id}}/all"><i class="material-icons">subject</i></a> --}}
+                        <form class="pull-right" action="{{route('user.destroy', $user->id)}}" method="post">
+                          @csrf
+                          @method('DELETE')
+                          <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this?')"><i class="fa fa-trash"></i></button>
+                        </form>
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -46,7 +56,7 @@
                         </tr>
                         <tr>
                             <th>Join Date</th>
-                            <td>{{$user->join_date}}</td>
+                            <td>{{$source->dtformat($user->join_date)}}</td>
                         </tr>
                         <tr>
                             <th>Devie MAC</th>
@@ -70,15 +80,15 @@
                         </tr>
                         <tr>
                             <th>Created At</th>
-                            <td>{{$user->created_at}}</td>
+                            <td>{{$source->dtformat($user->created_at)}}</td>
                         </tr>
                         <tr>
                             <th>Created By</th>
-                            <td>{{$user->created_by}}</td>
+                            <td>{{$user->admin}}</td>
                         </tr>
                         <tr>
                             <th>Updated By</th>
-                            <td>{{$user->updated_by}}</td>
+                            <td>{{$user->admin}}</td>
                         </tr>
                     </table>
                 </div>

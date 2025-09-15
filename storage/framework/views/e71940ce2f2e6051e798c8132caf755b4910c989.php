@@ -60,6 +60,16 @@
                     </select>
                 </div>
                 <div class="form-group label-floating">
+                  <label for="" class="control-label">Lat Long</label>
+                    <input type="text" name="lat_long" id="" class="form-control">
+                </div>
+                <div class="form-group label-floating">
+                    <select name="status" id="" class="form-control">
+                        <option value="Active">Active</option>
+                        <option value="Deactive">Deactive</option>
+                    </select>
+                </div>
+                <div class="form-group label-floating">
                     <?php echo e(Form::label('date_of_birth', 'Date of Birth (Y-m-d)', ['class' => 'control-label'])); ?>
 
                     <?php echo e(Form::date('date_of_birth', null, ['class' => 'form-control datepicker'])); ?>

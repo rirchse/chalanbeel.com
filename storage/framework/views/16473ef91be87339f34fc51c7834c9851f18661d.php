@@ -13,6 +13,12 @@
                     <div class="toolbar">
                         <a class="btn btn-simple btn-icon btn-info" href="/admin/user/<?php echo e($user->id); ?>/details" title="User details"><i class="material-icons">dvr</i></a>
                         <a href="/admin/view_users"><i class="material-icons">peoples</i></a>
+
+                        <form class="pull-right" action="<?php echo e(route('user.destroy', $user->id)); ?>" method="post">
+                          <?php echo csrf_field(); ?>
+                          <?php echo method_field('DELETE'); ?>
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this?')"><i class="fa fa-trash"></i></button>
+                          </form>
                     </div>
 
     <?php echo Form::model($user, ['route' => ['user.update', $user->id], 'method' => 'PUT', 'files' => true]); ?>
@@ -149,17 +155,7 @@
     <?php echo Form::close(); ?>
 
 
-    <?php echo e(Form::open(['route' => ['admin.user.delete', $user->id], 'method' => 'DELETE'])); ?>
-
-        <div id="target" class="swal2-modal swal2-show delete-alert">
-            <h2>Are you sure?</h2>
-            <div class="swal2-content" style="display: block;">You want to delete this!</div>
-            <hr class="swal2-spacer" style="display: block;">
-            <button type="submit" class="btn btn-success"><i class="material-icons">check</i></button>
-            <button class="btn btn-danger" type="button" onclick="this.parentNode.style.display = 'none';"><i class="material-icons">close</i></button>
-        </div>
-    <?php echo e(Form::close()); ?>
-
+    
 
                 </div>
             </div>

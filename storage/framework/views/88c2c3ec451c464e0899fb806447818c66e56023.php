@@ -44,6 +44,9 @@
                     </a>
                     <div class="collapse" id="user">
                         <ul class="nav">
+                            <li>
+                              <a href="<?php echo e(route('user.upload-list')); ?>">Upload Users</a>
+                            </li>
                             <li><a href="/admin/user/create">Create New user</a></li>
                             <li><a href="/admin/view_active_users">View Active users</a></li>
                             <li><a href="/admin/user">View All users</a></li>
@@ -207,8 +210,7 @@
                         <li class="separator hidden-lg hidden-md"></li>
                     </ul>
 
-                    <?php echo Form::open(['route' => 'register', 'method' => 'POST', 'class' => 'navbar-form navbar-right', 'role' => 'search']); ?>
-
+                    <form action="#" method="post" class="navbar-form navbar-right">
                         <div class="form-group form-search is-empty">
                             <input type="text" class="form-control" placeholder="Search" name="work_orders_search">
                             <span class="material-input"></span>
@@ -217,8 +219,7 @@
                             <i class="material-icons">search</i>
                             <div class="ripple-container"></div>
                         </button>
-                    <?php echo Form::close(); ?>
-
+                      </form>
                 </div>
             </div>
         </nav>

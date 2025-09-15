@@ -31,7 +31,7 @@ class UserLoginController extends Controller
     	// attempt to the log the user in
     	if (Auth::attempt(['contact' => $request->email, 'password' => $request->password], $request->remember)) {
     		// if successful, then redirect to their intended location
-            return redirect()->intended('/home');
+        return redirect()->intended('/home');
     	}
 
     	// if unsuccessful, then redirect back to the login with form data

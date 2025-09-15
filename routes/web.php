@@ -4,6 +4,7 @@
 use App\Http\Controllers\Bkash\BkashController;
 use App\Http\Controllers\Payment\BkashPaymentController;
 use App\Http\Controllers\MapController;
+use App\Http\Controllers\Admin\UsersController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -61,7 +62,7 @@ Route::group(['middleware' => ['web']], function()
 
 
 
-	Auth::routes();
+	// Auth::routes();
 	/** bkash payment API */
 	// Route::controller('Bkash\BkashController')->group(function()
 	// {
@@ -81,116 +82,124 @@ Route::group(['middleware' => ['web']], function()
   //   Route::post('bkash/refund', 'refund')->name('bkash-refund');
 	// });
 
-	///////////////--Admin--///////////////////
-	Route::prefix('admin')->group(function()
-	{
-		Route::get('/loginto/{id}', 'Admin\UsersController@loginto');
-	
-		Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
-		Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.postLogin');
-		Route::get('/', 'Admin\AdminHomeController@index')->name('admin.dashboard');
-		Route::get('/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
+  
+    //--Admin--//
+    Route::prefix('admin')->group(function()
+    {
+      Route::get('/loginto/{id}', 'Admin\UsersController@loginto');
+    
+      Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
+      Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.postLogin');
+      Route::get('/', 'Admin\AdminHomeController@index')->name('admin.dashboard');
+      Route::get('/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
 
-		Route::get('/change_my_password', 'Admin\AdminsController@changePassword');
-		Route::put('/change_my_password', 'Admin\AdminsController@updatePassword')->name('admin.password_change.admin');
+      Route::middleware('admin.auth')->group(function () 
+      {
+        Route::get('/change_my_password', 'Admin\AdminsController@changePassword');
+        Route::put('/change_my_password', 'Admin\AdminsController@updatePassword')->name('admin.password_change.admin');
 
-		Route::get('/show_admins', 'Admin\AdminsController@index');
-		Route::get('/admin/{id}/edit', 'Admin\AdminsController@edit');
-		Route::get('/password/{id}/edit', 'Admin\AdminsController@editpassword');
-		Route::put('/password/{id}', 'Admin\AdminsController@updatePass')->name('admin.change.password');
-		Route::delete('/admin/{id}', 'Admin\AdminsController@destroy')->name('admin.delete.admin');
-		Route::get('/profile', 'Admin\AdminsController@profile');
-		Route::put('/profile', 'Admin\AdminsController@update');
-		Route::delete('/user/{id}', 'Admin\UsersController@destroy')->name('admin.user.delete');
-		Route::resource('/admin', 'Admin\AdminsController');
+        Route::get('/show_admins', 'Admin\AdminsController@index');
+        Route::get('/admin/{id}/edit', 'Admin\AdminsController@edit');
+        Route::get('/password/{id}/edit', 'Admin\AdminsController@editpassword');
+        Route::put('/password/{id}', 'Admin\AdminsController@updatePass')->name('admin.change.password');
+        Route::delete('/admin/{id}', 'Admin\AdminsController@destroy')->name('admin.delete.admin');
+        Route::get('/profile', 'Admin\AdminsController@profile');
+        Route::put('/profile', 'Admin\AdminsController@update');
+        // Route::delete('/user/{id}', 'Admin\UsersController@destroy')->name('admin.user.delete');
+        Route::resource('/admin', 'Admin\AdminsController');
 
-		//////////////////-/\\/-///////////////////
+        //////////////////-/\\/-///////////////////
 
-		// users
-		Route::resource('/user', 'Admin\UsersController');
-		Route::get('/view/{type}/users', 'Admin\UsersController@viewUsers');
-		Route::get('/view_active_users', 'Admin\UsersController@active_users');
-		Route::get('/send_email_tickets/{id}', 'Admin\UsersController@getEmailTickets');	
-		Route::post('/email_tickets', 'Admin\UsersController@emailTickets')->name('admin.email.tickets');
+        // users
+        Route::resource('/user', 'Admin\UsersController');
+        Route::get('/view/{type}/users', 'Admin\UsersController@viewUsers');
+        Route::get('/view_active_users', 'Admin\UsersController@active_users');
+        Route::get('/send_email_tickets/{id}', 'Admin\UsersController@getEmailTickets');	
+        Route::post('/email_tickets', 'Admin\UsersController@emailTickets')->name('admin.email.tickets');
 
-		Route::get('/active/users/mikrotik', 'Admin\UsersController@activeUsersMikrotik');
-		
-		//packages
-		Route::resource('/package', 'Admin\PackageController');
-		Route::get('/get_package_from_router', 'Admin\PackageController@routerpackage');
-		Route::delete('/package/{id}', 'Admin\PackageController@destroy')->name('admin.package.delete');
+        Route::get('/active/users/mikrotik', 'Admin\UsersController@activeUsersMikrotik');
+        Route::controller(UsersController::class)->group(function()
+        {
+          Route::get('/users-upload', 'uploadList')->name('user.upload-list');
+          Route::post('/users-upload-store', 'userListStore')->name('user.upload-list-store');
+        });
+        
+        //packages
+        Route::resource('/package', 'Admin\PackageController');
+        Route::get('/get_package_from_router', 'Admin\PackageController@routerpackage');
+        Route::delete('/package/{id}', 'Admin\PackageController@destroy')->name('admin.package.delete');
 
-		//services
-		Route::get('/create/{id}/service', 'Admin\ServiceController@create');
-		Route::get('/create/{id}/service/{user}', 'Admin\ServiceController@create2');
-		Route::get('/service/{type}/view', 'Admin\ServiceController@view');
-		Route::get('/view/live/services', 'Admin\ServiceController@liveServices');
-		Route::get('/view_unpaid_services', 'Admin\ServiceController@unpaidServices');
-		Route::get('/view_active_services/location/{id}', 'Admin\ServiceController@activeServicesLocation');
-		Route::get('/print_due_services', 'Admin\ServiceController@printUnpaidServices');
-		Route::get('/service/{id}/delete', 'Admin\ServiceController@destroy');
-		Route::post('/anual_report', 'Admin\ServiceController@printAnualServices')->name('anual_report.print');
-		Route::resource('/service', 'Admin\ServiceController');
+        //services
+        Route::get('/create/{id}/service', 'Admin\ServiceController@create');
+        Route::get('/create/{id}/service/{user}', 'Admin\ServiceController@create2');
+        Route::get('/service/{type}/view', 'Admin\ServiceController@view');
+        Route::get('/view/live/services', 'Admin\ServiceController@liveServices');
+        Route::get('/view_unpaid_services', 'Admin\ServiceController@unpaidServices');
+        Route::get('/view_active_services/location/{id}', 'Admin\ServiceController@activeServicesLocation');
+        Route::get('/print_due_services', 'Admin\ServiceController@printUnpaidServices');
+        Route::get('/service/{id}/delete', 'Admin\ServiceController@destroy');
+        Route::post('/anual_report', 'Admin\ServiceController@printAnualServices')->name('anual_report.print');
+        Route::resource('/service', 'Admin\ServiceController');
 
-		//service plans		
-		Route::resource('/service_plan', 'Admin\ServicePlanCtrl');
-		Route::get('/service_plan/create/{id}', 'Admin\ServicePlanCtrl@create');
-		Route::get('/service_plan/{id}/delete', 'Admin\ServicePlanCtrl@delete');
+        //service plans		
+        Route::resource('/service_plan', 'Admin\ServicePlanCtrl');
+        Route::get('/service_plan/create/{id}', 'Admin\ServicePlanCtrl@create');
+        Route::get('/service_plan/{id}/delete', 'Admin\ServicePlanCtrl@delete');
 
-		//temp
-		Route::get('/service_plan_create_existing', 'Admin\ServicePlanCtrl@createExisting');
+        //temp
+        Route::get('/service_plan_create_existing', 'Admin\ServicePlanCtrl@createExisting');
 
-		//payments
-		Route::get('/payment/{id}/{billing_date}/add', 'Admin\PaymentController@addPayment');
-		Route::get('/bill/paid/view', 'Admin\PaymentController@index');
-		Route::get('/bill/due/view', 'Admin\PaymentController@due');
-		Route::get('/payment/{id}/total_paid', 'Admin\PaymentController@totalPaid');
-		Route::get('/payment/{id}/total_due', 'Admin\PaymentController@totalDue');
-		Route::get('/payment/{id}/delete', 'Admin\PaymentController@delete');
-		Route::get('/payment/{id}/print', 'Admin\PaymentController@print');
-		Route::resource('/payment', 'Admin\PaymentController');
-		Route::get('/get-all-bills', 'Admin\PaymentController@allBills');
+        //payments
+        Route::get('/payment/{id}/{billing_date}/add', 'Admin\PaymentController@addPayment');
+        Route::get('/bill/paid/view', 'Admin\PaymentController@index');
+        Route::get('/bill/due/view', 'Admin\PaymentController@due');
+        Route::get('/payment/{id}/total_paid', 'Admin\PaymentController@totalPaid');
+        Route::get('/payment/{id}/total_due', 'Admin\PaymentController@totalDue');
+        Route::get('/payment/{id}/delete', 'Admin\PaymentController@delete');
+        Route::get('/payment/{id}/print', 'Admin\PaymentController@print');
+        Route::resource('/payment', 'Admin\PaymentController');
+        Route::get('/get-all-bills', 'Admin\PaymentController@allBills');
 
-		// payment confirm
-		Route::get('/create/{id}/user_payment', 'Admin\PaymentController@CreateUserPayment');
-		Route::get('/create/{id}/user_payment_complete', 'Admin\PaymentController@UserPaymentComplete');
-		Route::post('/create_user_payment', 'Admin\PaymentController@StoreUserPayment')->name('admin.create.user.payment');
+        // payment confirm
+        Route::get('/create/{id}/user_payment', 'Admin\PaymentController@CreateUserPayment');
+        Route::get('/create/{id}/user_payment_complete', 'Admin\PaymentController@UserPaymentComplete');
+        Route::post('/create_user_payment', 'Admin\PaymentController@StoreUserPayment')->name('admin.create.user.payment');
 
-		//Payement Methods
-		Route::delete('/paymethod/{id}', 'Admin\PaymethodController@destroy')->name('admin.paymethod.delete');
-		Route::resource('/paymethod', 'Admin\PaymethodController');
+        //Payement Methods
+        Route::delete('/paymethod/{id}', 'Admin\PaymethodController@destroy')->name('admin.paymethod.delete');
+        Route::resource('/paymethod', 'Admin\PaymethodController');
 
-		//area
-		Route::delete('/area/{id}', 'Admin\LocationController@destroy')->name('admin.area.delete');
+        //area
+        Route::delete('/area/{id}', 'Admin\LocationController@destroy')->name('admin.area.delete');
 
-		Route::resource('/location', 'Admin\LocationController');
+        Route::resource('/location', 'Admin\LocationController');
 
-		//devies
-		Route::get('/device/{id}/childs', 'Admin\DeviceController@childs');
-		Route::delete('/device/{id}', 'Admin\DeviceController@destroy')->name('admin.device.delete');
+        //devies
+        Route::get('/device/{id}/childs', 'Admin\DeviceController@childs');
+        Route::delete('/device/{id}', 'Admin\DeviceController@destroy')->name('admin.device.delete');
 
-		Route::resource('/device', 'Admin\DeviceController');
+        Route::resource('/device', 'Admin\DeviceController');
 
-		//user profile
-		Route::get('/profile', 'Admin\ProfileController@show');
-		Route::put('/profile', 'Admin\ProfileController@update')->name('admin.profile.update');
+        //user profile
+        Route::get('/profile', 'Admin\ProfileController@show');
+        Route::put('/profile', 'Admin\ProfileController@update')->name('admin.profile.update');
 
-		//costs
-		Route::resource('/invest', 'Admin\InvestController');
+        //costs
+        Route::resource('/invest', 'Admin\InvestController');
 
-		//get data from mikrotik
-		Route::get('/get_user_from_router', 'Admin\UsersController@getRouterUsers');
+        //get data from mikrotik
+        Route::get('/get_user_from_router', 'Admin\UsersController@getRouterUsers');
 
-		//Graph chart from the begening
-		Route::get('/graph_from_beginning', 'Admin\AdminHomeController@graph');
+        //Graph chart from the begening
+        Route::get('/graph_from_beginning', 'Admin\AdminHomeController@graph');
 
-    // user view on map
-    // Route::get('/dashboard/map', [MapController::class,'index'])->name('dashboard.map');
-    // Route::get('/api/customers/map', [MapController::class,'customers'])->name('api.customers.map');
-    Route::get('/map', [MapController::class, 'index'])->name('map.index');
+        // user view on map
+        // Route::get('/dashboard/map', [MapController::class,'index'])->name('dashboard.map');
+        // Route::get('/api/customers/map', [MapController::class,'customers'])->name('api.customers.map');
+        Route::get('/map', [MapController::class, 'index'])->name('map.index');
 
-	});
-
+      });
+    });
 
 //user routes start from here
 	Route::get('/all_users', 'Admin\UsersController@index');
