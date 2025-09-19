@@ -87,34 +87,34 @@
         <h4 class="modal-title" id="myModalLabel">User Information</h4>
       </div>
       <div class="modal-body">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label for="" class="control-label">Name</label>
-              <input type="text" name="name" class="form-control">
-            </div>
-            <div class="form-group">
-              <label for="" class="control-label">Contact</label>
-              <input type="text" name="contact" class="form-control">
-            </div>
-            <div class="form-group">
-              <label for="" class="control-label">Address</label>
-              <input type="text" name="address" class="form-control">
-            </div>
-            <div class="form-group">
-              <label for="" class="control-label">Lat Long</label>
-              <input type="text" name="lat_long" id="lat_long" class="form-control">
-            </div>
-            <div class="form-group">
-              <label for="" class="control-label">Join Date</label>
-              <input type="date" name="join_date" class="form-control">
-            </div>
-          </div>
-
-          <div id="map" style="width:100%; height:400px;"></div>       
+        <div class="form-group">
+          <label for="" class="control-label">Name</label>
+          <input type="text" name="name" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="" class="control-label">Contact</label>
+          <input type="text" name="contact" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="" class="control-label">Address</label>
+          <input type="text" name="address" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="" class="control-label">Lat Long</label>
+          <input type="text" name="lat_long" id="lat_long" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="" class="control-label">Join Date</label>
+          <input type="date" name="join_date" class="form-control">
+        </div>
+        <div id="map" style="width:100%; height:400px;"></div>
       </div>
+      <div class="clearfix"></div>
       <div class="modal-footer">
+        <div class="clearfix"></div>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="submit" class="btn btn-primary">Save changes</button>
+        <div class="clearfix"></div>
       </div>
     </div>
 
