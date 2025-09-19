@@ -2,13 +2,12 @@
 
 
 <!--Angular App-->
-<script src="<?php echo e('/js/app/app.js'); ?>" type="text/javascript"></script>
+
 <!--Angular Controllers-->
 
 
-<script src="<?php echo e('/js/app/controllers/registerController.js'); ?>" type="text/javascript"></script>
+
 <!--Angular App Services-->
-<script src="<?php echo e('/js/app/services/registerService.js'); ?>" type="text/javascript"></script>
 
 
 

@@ -1,5 +1,10 @@
 <?php $__env->startSection('title', 'View All Users'); ?>
 <?php $__env->startSection('content'); ?>
+<style>
+  .form-group{
+    margin-top: 0;
+  }
+</style>
     
 <div class="row">
     <div class="col-md-12">
@@ -48,11 +53,8 @@
                                 <td><?php echo e($user->contact); ?></td>
                                 <td><?php echo e($user->address); ?></td>
                                 <td><?php echo e($user->lat.' '. $user->lng); ?></td>
-                                <td title="<?php echo e(date('h:i:s', strtotime($user->join_date))); ?>"><?php echo e(date('d M Y', strtotime($user->join_date))); ?></td>
-                                <td>
-                                    <?php echo e($user->status); ?>
-
-                                </td>
+                                <td><?php echo e($user->join_date); ?></td>
+                                <td><?php echo e($user->status); ?></td>
                                 <td class="text-right">
                                     <a href="<?php echo e(route('user.show', $user->id)); ?>" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
                                     
@@ -86,23 +88,23 @@
       </div>
       <div class="modal-body">
           <div class="col-md-12">
-            <div class="form-group label-floating">
+            <div class="form-group">
               <label for="" class="control-label">Name</label>
               <input type="text" name="name" class="form-control">
             </div>
-            <div class="form-group label-floating">
+            <div class="form-group">
               <label for="" class="control-label">Contact</label>
               <input type="text" name="contact" class="form-control">
             </div>
-            <div class="form-group label-floating">
+            <div class="form-group">
               <label for="" class="control-label">Address</label>
               <input type="text" name="address" class="form-control">
             </div>
-            <div class="form-group label-floating">
+            <div class="form-group">
               <label for="" class="control-label">Lat Long</label>
               <input type="text" name="lat_long" id="lat_long" class="form-control">
             </div>
-            <div class="form-group label-floating">
+            <div class="form-group">
               <label for="" class="control-label">Join Date</label>
               <input type="date" name="join_date" class="form-control">
             </div>
@@ -131,12 +133,14 @@
       type: 'GET',
       url: '<?php echo e(route("user.show", "")); ?>/'+e.dataset.id,
       success: function(data){
-        editform.elements.id.value = data.user.id;
-        editform.elements.name.value = data.user.name;
-        editform.elements.contact.value = data.user.contact;
-        editform.elements.address.value = data.user.address;
-        editform.elements.lat_long.value = data.user.lat ? data.user.lat+', '+data.user.lng : '';
-        editform.elements.join_date.value = data.user.join_date;
+        let elm = editform.elements;
+        elm.id.value = data.user.id;
+        elm.name.value = data.user.name;
+        elm.contact.value = data.user.contact;
+        elm.address.value = data.user.address;
+        elm.lat_long.value = data.user.lat ? data.user.lat+', '+data.user.lng : '';
+        elm.join_date.value = data.user.join_date;
+        elm.lat_long.parentNode.classList.add('is-focused');
       },
       error: function(data){
         console.error(data);
@@ -244,11 +248,53 @@
     });
 
     // Set default input values
-    latlong.value = event.latLng.lat() + ', ' + event.latLng.lng();
+    // latlong.value = event.latLng.lat() + ', ' + event.latLng.lng();
   }
 
   // Load map
   window.onload = initMap;
+</script>
+<script type="text/javascript">
+  $(document).ready(function() {
+      $('#datatables').DataTable({
+          "pagingType": "full_numbers",
+          "lengthMenu": [
+              [100, 25, 50, 100, -1],
+              [100, 25, 50, 100, "All"]
+          ],
+          responsive: true,
+          language: {
+              search: "_INPUT_",
+              searchPlaceholder: "Search records",
+          }
+
+      });
+
+
+      var table = $('#datatables').DataTable();
+
+      // Edit record
+      table.on('click', '.edit', function() {
+          $tr = $(this).closest('tr');
+
+          var data = table.row($tr).data();
+          alert('You press on Row: ' + data[0] + ' ' + data[1] + ' ' + data[2] + '\'s row.');
+      });
+
+      // Delete a record
+      table.on('click', '.remove', function(e) {
+          $tr = $(this).closest('tr');
+          table.row($tr).remove().draw();
+          e.preventDefault();
+      });
+
+      //Like record
+      table.on('click', '.like', function() {
+          alert('You clicked on Like button');
+      });
+
+      $('.card .material-datatables label').addClass('form-group');
+  });
 </script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /srv/www/cbt/resources/views/admins/users/view_all_users.blade.php ENDPATH**/ ?>
