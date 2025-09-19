@@ -3,6 +3,7 @@
 <title><?php echo $__env->yieldContent('title'); ?> | Chalanbeel Technology</title>
 <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 <meta name="viewport" content="width=device-width" />
+<meta name="csrf_token" content="<?php echo e(csrf_token()); ?>" />
 <!-- Canonical SEO -->
 <link rel="canonical" href="Chalanbeel Technology" />
 <!--  Social tags      -->

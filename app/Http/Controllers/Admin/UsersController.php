@@ -239,8 +239,11 @@ class UsersController extends Controller
         $user = User::leftJoin('locations', 'users.location_id', 'locations.id')
         ->select('users.*', 'locations.station', 'locations.area')
         ->find($id);
-        // $sevices = Service::where('user_id', $id)->orderBy('id', 'DESC')->get();
-        return view('admins.users.read_user')->withUser($user);
+
+        return response()->json([
+          'user' => $user
+        ], 200);
+        // return view('admins.users.read_user')->withUser($user);
         // ->withServices($services);
     }
 
@@ -269,7 +272,7 @@ class UsersController extends Controller
         $user_id = Auth::guard('admin')->user()->id;
         //validate the data        
         $this->validate($request, array(
-            'full_name'     => 'required|min:2|max:32',
+            'name'     => 'required|min:2|max:32',
             'email'         => 'email|max:50|nullable',
             'contact'       => 'required|min:11|max:11',
             'work_at'       => 'max:255|nullable',
@@ -301,7 +304,7 @@ class UsersController extends Controller
 
         //save the data to the database
         $update = User::find($id);
-        $update->full_name       = $request->input('full_name');
+        $update->name       = $request->input('name');
         $update->contact         = $request->input('contact');
         $update->email           = $request->input('email');
         $update->username        = $request->input('contact');
@@ -355,11 +358,15 @@ class UsersController extends Controller
             }
         }
 
+        return response()->json([
+          'result' => 'success'
+        ], 200);
+
         //set flash data with success message
         Session::flash('success', 'User Information successfully updated.');
 
         //redirect with flash data to posts.show
-        return redirect('/admin/user/'.$id);
+        // return redirect('/admin/user/'.$id);
     }
 
     public function permitAdmin(Request $request, $id)

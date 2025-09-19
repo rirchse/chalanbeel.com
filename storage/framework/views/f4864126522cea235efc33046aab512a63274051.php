@@ -44,7 +44,7 @@
 
                             <tr>
                                 <td><?php echo e($key+1); ?></td>
-                                <td><?php echo e($user->full_name); ?></td>
+                                <td><?php echo e($user->name); ?></td>
                                 <td><?php echo e($user->contact); ?></td>
                                 <td><?php echo e($user->address); ?></td>
                                 <td><?php echo e($user->lat.' '. $user->lng); ?></td>
@@ -56,7 +56,7 @@
                                 <td class="text-right">
                                     <a href="<?php echo e(route('user.show', $user->id)); ?>" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
                                     
-                                    <a class="btn btn-xs btn-warning" title="Edit the record" onclick="showModal(this)"><i class="fa fa-pencil"></i></a>
+                                    <a class="btn btn-xs btn-warning" title="Edit the record" data-id="<?php echo e($user->id); ?>" onclick="showModal(this)"><i class="fa fa-pencil"></i></a>
 
                                     <a href="/admin/create/<?php echo e($user->id); ?>/service" class="btn btn-simple btn-success btn-icon" title="Add New Servcie"><i class="material-icons">add_circle</i></a>
                                 </td>
@@ -75,14 +75,16 @@
 <!-- Modal -->
 <div class="modal fade" id="editForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
+    <form id="submitEditForm" method="post" enctype="multipart/form-data">
+      <?php echo csrf_field(); ?>
+      <?php echo method_field('PUT'); ?>
+      <input type="hidden" name="id" value="">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">User Information</h4>
       </div>
       <div class="modal-body">
-        <form id="submitEditForm" method="post" enctype="multipart/form-data">
-          <?php echo csrf_field(); ?>
           <div class="col-md-12">
             <div class="form-group label-floating">
               <label for="" class="control-label">Name</label>
@@ -106,25 +108,71 @@
             </div>
           </div>
 
-          <div id="map" style="width:100%; height:400px;"></div>
-        </form>
-
-        
-        
+          <div id="map" style="width:100%; height:400px;"></div>       
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
       </div>
     </div>
+
+  </form> 
   </div>
 </div>
 
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
 <script>
-  function showModal()
+  function showModal(e)
   {
+    const editform = document.getElementById('submitEditForm');
+    $.ajax({
+      type: 'GET',
+      url: '<?php echo e(route("user.show", "")); ?>/'+e.dataset.id,
+      success: function(data){
+        editform.elements.id.value = data.user.id;
+        editform.elements.name.value = data.user.name;
+        editform.elements.contact.value = data.user.contact;
+        editform.elements.address.value = data.user.address;
+        editform.elements.lat_long.value = data.user.lat ? data.user.lat+', '+data.user.lng : '';
+        editform.elements.join_date.value = data.user.join_date;
+      },
+      error: function(data){
+        console.error(data);
+      }
+    });
+    //show modal
     $('#editForm').modal('show');
   }
+
+  //submit data
+  $('#editForm').on('submit', function(e){
+    e.preventDefault();
+    const editform = document.getElementById('submitEditForm');
+    const formdata = new FormData(editform);
+    formdata.append('_method', 'PATCH');
+
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content')
+      }
+    });
+    $.ajax({
+      type: 'POST',
+      url: '<?php echo e(route("user.update", "")); ?>/'+editform.elements.id.value,
+      data: formdata,
+      processData: false,
+      contentType: false,
+      success: function(data){
+        $('#editForm').modal('hide');
+        console.log(data);
+      },
+      error: function(data){
+        console.error(data);
+      }
+    });
+  });
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeoMZGKjy_MlK9Jhh8TWgEIHSHa4Mm7Yg"></script>
 <script>
@@ -174,34 +222,33 @@
           map.setCenter(userLocation);
           marker.setPosition(userLocation);
 
-          latlong.value = userLocation.replace(/\(|\)/g, "");
+          latlong.value = userLocation.lat + ', ' + userLocation.lng;
         },
         function() {
-          alert("Geolocation failed. Using default location.");
+          // alert("Geolocation failed. Using default location.");
         }
       );
     } else {
-      alert("Your browser doesn’t support geolocation.");
+      // alert("Your browser doesn’t support geolocation.");
     }
 
     // Update input fields when dragging marker
     google.maps.event.addListener(marker, "dragend", function (event) {
-      latlong.value = event.latLng;
+      latlong.value = event.latLng.lat() + ', ' + event.latLng.lng();
     });
 
     // Update marker & input fields when clicking map
     google.maps.event.addListener(map, "click", function (event) {
       marker.setPosition(event.latLng);
-      latlong.value = event.latLng;
+      latlong.value = event.latLng.lat() + ', ' + event.latLng.lng();
     });
 
     // Set default input values
-    latlong.value = event.latLng;
+    latlong.value = event.latLng.lat() + ', ' + event.latLng.lng();
   }
 
   // Load map
   window.onload = initMap;
 </script>
-
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /srv/www/cbt/resources/views/admins/users/view_all_users.blade.php ENDPATH**/ ?>
