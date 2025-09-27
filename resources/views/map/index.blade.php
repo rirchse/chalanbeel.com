@@ -1,7 +1,7 @@
 @extends('admin')
 
 @section('content')
-<div id="map" style="height: 80vh;"></div>
+<div id="map" style="height: 80vh; margin-top:0"></div>
 @endsection
 
 @section('stylesheets')

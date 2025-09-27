@@ -233,17 +233,22 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
+      // dd($request->ajax());
         //Grab user data by id
         $user = User::leftJoin('locations', 'users.location_id', 'locations.id')
         ->select('users.*', 'locations.station', 'locations.area')
         ->find($id);
 
-        return response()->json([
-          'user' => $user
-        ], 200);
-        // return view('admins.users.read_user')->withUser($user);
+        if($request->ajax())
+        {
+          return response()->json([
+            'user' => $user
+          ], 200);
+        }
+
+        return view('admins.users.read_user')->withUser($user);
         // ->withServices($services);
     }
 
@@ -444,19 +449,12 @@ class UsersController extends Controller
                 'username' => $data['username']
               ],
               [
-                'full_name' => $data['C Name'],
+                'name' => $data['C Name'],
                 'contact' => $data['username'],
                 'password' => bcrypt($data['username']),
                 'address' => $data['Area']
               ]
             );
-
-            // DB::table('your_table')->insert([
-            //     'name'  => $data['name'],
-            //     'email' => $data['email'],
-            //     'phone' => $data['phone'],
-            //     // map other columns
-            // ]);
         }
 
         fclose($handle);

@@ -1,3 +1,8 @@
+@php
+use \App\Http\Controllers\SourceCtrl;
+$source = new SourceCtrl;
+@endphp
+
 @extends('admin')
 @section('title', 'View All Users')
 @section('content')
@@ -61,7 +66,7 @@
                                 <td>{{ $user->contact }}</td>
                                 <td>{{ $user->address }}</td>
                                 <td>{{ $user->lat.' '. $user->lng }}</td>
-                                <td>{{ $user->join_date }}</td>
+                                <td>{{ $source->dtformat($user->join_date) }}</td>
                                 <td>{{$user->status}}</td>
                                 <td class="text-right">
                                     <a href="{{route('user.show', $user->id)}}" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
@@ -108,10 +113,19 @@
           <input type="text" name="address" class="form-control" placeholder="Address">
         </div>
         <div class="form-group">
-          <input type="text" name="lat_long" id="lat_long" class="form-control" placeholder="Lat Long">
+          <input type="date" name="join_date" class="form-control" placeholder="Join Date">
         </div>
         <div class="form-group">
-          <input type="date" name="join_date" class="form-control" placeholder="Join Date">
+          <select name="status" class="form-control" id="status">
+            <option value="">Select One</option>
+            <option value="Active">Active</option>
+            <option value="Deactive">Deactive</option>
+            <option value="Expire">Expire</option>
+            <option value="Cancel">Cancel</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <input type="text" name="lat_long" id="lat_long" class="form-control" placeholder="Lat Long">
         </div>
       </div>
 
@@ -143,6 +157,7 @@
       url: '{{route("user.show", "")}}/'+e.dataset.id,
       success: function(data){
         let elm = editform.elements;
+        // let status = data.user.status ? data.user.status : '';
         elm.id.value = data.user.id;
         elm.name.value = data.user.name;
         elm.contact.value = data.user.contact;
@@ -150,6 +165,11 @@
         elm.lat_long.value = data.user.lat ? data.user.lat+', '+data.user.lng : '';
         elm.join_date.value = data.user.join_date;
         elm.lat_long.parentNode.classList.add('is-focused');
+        if(data.user.status)
+        {
+          elm.status.options[0] = new Option(data.user.status, data.user.status, false, true);
+        }
+        
       },
       error: function(data){
         console.error(data);
