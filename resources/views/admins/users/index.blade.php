@@ -91,7 +91,6 @@
   <div class="modal-dialog modal-dialog-scrollable" role="document">
     <form id="submitEditForm" method="post" enctype="multipart/form-data">
       @csrf
-      @method('PUT')
       <input type="hidden" name="id" value="">
     <div class="modal-content">
       <div class="modal-header">
