@@ -114,6 +114,11 @@
           <input type="date" name="join_date" class="form-control" placeholder="Join Date">
         </div>
       </div>
+
+      <div class="form-group">
+        <div id="map" style="width:100%; height:400px; margin-top:0"></div>
+      </div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="submit" class="btn btn-primary">Save changes</button>
@@ -125,8 +130,6 @@
   </div>
 </div>
 
-
-{{-- <div id="map" style="width:100%; height:400px; margin-top:0"></div> --}}
 
 @endsection
 
