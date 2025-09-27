@@ -161,7 +161,7 @@
     e.preventDefault();
     const editform = document.getElementById('submitEditForm');
     const formdata = new FormData(editform);
-    formdata.append('_method', 'PATCH');
+    formdata.append('_method', 'PUT');
 
     $.ajaxSetup({
       headers: {

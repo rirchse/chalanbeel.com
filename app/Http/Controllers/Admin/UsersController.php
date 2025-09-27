@@ -270,7 +270,7 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         $user_id = Auth::guard('admin')->user()->id;
-        //validate the data        
+        //validate the data
         $this->validate($request, array(
             'name'     => 'required|min:2|max:32',
             'email'         => 'email|max:50|nullable',
@@ -359,7 +359,7 @@ class UsersController extends Controller
         }
 
         return response()->json([
-          'result' => 'success'
+          'message' => 'success'
         ], 200);
 
         //set flash data with success message
