@@ -29,7 +29,7 @@ class UsersController extends Controller
         if($user->status == 1){
             $admuser = ['adminId' => $admin, 'userId' => $id];
         }else{
-            return redirect('/admin/view_users/all');
+            return redirect()->route('user.index');
         }
 
         Session::put('_admuser', $admuser);
@@ -54,7 +54,7 @@ class UsersController extends Controller
         ->orderBy('users.id', 'DESC')
         ->select('users.*', 'locations.station')
         ->get();
-        return view('admins.users.view_all_type_users')->withUsers($users)->withType($type);
+        return view('admins.users.index')->withUsers($users)->withType($type);
     }
 
     public function activeUsersMikrotik(){
@@ -118,7 +118,7 @@ class UsersController extends Controller
         ->orderBy('users.id', 'DESC')
         ->select('users.*', 'locations.station')
         ->get();
-        return view('admins.users.view_all_users')->withUsers($users);
+        return view('admins.users.index')->withUsers($users);
     }
 
     /**

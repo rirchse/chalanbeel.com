@@ -5,6 +5,13 @@
   .form-group{
     margin-top: 0;
   }
+  /* .modal-content {
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+  } */
+  /* .modal {
+    -webkit-overflow-scrolling:touch !important
+  } */
 </style>
     
 <div class="row">
@@ -70,14 +77,18 @@
                         </tbody>
                     </table>
                 </div>
+
             </div> <!-- end content-->
         </div> <!--  end card  -->
     </div> <!-- end col-md-12 -->
 </div> <!-- end row -->
 
+
+
+
 <!-- Modal -->
 <div class="modal fade" id="editForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
     <form id="submitEditForm" method="post" enctype="multipart/form-data">
       @csrf
       @method('PUT')
@@ -89,30 +100,22 @@
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label for="" class="control-label">Name</label>
-          <input type="text" name="name" class="form-control">
+          <input type="text" name="name" class="form-control" placeholder="Name">
         </div>
         <div class="form-group">
-          <label for="" class="control-label">Contact</label>
-          <input type="text" name="contact" class="form-control">
+          <input type="text" name="contact" class="form-control" placeholder="Contact">
         </div>
         <div class="form-group">
-          <label for="" class="control-label">Address</label>
-          <input type="text" name="address" class="form-control">
+          <input type="text" name="address" class="form-control" placeholder="Address">
         </div>
         <div class="form-group">
-          <label for="" class="control-label">Lat Long</label>
-          <input type="text" name="lat_long" id="lat_long" class="form-control">
+          <input type="text" name="lat_long" id="lat_long" class="form-control" placeholder="Lat Long">
         </div>
         <div class="form-group">
-          <label for="" class="control-label">Join Date</label>
-          <input type="date" name="join_date" class="form-control">
+          <input type="date" name="join_date" class="form-control" placeholder="Join Date">
         </div>
-        <div id="map" style="width:100%; height:400px;"></div>
       </div>
-      <div class="clearfix"></div>
       <div class="modal-footer">
-        <div class="clearfix"></div>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="submit" class="btn btn-primary">Save changes</button>
         <div class="clearfix"></div>
@@ -122,6 +125,9 @@
   </form> 
   </div>
 </div>
+
+
+{{-- <div id="map" style="width:100%; height:400px; margin-top:0"></div> --}}
 
 @endsection
 
