@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\SourceCtrl;
 use App\User;
 use App\Admin;
 use Auth;
@@ -55,8 +56,8 @@ class ProfileController extends Controller
      */
     public function show()
     {
-        $user_id = Auth::guard('admin')->user()->id;
-        $profile = Admin::find($user_id);
+        $user = Auth::guard('admin')->user();
+        $profile = $user;
         return view('admins.profile')->withProfile($profile);
     }
 
@@ -81,10 +82,10 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
+      $source = new SourceCtrl;
         $user_id = Auth::guard('admin')->user()->id;
         //validate the data        
         $this->validate($request, array(
-
             'first_name'    => 'required|min:2|max:32',
             'last_name'     => 'required|min:2|max:32',
             'contact'       => 'max:18',
@@ -104,13 +105,15 @@ class ProfileController extends Controller
         $update->updated_by   = $user_id;
 
         //save image//
-        if($request->hasFile('profile_image')) {
-            $image = $request->file('profile_image');
-            $filename = time() . '.' . $image->getClientOriginalExtension();
-            $location = ('images/profile/' . $filename);
-            Image::make($image)->resize(600, 600)->save($location);
+        if($request->hasFile('profile_image'))
+        {
+          $update->image = $source->fileUpload($request->file('profile_image'), 'profile/');
+            // $image = $request->file('profile_image');
+            // $filename = time() . '.' . $image->getClientOriginalExtension();
+            // $location = (public_path().'/images/profile/' . $filename);
+            // Image::make($image)->resize(600, 600)->save($location);
 
-            $update->image = $filename;
+            // $update->image = $location;
         }
 
         $update->save();

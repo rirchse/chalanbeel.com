@@ -39,7 +39,7 @@
             <div class="col-md-6">
                 <div class="fileinput fileinput-new text-center pull-right" data-provides="fileinput" style="width:250px;">
                     <div class="fileinput-new thumbnail" style="width:160px;">
-                        <img class="img-responsive" src="/images/<?php echo e((Auth::user()->image)? 'profile/'.Auth::user()->image : 'avatar.png'); ?>" alt="">
+                        <img class="img-responsive" src="<?php echo e(Auth::user()->image ? Auth::user()->image : '/images/avatar.png'); ?>" alt="">
                     </div>
                     <div class="fileinput-preview fileinput-exists thumbnail"></div>
                     <div>

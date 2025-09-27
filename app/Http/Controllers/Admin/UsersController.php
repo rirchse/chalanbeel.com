@@ -235,7 +235,6 @@ class UsersController extends Controller
      */
     public function show($id, Request $request)
     {
-      // dd($request->ajax());
         //Grab user data by id
         $user = User::leftJoin('locations', 'users.location_id', 'locations.id')
         ->select('users.*', 'locations.station', 'locations.area')
@@ -420,7 +419,7 @@ class UsersController extends Controller
         Session::flash('success', 'The user was successfully deleted.');
 
         //return to the index page
-        return back()->with('The user deleted.');
+        return redirect()->route('user.index')->with('The user deleted.');
     }
 
     // upload users list
