@@ -9,7 +9,7 @@
 <body>
 
 {{-- @section('content') --}}
-<div id="map" style="height: 80vh; margin-top:0"></div>
+<div id="map" style="height: 100vh; margin-top:0"></div>
 {{-- @endsection --}}
 
 {{-- @section('stylesheets') --}}
