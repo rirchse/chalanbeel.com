@@ -42,10 +42,11 @@
 
 
     function colorForStatus(status) {
-        if (status === 'Active') return '#28a745';
-        if (status === 'Deactive') return '#ff0000';
-        if (status === 'Expire') return '#ffc107';
-        return '#dc3545';
+      if (status === 'Offline') return '#fa0606';
+      if (status === 'Active') return '#28a745';
+      if (status === 'Deactive') return '#d0d5d1';
+      if (status === 'Expire') return '#f5c007';
+      return '#959393';
     }
 
     function getIcon(color) {

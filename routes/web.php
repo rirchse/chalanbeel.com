@@ -94,7 +94,7 @@ Route::group(['middleware' => ['web']], function()
       Route::get('/', 'Admin\AdminHomeController@index')->name('admin.dashboard');
       Route::get('/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
 
-      Route::middleware('admin.auth')->group(function () 
+      Route::middleware('admin.auth')->group(function() 
       {
         Route::get('/change_my_password', 'Admin\AdminsController@changePassword');
         Route::put('/change_my_password', 'Admin\AdminsController@updatePassword')->name('admin.password_change.admin');
