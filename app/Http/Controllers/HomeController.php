@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use PEAR2\Net\RouterOS;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Router;
+use App\Http\Controllers\MapController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
@@ -229,5 +230,12 @@ class HomeController extends Controller
         ->leftJoin('locations', 'active_services.location_id', 'locations.id')
         ->find($user);
         return view('homes.create_payment')->withUser($user);
+    }
+
+    public function userOnMap()
+    {
+      $map = new MapController;
+      $customers = $map->index();
+      return view('dashboard.map', compact('customers'));
     }
 }

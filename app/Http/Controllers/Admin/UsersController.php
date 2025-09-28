@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\MapController;
 use App\User;
 use App\Admin;
 use App\Location;
@@ -459,5 +460,12 @@ class UsersController extends Controller
         fclose($handle);
 
         return back()->with('success', 'CSV imported successfully!');
+    }
+
+    public function userOnMap()
+    {
+      $map = new MapController;
+      $customers = $map->index();
+      return view('map.index', compact('customers'));
     }
 }

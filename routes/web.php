@@ -35,6 +35,7 @@ Route::group(['middleware' => ['web']], function()
 	Route::resource('home', 'HomeController');
 
 	Route::get('/', 'HomeController@index');
+	Route::get('/view-user-on-map', 'HomeController@userOnMap');
 	Route::resource('/package', 'PackageCtrl', [
 		'names' => [
 			'create' => 'create/{id}',
@@ -122,6 +123,7 @@ Route::group(['middleware' => ['web']], function()
         {
           Route::get('/users-upload', 'uploadList')->name('user.upload-list');
           Route::post('/users-upload-store', 'userListStore')->name('user.upload-list-store');
+          Route::get('/user-on-map', 'userOnMap')->name('user.on-map');
         });
         
         //packages
@@ -237,6 +239,8 @@ Route::group(['middleware' => ['web']], function()
 	//packages for user
 	Route::get('/view_packages', 'User\HomeController@packages');
 	Route::get('/package/{id}/get', 'User\HomeController@get_package');
+
+  Route::get('router-active-users', [UsersController::class, 'routerActiveUsers'])->name('router.active-users');
 
 	// cache clear
 	Route::get('reboot', function () {
