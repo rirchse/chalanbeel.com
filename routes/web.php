@@ -124,6 +124,7 @@ Route::group(['middleware' => ['web']], function()
           Route::get('/users-upload', 'uploadList')->name('user.upload-list');
           Route::post('/users-upload-store', 'userListStore')->name('user.upload-list-store');
           Route::get('/user-on-map', 'userOnMap')->name('user.on-map');
+          Route::get('/get-all-users', 'getUsers')->name('user.get-all-users');
         });
         
         //packages

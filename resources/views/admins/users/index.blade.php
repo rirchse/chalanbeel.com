@@ -295,7 +295,22 @@ $source = new SourceCtrl;
           language: {
               search: "_INPUT_",
               searchPlaceholder: "Search records",
-          }
+          },
+          // processing: true,
+          // serverSide: true,
+          // ajax: {
+          //   url: '{{route("user.get-all-users")}}',
+          //   type: 'GET'
+          // },
+          // columns: [
+          //   {data: 'id'},
+          //   {data: 'name'},
+          //   {data: 'contact'},
+          //   {data: 'location'},
+          //   {data: 'lat_long'},
+          //   {data: 'join_date'},
+          //   {data: 'status'}
+          // ]
 
       });
 

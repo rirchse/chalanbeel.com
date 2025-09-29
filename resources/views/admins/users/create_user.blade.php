@@ -15,8 +15,8 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group label-floating">
-                    {{ Form::label('full_name', 'Full Name:', ['class' => 'control-label']) }}
-                    {{ Form::text('full_name', null, ['class' => 'form-control'])}}
+                    {{ Form::label('name', 'Full Name:', ['class' => 'control-label']) }}
+                    {{ Form::text('name', null, ['class' => 'form-control'])}}
                 </div>
                 <div class="form-group label-floating">
                     {{ Form::label('contact', 'Contact Number:', ['class' => 'control-label']) }}

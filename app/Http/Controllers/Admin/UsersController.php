@@ -71,7 +71,7 @@ class UsersController extends Controller
 
             if(count(User::where('contact', $user('name'))->get()) < 1) {
                 $create = New User;
-                $create->full_name   = $user('comment') == ''?$user('name'):$user('comment');
+                $create->name   = $user('comment') == ''?$user('name'):$user('comment');
                 $create->username    = $user('name');
                 $create->password    = bcrypt($user('password'));
                 $create->contact     = $user('name');
@@ -112,14 +112,35 @@ class UsersController extends Controller
         return view('admins.users.view_active_users')->withUsers($users);
     }
 
+    // public function getUsers()
+    // {
+    //   // Get all users from database
+    //   $users = User::leftJoin('locations', 'users.location_id', 'locations.id')
+    //   ->orderBy('users.id', 'DESC')
+    //   ->select('users.*', 'locations.station')
+    //   ->paginate(25);
+
+    //   return response()->json([
+    //     'users' => $users
+    //   ], 200);
+    // }
+
     public function index()
     {
-        // Get all users from database
-        $users = User::leftJoin('locations', 'users.location_id', 'locations.id')
-        ->orderBy('users.id', 'DESC')
-        ->select('users.*', 'locations.station')
-        ->get();
-        return view('admins.users.index')->withUsers($users);
+      // Get all users from database
+      $users = User::leftJoin('locations', 'users.location_id', 'locations.id')
+      ->orderBy('users.id', 'DESC')
+      ->select('users.*', 'locations.station')
+      ->get();
+
+      // if($request->ajax())
+      // {
+      //   return response()->json([
+      //     'users' => $users
+      //   ], 200);
+      // }
+
+      return view('admins.users.index')->withUsers($users);
     }
 
     /**
@@ -133,10 +154,6 @@ class UsersController extends Controller
         ->orderBy('id', 'ASC')
         ->select('station', 'id')
         ->get();
-        // $services = Service::orderBy('service')->groupBy('service', 'connection', 'speed', 'time_limit')
-        // ->select('service', 'connection', 'speed', 'time_limit')->get();
-        //->all();
-        //$areas = $areas::lists('station', 'id');
         return view('admins.users.create_user')->withLocations($areas);
     }
 
@@ -151,7 +168,7 @@ class UsersController extends Controller
         $user_id = Auth::guard('admin')->user()->id;
         //validate the data
         $this->validate($request, array(
-            'full_name'     => 'required|min:2|max:32',
+            'name'     => 'required|min:2|max:32',
             'email'         => 'unique:users|email|max:50|nullable',
             'contact'       => 'required|min:11|max:11',
             'work_at'       => 'max:255|nullable',
@@ -180,7 +197,7 @@ class UsersController extends Controller
 
             //store in the database
             $customer = new User;
-            $customer->full_name    = $request->full_name;
+            $customer->name    = $request->name;
             $customer->contact      = $request->contact;
             $customer->email        = $request->email;
             $customer->username     = $request->contact;
