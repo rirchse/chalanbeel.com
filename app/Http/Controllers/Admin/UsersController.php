@@ -279,7 +279,7 @@ class UsersController extends Controller
     {
         $user = User::find($id);
         $locations = Location::where('status', 1)->get();
-        return view('admins.users.edit_user')->withUser($user)->withLocations($locations);
+        return view('admins.users.edit')->withUser($user)->withLocations($locations);
     }
 
     /**
@@ -380,15 +380,18 @@ class UsersController extends Controller
             }
         }
 
-        return response()->json([
-          'message' => 'success'
-        ], 200);
+        if($request->ajax())
+        {
+          return response()->json([
+            'message' => 'success'
+          ], 200);
+        }
+
+        
 
         //set flash data with success message
         Session::flash('success', 'User Information successfully updated.');
-
-        //redirect with flash data to posts.show
-        // return redirect('/admin/user/'.$id);
+        return back();
     }
 
     public function permitAdmin(Request $request, $id)
@@ -482,7 +485,9 @@ class UsersController extends Controller
     public function userOnMap()
     {
       $map = new MapController;
-      $customers = $map->index();
-      return view('map.index', compact('customers'));
+      $data = $map->index();
+      $customers = $data['customers'];
+      $status = $data['status'];
+      return view('map.index', compact('customers', 'status'));
     }
 }

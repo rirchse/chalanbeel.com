@@ -1,6 +1,15 @@
 @extends('admin')
 
 @section('content')
+
+<p class="status">
+  <label class="text-success">Active: {{$status['active']}}</label> |
+  <label class="text-info">Online: {{$status['online']}}</label> |
+  <label class="text-danger">Offline: {{$status['offline']}}</label> |
+  <label class="text-warning">Expire: {{$status['expire']}}</label> | 
+  <label class="text-default">Deactive: {{$status['deactive']}}</label>
+</p>
+
 <div id="map" style="height: 80vh; margin-top:0"></div>
 @endsection
 

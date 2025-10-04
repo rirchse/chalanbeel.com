@@ -118,26 +118,15 @@
             </div>
             <div class="clearfix"></div>
             <div class="col-md-6">
-                <div class="form-group label-floating">
-                    <label>Status</label>
-                    <br>
-                    <label>
-                      <input type="radio" name="status" value="Active" <?php echo e($user->status == 'Active'? 'checked':''); ?>> 
-                      <span class="text-success"> Active </span>
-                    </label>
-                    <label>
-                      <input type="radio" name="status" value="Deactive" <?php echo e($user->status == 'Deactive'? 'checked':''); ?>>
-                      <span class="text-warning"> Deactive</span> 
-                    </label>
-                    <label>
-                      <input type="radio" name="status" value="2" <?php echo e($user->status == 2? 'checked':''); ?>> 
-                      <span class="text-primary"> Free </span>
-                    </label>
-                    <label>
-                      <input type="radio" name="status" value="3" <?php echo e($user->status == 3? 'checked':''); ?>> 
-                      <span class="text-danger"> Cancel </span>
-                    </label>
-                </div>
+              <div class="form-group">
+                <select name="status" class="form-control" id="status">
+                  <option value="">Select One</option>
+                  <option value="Active">Active</option>
+                  <option value="Deactive">Deactive</option>
+                  <option value="Expire">Expire</option>
+                  <option value="Cancel">Cancel</option>
+                </select>
+              </div>
             </div>
             <div class="col-md-12">
                 <div class="form-group label-floating">

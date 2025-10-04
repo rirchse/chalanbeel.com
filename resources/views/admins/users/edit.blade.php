@@ -11,22 +11,23 @@
                 <div class="card-content">
                     <h4 class="card-title">Edit User</h4>
                     <div class="toolbar">
-                        <a class="btn btn-simple btn-icon btn-info" href="/admin/user/{{$user->id}}/details" title="User details"><i class="material-icons">dvr</i></a>
-                        <a href="/admin/view_users"><i class="material-icons">peoples</i></a>
+                        <a class="btn btn-sm btn-info" href="{{route('user.show', $user->id)}}" title="User details"><i class="fa fa-file"></i></a>
+
+                        <a class="btn btn-success btn-sm" href="{{route('user.index')}}"><i class="fa fa-list"></i></a>
 
                         <form class="pull-right" action="{{route('user.destroy', $user->id)}}" method="post">
                           @csrf
                           @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this?')"><i class="fa fa-trash"></i></button>
-                          </form>
+                          <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this?')"><i class="fa fa-trash"></i></button>
+                        </form>
                     </div>
 
     {!! Form::model($user, ['route' => ['user.update', $user->id], 'method' => 'PUT', 'files' => true]) !!}
     <div class="row">
             <div class="col-md-6">
                 <div class="form-group label-floating">
-                    {{ Form::label('full_name', 'Full Name:', ['class' => 'control-label']) }}
-                    {{ Form::text('full_name', $user->full_name, ['class' => 'form-control'])}}
+                    {{ Form::label('name', 'Full Name:', ['class' => 'control-label']) }}
+                    {{ Form::text('name', $user->name, ['class' => 'form-control'])}}
                 </div>
                 <div class="form-group label-floating">
                     {{ Form::label('contact', 'Contact Number:', ['class' => 'control-label']) }}
@@ -45,8 +46,8 @@
                     {{ Form::text('profession', $user->profession, ['class' => 'form-control']) }}
                 </div>
                 <div class="form-group label-floating">
-                    {{ Form::label('join_date', 'Join Date', ['class' => 'control-label']) }}
-                    {{ Form::text('join_date', $user->join_date, ['class' => 'form-control']) }}
+                  <label for="join_date">Join Date</label>
+                  <input type="date" class="form-control" name="join_date" value="$user->join_date">
                 </div>
                 <div class="form-group label-floating">
                     <select name="location" id="" class="form-control">
@@ -61,8 +62,8 @@
                   <input type="text" name="lat_long" class="form-control" placeholder="00.00000, 00.00000" value="{{$user->lat ? $user->lat.', '.$user->lng:''}}">
                 </div>
                 <div class="form-group label-floating">
-                    {{ Form::label('date_of_birth', 'Date of Birth (Y-m-d)', ['class' => 'control-label']) }}
-                    {{ Form::text('date_of_birth', $user->date_of_birth, ['class' => 'form-control datepicker']) }}
+                    <label>Date of Birth</label>
+                    <input type="date" name="date_of_birth" class="form-control">
                 </div>
             </div>
             <div class="col-md-6">
@@ -101,26 +102,15 @@
             </div>
             <div class="clearfix"></div>
             <div class="col-md-6">
-                <div class="form-group label-floating">
-                    <label>Status</label>
-                    <br>
-                    <label>
-                      <input type="radio" name="status" value="Active" {{$user->status == 'Active'? 'checked':''}}> 
-                      <span class="text-success"> Active </span>
-                    </label>
-                    <label>
-                      <input type="radio" name="status" value="Deactive" {{$user->status == 'Deactive'? 'checked':''}}>
-                      <span class="text-warning"> Deactive</span> 
-                    </label>
-                    <label>
-                      <input type="radio" name="status" value="2" {{$user->status == 2? 'checked':''}}> 
-                      <span class="text-primary"> Free </span>
-                    </label>
-                    <label>
-                      <input type="radio" name="status" value="3" {{$user->status == 3? 'checked':''}}> 
-                      <span class="text-danger"> Cancel </span>
-                    </label>
-                </div>
+              <div class="form-group">
+                <select name="status" class="form-control" id="status">
+                  <option value="">Select One</option>
+                  <option value="Active" {{$user->status == 'Active' ? 'selected' : ''}}>Active</option>
+                  <option value="Deactive" {{$user->status == 'Deactive' ? 'selected' : ''}}>Deactive</option>
+                  <option value="Expire" {{$user->status == 'Expire' ? 'selected' : ''}}>Expire</option>
+                  <option value="Cancel" {{$user->status == 'Cancel' ? 'selected' : ''}}>Cancel</option>
+                </select>
+              </div>
             </div>
             <div class="col-md-12">
                 <div class="form-group label-floating">
@@ -129,7 +119,6 @@
                 </div>
             </div>
         </div>
-        <a href="#" class="btn btn-simple btn-danger btn-icon pull-left" title="Delete this user!" onclick="document.getElementById('target').style.display = 'block';"><i class="material-icons">delete</i></a>
 
         <button type="submit" class="btn btn-primary pull-right"><i class="material-icons">update</i></button>
         <div class="clearfix"></div>

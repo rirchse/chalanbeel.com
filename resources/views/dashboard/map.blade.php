@@ -5,29 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Active Users On Router</title>
+  @include('partials.styles')
+  <style>
+    .status label{
+      padding: 0 10px
+    }
+  </style>
 </head>
 <body>
 
-{{-- @section('content') --}}
+<p class="status">
+  <label class="text-success">Active: {{$status['active']}}</label> |
+  <label class="text-info">Online: {{$status['online']}}</label> |
+  <label class="text-danger">Offline: {{$status['offline']}}</label> |
+  <label class="text-warning">Expire: {{$status['expire']}}</label> | 
+  <label class="text-default">Deactive: {{$status['deactive']}}</label>
+</p>
+
 <div id="map" style="height: 100vh; margin-top:0"></div>
-{{-- @endsection --}}
 
-{{-- @section('stylesheets') --}}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-{{-- @endsection --}}
 
-{{-- @section('scripts') --}}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-    const map = L.map('map').setView([24.408425968764224, 89.23363527502185], 12); // center on Dhaka
-
-    // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    //     maxZoom: 19,
-    // }).addTo(map);
-
-//     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-//     attribution: 'Tiles © Esri'
-// }).addTo(map);
+    const map = L.map('map').setView([24.408425968764224, 89.23363527502185], 12); // center on Gurdaspur, Natore
 
     // OpenStreetMap
     const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

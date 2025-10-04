@@ -235,7 +235,9 @@ class HomeController extends Controller
     public function userOnMap()
     {
       $map = new MapController;
-      $customers = $map->index();
-      return view('dashboard.map', compact('customers'));
+      $data = $map->index();
+      $customers = $data['customers'];
+      $status = $data['status'];
+      return view('dashboard.map', compact('customers', 'status'));
     }
 }
