@@ -19,9 +19,9 @@ class MapController extends Controller
       ->whereNotNull('lng')
       // ->whereIn('status', ['Active', 'Expire'])
       ->select('id', 'name', 'username', 'status', 'lat', 'lng');
-
-      $dbActiveUsers = $customers->pluck('username')->toArray();
       $customers = $customers->get();
+
+      $dbActiveUsers = Users::pluck('username')->toArray();
 
       $activeUsersArray = array_intersect($dbActiveUsers, $routerUsers);
       foreach($customers as $customer)
