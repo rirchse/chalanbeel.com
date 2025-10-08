@@ -125,12 +125,23 @@ class UsersController extends Controller
     //   ], 200);
     // }
 
-    public function index()
+    public function index(Request $request)
     {
+      $status = $date = '';
       // Get all users from database
       $users = User::leftJoin('locations', 'users.location_id', 'locations.id')
-      ->orderBy('users.id', 'DESC')
-      ->select('users.*', 'locations.station')
+      ->orderBy('users.id', 'DESC');
+      if($request->status)
+      {
+        $users = $users->where('users.status', $request->status);
+        $status = $request->status;
+      }
+      if($request->date)
+      {
+        $users = $users->where('users.join_date', 'like',  '%'.$request->date);
+        $date = $request->date;
+      }
+      $users = $users->select('users.*', 'locations.station')
       ->get();
 
       // if($request->ajax())
@@ -140,7 +151,7 @@ class UsersController extends Controller
       //   ], 200);
       // }
 
-      return view('admins.users.index')->withUsers($users);
+      return view('admins.users.index', compact('users', 'status', 'date'));
     }
 
     /**

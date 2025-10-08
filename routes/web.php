@@ -5,6 +5,7 @@ use App\Http\Controllers\Bkash\BkashController;
 use App\Http\Controllers\Payment\BkashPaymentController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\Admin\UsersController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -125,6 +126,7 @@ Route::group(['middleware' => ['web']], function()
           Route::post('/users-upload-store', 'userListStore')->name('user.upload-list-store');
           Route::get('/user-on-map', 'userOnMap')->name('user.on-map');
           Route::get('/get-all-users', 'getUsers')->name('user.get-all-users');
+          Route::post('search-user', 'index')->name('user.search');
         });
         
         //packages

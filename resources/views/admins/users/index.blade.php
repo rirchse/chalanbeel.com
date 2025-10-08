@@ -28,7 +28,28 @@ $source = new SourceCtrl;
             <div class="card-content">
                 <h4 class="card-title">Showing Users</h4>
                 <div class="toolbar">
-                    <a class="btn btn-info btn-xs" href="/admin/get_user_from_router">Get User From Router</a>
+                    <form action="{{route('user.search')}}" method="POST" class="form/-inline">
+                      @csrf
+                      <div class="col-md-5">
+                        <div class="form-group">
+                          <select name="status" id="status" class="form-control">
+                            <option value="">Select Status</option>
+                            <option value="Active" {{$status == 'Active'? 'selected': ''}} >Active</option>
+                            <option value="Deactive" {{$status == 'Deactive'? 'selected': ''}}>Deactive</option>
+                            <option value="Expire" {{$status == 'Expire'? 'selected': ''}}>Expire</option>
+                            <option value="Cancel" {{$status == 'Cancel'? 'selected': ''}}>Cancel</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-5">
+                        <div class="form-control">
+                          <input type="date" name="date" class="form-control" value="{{$date}}">
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <button type="submit" class="btn btn-info btn-sm btn-block">Submit</button>
+                      </div>
+                    </form>
                 </div>
                 <div class="material-datatables">
                     <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
