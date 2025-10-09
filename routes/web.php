@@ -122,6 +122,10 @@ Route::group(['middleware' => ['web']], function()
         // Route::get('/active/users/mikrotik', 'Admin\UsersController@activeUsersMikrotik');
         Route::controller(UsersController::class)->group(function()
         {
+          Route::get('/view_users/active', function(){
+            return redirect()->route('admin.login');
+          });
+          
           Route::get('/users-upload', 'uploadList')->name('user.upload-list');
           Route::post('/users-upload-store', 'userListStore')->name('user.upload-list-store');
           Route::get('/user-on-map', 'userOnMap')->name('user.on-map');
