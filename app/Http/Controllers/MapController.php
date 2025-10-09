@@ -17,7 +17,7 @@ class MapController extends Controller
       // get all customers with lat/lng
       $customers = Users::whereNotNull('lat')
       ->whereNotNull('lng')
-      // ->whereIn('status', ['Active', 'Expire'])
+      ->whereIn('status', ['Active', 'Expire'])
       ->select('id', 'name', 'username', 'status', 'lat', 'lng');
       $customers = $customers->get();
 
