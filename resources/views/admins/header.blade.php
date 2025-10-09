@@ -46,9 +46,8 @@
                             <li>
                               <a href="{{route('user.upload-list')}}">Upload Users</a>
                             </li>
-                            <li><a href="/admin/user/create">Create New user</a></li>
-                            <li><a href="/admin/view_active_users">View Active users</a></li>
-                            <li><a href="/admin/user">View All users</a></li>
+                            <li><a href="/admin/user/create">Add New user</a></li>
+                            <li><a href="/admin/user">View Users</a></li>
                             <li><a href="{{route('user.on-map')}}">View Users On Map</a></li>
                         </ul>
                     </div>

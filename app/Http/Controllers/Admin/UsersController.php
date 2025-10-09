@@ -37,80 +37,80 @@ class UsersController extends Controller
         return redirect('/admin_loginto');
     }
 
-    public function viewUsers($type)
-    {
-        $status = '';
-        if ($type == 'new'){
-            $status = 0;
-        }elseif ($type == 'active') {
-            $status = 1;
-        }elseif ($type == 'free') {
-            $status = 2;
-        }elseif ($type == 'cancel') {
-            $status = 3;
-        }
+    // public function viewUsers($type)
+    // {
+    //     $status = '';
+    //     if ($type == 'new'){
+    //         $status = 0;
+    //     }elseif ($type == 'active') {
+    //         $status = 1;
+    //     }elseif ($type == 'free') {
+    //         $status = 2;
+    //     }elseif ($type == 'cancel') {
+    //         $status = 3;
+    //     }
 
-        $users = User::leftJoin('locations', 'users.location_id', 'locations.id')
-        ->where('users.status', $status)
-        ->orderBy('users.id', 'DESC')
-        ->select('users.*', 'locations.station')
-        ->get();
-        return view('admins.users.index')->withUsers($users)->withType($type);
-    }
+    //     $users = User::leftJoin('locations', 'users.location_id', 'locations.id')
+    //     ->where('users.status', $status)
+    //     ->orderBy('users.id', 'DESC')
+    //     ->select('users.*', 'locations.station')
+    //     ->get();
+    //     return view('admins.users.index')->withUsers($users)->withType($type);
+    // }
 
-    public function activeUsersMikrotik(){
-        $pppoe_active_users = Router::Connect()->setMenu('/ppp active')->getAll();
-        return view('admins.users.view_active_users_mikrotik')->withUsers($pppoe_active_users);
-    }
-    public function getRouterUsers()
-    {
-        $user_id = Auth::guard('admin')->user()->id;
+    // public function activeUsersMikrotik(){
+    //     $pppoe_active_users = Router::Connect()->setMenu('/ppp active')->getAll();
+    //     return view('admins.users.view_active_users_mikrotik')->withUsers($pppoe_active_users);
+    // }
+    // public function getRouterUsers()
+    // {
+    //     $user_id = Auth::guard('admin')->user()->id;
 
-        $pppoe_users = Router::Connect()->setMenu('/ppp secret')->getAll();
-        foreach($pppoe_users as $user){
+    //     $pppoe_users = Router::Connect()->setMenu('/ppp secret')->getAll();
+    //     foreach($pppoe_users as $user){
 
-            if(count(User::where('contact', $user('name'))->get()) < 1) {
-                $create = New User;
-                $create->name   = $user('comment') == ''?$user('name'):$user('comment');
-                $create->username    = $user('name');
-                $create->password    = bcrypt($user('password'));
-                $create->contact     = $user('name');
-                $create->join_date   = date('Y-m-d');
-                $create->location_id = 1;
-                $create->status      = $user('disabled') == 'yes'?0:1;
-                // $create->service  = $user('service');
-                $create->details     = $user('comment');
-                $create->save();
+    //         if(count(User::where('contact', $user('name'))->get()) < 1) {
+    //             $create = New User;
+    //             $create->name   = $user('comment') == ''?$user('name'):$user('comment');
+    //             $create->username    = $user('name');
+    //             $create->password    = bcrypt($user('password'));
+    //             $create->contact     = $user('name');
+    //             $create->join_date   = date('Y-m-d');
+    //             $create->location_id = 1;
+    //             $create->status      = $user('disabled') == 'yes'?0:1;
+    //             // $create->service  = $user('service');
+    //             $create->details     = $user('comment');
+    //             $create->save();
 
-                $lastuser = User::orderBy('id', 'DESC')->first();
-                $package = Package::where('speed', $user('profile'))->first();
+    //             $lastuser = User::orderBy('id', 'DESC')->first();
+    //             $package = Package::where('speed', $user('profile'))->first();
 
-                $service = New Service;
-                $service->user_id = $lastuser->id;
-                $service->package_id = count($package) < 1 ? 0 : $package->id;
-                $service->password = $user('password');
-                $service->billing_date = date('Y-m-d');
-                $service->details = $user('comment');
-                $service->location_id = 1;
-                $service->status = 1;
-                $service->created_by = $user_id;
-                $service->save();
-            }
-        }
+    //             $service = New Service;
+    //             $service->user_id = $lastuser->id;
+    //             $service->package_id = count($package) < 1 ? 0 : $package->id;
+    //             $service->password = $user('password');
+    //             $service->billing_date = date('Y-m-d');
+    //             $service->details = $user('comment');
+    //             $service->location_id = 1;
+    //             $service->status = 1;
+    //             $service->created_by = $user_id;
+    //             $service->save();
+    //         }
+    //     }
 
-        Session::flash('success', 'Users updated from router.');
-        return redirect('/admin/view_users');
-    }
-    public function active_users()
-    {
-        // Get all users from database
-        $users = User::leftJoin('locations', 'users.location_id', 'locations.id')
-        ->orderBy('users.id', 'DESC')
-        ->where('users.status', 1)
-        ->select('users.*', 'locations.station')
-        ->get();
-        return view('admins.users.view_active_users')->withUsers($users);
-    }
+    //     Session::flash('success', 'Users updated from router.');
+    //     return redirect('/admin/view_users');
+    // }
+    // public function active_users()
+    // {
+    //     // Get all users from database
+    //     $users = User::leftJoin('locations', 'users.location_id', 'locations.id')
+    //     ->orderBy('users.id', 'DESC')
+    //     ->where('users.status', 1)
+    //     ->select('users.*', 'locations.station')
+    //     ->get();
+    //     return view('admins.users.view_active_users')->withUsers($users);
+    // }
 
     // public function getUsers()
     // {
@@ -196,6 +196,15 @@ class UsersController extends Controller
 
         ));
 
+        $lat = $long = null;
+
+        if(isset($request->lat_long))
+        {
+          $arr = explode(',', str_replace(' ', '', $request->lat_long));
+          $lat = $arr[0];
+          $long = $arr[1];
+        }
+
         if (User::where('contact', $request->contact)->first()) {
             
             //session flashing
@@ -205,7 +214,6 @@ class UsersController extends Controller
             return redirect('/admin/create_user');
 
         } else {
-
             //store in the database
             $customer = new User;
             $customer->name    = $request->name;
@@ -224,6 +232,8 @@ class UsersController extends Controller
             $customer->nid_no       = $request->NID;
             $customer->created_by   = $user_id;
             $customer->status       = $request->status;
+            $customer->lat          = $lat;
+            $customer->lng          = $long;
 
             //save image//
             if($request->hasFile('profile_image')) {

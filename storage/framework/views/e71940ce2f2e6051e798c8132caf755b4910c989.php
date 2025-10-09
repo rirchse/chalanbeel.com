@@ -60,8 +60,7 @@
                     </select>
                 </div>
                 <div class="form-group label-floating">
-                  <label for="" class="control-label">Lat Long</label>
-                    <input type="text" name="lat_long" id="" class="form-control">
+                    <input type="text" name="lat_long" id="lat_long" class="form-control" placeholder="Lat Long">
                 </div>
                 <div class="form-group label-floating">
                     <select name="status" id="" class="form-control">
@@ -120,6 +119,9 @@
                     <?php echo e(Form::textarea('details', null, ['class' => 'form-control', 'rows' => '4'])); ?>
 
                 </div>
+                <div class="form-group">
+                  <div id="map" style="width:100%; height:400px; margin-top:0"></div>
+                </div>
             </div>
         </div>
         <button type="submit" class="btn btn-primary pull-right">Save</button>
@@ -131,5 +133,9 @@
             </div>
         </div>
     </div>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
+<script src="<?php echo e('/js/open-map.js'); ?>"></script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /srv/www/cbt/resources/views/admins/users/create_user.blade.php ENDPATH**/ ?>

@@ -58,7 +58,7 @@ Route::group(['middleware' => ['web']], function()
 
 	Route::get('/router_connect', 'Router@ConnectTest');
 
-	Route::get('/admin_loginto', 'HomeController@adminLoginTo');
+	Route::get('/admin_loginto', 'HomeController@adminLoginTo')->name('login');
 	Route::get('/check-account', 'HomeController@checkAccount')->name('check_account');
 	Route::post('/check-account-details', 'HomeController@checkAccountDetails')->name('check_account_details');
 
@@ -114,12 +114,12 @@ Route::group(['middleware' => ['web']], function()
 
         // users
         Route::resource('/user', 'Admin\UsersController');
-        Route::get('/view/{type}/users', 'Admin\UsersController@viewUsers');
-        Route::get('/view_active_users', 'Admin\UsersController@active_users');
+        // Route::get('/view/{type}/users', 'Admin\UsersController@viewUsers');
+        // Route::get('/view_active_users', 'Admin\UsersController@active_users');
         Route::get('/send_email_tickets/{id}', 'Admin\UsersController@getEmailTickets');	
         Route::post('/email_tickets', 'Admin\UsersController@emailTickets')->name('admin.email.tickets');
 
-        Route::get('/active/users/mikrotik', 'Admin\UsersController@activeUsersMikrotik');
+        // Route::get('/active/users/mikrotik', 'Admin\UsersController@activeUsersMikrotik');
         Route::controller(UsersController::class)->group(function()
         {
           Route::get('/users-upload', 'uploadList')->name('user.upload-list');

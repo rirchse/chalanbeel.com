@@ -50,4 +50,6 @@
 <!-- Material Dashboard javascript methods -->
 <script src="<?php echo e('/js/material-dashboard.js'); ?>"></script>
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
-<script src="<?php echo e('/js/demo.js'); ?>"></script><?php /**PATH /srv/www/cbt/resources/views/partials/scripts.blade.php ENDPATH**/ ?>
+<script src="<?php echo e('/js/demo.js'); ?>"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeoMZGKjy_MlK9Jhh8TWgEIHSHa4Mm7Yg"></script><?php /**PATH /srv/www/cbt/resources/views/partials/scripts.blade.php ENDPATH**/ ?>

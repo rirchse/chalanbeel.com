@@ -47,8 +47,7 @@
                     </select>
                 </div>
                 <div class="form-group label-floating">
-                  <label for="" class="control-label">Lat Long</label>
-                    <input type="text" name="lat_long" id="" class="form-control">
+                    <input type="text" name="lat_long" id="lat_long" class="form-control" placeholder="Lat Long">
                 </div>
                 <div class="form-group label-floating">
                     <select name="status" id="" class="form-control">
@@ -101,6 +100,9 @@
                     {{ Form::label('details', 'Details:', ['class' => 'control-label']) }}
                     {{ Form::textarea('details', null, ['class' => 'form-control', 'rows' => '4']) }}
                 </div>
+                <div class="form-group">
+                  <div id="map" style="width:100%; height:400px; margin-top:0"></div>
+                </div>
             </div>
         </div>
         <button type="submit" class="btn btn-primary pull-right">Save</button>
@@ -111,4 +113,8 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+<script src="{{'/js/open-map.js'}}"></script>
 @endsection
