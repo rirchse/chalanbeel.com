@@ -42,9 +42,16 @@ class SourceCtrl extends Controller
     curl_close($ch);
     
     $data = json_decode($response, true);
-    $names = array_column($data, 'name');
+    // $names = array_column($data, ['name', 'address', 'uptime']);
+    $result = collect($data)->mapWithKeys(fn($item) => [
+      $item['name'] => [
+          'address' => $item['address'],
+          'uptime'  => $item['uptime'],
+      ]
+    ])->toArray();
+  
     
     // Show as array
-    return $names;
+    return $result;
   }
 }

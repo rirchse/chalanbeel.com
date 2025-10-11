@@ -508,6 +508,7 @@ class UsersController extends Controller
       $map = new MapController;
       $data = $map->index();
       $customers = $data['customers'];
+      // dd($customers);
       $status = $data['status'];
       return view('map.index', compact('customers', 'status'));
     }

@@ -22,14 +22,6 @@
 <script>
     const map = L.map('map').setView([24.408425968764224, 89.23363527502185], 12); // center on Dhaka
 
-    // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    //     maxZoom: 19,
-    // }).addTo(map);
-
-//     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-//     attribution: 'Tiles © Esri'
-// }).addTo(map);
-
     // OpenStreetMap
     const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 50,
@@ -74,7 +66,14 @@
         const marker = L.marker([c.lat, c.lng], {
             icon: getIcon(colorForStatus(c.status)),
             title: c.full_name
-        }).bindPopup(`<strong>${c.name}</strong><br>Status: ${c.status}`);
+        }).bindPopup(`
+        <strong>${c.name}</strong>
+        <br>
+        Status: ${c.status} 
+        ${c.status == 'Active' ? `<br>IP: ${c.ip}<br>Uptime: ${c.uptime}`:''}
+        <br>
+        <a target="_blank" href="https://www.google.com/maps/place/${c.lat}, ${c.lng}">View On Map</a>
+        `);
         marker.addTo(map);
     });
 </script>

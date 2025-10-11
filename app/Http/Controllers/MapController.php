@@ -13,37 +13,37 @@ class MapController extends Controller
 
       $source = new SourceCtrl;
       $routerUsers = $source->routerActiveUsers();
+      $routerUsersIndex = array_keys($routerUsers);
 
-      // get all customers with lat/lng
+      // get all customers with lat/lng and by the status
       $customers = Users::whereNotNull('lat')
       ->whereNotNull('lng')
       ->whereIn('status', ['Active', 'Expire'])
       ->select('id', 'name', 'username', 'status', 'lat', 'lng');
       $customers = $customers->get();
 
-      $dbActiveUsers = Users::pluck('username')->toArray();
+      $dbUserIndex = Users::pluck('username')->toArray();
 
-      $activeUsersArray = array_intersect($dbActiveUsers, $routerUsers);
-      foreach($customers as $customer)
+      $activeUsersIndex = array_intersect($dbUserIndex, $routerUsersIndex);
+      $online = count($activeUsersIndex);
+
+      foreach($customers as $key => $customer)
       {
-        if(!in_array($customer->username, $activeUsersArray) && $customer->status == 'Active')
-        {
-          $customer->status = 'Offline';
-          $offline ++;
-        }
         if($customer->status == 'Active')
         {
+          if(array_key_exists($customer->username, $routerUsers) )
+          {
+            $customer->ip = $routerUsers[$customer->username]['address'];
+            $customer->uptime = $routerUsers[$customer->username]['uptime'];
+          }
+          else
+          {
+            $customer->status = 'Offline';
+            $offline ++;
+          }
           $active ++;
         }
-        if($customer->status == 'Deactive')
-        {
-          $deactive ++;
-        }
-        if($customer->status == 'Cancel')
-        {
-          $cancel ++;
-        }
-        if($customer->status == 'Expire')
+        else
         {
           $expire ++;
         }
@@ -56,7 +56,7 @@ class MapController extends Controller
         'expire' => $expire,
         'cancel' => $cancel,
         'offline' => $offline,
-        'online' => count($activeUsersArray)
+        'online' => $online
       ];
 
       return $data = [

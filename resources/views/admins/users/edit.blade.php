@@ -59,7 +59,7 @@
                 </div>
                 <div class="form-group">
                   <label class="control-label">Lat Lang</label>
-                  <input type="text" name="lat_long" class="form-control" placeholder="00.00000, 00.00000" value="{{$user->lat ? $user->lat.', '.$user->lng:''}}">
+                  <input type="text" name="lat_long" class="form-control" placeholder="00.00000, 00.00000" value="{{$user->lat ? $user->lat.', '.$user->lng:''}}" id="lat_long">
                 </div>
                 <div class="form-group label-floating">
                     <label>Date of Birth</label>
@@ -117,6 +117,9 @@
                     {{ Form::label('details', 'Details:', ['class' => 'control-label']) }}
                     {{ Form::textarea('details', $user->details, ['class' => 'form-control', 'rows' => '4']) }}
                 </div>
+                <div class="form-group">
+                  <div id="map" style="width:100%; height:400px; margin-top:0"></div>
+                </div>
             </div>
         </div>
 
@@ -130,4 +133,8 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+<script src="{{'/js/open-map.js'}}"></script>
 @endsection

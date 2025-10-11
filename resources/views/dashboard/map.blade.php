@@ -74,7 +74,14 @@
         const marker = L.marker([c.lat, c.lng], {
             icon: getIcon(colorForStatus(c.status)),
             title: c.full_name
-        }).bindPopup(`<strong>${c.name}</strong><br>Status: ${c.status}`);
+        }).bindPopup(`
+        <strong>${c.name}</strong>
+        <br>
+        Status: ${c.status} 
+        ${c.status == 'Active' ? `<br>IP: ${c.ip}<br>Uptime: ${c.uptime}`:''}
+        <br>
+        <a target="_blank" href="https://www.google.com/maps/place/${c.lat}, ${c.lng}">View On Map</a>
+        `);
         marker.addTo(map);
     });
 </script>
