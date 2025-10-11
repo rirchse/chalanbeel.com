@@ -32,6 +32,37 @@ let map;
       draggable: true,
     });
 
+    // Create the custom button
+    const locationButton = document.createElement("button");
+    locationButton.textContent = "📍 My Location";
+    locationButton.classList.add("custom-map-control-button");
+
+    // Add button to map (top center)
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+    
+    // When button is clicked
+    locationButton.addEventListener("click", () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
+
+            marker.setPosition(pos);
+            map.setCenter(pos);
+            map.setZoom(15);
+          },
+          () => {
+            alert("Error: Unable to access your location.");
+          }
+        );
+      } else {
+        alert("Your browser doesn't support geolocation.");
+      }
+    });
+
     // Try HTML5 geolocation
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
