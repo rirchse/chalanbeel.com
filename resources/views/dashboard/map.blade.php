@@ -80,7 +80,7 @@
         Status: ${c.status} 
         ${c.status == 'Active' ? `<br>IP: ${c.ip}<br>Uptime: ${c.uptime}`:''}
         <br>
-        <a target="_blank" href="https://www.google.com/maps/place/${c.lat}, ${c.lng}">View On Map</a>
+        <a target="_blank" href="https://www.google.com/maps/place/${c.lat}, ${c.lng}">Go on location</a>
         `);
         marker.addTo(map);
     });
