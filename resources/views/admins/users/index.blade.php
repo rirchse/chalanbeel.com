@@ -34,8 +34,8 @@ $source = new SourceCtrl;
                         <div class="form-group">
                           <select name="status" id="status" class="form-control">
                             <option value="">Select Status</option>
+                            <option value="New" {{$status == 'New'? 'selected': ''}}>New</option>
                             <option value="Active" {{$status == 'Active'? 'selected': ''}} >Active</option>
-                            <option value="Deactive" {{$status == 'Deactive'? 'selected': ''}}>Deactive</option>
                             <option value="Expire" {{$status == 'Expire'? 'selected': ''}}>Expire</option>
                             <option value="Cancel" {{$status == 'Cancel'? 'selected': ''}}>Cancel</option>
                           </select>

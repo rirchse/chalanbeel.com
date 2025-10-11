@@ -64,8 +64,11 @@
                 </div>
                 <div class="form-group label-floating">
                     <select name="status" id="" class="form-control">
-                        <option value="Active">Active</option>
-                        <option value="Deactive">Deactive</option>
+                      <option value="">Select One</option>
+                      <option value="New">New</option>
+                      <option value="Active">Active</option>
+                      <option value="Expire">Expire</option>
+                      <option value="Cancel">Cancel</option>
                     </select>
                 </div>
                 <div class="form-group label-floating">

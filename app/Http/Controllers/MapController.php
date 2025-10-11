@@ -9,7 +9,7 @@ class MapController extends Controller
     public function index()
     {
       $customers = $status = [];
-      $active = $deactive = $expire = $online = $offline = $cancel = 0;
+      $active = $new = $expire = $online = $offline = $cancel = 0;
 
       $source = new SourceCtrl;
       $routerUsers = $source->routerActiveUsers();
@@ -18,7 +18,7 @@ class MapController extends Controller
       // get all customers with lat/lng and by the status
       $customers = Users::whereNotNull('lat')
       ->whereNotNull('lng')
-      ->whereIn('status', ['Active', 'Expire'])
+      ->whereIn('status', ['Active', 'Expire', 'New'])
       ->select('id', 'name', 'username', 'status', 'lat', 'lng');
       $customers = $customers->get();
 
@@ -43,16 +43,19 @@ class MapController extends Controller
           }
           $active ++;
         }
-        else
+        elseif($customer->status == 'Expire')
         {
           $expire ++;
+        }elseif($customer->status == 'New')
+        {
+          $new ++;
         }
 
       }
 
       $status = [
         'active' => $active,
-        'deactive' => $deactive,
+        'new' => $new,
         'expire' => $expire,
         'cancel' => $cancel,
         'offline' => $offline,

@@ -105,10 +105,10 @@
               <div class="form-group">
                 <select name="status" class="form-control" id="status">
                   <option value="">Select One</option>
-                  <option value="Active" {{$user->status == 'Active' ? 'selected' : ''}}>Active</option>
-                  <option value="Deactive" {{$user->status == 'Deactive' ? 'selected' : ''}}>Deactive</option>
-                  <option value="Expire" {{$user->status == 'Expire' ? 'selected' : ''}}>Expire</option>
-                  <option value="Cancel" {{$user->status == 'Cancel' ? 'selected' : ''}}>Cancel</option>
+                  <option value="New" {{$user->status == 'New'? 'selected': ''}}>New</option>
+                  <option value="Active" {{$user->status == 'Active'? 'selected': ''}} >Active</option>
+                  <option value="Expire" {{$user->status == 'Expire'? 'selected': ''}}>Expire</option>
+                  <option value="Cancel" {{$user->status == 'Cancel'? 'selected': ''}}>Cancel</option>
                 </select>
               </div>
             </div>

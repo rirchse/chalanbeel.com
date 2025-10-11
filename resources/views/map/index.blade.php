@@ -3,11 +3,11 @@
 @section('content')
 
 <p class="status">
+  <label class="text-warning">New: {{$status['new']}}</label> |
   <label class="text-success">Active: {{$status['active']}}</label> |
   <label class="text-info">Online: {{$status['online']}}</label> |
   <label class="text-danger">Offline: {{$status['offline']}}</label> |
-  <label class="text-warning">Expire: {{$status['expire']}}</label> | 
-  <label class="text-default">Deactive: {{$status['deactive']}}</label>
+  <label class="text-default">Expire: {{$status['expire']}}</label>
 </p>
 
 <div id="map" style="height: 80vh; margin-top:0"></div>
@@ -45,8 +45,8 @@
     function colorForStatus(status) {
       if (status === 'Offline') return '#fa0606';
       if (status === 'Active') return '#28a745';
-      if (status === 'Deactive') return '#d0d5d1';
-      if (status === 'Expire') return '#f5c007';
+      if (status === 'New') return '#f5c007';
+      if (status === 'Expire') return '#d0d5d1';
       return '#959393';
     }
 
