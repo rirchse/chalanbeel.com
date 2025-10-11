@@ -228,7 +228,7 @@ $source = new SourceCtrl;
     });
   });
 </script>
-<script src="{{'/js/open-map.js?v=1.0.1'}}"></script>
+<script src="{{'/js/open-map.js?v=1.0.2'}}"></script>
 <script type="text/javascript">
   $(document).ready(function() {
       $('#datatables').DataTable({

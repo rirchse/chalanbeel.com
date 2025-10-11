@@ -119,5 +119,5 @@
 @endsection
 
 @section('scripts')
-<script src="{{'/js/open-map.js'}}"></script>
+<script src="{{'/js/open-map.js?v=1.0.2'}}"></script>
 @endsection

@@ -34,12 +34,13 @@ let map;
 
     // Create the custom button
     const locationButton = document.createElement("button");
+    locationButton.setAttribute('type', 'button');
     locationButton.textContent = "📍 My Location";
     locationButton.classList.add("custom-map-control-button");
 
     // Add button to map (top center)
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
-    
+
     // When button is clicked
     locationButton.addEventListener("click", () => {
       if (navigator.geolocation) {
