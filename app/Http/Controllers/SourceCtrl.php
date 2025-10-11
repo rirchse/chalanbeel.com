@@ -43,15 +43,19 @@ class SourceCtrl extends Controller
     
     $data = json_decode($response, true);
     // $names = array_column($data, ['name', 'address', 'uptime']);
-    $result = collect($data)->mapWithKeys(fn($item) => [
-      $item['name'] => [
-          'address' => $item['address'],
-          'uptime'  => $item['uptime'],
-      ]
-    ])->toArray();
+    if(!isset($data['error']))
+    {
+      $result = collect($data)->mapWithKeys(fn($item) => [
+        $item['name'] => [
+            'address' => $item['address'],
+            'uptime'  => $item['uptime'],
+        ]
+      ])->toArray();
   
     
-    // Show as array
-    return $result;
+      // Show as array
+      return $result;
+    }
+    return [];
   }
 }
