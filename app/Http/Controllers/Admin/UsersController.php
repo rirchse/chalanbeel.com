@@ -378,7 +378,7 @@ class UsersController extends Controller
         $update->location_id     = $request->input('location');
         $update->details         = $request->input('details');
         $update->mac_address     = $request->input('mac_address');
-        $update->left_long       = $request->input('left_long');
+        $update->lat_long       = $request->input('lat_long');
         $update->date_of_birth   = $request->date_of_birth;
         $update->nid_no          = $request->NID;
         $update->updated_by      = $user_id;

@@ -68,8 +68,8 @@ $source = new SourceCtrl;
                             <td>{{$user->station}}</td>
                         </tr>
                         <tr>
-                            <th>Location</th>
-                            <td>{{$user->area}}</td>
+                            <th>Address:</th>
+                            <td>{{$user->address}}</td>
                         </tr>
                         <tr>
                             <th>Location</th>
@@ -78,6 +78,10 @@ $source = new SourceCtrl;
                             @else
                             Unavailable
                             @endif</td>
+                        </tr>
+                        <tr>
+                            <th>Details:</th>
+                            <td>{{$user->details}}</td>
                         </tr>
                         <tr>
                             <th>Created At</th>

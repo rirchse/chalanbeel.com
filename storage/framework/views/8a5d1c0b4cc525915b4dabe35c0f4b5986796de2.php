@@ -68,8 +68,8 @@ $source = new SourceCtrl;
                             <td><?php echo e($user->station); ?></td>
                         </tr>
                         <tr>
-                            <th>Location</th>
-                            <td><?php echo e($user->area); ?></td>
+                            <th>Address:</th>
+                            <td><?php echo e($user->address); ?></td>
                         </tr>
                         <tr>
                             <th>Location</th>
@@ -78,6 +78,10 @@ $source = new SourceCtrl;
                             <?php else: ?>
                             Unavailable
                             <?php endif; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Details:</th>
+                            <td><?php echo e($user->details); ?></td>
                         </tr>
                         <tr>
                             <th>Created At</th>

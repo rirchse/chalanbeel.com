@@ -147,18 +147,19 @@
           elm.status.options[0] = new Option(data.user.status, data.user.status, false, true);
         }
 
-        console.log(data);
+        // console.log(data);
         
       },
       error: function(data){
         console.error(data);
       }
     });
-      e.style.backgroundColor = '#fff';
+
+      e.style.borderBottom = '1px solid #fff';
     }
     else
     {
-      e.style.backgroundColor = '#f00';
+      e.style.borderBottom = '1px solid #f00';
     }
   }
 </script>
