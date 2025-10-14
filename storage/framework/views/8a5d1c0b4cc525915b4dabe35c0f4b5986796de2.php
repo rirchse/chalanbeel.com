@@ -17,6 +17,7 @@ $source = new SourceCtrl;
                 <h4 class="card-title">User Details</h4> 
                 <div class="col-md-12">
                     <div class="action-tools" style="text-align:right; margin-bottom:10px">
+                        <a class="btn btn-sm btn-primary" title="Add New User" href="<?php echo e(route('user.create')); ?>"><i class="fa fa-plus"></i></a>
                         <a class="btn btn-sm btn-success" title="View All Users" href="<?php echo e(route('user.index')); ?>"><i class="fa fa-list"></i></a>
                         <a class="text-success" title="View Active Users" href="/admin/view_active_users"><i class="material-icons">assignment</i></a>
                         <a class="text-primary" title="View All Users" href="/admin/user"><i class="material-icons">assignment</i></a>
@@ -32,7 +33,7 @@ $source = new SourceCtrl;
                     <table class="table table-responsive">
                         <tr>
                             <th>User Name</th>
-                            <th><?php echo e($user->full_name); ?></th>
+                            <td><?php echo e($user->name); ?></td>
                         </tr>
                         <tr>
                             <th>Contact</th>

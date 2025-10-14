@@ -1,6 +1,6 @@
-
-<?php $__env->startSection('title', 'Create Customer'); ?>
-<?php $__env->startSection('content'); ?>
+@extends('admin')
+@section('title', 'Create Customer')
+@section('content')
 
     <div class="row">
         <div class="col-md-12">
@@ -11,8 +11,8 @@
                 <div class="card-content">
                   <h4 class="card-title">Create User</h4>
 
-                  <form action="<?php echo e(route('user.store')); ?>" method="POST" enctype="multipart/form-data" id="user_form">
-                    <?php echo csrf_field(); ?>
+                  <form action="{{route('user.store')}}" method="POST" enctype="multipart/form-data" id="user_form">
+                    @csrf
                       <div class="row">
                           <div class="col-md-6">
                             <div class="form-group">
@@ -32,29 +32,23 @@
                                 <input type="text" name="address" class="form-control">
                               </div>
                               <div class="form-group">
-                                  <?php echo e(Form::label('work_at', 'Work At', ['class' => 'control-label'])); ?>
-
-                                  <?php echo e(Form::text('work_at', null, ['class' => 'form-control datepicker'])); ?>
-
+                                  {{ Form::label('work_at', 'Work At', ['class' => 'control-label']) }}
+                                  {{ Form::text('work_at', null, ['class' => 'form-control datepicker']) }}
                               </div>
                               <div class="form-group">
-                                  <?php echo e(Form::label('profession', 'Profession', ['class' => 'control-label'])); ?>
-
-                                  <?php echo e(Form::text('profession', null, ['class' => 'form-control'])); ?>
-
+                                  {{ Form::label('profession', 'Profession', ['class' => 'control-label']) }}
+                                  {{ Form::text('profession', null, ['class' => 'form-control']) }}
                               </div>
                               <div class="form-group">
-                                  <?php echo e(Form::label('join_date', 'Join Date', ['class' => 'control-label'])); ?>
-
-                                  <?php echo e(Form::date('join_date', date('Y-m-d'), ['class' => 'form-control'])); ?>
-
+                                  {{ Form::label('join_date', 'Join Date', ['class' => 'control-label']) }}
+                                  {{ Form::date('join_date', date('Y-m-d'), ['class' => 'form-control']) }}
                               </div>
                               <div class="form-group">
                                   <select name="location" id="" class="form-control">
                                       <option value="">Select Location</option>
-                                      <?php $__currentLoopData = $locations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $location): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                      <option value="<?php echo e($location->id); ?>"><?php echo e($location->station); ?></option>
-                                      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                      @foreach($locations as $location)
+                                      <option value="{{$location->id}}">{{$location->station}}</option>
+                                      @endforeach
                                   </select>
                               </div>
                               <div class="form-group">
@@ -70,18 +64,14 @@
                                   </select>
                               </div>
                               <div class="form-group">
-                                  <?php echo e(Form::label('date_of_birth', 'Date of Birth (Y-m-d)', ['class' => 'control-label'])); ?>
-
-                                  <?php echo e(Form::date('date_of_birth', null, ['class' => 'form-control datepicker'])); ?>
-
+                                  {{ Form::label('date_of_birth', 'Date of Birth (Y-m-d)', ['class' => 'control-label']) }}
+                                  {{ Form::date('date_of_birth', null, ['class' => 'form-control datepicker']) }}
                               </div>
                           </div>
                           <div class="col-md-6">
                               <div class="form-group">
-                                  <?php echo e(Form::label('NID', 'NID Card Number', ['class' => 'control-label'])); ?>
-
-                                  <?php echo e(Form::text('NID', null, ['class' => 'form-control'])); ?>
-
+                                  {{ Form::label('NID', 'NID Card Number', ['class' => 'control-label']) }}
+                                  {{ Form::text('NID', null, ['class' => 'form-control']) }}
                               </div>
                               <div class="fileinput fileinput-new text-center pull-right" data-provides="fileinput" style="width:100%;margin-bottom:15px;border:1px solid #eee">
                                   <div class="fileinput-new thumbnail" style="width:100%;">
@@ -115,10 +105,8 @@
                           <div class="clearfix"></div>
                           <div class="col-md-12">
                               <div class="form-group">
-                                  <?php echo e(Form::label('details', 'Details:', ['class' => 'control-label'])); ?>
-
-                                  <?php echo e(Form::textarea('details', null, ['class' => 'form-control', 'rows' => '4'])); ?>
-
+                                  {{ Form::label('details', 'Details:', ['class' => 'control-label']) }}
+                                  {{ Form::textarea('details', null, ['class' => 'form-control', 'rows' => '4']) }}
                               </div>
                               <div class="form-group">
                                 <div id="map" style="width:100%; height:400px; margin-top:0"></div>
@@ -133,10 +121,10 @@
             </div>
         </div>
     </div>
-<?php $__env->stopSection(); ?>
+@endsection
 
-<?php $__env->startSection('scripts'); ?>
-<script src="<?php echo e('/js/open-map.js?v=1.0.2'); ?>"></script>
+@section('scripts')
+<script src="{{'/js/open-map.js?v=1.0.2'}}"></script>
 <script>
   function checkContact(e)
   {
@@ -146,7 +134,7 @@
     {
       $.ajax({
       type: 'GET',
-      url: '<?php echo e(route("user.by-username", "")); ?>/'+e.value,
+      url: '{{route("user.by-username", "")}}/'+e.value,
       success: function(data){
         let elm = userForm.elements;
         elm.name.value = data.user.name;
@@ -174,5 +162,4 @@
     }
   }
 </script>
-<?php $__env->stopSection(); ?>
-<?php echo $__env->make('admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /srv/www/cbt/resources/views/admins/users/create_user.blade.php ENDPATH**/ ?>
+@endsection

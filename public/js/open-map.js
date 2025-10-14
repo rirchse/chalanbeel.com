@@ -1,6 +1,5 @@
-let map;
+  let map;
   let marker;
-
   let latlong = document.getElementById('lat_long');
 
   function initMap() {
@@ -8,7 +7,8 @@ let map;
     const defaultLocation = { lat: 24.4322, lng: 89.2091 };
 
     // Create map
-    map = new google.maps.Map(document.getElementById("map"), {
+    let mapid = document.getElementById("map");
+    map = new google.maps.Map(mapid, {
       center: defaultLocation,
       zoom: 15,
       mapTypeId: "roadmap", // default
@@ -38,6 +38,9 @@ let map;
     locationButton.textContent = "📍 My Location";
     locationButton.classList.add("custom-map-control-button");
 
+    let errmsg = document.createElement('p');
+    errmsg.setAttribute('style', 'color:red'); 
+
     // Add button to map (top center)
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
 
@@ -56,11 +59,13 @@ let map;
             map.setZoom(15);
           },
           () => {
-            alert("Error: Unable to access your location.");
+            errmsg.innerHTML = "Error: Unable to access your location.";
+            mapid.prepend(errmsg);
           }
         );
       } else {
-        alert("Your browser doesn't support geolocation.");
+        errmsg.innerHTML = "Your browser doesn't support geolocation.";
+        mapid.prepend(errmsg);
       }
     });
 
@@ -79,11 +84,13 @@ let map;
           latlong.value = userLocation.lat + ', ' + userLocation.lng;
         },
         function() {
-          // alert("Geolocation failed. Using default location.");
+          errmsg.innerHTML = "Geolocation failed. Using default location.";
+          mapid.prepend(errmsg);
         }
       );
     } else {
-      // alert("Your browser doesn’t support geolocation.");
+      errmsg.innerHTML = "Your browser doesn’t support geolocation.";
+      mapid.prepend(errmsg);
     }
 
     // Update input fields when dragging marker

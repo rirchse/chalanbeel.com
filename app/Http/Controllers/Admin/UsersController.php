@@ -165,7 +165,7 @@ class UsersController extends Controller
         ->orderBy('id', 'ASC')
         ->select('station', 'id')
         ->get();
-        return view('admins.users.create_user')->withLocations($areas);
+        return view('admins.users.create')->withLocations($areas);
     }
 
     /**
@@ -180,7 +180,7 @@ class UsersController extends Controller
         //validate the data
         $this->validate($request, array(
             'name'     => 'required|min:2|max:32',
-            'email'         => 'unique:users|email|max:50|nullable',
+            'email'         => 'email|max:50|nullable',
             'contact'       => 'required|min:11|max:11',
             'work_at'       => 'max:255|nullable',
             'profession'    => 'max:255|nullable',
@@ -196,6 +196,13 @@ class UsersController extends Controller
 
         ));
 
+        $data = $request->all();
+
+        if(isset($data['_method']))
+        {
+          unset($data['_method']);
+        }
+
         $lat = $long = null;
 
         if(isset($request->lat_long))
@@ -205,65 +212,79 @@ class UsersController extends Controller
           $long = $arr[1];
         }
 
-        if (User::where('contact', $request->contact)->first()) {
+        // if (User::where('contact', $request->contact)->first()) {
             
-            //session flashing
-            Session::flash('error', 'The user already signed up.');
+        //     //session flashing
+        //     Session::flash('error', 'The user already signed up.');
 
-            //return to the show page
-            return redirect('/admin/create_user');
+        //     //return to the show page
+        //     return redirect('/admin/create_user');
 
-        } else {
-            //store in the database
-            $customer = new User;
-            $customer->name    = $request->name;
-            $customer->contact      = $request->contact;
-            $customer->email        = $request->email;
-            $customer->username     = $request->contact;
-            $customer->password     = bcrypt($request->contact);
-            $customer->work_at      = $request->work_at;
-            $customer->profession   = $request->profession;
-            $customer->location_id  = $request->location;
-            $customer->join_date    = date('Y-m-d', strtotime($request->join_date));
-            $customer->details      = $request->details;
-            $customer->mac_address  = $request->mac_address;
-            $customer->left_long    = $request->left_long;
-            $customer->date_of_birth= $request->date_of_birth;
-            $customer->nid_no       = $request->NID;
-            $customer->created_by   = $user_id;
-            $customer->status       = $request->status;
-            $customer->lat          = $lat;
-            $customer->lng          = $long;
+        // } else {
+        //     //store in the database
+        //     $customer = new User;
+        //     $customer->name    = $request->name;
+        //     $customer->contact      = $request->contact;
+        //     $customer->email        = $request->email;
+        //     $customer->username     = $request->contact;
+        //     $customer->password     = bcrypt($request->contact);
+        //     $customer->work_at      = $request->work_at;
+        //     $customer->profession   = $request->profession;
+        //     $customer->location_id  = $request->location;
+        //     $customer->join_date    = date('Y-m-d', strtotime($request->join_date));
+        //     $customer->details      = $request->details;
+        //     $customer->mac_address  = $request->mac_address;
+        //     $customer->left_long    = $request->left_long;
+        //     $customer->date_of_birth= $request->date_of_birth;
+        //     $customer->nid_no       = $request->NID;
+        //     $customer->created_by   = $user_id;
+        //     $customer->status       = $request->status;
+        //     $customer->lat          = $lat;
+        //     $customer->lng          = $long;
 
             //save image//
-            if($request->hasFile('profile_image')) {
-                $image    = $request->file('profile_image');
-                $filename = time() . '.' . $image->getClientOriginalExtension();
-                $location = ('images/profile/' . $filename);
-                Image::make($image)->resize(600, 600)->save($location);
+            if($request->hasFile('profile_image'))
+            {
+              $image    = $request->file('profile_image');
+              $filename = time() . '.' . $image->getClientOriginalExtension();
+              $location = ('images/profile/' . $filename);
+              Image::make($image)->resize(600, 600)->save($location);
 
-                $customer->image = $filename;
+              $data['image'] = $filename;
             }
 
-            if($request->hasFile('nid_image')) {
-                $image    = $request->file('nid_image');
-                $filename = time() . '.' . $image->getClientOriginalExtension();
-                $location = ('images/nid/' . $filename);
-                Image::make($image)->resize(600, 360)->save($location);
+            if($request->hasFile('nid_image')) 
+            {
+              $image    = $request->file('nid_image');
+              $filename = time() . '.' . $image->getClientOriginalExtension();
+              $location = ('images/nid/' . $filename);
+              Image::make($image)->resize(600, 360)->save($location);
 
-                $customer->nid_image = $filename;
+              $data['nid_image'] = $filename;
             }
 
-            $customer->save();
+            $data['password'] = bcrypt($data['contact']);
 
-            $customer = User::orderBy('id', 'DESC')->first()->id;
+            try{
+              $user = User::updateOrCreate(
+                [
+                  'username' => $data['contact']
+                ], 
+                $data
+              );
+            }
+            catch(\Exception $e)
+            {
+              return $e->getMessage();
+            }
+
+            // $customer = User::orderBy('id', 'DESC')->first()->id;
 
             //session flashing
             Session::flash('success', 'New user successfully created!');
 
             //return to the show page
-            return redirect('/admin/user/'.$customer);
-        }
+            return redirect()->route('user.show', $user->id);
     }
 
     /**
@@ -511,5 +532,13 @@ class UsersController extends Controller
       // dd($customers);
       $status = $data['status'];
       return view('map.index', compact('customers', 'status'));
+    }
+
+    public function byUsername($username)
+    {
+      $user = User::where('username', $username)->first();
+      return response()->json([
+        'user' => $user
+      ], 200);
     }
 }
