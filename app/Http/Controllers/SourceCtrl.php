@@ -24,9 +24,11 @@ class SourceCtrl extends Controller
 
   public function routerActiveUsers()
   {
-    $router = "http://103.7.4.17/rest";
+    $router = "http://103.7.4.19/rest";
     $user   = "rocky";
     $pass   = "rocky";
+    // $router = ENV('ROUTER_IP');
+    // dd($router);
     
     // Hotspot Active
     $url = $router . "/ppp/active";
