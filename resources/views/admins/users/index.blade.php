@@ -60,7 +60,7 @@ $source = new SourceCtrl;
                                 <th>Contact</th>
                                 <th>Location</th>
                                 <th>Lat, Long</th>
-                                <th>Join Date</th>
+                                <th>Payment Date</th>
                                 <th>Status</th>
                                 <th class="disabled-sorting text-right">Actions</th>
                             </tr>
@@ -72,7 +72,7 @@ $source = new SourceCtrl;
                                 <th>Contact</th>
                                 <th>Location</th>
                                 <th>Lat, Long</th>
-                                <th>Join Date</th>
+                                <th>Payment Date</th>
                                 <th>Status</th>
                                 <th class="text-right" width="180">Actions</th>
                             </tr>
@@ -87,7 +87,7 @@ $source = new SourceCtrl;
                                 <td>{{ $user->contact }}</td>
                                 <td>{{ $user->address }}</td>
                                 <td>{{ $user->lat.' '. $user->lng }}</td>
-                                <td>{{ $source->dtformat($user->join_date) }}</td>
+                                <td>{{ $source->dtformat($user->payment_date) }}</td>
                                 <td>{{$user->status}}</td>
                                 <td class="text-right">
                                     <a href="{{route('user.show', $user->id)}}" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
@@ -134,7 +134,12 @@ $source = new SourceCtrl;
           <input type="text" name="address" class="form-control" placeholder="Address">
         </div>
         <div class="form-group">
+          <label for="">Join Date:</label>
           <input type="date" name="join_date" class="form-control" placeholder="Join Date">
+        </div>
+        <div class="form-group">
+          <label for="">Next Payment Date:</label>
+          <input type="date" name="payment_date" class="form-control" placeholder="Join Date">
         </div>
         <div class="form-group">
           <select name="status" class="form-control" id="status">

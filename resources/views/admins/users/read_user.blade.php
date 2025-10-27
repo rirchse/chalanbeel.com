@@ -80,7 +80,7 @@ $source = new SourceCtrl;
                             <td>{{$source->dtformat($user->billing_date)}}</td>
                         </tr>
                         <tr>
-                            <th>Nex Payment Date:</th>
+                            <th>Next Payment Date:</th>
                             <td>{{$source->dtformat($user->payment_date)}}</td>
                         </tr>
                         <tr>

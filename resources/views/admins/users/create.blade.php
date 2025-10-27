@@ -16,12 +16,12 @@
                       <div class="row">
                           <div class="col-md-6">
                             <div class="form-group">
-                                <label for="contact">Mobile Number:</label>
-                                <input type="number" name="contact" class="form-control" minlength="11" maxlength="11" autofocus="true" onkeyup="checkContact(this)">
+                                <label for="contact">Mobile Number(*):</label>
+                                <input type="number" name="contact" class="form-control" minlength="11" maxlength="11" autofocus="true" onkeyup="checkContact(this)" required>
                             </div>
                             <div class="form-group">
-                                <label for="">Name:</label>
-                                <input type="text" name="name" class="form-control">
+                                <label for="">Name(*):</label>
+                                <input type="text" name="name" class="form-control" required>
                             </div>
                             <div class="form-group">
                               <input type="text" name="address" class="form-control" placeholder="Street Address">

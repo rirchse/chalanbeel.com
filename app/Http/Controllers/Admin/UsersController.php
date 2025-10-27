@@ -225,7 +225,7 @@ class UsersController extends Controller
             'join_date'     => 'max:255|nullable',
             'location'      => 'max:255|nullable',
             'details'       => 'max:500|nullable',
-            'mac_address'   => 'max:255|nullable',
+            'mac'   => 'max:255|nullable',
             'left_long'     => 'max:255|nullable',
             'date_of_birth' => 'max:30|nullable',
             'NID'           => 'max:17|nullable',
@@ -256,9 +256,9 @@ class UsersController extends Controller
         $update->work_at         = $request->input('work_at');
         $update->profession      = $request->input('profession');
         $update->join_date       = date('Y-m-d', strtotime($request->join_date));
-        $update->location_id     = $request->input('location');
+        $update->location     = $request->input('location');
         $update->details         = $request->input('details');
-        $update->mac_address     = $request->input('mac_address');
+        $update->mac     = $request->input('mac');
         $update->lat_long       = $request->input('lat_long');
         $update->date_of_birth   = $request->date_of_birth;
         $update->nid_no          = $request->NID;
