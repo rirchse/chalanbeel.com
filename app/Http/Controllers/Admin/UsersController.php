@@ -49,7 +49,7 @@ class UsersController extends Controller
       }
       if($request->date)
       {
-        $users = $users->where('join_date', 'like',  '%'.$request->date);
+        $users = $users->where('payment_date', 'like',  '%'.$request->date);
         $date = $request->date;
       }
       $users = $users->get();
