@@ -429,19 +429,19 @@ class UsersController extends Controller
 
       if($pon == 'PON1')
       {
-        $ipBlock = 247;
+        $ipBlock = 249;
       }
       elseif($pon == 'PON2')
       {
-        $ipBlock = 248;
+        $ipBlock = 247;
       }
       elseif($pon == 'PON3')
       {
-        $ipBlock = 249;
+        $ipBlock = 250;
       }
       elseif($pon == 'PON4')
       {
-        $ipBlock = 250;
+        $ipBlock = 0;
       }
       elseif($pon == 'RADIO')
       {
