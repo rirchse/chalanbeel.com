@@ -40,6 +40,58 @@ $source = new SourceCtrl;
                             <td>{{$user->contact}}</td>
                         </tr>
                         <tr>
+                            <th>Street Address:</th>
+                            <td>{{$user->address}}</td>
+                        </tr>
+                        <tr>
+                            <th>POP/OLT</th>
+                            <td>{{$user->location}}</td>
+                        </tr>
+                        <tr>
+                            <th>Status:</th>
+                            <td>{{$user->status}}</td>
+                        </tr>
+                        <tr>
+                            <th>Service Type:</th>
+                            <td>{{$user->service_type}}</td>
+                        </tr>
+                        <tr>
+                            <th>PON Number:</th>
+                            <td>{{$user->pon}}</td>
+                        </tr>
+                        <tr>
+                            <th>IP Address:</th>
+                            <td>{{$user->ip}}</td>
+                        </tr>
+                        <tr>
+                            <th>ONU MAC</th>
+                            <td>{{$user->mac}}</td>
+                        </tr>
+                        <tr>
+                            <th>Username:</th>
+                            <td>{{$user->username}}</td>
+                        </tr>
+                        <tr>
+                            <th>Join Date:</th>
+                            <td>{{$source->dtformat($user->join_date)}}</td>
+                        </tr>
+                        <tr>
+                            <th>Billing Date:</th>
+                            <td>{{$source->dtformat($user->billing_date)}}</td>
+                        </tr>
+                        <tr>
+                            <th>Nex Payment Date:</th>
+                            <td>{{$source->dtformat($user->payment_date)}}</td>
+                        </tr>
+                        <tr>
+                            <th>Location On Map:</th>
+                            <td>@if($user->lat_long)
+                            <a target="_blank" href="https://www.google.com/maps/place/{{$user->lat_long}}">View On Map</a>
+                            @else
+                            Unavailable
+                            @endif</td>
+                        </tr>
+                        <tr>
                             <th>Email</th>
                             <td>{{$user->email}}</td>
                         </tr>
@@ -56,28 +108,8 @@ $source = new SourceCtrl;
                             <td>{{$user->work_at}}</td>
                         </tr>
                         <tr>
-                            <th>Join Date</th>
-                            <td>{{$source->dtformat($user->join_date)}}</td>
-                        </tr>
-                        <tr>
-                            <th>Devie MAC</th>
-                            <td>{{$user->mac_address}}</td>
-                        </tr>
-                        <tr>
                             <th>Station</th>
                             <td>{{$user->station}}</td>
-                        </tr>
-                        <tr>
-                            <th>Address:</th>
-                            <td>{{$user->address}}</td>
-                        </tr>
-                        <tr>
-                            <th>Location</th>
-                            <td>@if($user->lat)
-                            <a target="_blank" href="https://www.google.com/maps/place/{{$user->lat.', '.$user->lng}}">View On Map</a>
-                            @else
-                            Unavailable
-                            @endif</td>
                         </tr>
                         <tr>
                             <th>Details:</th>

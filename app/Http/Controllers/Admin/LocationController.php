@@ -108,7 +108,8 @@ class LocationController extends Controller
      */
     public function edit($id)
     {
-        //
+      $pop = Location::find($id);
+      return view('admins.locations.edit', compact('pop'));
     }
 
     /**

@@ -40,6 +40,58 @@ $source = new SourceCtrl;
                             <td><?php echo e($user->contact); ?></td>
                         </tr>
                         <tr>
+                            <th>Street Address:</th>
+                            <td><?php echo e($user->address); ?></td>
+                        </tr>
+                        <tr>
+                            <th>POP/OLT</th>
+                            <td><?php echo e($user->location); ?></td>
+                        </tr>
+                        <tr>
+                            <th>Status:</th>
+                            <td><?php echo e($user->status); ?></td>
+                        </tr>
+                        <tr>
+                            <th>Service Type:</th>
+                            <td><?php echo e($user->service_type); ?></td>
+                        </tr>
+                        <tr>
+                            <th>PON Number:</th>
+                            <td><?php echo e($user->pon); ?></td>
+                        </tr>
+                        <tr>
+                            <th>IP Address:</th>
+                            <td><?php echo e($user->ip); ?></td>
+                        </tr>
+                        <tr>
+                            <th>ONU MAC</th>
+                            <td><?php echo e($user->mac); ?></td>
+                        </tr>
+                        <tr>
+                            <th>Username:</th>
+                            <td><?php echo e($user->username); ?></td>
+                        </tr>
+                        <tr>
+                            <th>Join Date:</th>
+                            <td><?php echo e($source->dtformat($user->join_date)); ?></td>
+                        </tr>
+                        <tr>
+                            <th>Billing Date:</th>
+                            <td><?php echo e($source->dtformat($user->billing_date)); ?></td>
+                        </tr>
+                        <tr>
+                            <th>Nex Payment Date:</th>
+                            <td><?php echo e($source->dtformat($user->payment_date)); ?></td>
+                        </tr>
+                        <tr>
+                            <th>Location On Map:</th>
+                            <td><?php if($user->lat_long): ?>
+                            <a target="_blank" href="https://www.google.com/maps/place/<?php echo e($user->lat_long); ?>">View On Map</a>
+                            <?php else: ?>
+                            Unavailable
+                            <?php endif; ?></td>
+                        </tr>
+                        <tr>
                             <th>Email</th>
                             <td><?php echo e($user->email); ?></td>
                         </tr>
@@ -56,28 +108,8 @@ $source = new SourceCtrl;
                             <td><?php echo e($user->work_at); ?></td>
                         </tr>
                         <tr>
-                            <th>Join Date</th>
-                            <td><?php echo e($source->dtformat($user->join_date)); ?></td>
-                        </tr>
-                        <tr>
-                            <th>Devie MAC</th>
-                            <td><?php echo e($user->mac_address); ?></td>
-                        </tr>
-                        <tr>
                             <th>Station</th>
                             <td><?php echo e($user->station); ?></td>
-                        </tr>
-                        <tr>
-                            <th>Address:</th>
-                            <td><?php echo e($user->address); ?></td>
-                        </tr>
-                        <tr>
-                            <th>Location</th>
-                            <td><?php if($user->lat): ?>
-                            <a target="_blank" href="https://www.google.com/maps/place/<?php echo e($user->lat.', '.$user->lng); ?>">View On Map</a>
-                            <?php else: ?>
-                            Unavailable
-                            <?php endif; ?></td>
                         </tr>
                         <tr>
                             <th>Details:</th>

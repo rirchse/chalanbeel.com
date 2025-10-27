@@ -37,112 +37,22 @@ class UsersController extends Controller
         return redirect('/admin_loginto');
     }
 
-    // public function viewUsers($type)
-    // {
-    //     $status = '';
-    //     if ($type == 'new'){
-    //         $status = 0;
-    //     }elseif ($type == 'active') {
-    //         $status = 1;
-    //     }elseif ($type == 'free') {
-    //         $status = 2;
-    //     }elseif ($type == 'cancel') {
-    //         $status = 3;
-    //     }
-
-    //     $users = User::leftJoin('locations', 'users.location_id', 'locations.id')
-    //     ->where('users.status', $status)
-    //     ->orderBy('users.id', 'DESC')
-    //     ->select('users.*', 'locations.station')
-    //     ->get();
-    //     return view('admins.users.index')->withUsers($users)->withType($type);
-    // }
-
-    // public function activeUsersMikrotik(){
-    //     $pppoe_active_users = Router::Connect()->setMenu('/ppp active')->getAll();
-    //     return view('admins.users.view_active_users_mikrotik')->withUsers($pppoe_active_users);
-    // }
-    // public function getRouterUsers()
-    // {
-    //     $user_id = Auth::guard('admin')->user()->id;
-
-    //     $pppoe_users = Router::Connect()->setMenu('/ppp secret')->getAll();
-    //     foreach($pppoe_users as $user){
-
-    //         if(count(User::where('contact', $user('name'))->get()) < 1) {
-    //             $create = New User;
-    //             $create->name   = $user('comment') == ''?$user('name'):$user('comment');
-    //             $create->username    = $user('name');
-    //             $create->password    = bcrypt($user('password'));
-    //             $create->contact     = $user('name');
-    //             $create->join_date   = date('Y-m-d');
-    //             $create->location_id = 1;
-    //             $create->status      = $user('disabled') == 'yes'?0:1;
-    //             // $create->service  = $user('service');
-    //             $create->details     = $user('comment');
-    //             $create->save();
-
-    //             $lastuser = User::orderBy('id', 'DESC')->first();
-    //             $package = Package::where('speed', $user('profile'))->first();
-
-    //             $service = New Service;
-    //             $service->user_id = $lastuser->id;
-    //             $service->package_id = count($package) < 1 ? 0 : $package->id;
-    //             $service->password = $user('password');
-    //             $service->billing_date = date('Y-m-d');
-    //             $service->details = $user('comment');
-    //             $service->location_id = 1;
-    //             $service->status = 1;
-    //             $service->created_by = $user_id;
-    //             $service->save();
-    //         }
-    //     }
-
-    //     Session::flash('success', 'Users updated from router.');
-    //     return redirect('/admin/view_users');
-    // }
-    // public function active_users()
-    // {
-    //     // Get all users from database
-    //     $users = User::leftJoin('locations', 'users.location_id', 'locations.id')
-    //     ->orderBy('users.id', 'DESC')
-    //     ->where('users.status', 1)
-    //     ->select('users.*', 'locations.station')
-    //     ->get();
-    //     return view('admins.users.view_active_users')->withUsers($users);
-    // }
-
-    // public function getUsers()
-    // {
-    //   // Get all users from database
-    //   $users = User::leftJoin('locations', 'users.location_id', 'locations.id')
-    //   ->orderBy('users.id', 'DESC')
-    //   ->select('users.*', 'locations.station')
-    //   ->paginate(25);
-
-    //   return response()->json([
-    //     'users' => $users
-    //   ], 200);
-    // }
-
     public function index(Request $request)
     {
       $status = $date = '';
       // Get all users from database
-      $users = User::leftJoin('locations', 'users.location_id', 'locations.id')
-      ->orderBy('users.id', 'DESC');
+      $users = User::orderBy('id', 'DESC');
       if($request->status)
       {
-        $users = $users->where('users.status', $request->status);
+        $users = $users->where('status', $request->status);
         $status = $request->status;
       }
       if($request->date)
       {
-        $users = $users->where('users.join_date', 'like',  '%'.$request->date);
+        $users = $users->where('join_date', 'like',  '%'.$request->date);
         $date = $request->date;
       }
-      $users = $users->select('users.*', 'locations.station')
-      ->get();
+      $users = $users->get();
 
       // if($request->ajax())
       // {
@@ -198,9 +108,9 @@ class UsersController extends Controller
 
         $data = $request->all();
 
-        if(isset($data['_method']))
+        if(isset($data['_token']))
         {
-          unset($data['_method']);
+          unset($data['_token']);
         }
 
         $lat = $long = null;
@@ -212,79 +122,52 @@ class UsersController extends Controller
           $long = $arr[1];
         }
 
-        // if (User::where('contact', $request->contact)->first()) {
-            
-        //     //session flashing
-        //     Session::flash('error', 'The user already signed up.');
+        //save image//
+        if($request->hasFile('profile_image'))
+        {
+          $image    = $request->file('profile_image');
+          $filename = time() . '.' . $image->getClientOriginalExtension();
+          $location = ('images/profile/' . $filename);
+          Image::make($image)->resize(600, 600)->save($location);
 
-        //     //return to the show page
-        //     return redirect('/admin/create_user');
+          $data['image'] = $filename;
+        }
 
-        // } else {
-        //     //store in the database
-        //     $customer = new User;
-        //     $customer->name    = $request->name;
-        //     $customer->contact      = $request->contact;
-        //     $customer->email        = $request->email;
-        //     $customer->username     = $request->contact;
-        //     $customer->password     = bcrypt($request->contact);
-        //     $customer->work_at      = $request->work_at;
-        //     $customer->profession   = $request->profession;
-        //     $customer->location_id  = $request->location;
-        //     $customer->join_date    = date('Y-m-d', strtotime($request->join_date));
-        //     $customer->details      = $request->details;
-        //     $customer->mac_address  = $request->mac_address;
-        //     $customer->left_long    = $request->left_long;
-        //     $customer->date_of_birth= $request->date_of_birth;
-        //     $customer->nid_no       = $request->NID;
-        //     $customer->created_by   = $user_id;
-        //     $customer->status       = $request->status;
-        //     $customer->lat          = $lat;
-        //     $customer->lng          = $long;
+        if($request->hasFile('nid_image')) 
+        {
+          $image    = $request->file('nid_image');
+          $filename = time() . '.' . $image->getClientOriginalExtension();
+          $location = ('images/nid/' . $filename);
+          Image::make($image)->resize(600, 360)->save($location);
 
-            //save image//
-            if($request->hasFile('profile_image'))
-            {
-              $image    = $request->file('profile_image');
-              $filename = time() . '.' . $image->getClientOriginalExtension();
-              $location = ('images/profile/' . $filename);
-              Image::make($image)->resize(600, 600)->save($location);
+          $data['nid_image'] = $filename;
+        }
 
-              $data['image'] = $filename;
-            }
+        if($data['service_type'] == 'pppoe')
+        {
+          $data['password'] = $data['password'];
+        }        
 
-            if($request->hasFile('nid_image')) 
-            {
-              $image    = $request->file('nid_image');
-              $filename = time() . '.' . $image->getClientOriginalExtension();
-              $location = ('images/nid/' . $filename);
-              Image::make($image)->resize(600, 360)->save($location);
+        try{
+          $user = User::updateOrCreate(
+            [
+              'username' => $data['contact']
+            ], 
+            $data
+          );
+        }
+        catch(\Exception $e)
+        {
+          return $e->getMessage();
+        }
 
-              $data['nid_image'] = $filename;
-            }
+        // $customer = User::orderBy('id', 'DESC')->first()->id;
 
-            $data['password'] = bcrypt($data['contact']);
+        //session flashing
+        Session::flash('success', 'New user successfully created!');
 
-            try{
-              $user = User::updateOrCreate(
-                [
-                  'username' => $data['contact']
-                ], 
-                $data
-              );
-            }
-            catch(\Exception $e)
-            {
-              return $e->getMessage();
-            }
-
-            // $customer = User::orderBy('id', 'DESC')->first()->id;
-
-            //session flashing
-            Session::flash('success', 'New user successfully created!');
-
-            //return to the show page
-            return redirect()->route('user.show', $user->id);
+        //return to the show page
+        return redirect()->route('user.show', $user->id);
     }
 
     /**
@@ -296,9 +179,7 @@ class UsersController extends Controller
     public function show($id, Request $request)
     {
         //Grab user data by id
-        $user = User::leftJoin('locations', 'users.location_id', 'locations.id')
-        ->select('users.*', 'locations.station', 'locations.area')
-        ->find($id);
+        $user = User::find($id);
 
         if($request->ajax())
         {
@@ -539,6 +420,52 @@ class UsersController extends Controller
       $user = User::where('username', $username)->first();
       return response()->json([
         'user' => $user
+      ], 200);
+    }
+
+    public function checkIP($pon)
+    {
+      $ipBlock = 0;
+
+      if($pon == 'PON1')
+      {
+        $ipBlock = 247;
+      }
+      elseif($pon == 'PON2')
+      {
+        $ipBlock = 248;
+      }
+      elseif($pon == 'PON3')
+      {
+        $ipBlock = 249;
+      }
+      elseif($pon == 'PON4')
+      {
+        $ipBlock = 250;
+      }
+      elseif($pon == 'RADIO')
+      {
+        $ipBlock = 254;
+      }
+
+      $used_ip = User::where('ip', 'like', '%'.$ipBlock.'%')
+      ->pluck('ip')
+      ->toArray();
+      
+      $ipFormat = '192.168.';
+      $availableIp = [];
+
+      for($i = 2; $i <= 254; $i++)
+      {
+        $ip = $ipFormat.$ipBlock.'.'.$i;
+        if(!in_array($ip, $used_ip))
+        {
+          array_push($availableIp, $ip);
+        }
+      }
+
+      return response()->json([
+        'ip' => $availableIp
       ], 200);
     }
 }

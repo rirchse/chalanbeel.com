@@ -132,6 +132,8 @@ Route::group(['middleware' => ['web']], function()
           Route::get('/get-all-users', 'getUsers')->name('user.get-all-users');
           Route::post('search-user', 'index')->name('user.search');
           Route::get('by-username/{username}', 'byUsername')->name('user.by-username');
+
+          Route::get('check-available-ip/{ip}', 'checkIP')->name('user.check-ip');
         });
         
         //packages

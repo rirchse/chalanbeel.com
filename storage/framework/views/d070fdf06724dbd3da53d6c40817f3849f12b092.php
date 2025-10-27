@@ -49,8 +49,7 @@
                                 <td><?php echo e($area->village); ?></td>
                                 <td><?php echo e($area->contact); ?></td>
                                 <td class="text-right">
-                                    <a href="/admin/area_details/<?php echo e($area->id); ?>" class="text-info"><i class="material-icons">dvr</i></a>
-                                    <a href="/admin/edit_area/<?php echo e($area->id); ?>/edit" class="text-warning" title="Edit the record"><i class="material-icons">edit</i></a>
+                                    <a href="<?php echo e(route('location.edit', $area->id)); ?>" class="text-warning" title="Edit the record"><i class="material-icons">edit</i></a>
                                 </td>
                             </tr>
 

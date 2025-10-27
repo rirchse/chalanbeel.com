@@ -1,57 +1,57 @@
 @extends('admin')
-@section('title', 'Update Address')
+@section('title', 'Update pop')
 @section('content')
 
 <div class="row">
         <div class="col-md-12">
             <div class="card">
 
-                {{ Form::model($address, ['route' => ['address.update', $address->id], 'method' => 'PUT', 'id' => 'RegisterValidation']) }}
+                {{ Form::model($pop, ['route' => ['pop.update', $pop->id], 'method' => 'PUT', 'id' => 'RegisterValidation']) }}
                     <div class="card-header card-header-icon" data-background-color="rose">
                         <i class="material-icons">edit</i>
                     </div>
                     <div class="card-content">
-                        <h4 class="card-title">Edit Address</h4>
+                        <h4 class="card-title">Edit pop</h4>
 
                         <div class="col-md-6">
                             <div class="form-group label-floating">
                                 
                                 {{ Form::label('stop', 'Pickup/Delivery Title', ['class' => 'control-label']) }}
-                                {{ Form::text('stop', $address->stop, ['class' => 'form-control border-input']) }}
+                                {{ Form::text('stop', $pop->stop, ['class' => 'form-control border-input']) }}
                             </div>
                             <div class="form-group label-floating">
                                 {{ Form::label('first', 'First', ['class' => 'control-label']) }}
-                                {{ Form::text('first', $address->first, ['class' => 'form-control border-input']) }}
+                                {{ Form::text('first', $pop->first, ['class' => 'form-control border-input']) }}
                             </div>
                             <div class="form-group label-floating">
                                 {{ Form::label('last', 'Last', ['class' => 'control-label']) }}
-                                {{ Form::text('last', $address->last, ['class' => 'form-control border-input']) }}
+                                {{ Form::text('last', $pop->last, ['class' => 'form-control border-input']) }}
                             </div>
                             <div class="form-group label-floating">
-                                {{ Form::label('address', 'Address', ['class' => 'control-label']) }}
-                                {{ Form::text('address', $address->address, ['class' => 'form-control border-input']) }}
+                                {{ Form::label('pop', 'pop', ['class' => 'control-label']) }}
+                                {{ Form::text('pop', $pop->pop, ['class' => 'form-control border-input']) }}
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group label-floating">
                                 {{ Form::label('city', 'City', ['class' => 'control-label']) }}
-                                {{ Form::text('city', $address->city, ['class' => 'form-control border-input']) }}
+                                {{ Form::text('city', $pop->city, ['class' => 'form-control border-input']) }}
                             </div>
                             <div class="form-group label-floating">
                                 {{ Form::label('state', 'State', ['class' => 'control-label']) }}
-                                {{ Form::text('state', $address->state, ['class' => 'form-control border-input']) }}
+                                {{ Form::text('state', $pop->state, ['class' => 'form-control border-input']) }}
                             </div>
                             <div class="form-group label-floating">
                                 {{ Form::label('zip', 'ZIP', ['class' => 'control-label']) }}
-                                {{ Form::text('zip', $address->zip, ['class' => 'form-control border-input']) }}
+                                {{ Form::text('zip', $pop->zip, ['class' => 'form-control border-input']) }}
                             </div>
                             <div class="form-group label-floating">
                                 {{ Form::label('telephone', 'Telephone', ['class' => 'control-label']) }}
-                                {{ Form::text('telephone', $address->contact, ['class' => 'form-control border-input']) }}
+                                {{ Form::text('telephone', $pop->contact, ['class' => 'form-control border-input']) }}
                             </div>
                         </div>
                         <div class="form-footer text-right">
-                            <button type="submit" class="btn btn-rose btn-fill">Update Address</button>
+                            <button type="submit" class="btn btn-rose btn-fill">Update pop</button>
                         </div>
                     </div>
                 {{ Form::close() }}
