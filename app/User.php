@@ -52,4 +52,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function adminCreated()
+    {
+      return $this->belongsTo(Admin::class, 'created_by');
+    }
+    
+    public function adminUpdated()
+    {
+      return $this->belongsTo(Admin::class, 'updated_by');
+    }
 }

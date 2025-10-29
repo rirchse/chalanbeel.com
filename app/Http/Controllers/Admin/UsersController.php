@@ -124,6 +124,7 @@ class UsersController extends Controller
 
         $data['lat'] = $lat;
         $data['lng'] = $long;
+        $data['created_by'] = auth()->id();
 
         //save image//
         if($request->hasFile('profile_image'))
@@ -262,7 +263,8 @@ class UsersController extends Controller
 
         $data['lat'] = $lat;
         $data['lng'] = $long;
-        
+        $data['updated_by'] = auth()->id();
+
         try {
           //save image//
           if($request->hasFile('profile_image')){

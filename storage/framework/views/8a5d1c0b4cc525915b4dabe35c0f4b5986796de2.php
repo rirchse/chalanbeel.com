@@ -121,11 +121,11 @@ $source = new SourceCtrl;
                         </tr>
                         <tr>
                             <th>Created By</th>
-                            <td><?php echo e($user->admin); ?></td>
+                            <td><?php echo e($user->adminCreated ?$user->adminCreated->first_name : ''); ?></td>
                         </tr>
                         <tr>
                             <th>Updated By</th>
-                            <td><?php echo e($user->admin); ?></td>
+                            <td><?php echo e($user->adminUpdated ? $user->adminUpdated->first_name : ''); ?></td>
                         </tr>
                     </table>
                 </div>
