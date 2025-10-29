@@ -19,6 +19,12 @@ use App\Http\Controllers\Admin\UsersController;
 
 Route::group(['middleware' => ['web']], function()
 {
+  // expire detect
+  Route::get('expire', function()
+  {
+    return view('homes.expire');
+  });
+
 	Route::get('/bkash/make-payment', function()
 	{
 		return view('bkash.create-payment');
