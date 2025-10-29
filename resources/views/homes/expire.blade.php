@@ -16,7 +16,9 @@
                     <div class="col-md-12">
                       <h3>ইন্টারনেটের মেয়াদ শেষ</h3>
                       <h4>অনুগ্রহপূর্বক, রিচার্জ করুন</h4>
-                      <img src="/images/bkash-send-money.png" alt="" style="max-width: 150px"> <span style="font-size:32px"> - 01703587911</span>
+                      <img src="/images/bkash-send-money.png" alt="" style="max-width: 150px"> <span style="font-size:32px"> - 017 03 58 79 11</span>
+                      <hr>
+                      যোগাযোগ করুনঃ 017 78 57 33 96
                       <hr>
                       <a href="http://chalanbeel.com">Chalanbeel Technology</a>
                     </div>
