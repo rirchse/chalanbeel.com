@@ -122,6 +122,9 @@ class UsersController extends Controller
           $long = $arr[1];
         }
 
+        $data['lat'] = $lat;
+        $data['lng'] = $long;
+
         //save image//
         if($request->hasFile('profile_image'))
         {
@@ -235,6 +238,16 @@ class UsersController extends Controller
 
         ));
 
+        $data = $request->all();
+        if(isset($data['_token']))
+        {
+          unset($data['_token']);
+        }
+        if(isset($data['_method']))
+        {
+          unset($data['_method']);
+        }
+
         //get exists image
         $exuser = User::find($id);
 
@@ -247,60 +260,52 @@ class UsersController extends Controller
           $long = $arr[1];
         }
 
-        //save the data to the database
-        $update = User::find($id);
-        $update->name       = $request->input('name');
-        $update->contact         = $request->input('contact');
-        $update->email           = $request->input('email');
-        $update->username        = $request->input('contact');
-        $update->work_at         = $request->input('work_at');
-        $update->profession      = $request->input('profession');
-        $update->join_date       = date('Y-m-d', strtotime($request->join_date));
-        $update->location     = $request->input('location');
-        $update->details         = $request->input('details');
-        $update->mac     = $request->input('mac');
-        $update->lat_long       = $request->input('lat_long');
-        $update->date_of_birth   = $request->date_of_birth;
-        $update->nid_no          = $request->NID;
-        $update->updated_by      = $user_id;
-        $update->status          = $request->status;
-        $update->lat          = $lat;
-        $update->lng          = $long;
-
-        //save image//
-        if($request->hasFile('profile_image')){
+        $data['lat'] = $lat;
+        $data['lng'] = $long;
+        
+        try {
+          //save image//
+          if($request->hasFile('profile_image')){
             $image    = $request->file('profile_image');
             $filename = time() . '.' . $image->getClientOriginalExtension();
             $location = ('images/profile/' . $filename);
             Image::make($image)->resize(400, 400)->save($location);
 
             $update->image = $filename;
+          }
+
+          if($request->hasFile('nid_image')) {
+              $image    = $request->file('nid_image');
+              $filename = time() . '.' . $image->getClientOriginalExtension();
+              $location = ('images/nid/' . $filename);
+              Image::make($image)->resize(600, 360)->save($location);
+
+              $update->nid_image = $filename;
+          }
+
+          //update user data
+          User::where('contact', $data['contact'])
+          ->update($data);
+
+          if($request->hasFile('profile_image')){
+              //delete exists image
+              $ex_img = 'images/profile/'.$exuser->image;
+              if(File::exists($ex_img)){
+                  File::delete($ex_img);
+              }
+          }
+
+          if($request->hasFile('nid_image')) {
+              //delete exists image
+              $ex_nid = 'images/nid/'.$exuser->nid_image;
+              if(File::exists($ex_nid)){
+                  File::delete($ex_nid);
+              }
+          }
         }
-
-        if($request->hasFile('nid_image')) {
-            $image    = $request->file('nid_image');
-            $filename = time() . '.' . $image->getClientOriginalExtension();
-            $location = ('images/nid/' . $filename);
-            Image::make($image)->resize(600, 360)->save($location);
-
-            $update->nid_image = $filename;
-        }
-
-        $update->save();
-
-        if($request->hasFile('profile_image')){
-            //delete exists image
-            $ex_img = 'images/profile/'.$exuser->image;
-            if(File::exists($ex_img)){
-                File::delete($ex_img);
-            }
-        }
-        if($request->hasFile('nid_image')) {
-            //delete exists image
-            $ex_nid = 'images/nid/'.$exuser->nid_image;
-            if(File::exists($ex_nid)){
-                File::delete($ex_nid);
-            }
+        catch(\Exception $e)
+        {
+          return $e->getMessage();
         }
 
         if($request->ajax())
@@ -308,9 +313,7 @@ class UsersController extends Controller
           return response()->json([
             'message' => 'success'
           ], 200);
-        }
-
-        
+        }        
 
         //set flash data with success message
         Session::flash('success', 'User Information successfully updated.');

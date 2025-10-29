@@ -88,7 +88,7 @@
                                     <option value="PON1">PON1</option>
                                     <option value="PON2">PON2</option>
                                     <option value="PON3">PON3</option>
-                                    <option value="PON4">PON4</option>
+                                    {{-- <option value="PON4">PON4</option> --}}
                                     <option value="RADIO">RADIO</option>
                                   </select>
                               </div>
@@ -181,26 +181,26 @@
         </div>
     </div>
 
-    <!-- Modal -->
-<div class="modal fade" id="map_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-dialog-scrollable" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Google Map</h4>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <div id="map" style="width:100%; height:400px; margin-top:0"></div>
+  <!-- Modal -->
+  <div class="modal fade" id="map_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Google Map</h4>
         </div>
-      </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <div id="map" style="width:100%; height:400px; margin-top:0"></div>
+          </div>
+        </div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-info" data-dismiss="modal">Done</button>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" data-dismiss="modal">Done</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 @endsection
 
 @section('scripts')
@@ -257,7 +257,7 @@
           elm.ip.options[0] = new Option(data.user.ip, data.user.ip, false, true);
           // checkIP(document.getElementById('pon'));
           // elm.ip.value = data.user.ip;
-        }        
+        }
         
         elm.mac.value = data.user.mac;
 

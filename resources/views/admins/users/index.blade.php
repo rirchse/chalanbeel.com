@@ -58,9 +58,9 @@ $source = new SourceCtrl;
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Contact</th>
-                                <th>Location</th>
-                                <th>Lat, Long</th>
+                                <th>Service</th>
                                 <th>Payment Date</th>
+                                <th>Lat, Long</th>
                                 <th>Status</th>
                                 <th class="disabled-sorting text-right">Actions</th>
                             </tr>
@@ -70,9 +70,9 @@ $source = new SourceCtrl;
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Contact</th>
-                                <th>Location</th>
-                                <th>Lat, Long</th>
+                                <th>Service</th>
                                 <th>Payment Date</th>
+                                <th>Lat, Long</th>
                                 <th>Status</th>
                                 <th class="text-right" width="180">Actions</th>
                             </tr>
@@ -85,9 +85,9 @@ $source = new SourceCtrl;
                                 <td>{{$key+1}}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->contact }}</td>
-                                <td>{{ $user->address }}</td>
-                                <td>{{ $user->lat.' '. $user->lng }}</td>
+                                <td>{{ $user->service_type }}</td>
                                 <td>{{ $source->dtformat($user->payment_date) }}</td>
+                                <td>{{ $user->lat.' '. $user->lng }}</td>
                                 <td>{{$user->status}}</td>
                                 <td class="text-right">
                                     <a href="{{route('user.show', $user->id)}}" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
@@ -108,9 +108,6 @@ $source = new SourceCtrl;
         </div> <!--  end card  -->
     </div> <!-- end col-md-12 -->
 </div> <!-- end row -->
-
-
-
 
 <!-- Modal -->
 <div class="modal fade" id="editForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -142,6 +139,15 @@ $source = new SourceCtrl;
           <input type="date" name="payment_date" class="form-control" placeholder="Join Date">
         </div>
         <div class="form-group">
+            <select name="location" id="" class="form-control">
+                <option value="">Select POP/OLT</option>
+                <option value="Bildahor">Bildahor</option>
+                <option value="Nazirpur">Nazirpur</option>
+                <option value="Chanchkoir">Chanchkoir</option>
+                <option value="Ganadanagar">Ganadanagar</option>
+            </select>
+        </div>
+        <div class="form-group">
           <select name="status" class="form-control" id="status">
             <option value="">Select One</option>
             <option value="Active">Active</option>
@@ -151,13 +157,44 @@ $source = new SourceCtrl;
           </select>
         </div>
         <div class="form-group">
-          <input type="text" name="lat_long" id="lat_long" class="form-control" placeholder="Lat Long">
+            <select name="service_type" id="service_type" class="form-control" onchange="selectService(this)">
+              <option value="">Service Type:</option>
+              <option value="PPPoE">PPPoE</option>
+              <option value="Static">Static</option>
+            </select>
         </div>
+        <div class="form-group">
+            <select name="pon" id="pon" class="form-control" onchange="checkIP(this)">
+              <option value="">Select PON:</option>
+              <option value="PON1">PON1</option>
+              <option value="PON2">PON2</option>
+              <option value="PON3">PON3</option>
+              {{-- <option value="PON4">PON4</option> --}}
+              <option value="RADIO">RADIO</option>
+            </select>
+        </div>
+        <div id="serviceParts">
+          
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" name="mac" placeholder="ONU MAC Address:">
+        </div>
+        {{-- <div class="form-group">
+          <input type="text" name="lat_long" id="lat_long" class="form-control" placeholder="Lat Long">
+        </div> --}}
+        <div class="input-group">
+          <input type="text" name="lat_long" id="lat_long" class="form-control" placeholder="Lat Long">
+          <span class="input-group-addon">
+            <button type="button" data-toggle="modal" data-target="#map_modal">
+              <i class="fa fa-map"></i>
+            </button>
+          </span>
+      </div>
       </div>
 
-      <div class="form-group">
+      {{-- <div class="form-group">
         <div id="map" style="width:100%; height:400px; margin-top:0"></div>
-      </div>
+      </div> --}}
 
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -170,11 +207,81 @@ $source = new SourceCtrl;
   </div>
 </div>
 
+  <!-- Map Modal -->
+  <div class="modal fade" id="map_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Google Map</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <div id="map" style="width:100%; height:400px; margin-top:0"></div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" data-dismiss="modal">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 @endsection
 
 @section('scripts')
 <script>
+    function selectService(e)
+  {
+    const serviceParts = document.getElementById('serviceParts');
+    let service = e.options[e.selectedIndex];
+
+    if(service.value == 'PPPoE')
+    {
+      serviceParts.innerHTML = '<div class="form-group">'+
+                                  '<input type="text" name="username" id="" class="form-control" placeholder="Username">'+
+                              '</div>'+
+                              '<div class="form-group">'+
+                                  '<input type="text" name="password" id="" class="form-control" placeholder="Password">'+
+                              '</div>';;
+    }
+    else
+    {
+      serviceParts.innerHTML = '<div class="form-group">'+
+                                  '<select name="ip" id="static" class="form-control">'+
+                                    '<option value="">Select IP:</option>'+
+                                  '</select>'+
+                              '</div>';
+    }
+  }
+
+  function checkIP(e)
+  {    
+    const service_type = document.getElementById('service_type');
+    if(service_type.options[service_type.selectedIndex].value == 'Static')
+    {
+      const static = document.getElementById('static');
+      const ipblock = e.options[e.selectedIndex];
+      $.ajax({
+        url: '{{route("user.check-ip", "")}}/'+ipblock.value,
+        type: 'GET',
+        success: function(data){
+          let options = '<option value="">Select IP</option>';
+          data.ip.forEach((i) => {
+            options += '<option value="'+i+'">'+i+'</option>';
+          });
+
+          static.innerHTML = options;
+        },
+        error: function(data){
+          console.error(data);
+        }
+      });
+    }
+    
+  }
+
   function showModal(e)
   {
     const editform = document.getElementById('submitEditForm');
@@ -183,18 +290,50 @@ $source = new SourceCtrl;
       url: '{{route("user.show", "")}}/'+e.dataset.id,
       success: function(data){
         let elm = editform.elements;
-        // let status = data.user.status ? data.user.status : '';
         elm.id.value = data.user.id;
         elm.name.value = data.user.name;
         elm.contact.value = data.user.contact;
         elm.address.value = data.user.address;
-        elm.lat_long.value = data.user.lat ? data.user.lat+', '+data.user.lng : '';
+        elm.lat_long.value = data.user.lat_long;
+        // elm.lat_long.value = data.user.lat ? data.user.lat+', '+data.user.lng : '';
         elm.join_date.value = data.user.join_date;
+        elm.payment_date.value = data.user.payment_date;
         elm.lat_long.parentNode.classList.add('is-focused');
         if(data.user.status)
         {
           elm.status.options[0] = new Option(data.user.status, data.user.status, false, true);
         }
+
+        if(data.user.location)
+        {
+          elm.location.options[0] = new Option(data.user.location, data.user.location, false, true);
+        }
+
+        if(data.user.service_type)
+        {
+          elm.service_type.options[0] = new Option(data.user.service_type, data.user.service_type, false, true);
+
+          selectService(document.getElementById('service_type'));
+        }
+
+        if(data.user.pon)
+        {
+          elm.pon.options[0] = new Option(data.user.pon, data.user.pon, false, true);
+        }
+
+        if(data.user.service_type == 'PPPoE')
+        {
+          elm.username.value = data.user.username;
+          elm.password.value = data.user.username;
+        }
+        else
+        {
+          elm.ip.options[0] = new Option(data.user.ip, data.user.ip, false, true);
+          // checkIP(document.getElementById('pon'));
+          // elm.ip.value = data.user.ip;
+        }
+
+        elm.mac.value = data.user.mac;
         
       },
       error: function(data){
