@@ -30,7 +30,7 @@ $source = new SourceCtrl;
                 <div class="toolbar">
                     <form action="{{route('user.search')}}" method="POST" class="form/-inline">
                       @csrf
-                      <div class="col-md-5">
+                      <div class="col-md-3">
                         <div class="form-group">
                           <select name="status" id="status" class="form-control">
                             <option value="">Select Status</option>
@@ -41,12 +41,21 @@ $source = new SourceCtrl;
                           </select>
                         </div>
                       </div>
-                      <div class="col-md-5">
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <select name="service_type" id="service_type" class="form-control">
+                            <option value="">Select Service Type</option>
+                            <option value="PPPoE" {{$service_type == 'PPPoE'? 'selected': ''}}>PPPoE</option>
+                            <option value="Static" {{$service_type == 'Static'? 'selected': ''}} >Static</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
                         <div class="form-control">
                           <input type="date" name="date" class="form-control" value="{{$date}}">
                         </div>
                       </div>
-                      <div class="col-md-2">
+                      <div class="col-md-3">
                         <button type="submit" class="btn btn-info btn-sm btn-block">Submit</button>
                       </div>
                     </form>

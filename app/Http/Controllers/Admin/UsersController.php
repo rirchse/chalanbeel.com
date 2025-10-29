@@ -39,20 +39,26 @@ class UsersController extends Controller
 
     public function index(Request $request)
     {
-      $status = $date = '';
+      $status = $date = $service_type = '';
+      
+      $status = $request->input('status');
+      $date = $request->input('date');
+      $service_type = $request->input('service_type');
+
       // Get all users from database
-      $users = User::orderBy('id', 'DESC');
-      if($request->status)
+      $users = User::orderBy('id', 'DESC')
+      ->when($status, function($query, $status)
       {
-        $users = $users->where('status', $request->status);
-        $status = $request->status;
-      }
-      if($request->date)
+        $query->where('status', $status);
+      })
+      ->when($date, function($query, $date)
       {
-        $users = $users->where('payment_date', 'like',  '%'.$request->date);
-        $date = $request->date;
-      }
-      $users = $users->get();
+        $query->where('payment_date', 'like',  '%'.$date);
+      })
+      ->when($service_type, function($query, $service_type)
+      {
+        $query->where('service_type', $service_type);
+      })->get();
 
       // if($request->ajax())
       // {
@@ -61,7 +67,7 @@ class UsersController extends Controller
       //   ], 200);
       // }
 
-      return view('admins.users.index', compact('users', 'status', 'date'));
+      return view('admins.users.index', compact('users', 'status', 'date', 'service_type'));
     }
 
     /**
