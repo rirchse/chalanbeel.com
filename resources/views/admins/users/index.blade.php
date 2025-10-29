@@ -43,7 +43,7 @@ $source = new SourceCtrl;
                       </div>
                       <div class="col-md-3">
                         <div class="form-group">
-                          <select name="service_type" id="service_type" class="form-control">
+                          <select name="service_type" id="service" class="form-control">
                             <option value="">Select Service Type</option>
                             <option value="PPPoE" {{$service_type == 'PPPoE'? 'selected': ''}}>PPPoE</option>
                             <option value="Static" {{$service_type == 'Static'? 'selected': ''}} >Static</option>
@@ -188,9 +188,6 @@ $source = new SourceCtrl;
         <div class="form-group">
             <input type="text" class="form-control" name="mac" placeholder="ONU MAC Address:">
         </div>
-        {{-- <div class="form-group">
-          <input type="text" name="lat_long" id="lat_long" class="form-control" placeholder="Lat Long">
-        </div> --}}
         <div class="input-group">
           <input type="text" name="lat_long" id="lat_long" class="form-control" placeholder="Lat Long">
           <span class="input-group-addon">
@@ -200,10 +197,6 @@ $source = new SourceCtrl;
           </span>
       </div>
       </div>
-
-      {{-- <div class="form-group">
-        <div id="map" style="width:100%; height:400px; margin-top:0"></div>
-      </div> --}}
 
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -266,14 +259,15 @@ $source = new SourceCtrl;
   }
 
   function checkIP(e)
-  {    
+  {
     const service_type = document.getElementById('service_type');
     if(service_type.options[service_type.selectedIndex].value == 'Static')
     {
       const static = document.getElementById('static');
-      const ipblock = e.options[e.selectedIndex];
+      const pon = e.options[e.selectedIndex];
+
       $.ajax({
-        url: '{{route("user.check-ip", "")}}/'+ipblock.value,
+        url: '{{route("user.check-ip", "")}}/'+pon.value,
         type: 'GET',
         success: function(data){
           let options = '<option value="">Select IP</option>';
@@ -294,6 +288,7 @@ $source = new SourceCtrl;
   function showModal(e)
   {
     const editform = document.getElementById('submitEditForm');
+    
     $.ajax({
       type: 'GET',
       url: '{{route("user.show", "")}}/'+e.dataset.id,
@@ -335,7 +330,7 @@ $source = new SourceCtrl;
           elm.username.value = data.user.username;
           elm.password.value = data.user.username;
         }
-        else
+        else if(data.user.service_type == 'Static')
         {
           elm.ip.options[0] = new Option(data.user.ip, data.user.ip, false, true);
           // checkIP(document.getElementById('pon'));
@@ -365,6 +360,7 @@ $source = new SourceCtrl;
         'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content')
       }
     });
+
     $.ajax({
       type: 'POST',
       url: '{{route("user.update", "")}}/'+editform.elements.id.value,
