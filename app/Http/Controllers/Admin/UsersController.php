@@ -238,7 +238,7 @@ class UsersController extends Controller
             'mac'   => 'max:255|nullable',
             'left_long'     => 'max:255|nullable',
             'date_of_birth' => 'max:30|nullable',
-            'NID'           => 'max:17|nullable',
+            'nid_no'           => 'max:17|nullable',
             'details'       => 'max:999|nullable',
             'nid_image'     => 'image|nullable',
             'profile_image' => 'image|nullable'
@@ -273,42 +273,48 @@ class UsersController extends Controller
 
         try {
           //save image//
-          if($request->hasFile('profile_image')){
+          if($request->hasFile('profile_image'))
+          {
             $image    = $request->file('profile_image');
             $filename = time() . '.' . $image->getClientOriginalExtension();
             $location = ('images/profile/' . $filename);
             Image::make($image)->resize(400, 400)->save($location);
 
-            $update->image = $filename;
+            $data['image'] = $filename;
           }
 
-          if($request->hasFile('nid_image')) {
-              $image    = $request->file('nid_image');
-              $filename = time() . '.' . $image->getClientOriginalExtension();
-              $location = ('images/nid/' . $filename);
-              Image::make($image)->resize(600, 360)->save($location);
+          if($request->hasFile('nid_image'))
+          {
+            $image    = $request->file('nid_image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $location = ('images/nid/' . $filename);
+            Image::make($image)->resize(600, 360)->save($location);
 
-              $update->nid_image = $filename;
+            $data['nid_image'] = $filename;
           }
 
-          //update user data
-          User::where('contact', $data['contact'])
+          // update user data
+          User::where('id', $id)
           ->update($data);
 
-          if($request->hasFile('profile_image')){
-              //delete exists image
-              $ex_img = 'images/profile/'.$exuser->image;
-              if(File::exists($ex_img)){
-                  File::delete($ex_img);
-              }
+          if($request->hasFile('profile_image'))
+          {
+            //delete exists image
+            $ex_img = 'images/profile/'.$exuser->image;
+            if(File::exists($ex_img))
+            {
+              File::delete($ex_img);
+            }
           }
 
-          if($request->hasFile('nid_image')) {
-              //delete exists image
-              $ex_nid = 'images/nid/'.$exuser->nid_image;
-              if(File::exists($ex_nid)){
-                  File::delete($ex_nid);
-              }
+          if($request->hasFile('nid_image'))
+          {
+            //delete exists image
+            $ex_nid = 'images/nid/'.$exuser->nid_image;
+            if(File::exists($ex_nid))
+            {
+              File::delete($ex_nid);
+            }
           }
         }
         catch(\Exception $e)

@@ -68,8 +68,8 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group label-floating">
-                                    {{ Form::label('NID', 'NID Card Number', ['class' => 'control-label']) }}
-                                    {{ Form::text('NID', $user->nid_no, ['class' => 'form-control']) }}
+                                    {{ Form::label('nid_no', 'National ID Card Number', ['class' => 'control-label']) }}
+                                    {{ Form::text('nid_no', $user->nid_no, ['class' => 'form-control']) }}
                                 </div>
                                 <div class="fileinput fileinput-new text-center pull-right" data-provides="fileinput" style="width:100%;margin-bottom:15px;border:1px solid #eee">
                                     <div class="fileinput-new thumbnail" style="width:100%;">
