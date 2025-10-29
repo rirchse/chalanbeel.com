@@ -69,6 +69,7 @@ $source = new SourceCtrl;
                                 <th>Contact</th>
                                 <th>Service</th>
                                 <th>Payment Date</th>
+                                <th>IP</th>
                                 <th>Lat, Long</th>
                                 <th>Status</th>
                                 <th class="disabled-sorting text-right">Actions</th>
@@ -81,6 +82,7 @@ $source = new SourceCtrl;
                                 <th>Contact</th>
                                 <th>Service</th>
                                 <th>Payment Date</th>
+                                <th>IP</th>
                                 <th>Lat, Long</th>
                                 <th>Status</th>
                                 <th class="text-right" width="180">Actions</th>
@@ -96,6 +98,7 @@ $source = new SourceCtrl;
                                 <td>{{ $user->contact }}</td>
                                 <td>{{ $user->service_type }}</td>
                                 <td>{{ $source->dtformat($user->payment_date) }}</td>
+                                <td>{{ $user->ip }}</td>
                                 <td>{{ $user->lat.' '. $user->lng }}</td>
                                 <td>{{$user->status}}</td>
                                 <td class="text-right">
@@ -288,7 +291,7 @@ $source = new SourceCtrl;
   function showModal(e)
   {
     const editform = document.getElementById('submitEditForm');
-    
+
     $.ajax({
       type: 'GET',
       url: '{{route("user.show", "")}}/'+e.dataset.id,
