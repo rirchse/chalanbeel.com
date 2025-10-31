@@ -1,3 +1,9 @@
+@php
+use \App\Http\Controllers\SourceCtrl;
+$source = new SourceCtrl;
+    
+@endphp
+
 @extends('user')
 @section('title', 'Home')
 @section('content')
@@ -9,19 +15,18 @@
             <table class="table table-bordered">
                 <tr>
                     <th>Join Date</th>
-                    <td>{{$user->join_date? date('d M Y', strtotime($user->join_date)) : ''}}</td>
+                    <td>{{$source->dtformat($user->join_date)}}</td>
                 </tr>
                 <tr>
                     <th>Billing Date</th>
-                    <td>
-                        @php
-                        $billing_date = App\Service::where('user_id', $user->id)->first()->billing_date;
-                        @endphp
-                        {{$billing_date ? date('d M Y', strtotime($billing_date)) : ''}}
-                    </td>
+                    <td>{{$source->dtformat($user->billing_date)}}</td>
                 </tr>
                 <tr>
-                    <th>Service</th>
+                    <th>Next Payment Date</th>
+                    <td>{{$source->dtformat($user->payment_date)}}</td>
+                </tr>
+                <tr>
+                    <th>Package</th>
                     <td>
                         @foreach($services as $service)
                         {{$service->speed.' '.$service->time_limit}}
@@ -29,6 +34,12 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>Status</th>
+                    <td>
+                        {{$user->status}}
+                    </td>
+                </tr>
+                {{-- <tr>
                     <th>Total Payments</th>
                     <td>
                         <a href="/view_payments">Total Payments</a>
@@ -39,12 +50,12 @@
                     <td>
                         <a href="/view_due_bills">Due Payments</a>
                     </td>
-                </tr>
+                </tr> --}}
                 <tr>
                     <td colspan="2">
                         <form action="{{ route('bkash.pay') }}" method="POST">
                             @csrf
-                        <button type="submit" class="btn btn-lg btn-warning btn-block" href="{{App\Service::where('user_id', $user->id)->first()->payment_url}}"> <img src="/images/icons/bkash.png" alt="" style="width:100px"> Pay Now</button>
+                        <button type="submit" class="btn btn-lg btn-warning btn-block" href="{{App\Service::where('user_id', $user->id)->first()}}"> <img src="/images/icons/bkash.png" alt="" style="width:100px"> Pay Now</button>
                         </form>
                     </td>
                 </tr>

@@ -1,3 +1,10 @@
+<?php
+use \App\Http\Controllers\SourceCtrl;
+$source = new SourceCtrl;
+    
+?>
+
+
 <?php $__env->startSection('title', 'Home'); ?>
 <?php $__env->startSection('content'); ?>
 
@@ -8,20 +15,18 @@
             <table class="table table-bordered">
                 <tr>
                     <th>Join Date</th>
-                    <td><?php echo e($user->join_date? date('d M Y', strtotime($user->join_date)) : ''); ?></td>
+                    <td><?php echo e($source->dtformat($user->join_date)); ?></td>
                 </tr>
                 <tr>
                     <th>Billing Date</th>
-                    <td>
-                        <?php
-                        $billing_date = App\Service::where('user_id', $user->id)->first()->billing_date;
-                        ?>
-                        <?php echo e($billing_date ? date('d M Y', strtotime($billing_date)) : ''); ?>
-
-                    </td>
+                    <td><?php echo e($source->dtformat($user->billing_date)); ?></td>
                 </tr>
                 <tr>
-                    <th>Service</th>
+                    <th>Next Payment Date</th>
+                    <td><?php echo e($source->dtformat($user->payment_date)); ?></td>
+                </tr>
+                <tr>
+                    <th>Package</th>
                     <td>
                         <?php $__currentLoopData = $services; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $service): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <?php echo e($service->speed.' '.$service->time_limit); ?>
@@ -30,22 +35,18 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>Total Payments</th>
+                    <th>Status</th>
                     <td>
-                        <a href="/view_payments">Total Payments</a>
+                        <?php echo e($user->status); ?>
+
                     </td>
                 </tr>
-                <tr>
-                    <th>Due Bills</th>
-                    <td>
-                        <a href="/view_due_bills">Due Payments</a>
-                    </td>
-                </tr>
+                
                 <tr>
                     <td colspan="2">
                         <form action="<?php echo e(route('bkash.pay')); ?>" method="POST">
                             <?php echo csrf_field(); ?>
-                        <button type="submit" class="btn btn-lg btn-warning btn-block" href="<?php echo e(App\Service::where('user_id', $user->id)->first()->payment_url); ?>"> <img src="/images/icons/bkash.png" alt="" style="width:100px"> Pay Now</button>
+                        <button type="submit" class="btn btn-lg btn-warning btn-block" href="<?php echo e(App\Service::where('user_id', $user->id)->first()); ?>"> <img src="/images/icons/bkash.png" alt="" style="width:100px"> Pay Now</button>
                         </form>
                     </td>
                 </tr>
