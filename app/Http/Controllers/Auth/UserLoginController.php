@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
+use Session;
 
 class UserLoginController extends Controller
 {
@@ -33,6 +34,8 @@ class UserLoginController extends Controller
     		// if successful, then redirect to their intended location
         return redirect()->intended('/home');
     	}
+
+      Session::flash('error', 'Username or Password does not match');
 
     	// if unsuccessful, then redirect back to the login with form data
     	return redirect()->back()->withInput($request->only('email', 'remember'));
