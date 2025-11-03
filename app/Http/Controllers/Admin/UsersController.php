@@ -187,7 +187,7 @@ class UsersController extends Controller
     public function show($id, Request $request)
     {
         //Grab user data by id
-        $user = User::find($id);
+        $user = User::with(['package:id,speed'])->find($id);
 
         if($request->ajax())
         {

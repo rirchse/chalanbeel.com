@@ -248,7 +248,7 @@ $source = new SourceCtrl;
                                   '<input type="text" name="username" id="" class="form-control" placeholder="Username">'+
                               '</div>'+
                               '<div class="form-group">'+
-                                  '<input type="text" name="password" id="" class="form-control" placeholder="Password">'+
+                                  '<input type="text" name="service_password" id="" class="form-control" placeholder="PPPoE Password">'+
                               '</div>';;
     }
     else
@@ -316,6 +316,11 @@ $source = new SourceCtrl;
           elm.location.options[0] = new Option(data.user.location, data.user.location, false, true);
         }
 
+        if(data.user.package)
+        {
+          elm.package.options[0] = new Option(data.user.package.speed, data.user.package.id, false, true);
+        }
+
         if(data.user.service_type)
         {
           elm.service_type.options[0] = new Option(data.user.service_type, data.user.service_type, false, true);
@@ -331,7 +336,7 @@ $source = new SourceCtrl;
         if(data.user.service_type == 'PPPoE')
         {
           elm.username.value = data.user.username;
-          elm.password.value = data.user.username;
+          elm.service_password.value = data.user.service_password;
         }
         else if(data.user.service_type == 'Static')
         {
