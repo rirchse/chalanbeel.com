@@ -13,6 +13,14 @@ $source = new SourceCtrl;
     <div class="col-md-6">
         <div class="card card-stats">
             <table class="table table-bordered">
+              <tr>
+                <th>Name:</th>
+                <th><?php echo e($user->name); ?></th>
+              </tr>
+              <tr>
+                <th>Contact:</th>
+                <th><?php echo e($user->contact); ?></th>
+              </tr>
                 <tr>
                     <th>Join Date</th>
                     <td><?php echo e($source->dtformat($user->join_date)); ?></td>

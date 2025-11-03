@@ -13,7 +13,7 @@
                 </div>
                 <div class="info">
                     <a data-toggle="collapse" href="#collapseExample" class="collapsed">
-                        <?php echo e(Auth::user()->full_name); ?>
+                        <?php echo e(Auth::user()->name); ?>
 
                         <b class="caret"></b>
                     </a>

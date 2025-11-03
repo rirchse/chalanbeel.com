@@ -13,6 +13,14 @@ $source = new SourceCtrl;
     <div class="col-md-6">
         <div class="card card-stats">
             <table class="table table-bordered">
+              <tr>
+                <th>Name:</th>
+                <th>{{$user->name}}</th>
+              </tr>
+              <tr>
+                <th>Contact:</th>
+                <th>{{$user->contact}}</th>
+              </tr>
                 <tr>
                     <th>Join Date</th>
                     <td>{{$source->dtformat($user->join_date)}}</td>
