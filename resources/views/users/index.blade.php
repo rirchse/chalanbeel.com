@@ -35,11 +35,11 @@ $source = new SourceCtrl;
                 </tr>
                 <tr>
                     <th>Package</th>
-                    <td>{{$user->package->speed}}</td>
+                    <td>{{$user->package?$user->package->speed:''}}</td>
                 </tr>
                 <tr>
                     <th>Price</th>
-                    <td>{{$user->package->price}} Taka</td>
+                    <td>{{$user->package?$user->package->price:''}} Taka</td>
                 </tr>
                 <tr>
                     <th>Status</th>
