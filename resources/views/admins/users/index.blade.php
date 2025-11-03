@@ -169,6 +169,14 @@ $source = new SourceCtrl;
           </select>
         </div>
         <div class="form-group">
+          <select name="package_id" id="package" class="form-control">
+            <option value="">Select Package:</option>
+            @foreach($packages as $package)
+            <option value="{{$package->id}}">{{$package->speed}}</option>
+            @endforeach
+          </select>
+        </div>
+        <div class="form-group">
             <select name="service_type" id="service_type" class="form-control" onchange="selectService(this)">
               <option value="">Service Type:</option>
               <option value="PPPoE">PPPoE</option>
@@ -237,9 +245,9 @@ $source = new SourceCtrl;
 
 @section('scripts')
 <script>
-    function selectService(e)
+  const serviceParts = document.getElementById('serviceParts');
+  function selectService(e)
   {
-    const serviceParts = document.getElementById('serviceParts');
     let service = e.options[e.selectedIndex];
 
     if(service.value == 'PPPoE')
@@ -316,33 +324,46 @@ $source = new SourceCtrl;
           elm.location.options[0] = new Option(data.user.location, data.user.location, false, true);
         }
 
-        if(data.user.package)
+        if(data.user.package == null)
+        {
+          elm.package.options[0] = new Option('Select Package', '', false, true);
+        }
+        else
         {
           elm.package.options[0] = new Option(data.user.package.speed, data.user.package.id, false, true);
         }
 
-        if(data.user.service_type)
+        if(data.user.service_type == null)
+        {
+          elm.service_type.options[0] = new Option('Select Service', '', false, true);
+        }
+        else
         {
           elm.service_type.options[0] = new Option(data.user.service_type, data.user.service_type, false, true);
 
           selectService(document.getElementById('service_type'));
+
+          if(data.user.service_type == 'PPPoE')
+          {
+            elm.username.value = data.user.username;
+            elm.service_password.value = data.user.service_password;
+          }
+          else if(data.user.service_type == 'Static')
+          {
+            elm.ip.options[0] = new Option(data.user.ip, data.user.ip, false, true);
+
+            // checkIP(document.getElementById('pon'));
+            // elm.ip.value = data.user.ip;
+          }
+          else
+          {
+            serviceParts.innerHTML = '';
+          }
         }
 
         if(data.user.pon)
         {
           elm.pon.options[0] = new Option(data.user.pon, data.user.pon, false, true);
-        }
-
-        if(data.user.service_type == 'PPPoE')
-        {
-          elm.username.value = data.user.username;
-          elm.service_password.value = data.user.service_password;
-        }
-        else if(data.user.service_type == 'Static')
-        {
-          elm.ip.options[0] = new Option(data.user.ip, data.user.ip, false, true);
-          // checkIP(document.getElementById('pon'));
-          // elm.ip.value = data.user.ip;
         }
 
         elm.mac.value = data.user.mac;

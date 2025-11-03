@@ -60,6 +60,10 @@ class UsersController extends Controller
         $query->where('service_type', $service_type);
       })->get();
 
+      $packages = Package::where('status', 'Active')
+      ->select('id', 'speed')
+      ->get();
+
       // if($request->ajax())
       // {
       //   return response()->json([
@@ -67,7 +71,7 @@ class UsersController extends Controller
       //   ], 200);
       // }
 
-      return view('admins.users.index', compact('users', 'status', 'date', 'service_type'));
+      return view('admins.users.index', compact('users', 'status', 'date', 'service_type', 'packages'));
     }
 
     /**
