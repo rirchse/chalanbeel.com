@@ -52,6 +52,14 @@ $source = new SourceCtrl;
                             <td><?php echo e($user->status); ?></td>
                         </tr>
                         <tr>
+                            <th>Package:</th>
+                            <td><?php echo e($user->package->speed); ?></td>
+                        </tr>
+                        <tr>
+                            <th>Package Price:</th>
+                            <td><?php echo e($user->package->price); ?></td>
+                        </tr>
+                        <tr>
                             <th>Service Type:</th>
                             <td><?php echo e($user->service_type); ?></td>
                         </tr>
@@ -70,6 +78,10 @@ $source = new SourceCtrl;
                         <tr>
                             <th>Username:</th>
                             <td><?php echo e($user->username); ?></td>
+                        </tr>
+                        <tr>
+                            <th>Service Password:</th>
+                            <td><?php echo e($user->service_password); ?></td>
                         </tr>
                         <tr>
                             <th>Join Date:</th>

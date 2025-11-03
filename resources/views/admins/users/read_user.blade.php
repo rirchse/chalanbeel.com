@@ -52,6 +52,14 @@ $source = new SourceCtrl;
                             <td>{{$user->status}}</td>
                         </tr>
                         <tr>
+                            <th>Package:</th>
+                            <td>{{$user->package->speed}}</td>
+                        </tr>
+                        <tr>
+                            <th>Package Price:</th>
+                            <td>{{$user->package->price}}</td>
+                        </tr>
+                        <tr>
                             <th>Service Type:</th>
                             <td>{{$user->service_type}}</td>
                         </tr>
@@ -70,6 +78,10 @@ $source = new SourceCtrl;
                         <tr>
                             <th>Username:</th>
                             <td>{{$user->username}}</td>
+                        </tr>
+                        <tr>
+                            <th>Service Password:</th>
+                            <td>{{$user->service_password}}</td>
                         </tr>
                         <tr>
                             <th>Join Date:</th>

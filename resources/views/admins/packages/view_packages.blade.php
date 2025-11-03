@@ -20,11 +20,7 @@
                             <tr>
                                 <th>Speed</th>
                                 <th>Time Limit</th>
-                                <th>service_mode</th>
-                                <th>server</th>
-                                <th>connection</th>
                                 <th>Price</th>
-                                <th>Discount</th>
                                 <th>Status</th>
                                 <th class="disabled-sorting text-right">Actions</th>
                             </tr>
@@ -33,11 +29,7 @@
                             <tr>
                                 <th>Speed</th>
                                 <th>Time Limit</th>
-                                <th>service_mode</th>
-                                <th>server</th>
-                                <th>connection</th>
                                 <th>Price</th>
-                                <th>Discount</th>
                                 <th>Status</th>
                                 <th class="text-right">Actions</th>
                             </tr>
@@ -47,11 +39,7 @@
                             <tr>
                                 <td>{{ $package->speed }}</td>
                                 <td>{{ $package->time_limit }}</a></td>
-                                <td>{{ $package->service_mode }}</td>
-                                <td>{{ $package->server }}</td>
-                                <td>{{ $package->connection }}</td>
                                 <td>&#2547;{{ $package->price }}</a></td>
-                                <td>{{ $package->discount }}%</td>
                                 <td>
                                     @if($package->status == 1)
                                     <span class="text-success text-simple" title="Active"><i class="material-icons">check</i></span>

@@ -19,11 +19,7 @@
                             <tr>
                                 <th>Speed</th>
                                 <th>Time Limit</th>
-                                <th>service_mode</th>
-                                <th>server</th>
-                                <th>connection</th>
                                 <th>Price</th>
-                                <th>Discount</th>
                                 <th>Status</th>
                                 <th class="disabled-sorting text-right">Actions</th>
                             </tr>
@@ -32,11 +28,7 @@
                             <tr>
                                 <th>Speed</th>
                                 <th>Time Limit</th>
-                                <th>service_mode</th>
-                                <th>server</th>
-                                <th>connection</th>
                                 <th>Price</th>
-                                <th>Discount</th>
                                 <th>Status</th>
                                 <th class="text-right">Actions</th>
                             </tr>
@@ -46,11 +38,7 @@
                             <tr>
                                 <td><?php echo e($package->speed); ?></td>
                                 <td><?php echo e($package->time_limit); ?></a></td>
-                                <td><?php echo e($package->service_mode); ?></td>
-                                <td><?php echo e($package->server); ?></td>
-                                <td><?php echo e($package->connection); ?></td>
                                 <td>&#2547;<?php echo e($package->price); ?></a></td>
-                                <td><?php echo e($package->discount); ?>%</td>
                                 <td>
                                     <?php if($package->status == 1): ?>
                                     <span class="text-success text-simple" title="Active"><i class="material-icons">check</i></span>

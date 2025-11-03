@@ -79,8 +79,8 @@ class PackageController extends Controller
         //validate the data
         $this->validate($request, array(
 
-            'service'     => 'required|max:255',
-            'connection'  => 'required|max:255',
+            'service'     => 'nullable|max:255',
+            'connection'  => 'nullable|max:255',
             'speed'       => 'required|max:255',
             'time_limit'  => 'required|max:255',
             'price'       => 'required|min:1|max:255',
@@ -89,37 +89,23 @@ class PackageController extends Controller
             'details'     => 'max:255'
         ));
 
-        // $serv_check = Package::where('service', $request->service)->where('connection', $request->connection)->where('time_limit', $request->time_limit)->where('speed', $request->speed)->orderBy('id', 'DESC')->first();
-
-        if ( Package::where('service', $request->service)->where('connection', $request->connection)->where('time_limit', $request->time_limit)->where('speed', $request->speed)->orderBy('id', 'DESC')->first() > 0 ) {
-            //session flashing
-            Session::flash('error', 'The service already created!');
-
-            //return to the show page
-            return redirect('/admin/package/create');
-        }
-
         //store in the database
-        $package = new Package;
-        $package->service        =   $request->service;
-        $package->connection     =   $request->connection;
-        $package->speed          =   $request->speed;
-        $package->time_limit     =   $request->time_limit;
-        $package->price          =   $request->price;
-        $package->discount       =   $request->discount;
-        $package->details        =   $request->details;
-        $package->status         =   1;
-        $package->created_by     =   $user_id;
-
-        $package->save();
-
-        $last_id = Package::orderBy('id', 'DESC')->first()->id;
+        try{
+          $package = Package::updateOrCreate([
+            'speed' => $data['speed']
+          ],
+          $data);
 
         //session flashing
         Session::flash('success', 'New package successfully created!');
 
         //return to the show page
-        return redirect('/admin/package/'.$last_id);
+        return redirect()->route('package.show', $package->id);
+        }
+        catch(\Exception $e)
+        {
+          return $e->getMessage();
+        }
     }
 
     /**
@@ -185,15 +171,15 @@ class PackageController extends Controller
         $user_id = Auth::guard('admin')->user()->id;
         // validate the data
         $this->validate($request, array(
-            'service'     => 'required|max:255',
-            'service_mode'=> 'required|max:255',
+            'service'     => 'nullable|max:255',
+            'service_mode'=> 'nullable|max:255',
             'server'      => 'max:255',
-            'connection'  => 'required|max:255',
+            'connection'  => 'nullable|max:255',
             'speed'       => 'required|max:255',
             'time_limit'  => 'required|max:255',
             'price'       => 'required|min:1|max:255',
             'discount'    => 'max:100',
-            'status'      => 'max:3',
+            'status'      => 'nullable',
             'details'     => 'max:255',
             ));
 
@@ -233,9 +219,9 @@ class PackageController extends Controller
         Package::find($id)->delete();
 
         //flash the message
-        Session::flash('success', 'The service was successfully deleted.');
+        Session::flash('success', 'The package was successfully deleted.');
 
         //return to the index page
-        return redirect('/admin/view_all_services/');
+        return redirect()->route('package.index');
     }
 }

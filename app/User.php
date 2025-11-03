@@ -18,6 +18,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 
         'username', 
+        'service_password', 
         'email', 
         'password', 
         'contact',
@@ -30,6 +31,7 @@ class User extends Authenticatable
         'billing_date',
         'payment_date',
         'date_of_birth',
+        'package_id',
         'service_type',
         'pon',
         'ip',
@@ -61,5 +63,10 @@ class User extends Authenticatable
     public function adminUpdated()
     {
       return $this->belongsTo(Admin::class, 'updated_by');
+    }
+
+    public function package()
+    {
+      return $this->belongsTo(Package::class);
     }
 }

@@ -19,21 +19,29 @@
                                 <label for="contact">Mobile Number(*):</label>
                                 <input type="number" name="contact" class="form-control" minlength="11" maxlength="11" autofocus="true" onkeyup="checkContact(this)" required>
                             </div>
+                          </div>
+                          <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Name(*):</label>
                                 <input type="text" name="name" class="form-control" required>
                             </div>
+                          </div>
+                          <div class="col-md-6">
                             <div class="form-group">
                               <input type="text" name="address" class="form-control" placeholder="Street Address">
                             </div>
+                          </div>
+                          <div class="col-md-6">
+                              <div class="form-group">
+                                  <input type="email" name="email" class="form-control" placeholder="Email Address">
+                              </div>
                             </div>
-                            <div class="col-md-6">
+                          <div class="clearfix"></div>
+                          <div class="col-md-6">
                               <div class="form-group">
                                   <label for="">Join Date:</label>
                                   <input type="date" name="join_date" class="form-control">
                               </div>
-                            </div>
-                            <div class="col-md-6">
                               <div class="form-group">
                                   <label for="">Billing Date:</label>
                                   <input type="date" name="billing_date" class="form-control">
@@ -42,19 +50,16 @@
                                   <label for="">Next Payment Date:</label>
                                   <input type="date" name="payment_date" class="form-control">
                               </div>
-                            </div>
-                            <div class="col-md-6">
                               <div class="form-group">
-                                  <select name="location" id="" class="form-control">
-                                      <option value="">Select POP/OLT</option>
-                                      <option value="Bildahor">Bildahor</option>
-                                      <option value="Nazirpur">Nazirpur</option>
-                                      <option value="Chanchkoir">Chanchkoir</option>
-                                      <option value="Ganadanagar">Ganadanagar</option>
+                                  <select name="status" id="" class="form-control">
+                                    <option value="">Select Status:</option>
+                                    <option value="New">New</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Deactive">Deactive</option>
+                                    <option value="Expire">Expire</option>
+                                    <option value="Cancel">Cancel</option>
                                   </select>
                               </div>
-                            </div>
-                            <div class="col-md-6">
                               <div class="input-group">
                                   <input type="text" name="lat_long" id="lat_long" class="form-control" placeholder="Lat Long">
                                   <span class="input-group-addon">
@@ -64,22 +69,29 @@
                                   </span>
                               </div>
                             </div>
-                            <div class="clearfix"></div>
                             <div class="col-md-6">
                               <div class="form-group">
-                                  <select name="status" id="" class="form-control">
-                                    <option value="">Select Status:</option>
-                                    <option value="New">New</option>
-                                    <option value="Active">Active</option>
-                                    <option value="Expire">Expire</option>
-                                    <option value="Cancel">Cancel</option>
-                                  </select>
+                                <select name="package_id" id="package" class="form-control">
+                                  <option value="">Select Package:</option>
+                                  @foreach($packages as $package)
+                                  <option value="{{$package->id}}">{{$package->speed}}</option>
+                                  @endforeach
+                                </select>
                               </div>
                               <div class="form-group">
                                   <select name="service_type" id="service_type" class="form-control" onchange="selectService(this)">
                                     <option value="">Service Type:</option>
                                     <option value="PPPoE">PPPoE</option>
                                     <option value="Static">Static</option>
+                                  </select>
+                              </div>
+                              <div class="form-group">
+                                  <select name="location" id="" class="form-control">
+                                      <option value="">Select POP/OLT</option>
+                                      <option value="Bildahor">Bildahor</option>
+                                      <option value="Nazirpur">Nazirpur</option>
+                                      <option value="Chanchkoir">Chanchkoir</option>
+                                      <option value="Ganadanagar">Ganadanagar</option>
                                   </select>
                               </div>
                               <div class="form-group">
@@ -99,29 +111,6 @@
                                   <input type="text" class="form-control" name="mac" placeholder="ONU MAC Address:">
                               </div>
                             </div>
-                            <div class="col-md-6">
-                              <div class="form-group">
-                                  <input type="email" name="email" class="form-control" placeholder="Email Address">
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="form-group">
-                                  {{ Form::label('work_at', 'Work At', ['class' => 'control-label']) }}
-                                  {{ Form::text('work_at', null, ['class' => 'form-control datepicker']) }}
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="form-group">
-                                  {{ Form::label('profession', 'Profession', ['class' => 'control-label']) }}
-                                  {{ Form::text('profession', null, ['class' => 'form-control']) }}
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="form-group">
-                                  {{ Form::label('date_of_birth', 'Date of Birth (Y-m-d)', ['class' => 'control-label']) }}
-                                  {{ Form::date('date_of_birth', null, ['class' => 'form-control datepicker']) }}
-                              </div>
-                            </div>
                             <div class="col-md-12">
                               
                               <div class="form-group">
@@ -133,8 +122,8 @@
                           
                           <div class="col-md-6">
                             <div class="form-group">
-                                {{ Form::label('NID', 'NID Card Number', ['class' => 'control-label']) }}
-                                {{ Form::text('NID', null, ['class' => 'form-control']) }}
+                                <label for="">National ID Number</label>
+                                <input type="text" name="NID" class="form-control">
                             </div>
                             <div class="fileinput fileinput-new text-center pull-right" data-provides="fileinput" style="width:100%;margin-bottom:15px;border:1px solid #eee">
                                 <div class="fileinput-new thumbnail" style="width:100%;">
@@ -216,6 +205,7 @@
       type: 'GET',
       url: '{{route("user.by-username", "")}}/'+e.value,
       success: function(data){
+        // console.log(data);
         let elm = userForm.elements;
         elm.name.value = data.user.name;
         elm.email.value = data.user.email;
@@ -235,6 +225,11 @@
           elm.location.options[0] = new Option(data.user.location, data.user.location, false, true);
         }
 
+        if(data.user.package)
+        {
+          elm.package.options[0] = new Option(data.user.package.speed, data.user.package.id, false, true);
+        }
+
         if(data.user.service_type)
         {
           elm.service_type.options[0] = new Option(data.user.service_type, data.user.service_type, false, true);
@@ -250,7 +245,7 @@
         if(data.user.service_type == 'PPPoE')
         {
           elm.username.value = data.user.username;
-          elm.password.value = data.user.username;
+          elm.password.value = data.user.service_password;
         }
         else
         {
@@ -291,7 +286,7 @@
                                   '<input type="text" name="username" id="" class="form-control" placeholder="Username">'+
                               '</div>'+
                               '<div class="form-group">'+
-                                  '<input type="text" name="password" id="" class="form-control" placeholder="Password">'+
+                                  '<input type="text" name="service_password" id="" class="form-control" placeholder="Service Password">'+
                               '</div>';;
     }
     else

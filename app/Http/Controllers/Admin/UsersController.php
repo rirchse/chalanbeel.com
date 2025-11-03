@@ -81,7 +81,8 @@ class UsersController extends Controller
         ->orderBy('id', 'ASC')
         ->select('station', 'id')
         ->get();
-        return view('admins.users.create')->withLocations($areas);
+        $packages = Package::where('status', 'Active')->get();
+        return view('admins.users.create', compact('packages'));
     }
 
     /**
@@ -434,7 +435,10 @@ class UsersController extends Controller
 
     public function byUsername($username)
     {
-      $user = User::where('username', $username)->first();
+      $user = User::where('username', $username)
+      ->with(['package:id,speed'])
+      ->first();
+
       return response()->json([
         'user' => $user
       ], 200);

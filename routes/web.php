@@ -145,7 +145,7 @@ Route::group(['middleware' => ['web']], function()
         //packages
         Route::resource('/package', 'Admin\PackageController');
         Route::get('/get_package_from_router', 'Admin\PackageController@routerpackage');
-        Route::delete('/package/{id}', 'Admin\PackageController@destroy')->name('admin.package.delete');
+        // Route::delete('/package/{id}', 'Admin\PackageController@destroy')->name('admin.package.delete');
 
         //services
         Route::get('/create/{id}/service', 'Admin\ServiceController@create');

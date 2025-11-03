@@ -9,12 +9,19 @@
                 <i class="material-icons">assignment</i>
             </div>
             <div class="card-content" style="">
-                <div class="col-md-8">
+                <div class="col-md-4">
                     <h4 class="card-title">package Details</h4>
                 </div>
                 <div class="toolbar">
-                    <a class="btn-simple btn-icon text-warning" href="/admin/package/{{$package->id}}/edit"><i class="material-icons">edit</i></a>
-                    <a class="btn-simple btn-icon text-info" href="/admin/package"><i class="material-icons">subject</i></a>
+                    <a class="btn btn-sm btn-warning" href="/admin/package/{{$package->id}}/edit"><i class="material-icons">edit</i></a>
+                    <a class="btn btn-sm btn-success" href="/admin/package"><i class="material-icons">subject</i></a>
+                    <form class="form-inline" action="{{route('package.destroy', $package->id)}}" method="POST" style="float: right">
+                      @csrf
+                      @method('DELETE')
+                      <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure, you want to delete this?')">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </form>
                 </div>
 
                 <div class="row">
@@ -45,13 +52,12 @@
                                                     @if($package->status == 1)
                                                     <label class="label label-success">Active</label>
                                                     @else
-                                                    <label class="label label-success">Inactive</label>
+                                                    <label class="label label-danger">Inactive</label>
                                                     @endif
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <a href="/admin/package/{{$package->id}}/delete" style="color:#f00;font-size:16px" onclick="return confirm('Are you sure you want to delete this package? Be sure that it will not back later.')">&times;</a>
                                 </div>
                             </div>
                     </div>
