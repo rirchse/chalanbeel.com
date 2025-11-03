@@ -49,7 +49,7 @@
                                             <tr>
                                                 <td>Status</td>
                                                 <td>
-                                                    @if($package->status == 1)
+                                                    @if($package->status == 'Active')
                                                     <label class="label label-success">Active</label>
                                                     @else
                                                     <label class="label label-danger">Inactive</label>
