@@ -33,35 +33,9 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <li><a href="/my_offer"><i class="material-icons">wifi</i> My Offers</a></li>
-                <li>
-                    <a data-toggle="collapse" href="#pagesExamples">
-                        <i class="material-icons">subject</i>
-                        <p>Services
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse" id="pagesExamples">
-                        <ul class="nav">
-                            <li><a href="/create_service">Add New Service</a></li>
-                            <li><a href="/view_services">View Services</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <a data-toggle="collapse" href="#componentsExamples">
-                        <i class="material-icons">subject</i>
-                        <p>Payments
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse" id="componentsExamples">
-                        <ul class="nav">
-                            <li><a href="/view_payments">View Payments</a></li>
-                            <li><a href="/view_due_bills">View Due Payments</a></li>
-                        </ul>
-                    </div>
-                </li>
+                
+                
+                
                 
                 <li>
                     <a data-toggle="collapse" href="#formsExamples">

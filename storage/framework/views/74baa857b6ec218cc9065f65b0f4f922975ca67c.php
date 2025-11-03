@@ -10,7 +10,7 @@
             <div class="card-content">
                 <h4 class="card-title">Showing all Packages (<?php echo e(count($packages)); ?>)</h4>
                 <div class="toolbar" style="text-align:right">
-                    <a class="btn btn-success btn-xs" href="/admin/create_package" title="Add New package"><i class="material-icons">add</i></a>
+                    <a class="btn btn-info btn-xs" href="<?php echo e(route('package.create')); ?>" title="Add New package"><i class="material-icons">add</i> Add</a>
                     
                 </div>
                 <div class="material-datatables">
@@ -40,10 +40,10 @@
                                 <td><?php echo e($package->time_limit); ?></a></td>
                                 <td>&#2547;<?php echo e($package->price); ?></a></td>
                                 <td>
-                                    <?php if($package->status == 1): ?>
-                                    <span class="text-success text-simple" title="Active"><i class="material-icons">check</i></span>
+                                    <?php if($package->status == 'Active'): ?>
+                                    <span class="text-success text-simple" title="Active"><i class="material-icons">check</i> <?php echo e($package->status); ?></span>
                                     <?php else: ?>
-                                    <span class="text-warning text-simple" title="Inactive"><i class="material-icons">close</i></span>
+                                    <span class="text-warning text-simple" title="Inactive"><i class="material-icons">close</i><?php echo e($package->status); ?></span>
                                     <?php endif; ?>
                                 </td>
                                 <td class="text-right">

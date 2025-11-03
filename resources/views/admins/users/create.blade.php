@@ -245,7 +245,7 @@
         if(data.user.service_type == 'PPPoE')
         {
           elm.username.value = data.user.username;
-          elm.password.value = data.user.service_password;
+          elm.service_password.value = data.user.service_password;
         }
         else
         {

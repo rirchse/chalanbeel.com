@@ -27,29 +27,31 @@ $source = new SourceCtrl;
                 </tr>
                 <tr>
                     <th>Package</th>
-                    <td>
-                        <?php $__currentLoopData = $services; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $service): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <?php echo e($service->speed.' '.$service->time_limit); ?>
-
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    </td>
+                    <td><?php echo e($user->package->speed); ?></td>
+                </tr>
+                <tr>
+                    <th>Price</th>
+                    <td><?php echo e($user->package->price); ?> Taka</td>
                 </tr>
                 <tr>
                     <th>Status</th>
                     <td>
-                        <?php echo e($user->status); ?>
-
+                      <?php if($user->status == 'Active'): ?>
+                      <span class="label label-success"><?php echo e($user->status); ?></span>
+                      <?php else: ?>
+                      <span class="label label-danger"><?php echo e($user->status); ?></span>
+                      <?php endif; ?>  
                     </td>
+                </tr>
+                <tr>
+                    <th>Username:</th>
+                    <td><?php echo e($user->username); ?></td>
+                </tr>
+                <tr>
+                    <th>PPPoE Password:</th>
+                    <td><?php echo e($user->service_password); ?></td>
                 </tr>
                 
-                <tr>
-                    <td colspan="2">
-                        <form action="<?php echo e(route('bkash.pay')); ?>" method="POST">
-                            <?php echo csrf_field(); ?>
-                        <button type="submit" class="btn btn-lg btn-warning btn-block" href="<?php echo e(App\Service::where('user_id', $user->id)->first()); ?>"> <img src="/images/icons/bkash.png" alt="" style="width:100px"> Pay Now</button>
-                        </form>
-                    </td>
-                </tr>
             </table>
         </div>
     </div>

@@ -12,13 +12,12 @@
                     <div class="col-md-6">
                         <h4 class="card-title">Create Package</h4>
                     </div>
-
-                    <?php echo Form::open(['route' => 'package.store', 'method' => 'POST', 'id' => 'RegisterValidation']); ?>
-
+                    <form action="<?php echo e(route('package.store')); ?>" method="POST" id="RegisterValidation">
+                      <?php echo csrf_field(); ?>
 
                     <div class="row">
                         <div class=" col-md-12">
-                            <div class="form-group label-floating">                                
+                            <div class="form-group label-floating">
                                 <label for="">Speed(*):</label>
                                 <input type="text" class="form-control" name="speed" required>
                             </div>
@@ -26,16 +25,16 @@
                                 <label for="">Time Limit in Days(*):</label>
                                 <input type="number" class="form-control" name="time_limit" required>
                             </div>
-                            <div class="form-group label-floating">                                
+                            <div class="form-group label-floating">
                                 <label for="">Price(*):</label>
                                 <input type="number" class="form-control" name="price" required step="0.1">
                             </div>
                             <div class="form-group label-floating">
                                 <label>Status:</label><br>
-                                <input type="radio" name="status" value="1"> Active &nbsp; 
-                                <input type="radio" name="status" value="0"> Inactive
+                                <input type="radio" name="status" value="Active"> Active &nbsp; 
+                                <input type="radio" name="status" value="Inactive"> Inactive
                             </div>
-                            <div class="form-group label-floating">                                
+                            <div class="form-group label-floating">
                                 <label for="">Details:</label>
                                 <textarea class="form-control" name="details" id="" rows="3"></textarea>
                             </div>
@@ -45,8 +44,7 @@
                         </div>
                     </div>
 
-                    <?php echo Form::close(); ?>
-
+                  </form>
                     
                 </div>
             </div>

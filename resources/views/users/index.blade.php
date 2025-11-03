@@ -27,38 +27,38 @@ $source = new SourceCtrl;
                 </tr>
                 <tr>
                     <th>Package</th>
-                    <td>
-                        @foreach($services as $service)
-                        {{$service->speed.' '.$service->time_limit}}
-                        @endforeach
-                    </td>
+                    <td>{{$user->package->speed}}</td>
+                </tr>
+                <tr>
+                    <th>Price</th>
+                    <td>{{$user->package->price}} Taka</td>
                 </tr>
                 <tr>
                     <th>Status</th>
                     <td>
-                        {{$user->status}}
+                      @if($user->status == 'Active')
+                      <span class="label label-success">{{$user->status}}</span>
+                      @else
+                      <span class="label label-danger">{{$user->status}}</span>
+                      @endif  
                     </td>
+                </tr>
+                <tr>
+                    <th>Username:</th>
+                    <td>{{$user->username}}</td>
+                </tr>
+                <tr>
+                    <th>PPPoE Password:</th>
+                    <td>{{$user->service_password}}</td>
                 </tr>
                 {{-- <tr>
-                    <th>Total Payments</th>
-                    <td>
-                        <a href="/view_payments">Total Payments</a>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Due Bills</th>
-                    <td>
-                        <a href="/view_due_bills">Due Payments</a>
-                    </td>
-                </tr> --}}
-                <tr>
                     <td colspan="2">
                         <form action="{{ route('bkash.pay') }}" method="POST">
                             @csrf
                         <button type="submit" class="btn btn-lg btn-warning btn-block" href="{{App\Service::where('user_id', $user->id)->first()}}"> <img src="/images/icons/bkash.png" alt="" style="width:100px"> Pay Now</button>
                         </form>
                     </td>
-                </tr>
+                </tr> --}}
             </table>
         </div>
     </div>

@@ -89,6 +89,18 @@ class PackageController extends Controller
             'details'     => 'max:255'
         ));
 
+        $data = $request->all();
+        
+        if(isset($data['_token']))
+        {
+          unset($data['_token']);
+        }
+
+        if(isset($data['_method']))
+        {
+          unset($data['_method']);
+        }
+
         //store in the database
         try{
           $package = Package::updateOrCreate([

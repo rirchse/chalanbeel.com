@@ -153,11 +153,8 @@ class UsersController extends Controller
 
           $data['nid_image'] = $filename;
         }
-
-        if($data['service_type'] == 'pppoe')
-        {
-          $data['password'] = $data['password'];
-        }        
+        
+        $data['password'] = bcrypt($data['contact']);
 
         try{
           $user = User::updateOrCreate(
@@ -166,19 +163,19 @@ class UsersController extends Controller
             ], 
             $data
           );
-        }
-        catch(\Exception $e)
-        {
-          return $e->getMessage();
-        }
-
-        // $customer = User::orderBy('id', 'DESC')->first()->id;
 
         //session flashing
         Session::flash('success', 'New user successfully created!');
 
         //return to the show page
         return redirect()->route('user.show', $user->id);
+        }
+        catch(\Exception $e)
+        {
+          return $e->getMessage();
+        }
+
+        return back();
     }
 
     /**

@@ -11,7 +11,7 @@
             <div class="card-content">
                 <h4 class="card-title">Showing all Packages ({{count($packages)}})</h4>
                 <div class="toolbar" style="text-align:right">
-                    <a class="btn btn-success btn-xs" href="/admin/create_package" title="Add New package"><i class="material-icons">add</i></a>
+                    <a class="btn btn-info btn-xs" href="{{route('package.create')}}" title="Add New package"><i class="material-icons">add</i> Add</a>
                     {{-- <a class="btn btn-xs btn-info" href="/admin/get_package_from_router">Get Pacakge From Router</a> --}}
                 </div>
                 <div class="material-datatables">
@@ -41,10 +41,10 @@
                                 <td>{{ $package->time_limit }}</a></td>
                                 <td>&#2547;{{ $package->price }}</a></td>
                                 <td>
-                                    @if($package->status == 1)
-                                    <span class="text-success text-simple" title="Active"><i class="material-icons">check</i></span>
+                                    @if($package->status == 'Active')
+                                    <span class="text-success text-simple" title="Active"><i class="material-icons">check</i> {{$package->status}}</span>
                                     @else
-                                    <span class="text-warning text-simple" title="Inactive"><i class="material-icons">close</i></span>
+                                    <span class="text-warning text-simple" title="Inactive"><i class="material-icons">close</i>{{$package->status}}</span>
                                     @endif
                                 </td>
                                 <td class="text-right">

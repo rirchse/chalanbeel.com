@@ -32,8 +32,8 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <li><a href="/my_offer"><i class="material-icons">wifi</i> My Offers</a></li>
-                <li>
+                {{-- <li><a href="/my_offer"><i class="material-icons">wifi</i> My Offers</a></li> --}}
+                {{-- <li>
                     <a data-toggle="collapse" href="#pagesExamples">
                         <i class="material-icons">subject</i>
                         <p>Services
@@ -46,8 +46,8 @@
                             <li><a href="/view_services">View Services</a></li>
                         </ul>
                     </div>
-                </li>
-                <li>
+                </li> --}}
+                {{-- <li>
                     <a data-toggle="collapse" href="#componentsExamples">
                         <i class="material-icons">subject</i>
                         <p>Payments
@@ -60,7 +60,7 @@
                             <li><a href="/view_due_bills">View Due Payments</a></li>
                         </ul>
                     </div>
-                </li>
+                </li> --}}
                 {{-- <li>
                     <a data-toggle="collapse" href="#client">
                         <i class="material-icons">card_travel</i>
