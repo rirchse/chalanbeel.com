@@ -85,12 +85,12 @@ class PackageController extends Controller
             'time_limit'  => 'required|max:255',
             'price'       => 'required|min:1|max:255',
             'discount'    => 'max:3',
-            'status'      => 'max:3',
+            'status'      => 'nullable',
             'details'     => 'max:255'
         ));
 
         $data = $request->all();
-        
+
         if(isset($data['_token']))
         {
           unset($data['_token']);
