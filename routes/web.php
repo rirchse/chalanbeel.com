@@ -40,6 +40,11 @@ Route::group(['middleware' => ['web']], function()
 //web pages
 
 	Route::resource('home', 'HomeController');
+  Route::controller(HomeController::class)->group(function()
+  {
+    Route::get('check', 'postCheck')->name('account.check.post');
+    // Route::post('check', 'postCheck')->name('account.check.post');
+  });
 
 	Route::get('/', 'HomeController@index');
 	Route::get('/view-user-on-map', 'HomeController@userOnMap');

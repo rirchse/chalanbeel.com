@@ -24,6 +24,20 @@ use Auth;
 
 class HomeController extends Controller
 {
+  public function postCheck(Request $request)
+  {
+    $user = [];
+
+    $this->validate($request, [
+      'contact' => 'required|min:11|max:11'
+    ]);
+
+    if($request->contact)
+    {
+      $user = User::where('contact', $request->contact)->first();
+    }
+    return view('homes.index', compact('user'));
+  }
     public function checkAccount()
     {
         $user = User::find(1);

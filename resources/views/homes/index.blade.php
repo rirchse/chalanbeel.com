@@ -14,22 +14,89 @@
                 <div class="" style="text-align:center;width:100%;max-width:600px;margin:0 auto;">
                     <div class="">
                         <!-- resources/views/welcome.blade.php -->
-                        <h1>@lang('messages.welcome')</h1>
+                        {{-- <h1>@lang('messages.welcome')</h1> --}}
                         
                         <img src="images/logo.png" class="img-responsive" style="margin:0 auto">
                         {{-- <h3>{{bcrypt('tstadmin')}}</h3> --}}
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <input id="search" type="text" class="form-control" style="width:100%; height:45px; background:#efefef; padding:15px 20px;box-shadow: 1px 1px 5px; text-align:cente" placeholder="What &nbsp;  &nbsp;you &nbsp; &nbsp; are &nbsp; &nbsp; looking &nbsp; &nbsp;for?">
-                            </div> 
-
-                        <div id="search_alert" class="search-alert" style="position: absolute;">We are being ready to give you best service. Please be connect with us.</div>
+                        <form class="form-horizontal" action="{{route('account.check.post')}}">
+                              <div class="input-group">
+                                <input type="number" name="contact" id="search"class="form-control" style="background:#efefef; padding:20px;box-shadow: 1px 1px 5px; text-align:cente" placeholder="আপনের মোবাইল নম্বর লিখুন">
+                                <span class="input-group-addon">
+                                  <button class="btn btn-info">Submit</button>
+                                </span>
+                            </div>
                         </form>
+                        @if(isset($user) && $user != [])
+                        <div class="panel panel-info" style="background:#fff; border:2px solid; {{$user->status == 'Expire'? 'border-color: red': ''}}">
+                          <div class="panel-body">
+                            <table class="table">
+                              <tr>
+                                <td>একাউন্টের মেয়াদ:</td>
+                                <th>
+                                  <h4 style="{{$user->status == 'Expire'? 'color:red':''}}">{{$user->status}}</h4>
+                                </th>
+                              </tr>
+                              <tr>
+                                <td>গ্রাহকের নাম:</td>
+                                <th>{{$user->name}}</th>
+                              </tr>
+                              <tr>
+                                <td>টাকা প্রদানের তারিখ:</td>
+                                <th>{{$user->payment_date}}</th>
+                              </tr>
+                            </table>
+                            @if($user->status == 'Expire')
+                            <hr>
+                            <h3>বিকাশ সেন্ড মানি: 
+                              <br>
+                              <b>017 03 58 79 11</b></h3>
+                            @endif
+                          </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <p id="bengali-text">
+      আমার সোনার বাংলা, আমি তোমায় ভালোবাসি।
+  </p>
+
+  <script src="https://code.responsivevoice.org/responsivevoice.js?key=Nv0NmYmz"></script>
+
+  <script>
+      // Function to speak the Bengali text
+      function speakBengali() {
+          if ('speechSynthesis' in window) {
+              const textToSpeak = document.getElementById('bengali-text').textContent;
+              const utterance = new SpeechSynthesisUtterance(textToSpeak);
+
+              // Set the language to Bengali (Bangladesh) or Bengali (India)
+              // The actual voice used depends on the user's browser/OS
+              utterance.lang = 'bn-BD'; // or 'bn-IN'
+              
+              // Optional properties
+              // utterance.volume = 1; // From 0 to 1
+              // utterance.rate = 1;   // From 0.1 to 10
+              // utterance.pitch = 1;  // From 0 to 2
+
+              // Speak the text
+              window.speechSynthesis.speak(utterance);
+          } else {
+              console.error('Text-to-speech not supported in this browser.');
+              alert('Text-to-speech not supported in this browser.');
+          }
+      }
+
+      // Call the speakBengali function when the page is fully loaded
+      window.onload = speakBengali;
+
+      // Note: Some browsers, especially mobile, may require user interaction (e.g., a button click)
+      // to initiate speech synthesis due to autoplay policies.
+      // For wider compatibility, consider adding a "Play" button as a fallback.
+  </script>
+
     <script type="text/javascript">
     var search = document.getElementById('search');
     search.addEventListener('keyup', check);
