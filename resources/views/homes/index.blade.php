@@ -53,15 +53,20 @@
                             @endif
                           </div>
                         </div>
+                        
+                        <p id="bengali-text">
+                          @if($user->status == 'Expire')
+                          আপনের ইন্টারনেটের মেয়াদ শেষ হয়ে গেছে
+                          @else
+                          আপনের ইন্টারনেট {{$user->status}}
+                          @endif
+                        </p>
                         @endif
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <p id="bengali-text">
-      আমার সোনার বাংলা, আমি তোমায় ভালোবাসি।
-  </p>
 
   <script src="https://code.responsivevoice.org/responsivevoice.js?key=Nv0NmYmz"></script>
 
@@ -98,15 +103,15 @@
   </script>
 
     <script type="text/javascript">
-    var search = document.getElementById('search');
-    search.addEventListener('keyup', check);
-    function check() {
-        document.getElementById('search_alert').style.display = 'block';
+    // var search = document.getElementById('search');
+    // search.addEventListener('keyup', check);
+    // function check() {
+        // document.getElementById('search_alert').style.display = 'block';
 
-        setTimeout(function(){
-            document.getElementById('search_alert').style.display = 'none';
-        }, 10000);        
-    }
+        // setTimeout(function(){
+        //     document.getElementById('search_alert').style.display = 'none';
+        // }, 10000);
+    // }
     
     </script>
 @endsection
