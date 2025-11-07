@@ -20,7 +20,7 @@
                         {{-- <h3>{{bcrypt('tstadmin')}}</h3> --}}
                         <form class="form-horizontal" action="{{route('account.check.post')}}">
                               <div class="input-group">
-                                <input type="number" name="contact" id="search"class="form-control" style="background:#efefef; padding:20px;box-shadow: 1px 1px 5px; text-align:cente" placeholder="আপনের মোবাইল নম্বর লিখুন">
+                                <input type="number" name="contact" id="search"class="form-control" style="background:#efefef; padding:20px;box-shadow: 1px 1px 5px; text-align:cente" placeholder="আপনার মোবাইল নম্বর লিখুন">
                                 <span class="input-group-addon">
                                   <button class="btn btn-info">Submit</button>
                                 </span>
@@ -56,9 +56,9 @@
                         
                         <p id="bengali-text">
                           @if($user->status == 'Expire')
-                          আপনের ইন্টারনেটের মেয়াদ শেষ হয়ে গেছে
+                          আপনার ইন্টারনেটের মেয়াদ শেষ হয়ে গেছে
                           @else
-                          আপনের ইন্টারনেট {{$user->status}}
+                          আপনার ইন্টারনেট {{$user->status}}
                           @endif
                         </p>
                         @endif
