@@ -22,6 +22,7 @@ use App\Http\Controllers\ExpireController;
 Route::group(['middleware' => ['web']], function()
 {
   Route::get('expired_check', [ExpireController::class, 'expiredCheck']);
+  
   // expire detect
   Route::get('expire', function()
   {
