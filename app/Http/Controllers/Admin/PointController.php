@@ -57,7 +57,7 @@ class PointController extends Controller
         $this->validate($request, array(
             'address'    => 'required|max:255',
             'lat_lon'    => 'nullable|max:255',
-            'details'    => 'required|max:500',
+            'details'    => 'nullable|max:500',
             'image'      => 'image|mimes:jpg,jpeg,png|max:5000'
         ));
 
@@ -142,7 +142,7 @@ class PointController extends Controller
       $this->validate($request, array(
           'address'    => 'required|max:255',
           'lat_lon'    => 'nullable|max:255',
-          'details'    => 'required|max:500',
+          'details'    => 'nullable|max:500',
           'image'      => 'image|mimes:jpg,jpeg,png|max:5000'
       ));
 
