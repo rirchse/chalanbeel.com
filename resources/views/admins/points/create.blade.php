@@ -41,6 +41,15 @@
                     </div>
                     <div class="col-md-6">
                       <div class="form-group">
+                        <label for="">Status:</label>
+                        <select name="status" id="" class="form-control">
+                          <option value="Active">Active</option>
+                          <option value="Deactive">Deactive</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
                         <label for="">Creation Date:(Optional)</label>
                         <input type="date" name="created_at" class="form-control">
                       </div>
