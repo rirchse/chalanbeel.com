@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+      \App\Console\Commands\ScheduleTask::class,
     ];
 
     /**
@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('check_expired')
+        $schedule->command('expired:run')
                  ->hourly();
     }
 

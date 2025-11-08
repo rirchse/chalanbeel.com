@@ -6,6 +6,7 @@ use App\Http\Controllers\Payment\BkashPaymentController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\PointController;
+use App\Http\Controllers\ExpireController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,7 @@ use App\Http\Controllers\Admin\PointController;
 
 Route::group(['middleware' => ['web']], function()
 {
+  Route::get('expired_check', [ExpireController::class, 'expiredCheck']);
   // expire detect
   Route::get('expire', function()
   {
@@ -38,7 +40,7 @@ Route::group(['middleware' => ['web']], function()
 	// view()->share('info', ['name'=>'HP Link', 'url'=>'http://hplink.net', 'contact'=>'01737346868', 'panel_name'=>'HP Link', 'short_name'=>'HPL', 'logo' => 'hplink.jpg']);
 	
 
-//web pages
+  //web pages
 
 	Route::resource('home', 'HomeController');
   Route::controller(HomeController::class)->group(function()
@@ -231,7 +233,7 @@ Route::group(['middleware' => ['web']], function()
       });
     });
 
-//user routes start from here
+  //user routes start from here
 	Route::get('/all_users', 'Admin\UsersController@index');
 	Route::put('/permit_as_admin/{id}', 'Admin\UsersController@permitAdmin')->name('admin.permit.admin');
 

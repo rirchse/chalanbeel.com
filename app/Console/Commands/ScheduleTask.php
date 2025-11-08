@@ -3,15 +3,16 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Http\Controllers\ExpireController;
 
-class ExpiredCheck extends Command
+class ScheduleTask extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'expired:run';
 
     /**
      * The console command description.
@@ -27,6 +28,8 @@ class ExpiredCheck extends Command
      */
     public function handle()
     {
-        return Command::SUCCESS;
+      ExpireController::expiredCheck();
+      
+        // return Command::SUCCESS;
     }
 }
