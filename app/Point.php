@@ -14,7 +14,8 @@ class Point extends Model
     'details',
     'image',
     'created_at',
-    'created_by'
+    'created_by',
+    'status'
   ];
 
   public function adminCreated()
