@@ -5,6 +5,7 @@ use App\Http\Controllers\Bkash\BkashController;
 use App\Http\Controllers\Payment\BkashPaymentController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\Admin\PointController;
 
 /*
 |--------------------------------------------------------------------------
@@ -221,6 +222,12 @@ Route::group(['middleware' => ['web']], function()
         // Route::get('/api/customers/map', [MapController::class,'customers'])->name('api.customers.map');
         Route::get('/map', [MapController::class, 'index'])->name('map.index');
 
+      });
+
+      Route::resource('point', PointController::class);
+      Route::controller(PointController::class)->group(function()
+      {
+        Route::get('point-view-map', 'onMap')->name('point.view.map');
       });
     });
 

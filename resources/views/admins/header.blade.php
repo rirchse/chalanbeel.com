@@ -102,6 +102,27 @@
                         </ul>
                     </div>
                 </li>
+                <li>
+                    <a data-toggle="collapse" href="#point">
+                        <i class="material-icons">map</i>
+                        <p>Points
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <div class="collapse" id="point">
+                        <ul class="nav">
+                            <li>
+                              <a href="{{route('point.create')}}">Add New Point</a>
+                            </li>
+                            <li>
+                              <a href="{{route('point.index')}}">View Points</a>
+                            </li>
+                            <li>
+                              <a href="{{route('point.view.map')}}">View Points On Map</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 
                 <li>
                     <a data-toggle="collapse" href="#PaymentMethod">

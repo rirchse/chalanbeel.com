@@ -2,14 +2,6 @@
 
 @section('content')
 
-<p class="status">
-  <label class="text-warning">New: {{$status['new']}}</label> |
-  <label class="text-success">Active: {{$status['active']}}</label> |
-  <label class="text-info">Online: {{$status['online']}}</label> |
-  <label class="text-danger">Offline: {{$status['offline']}}</label> |
-  <label class="text-default">Expire: {{$status['expire']}}</label>
-</p>
-
 <div id="map" style="height: 80vh; margin-top:0"></div>
 @endsection
 
@@ -60,17 +52,16 @@
         });
     }
 
-    const customers = @json($customers);
+    const points = @json($points);
 
-    customers.forEach(c => {
+    points.forEach(c => {
         const marker = L.marker([c.lat, c.lng], {
             icon: getIcon(colorForStatus(c.status)),
             title: c.full_name
         }).bindPopup(`
-        <strong>${c.name}</strong>
+        <strong>${c.address}</strong>
         <br>
-        Status: ${c.status} 
-        ${c.status == 'Active' ? `<br>IP: ${c.ip}<br>Uptime: ${c.uptime}`:''}
+        Status: ${c.status}
         <br>
         <a target="_blank" href="https://www.google.com/maps/place/${c.lat}, ${c.lng}">Go on location</a>
         `);
