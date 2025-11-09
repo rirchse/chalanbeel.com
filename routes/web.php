@@ -149,6 +149,7 @@ Route::group(['middleware' => ['web']], function()
           Route::get('by-username/{username}', 'byUsername')->name('user.by-username');
 
           Route::get('check-available-ip/{ip}', 'checkIP')->name('user.check-ip');
+          Route::post('get-payment', 'getPayment')->name('user.get-payment');
         });
         
         //packages

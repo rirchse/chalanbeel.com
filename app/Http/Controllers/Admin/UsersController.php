@@ -9,11 +9,13 @@ use App\Admin;
 use App\Location;
 use App\Package;
 use App\Service;
+use App\Payment;
 use App\Http\Controllers\Router;
 use Auth;
 use Image;
 use File;
 use Session;
+use DB;
 
 class UsersController extends Controller
 {
@@ -191,7 +193,7 @@ class UsersController extends Controller
     public function show($id, Request $request)
     {
         //Grab user data by id
-        $user = User::with(['package:id,speed'])->find($id);
+        $user = User::with(['package:id,speed,price'])->find($id);
 
         if($request->ajax())
         {
@@ -489,5 +491,33 @@ class UsersController extends Controller
       return response()->json([
         'ip' => $availableIp
       ], 200);
+    }
+
+    public function getPayment(Request $request)
+    {
+      $data = $request->all();
+      try {
+        User::where('id', $data['user_id'])->update(
+          [
+            'payment_date' => $data['payment_date'],
+            'balance' => DB::raw('balance +'.(int)$data['amount']),
+            'status' => 'Active'
+          ]
+        );
+
+        // add to the payment
+        Payment::create([
+          'receive' => $data['amount'],
+          'user_id' => $data['user_id'],
+          'status' => 'Paid'
+        ]);
+
+        return back();
+      }
+      catch(\Exception $e)
+      {
+        return $e->getMessage();
+      }
+      // dd($data);
     }
 }

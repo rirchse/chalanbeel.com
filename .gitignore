@@ -2,6 +2,8 @@
 /public/storage
 /public/hot
 /storage/*.key
+/bootstrap/cache
+/storage/framework/cache
 /storage/framework/sessions
 /storage/framework/views
 /vendor

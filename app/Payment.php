@@ -6,6 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
+  protected $fillable = [
+    'receive',
+    'account_no',
+    'refer_no',
+    'trxid',
+    'receive_date',
+    'billing_month',
+    'service_id',
+    'user_id',
+    'paymethod_id',
+    'user_inputs',
+    'details',
+    'status',
+    '	created_by',
+    'created_at',
+  ];
     public function users()
     {
     	return $this->belongsTo('App\Users');
