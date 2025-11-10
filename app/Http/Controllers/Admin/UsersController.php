@@ -500,7 +500,7 @@ class UsersController extends Controller
         User::where('id', $data['user_id'])->update(
           [
             'payment_date' => $data['payment_date'],
-            'balance' => DB::raw('balance +'.(int)$data['amount']),
+            'balance' => DB::raw("balance + ".intval($data['amount'])),
             'status' => 'Active'
           ]
         );
