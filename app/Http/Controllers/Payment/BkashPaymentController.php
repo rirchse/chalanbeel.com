@@ -10,7 +10,9 @@ use Mahedi250\Bkash\Facade\CheckoutUrl;
 use App\Service;
 use App\ServicePlan;
 use App\User;
+use App\Payment;
 use Session;
+use DB;
 
 class BkashPaymentController extends Controller
 {
@@ -65,12 +67,11 @@ class BkashPaymentController extends Controller
             if (isset($response->transactionStatus)&&($response->transactionStatus=='Completed'||$response->transactionStatus=='Authorized'))
             {
               // update user database
-              $data = $request->all();
               try {
                 $user = User::find(auth()->id());
                 User::where('id', auth()->id())->update(
                   [
-                    'payment_date' => $user->payment_date->addDays(30)->format('Y-m-d'),
+                    'payment_date' => date('Y-m-d', strtotime($user->payment_date.'+30 days')),
                     'balance' => DB::raw("balance + ".intval($user->package->price)),
                     'status' => 'Active'
                   ]
@@ -90,9 +91,10 @@ class BkashPaymentController extends Controller
               {
                 return $e->getMessage();
               }
-                 //Database Insert Operation
-                return redirect('/home');
-                return CheckoutUrl::Success($response->trxID."({$response->transactionStatus})");
+              
+              //Database Insert Operation
+              return redirect('/home');
+              return CheckoutUrl::Success($response->trxID."({$response->transactionStatus})");
             }
             else if($response->transactionStatus=='Initiated')
             {

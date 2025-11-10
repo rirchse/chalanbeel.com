@@ -39,7 +39,7 @@ Route::group(['middleware' => ['web']], function()
   Route::controller(BkashPaymentController::class)->group(function()
   {
     Route::post("bkash/pay", 'pay')->name('bkash.pay');
-    Route::get("bkash/callback", 'Callback');
+    Route::get("bkash/callback", 'callback');
   });
 
 	//global variable for all pages
