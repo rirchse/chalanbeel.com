@@ -17,7 +17,7 @@ $source = new SourceCtrl;
                 <h4 class="card-title">User Details</h4> 
                 <div class="col-md-12">
                     <div class="action-tools" style="text-align:right; margin-bottom:10px">
-                      @if($user->status == 'Expire')
+                      @if($user->status == 'Expire' || $user->balance == 0)
                       <button class="btn btn-info btn-sm" data-target="#payment_modal" data-toggle="modal">Paid</button>
                       @endif
                         <a class="btn btn-sm btn-primary" title="Add New User" href="{{route('user.create')}}"><i class="fa fa-plus"></i></a>

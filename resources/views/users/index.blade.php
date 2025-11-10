@@ -59,14 +59,16 @@ $source = new SourceCtrl;
                     <th>PPPoE Password:</th>
                     <td>{{$user->service_password}}</td>
                 </tr>
-                {{-- <tr>
+                <tr>
                     <td colspan="2">
                         <form action="{{ route('bkash.pay') }}" method="POST">
-                            @csrf
-                        <button type="submit" class="btn btn-lg btn-warning btn-block" href="{{App\Service::where('user_id', $user->id)->first()}}"> <img src="/images/icons/bkash.png" alt="" style="width:100px"> Pay Now</button>
+                          @csrf
+                        <button type="submit" class="btn btn-lg btn-warning btn-block"> 
+                          <img src="/images/icons/bkash.png" alt="" style="width:100px"> Pay Now
+                        </button>
                         </form>
                     </td>
-                </tr> --}}
+                </tr>
             </table>
         </div>
     </div>

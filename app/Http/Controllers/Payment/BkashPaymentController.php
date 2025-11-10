@@ -9,44 +9,43 @@ use Mahedi250\Bkash\Facade\CheckoutUrl;
 /** customized */
 use App\Service;
 use App\ServicePlan;
+use App\User;
+use Session;
 
 class BkashPaymentController extends Controller
 {
     public function pay(Request $request)
     {
         $user = auth()->user();
-        $bill = Service::leftJoin('service_plans', 'service_plans.service_id', 'services.id')
-        ->where('services.user_id', $user->id)
-        ->OrderBy('service_plans.id', 'DESC')
+        $bill = User::with('package:id,price')
+        ->where('id', $user->id)
+        ->select('id', 'name', 'contact', 'balance', 'package_id')
         ->first();
-        // dd($bill);
 
-        $amount = 10;
+        $amount = 0;
         $additional = [];
 
-        if($request->amount)
+        if($user->package)
         {
-            $amount = $request->amount;
+          $amount = $user->package->price;
+          $additional = [
+            'payerReference'=> '_'.$user->contact, 
+            'merchantInvoiceNumber' => date('Ymd-H:i:s')
+          ];
         }
-        elseif(!is_null($bill))
+        else
         {
-            $amount = $bill->amount;
-            // $amount = 5;
-            $additional = [
-                'payerReference'=> '_'.$user->username, 
-                'merchantInvoiceNumber' => date('Ymd-H:i:s')
-            ];
+          Session::flash('error', 'Package and Price not selected for you.');
+          return back();
         }
 
-        $response = CheckoutUrl::Create($amount, $additional);
-
-        return redirect($response->bkashURL);
-
-        // $response = CheckoutUrl::Create($amount);
-
-        // dd($response->bkashURL);
-        // return redirect($response->bkashURL);
-
+        if($amount > 0)
+        {
+          $response = CheckoutUrl::Create($amount, $additional);  
+          return redirect($response->bkashURL);
+        }
+        Session::flash('error', 'Billing amount not decided.');
+        return back();
     }
 
     public function callback(Request $request)
@@ -65,15 +64,39 @@ class BkashPaymentController extends Controller
 
             if (isset($response->transactionStatus)&&($response->transactionStatus=='Completed'||$response->transactionStatus=='Authorized'))
             {
-                // dd($response);
+              // update user database
+              $data = $request->all();
+              try {
+                $user = User::find(auth()->id());
+                User::where('id', auth()->id())->update(
+                  [
+                    'payment_date' => $user->payment_date->addDays(30)->format('Y-m-d'),
+                    'balance' => DB::raw("balance + ".intval($user->package->price)),
+                    'status' => 'Active'
+                  ]
+                );
+
+                // add to the payment
+                Payment::create([
+                  'receive' => $user->package->price,
+                  'user_id' => $user->id,
+                  'status' => 'Paid',
+                  'trxid' => $request->input('paymentID')
+                ]);
+
+                return back();
+              }
+              catch(\Exception $e)
+              {
+                return $e->getMessage();
+              }
                  //Database Insert Operation
                 return redirect('/home');
                 return CheckoutUrl::Success($response->trxID."({$response->transactionStatus})");
             }
             else if($response->transactionStatus=='Initiated')
             {
-
-                return CheckoutUrl::Failed("Try Again");
+              return CheckoutUrl::Failed("Try Again");
             }
         }
 

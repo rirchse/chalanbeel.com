@@ -29,13 +29,18 @@ Route::group(['middleware' => ['web']], function()
     return view('homes.expire');
   });
 
+  //bkash payment test
 	Route::get('/bkash/make-payment', function()
 	{
 		return view('bkash.create-payment');
-	});
+	})->name('bkash.make-payment');
 
-	Route::post("bkash/pay",[BkashPaymentController::class,'pay'])->name('bkash.pay');
-  Route::get("bkash/callback",[BkashPaymentController::class,'Callback']);
+  //bkash payment
+  Route::controller(BkashPaymentController::class)->group(function()
+  {
+    Route::post("bkash/pay", 'pay')->name('bkash.pay');
+    Route::get("bkash/callback", 'Callback');
+  });
 
 	//global variable for all pages
 	// view()->share('info', ['name'=>'HP Link', 'url'=>'http://hplink.net', 'contact'=>'01737346868', 'panel_name'=>'HP Link', 'short_name'=>'HPL', 'logo' => 'hplink.jpg']);

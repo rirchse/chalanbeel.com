@@ -518,6 +518,5 @@ class UsersController extends Controller
       {
         return $e->getMessage();
       }
-      // dd($data);
     }
 }
