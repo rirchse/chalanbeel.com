@@ -69,32 +69,33 @@ class BkashPaymentController extends Controller
               // update user database
               try {
                 $user = User::find(auth()->id());
-                User::where('id', auth()->id())->update(
-                  [
-                    'payment_date' => date('Y-m-d', strtotime($user->payment_date.'+30 days')),
-                    'balance' => DB::raw("balance + ".intval($user->package->price)),
-                    'status' => 'Active'
-                  ]
-                );
-
-                // add to the payment
-                Payment::create([
-                  'receive' => $user->package->price,
-                  'user_id' => $user->id,
-                  'status' => 'Paid',
-                  'trxid' => $request->input('paymentID')
-                ]);
-
-                return back();
+                if($user->status != 'Active')
+                {
+                  User::where('id', auth()->id())->update(
+                    [
+                      'payment_date' => date('Y-m-d', strtotime('+30 days')),
+                      'balance' => DB::raw("balance + ".intval($user->package->price)),
+                      'status' => 'Active'
+                    ]
+                  );
+  
+                  // add to the payment
+                  Payment::create([
+                    'receive' => $user->package->price,
+                    'user_id' => $user->id,
+                    'status' => 'Paid',
+                    'trxid' => $request->input('paymentID')
+                  ]);
+              
+                  //Database Insert Operation
+                  return redirect('/home');
+                  return CheckoutUrl::Success($response->trxID."({$response->transactionStatus})");
+                }
               }
               catch(\Exception $e)
               {
                 return $e->getMessage();
               }
-              
-              //Database Insert Operation
-              return redirect('/home');
-              return CheckoutUrl::Success($response->trxID."({$response->transactionStatus})");
             }
             else if($response->transactionStatus=='Initiated')
             {

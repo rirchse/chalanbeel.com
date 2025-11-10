@@ -59,6 +59,7 @@ $source = new SourceCtrl;
                     <th>PPPoE Password:</th>
                     <td>{{$user->service_password}}</td>
                 </tr>
+                @if($user->status != 'Active')
                 <tr>
                     <td colspan="2">
                         <form action="{{ route('bkash.pay') }}" method="POST">
@@ -69,6 +70,7 @@ $source = new SourceCtrl;
                         </form>
                     </td>
                 </tr>
+                @endif
             </table>
         </div>
     </div>
