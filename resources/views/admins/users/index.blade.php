@@ -38,6 +38,7 @@ $source = new SourceCtrl;
                             <option value="Active" {{$status == 'Active'? 'selected': ''}} >Active</option>
                             <option value="Expire" {{$status == 'Expire'? 'selected': ''}}>Expire</option>
                             <option value="Cancel" {{$status == 'Cancel'? 'selected': ''}}>Cancel</option>
+                            <option value="All" {{$status == 'All'? 'selected': ''}}>All</option>
                           </select>
                         </div>
                       </div>
@@ -92,7 +93,7 @@ $source = new SourceCtrl;
 
                             @foreach($users as $key => $user)
 
-                            <tr>
+                            <tr style="color:{{$user->status == 'Expire'? 'red':''}}">
                                 <td>{{$key+1}}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->contact }}</td>

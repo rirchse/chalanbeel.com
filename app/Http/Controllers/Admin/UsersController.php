@@ -48,19 +48,33 @@ class UsersController extends Controller
       $service_type = $request->input('service_type');
 
       // Get all users from database
-      $users = User::orderBy('id', 'DESC')
-      ->when($status, function($query, $status)
+      $users = User::orderBy('id', 'DESC');
+      
+      if($status && $status == 'All')
       {
-        $query->where('status', $status);
-      })
-      ->when($date, function($query, $date)
+        $users = $users->get();
+      }
+      elseif($status || $date || $service_type)
       {
-        $query->where('payment_date', 'like',  '%'.$date);
-      })
-      ->when($service_type, function($query, $service_type)
+        $users = $users->when($status, function($query, $status)
+        {
+          $query->where('status', $status);
+        })
+        ->when($date, function($query, $date)
+        {
+          $query->where('payment_date', 'like',  '%'.$date);
+        })
+        ->when($service_type, function($query, $service_type)
+        {
+          $query->where('service_type', $service_type);
+        })->get();
+      }
+      else
       {
-        $query->where('service_type', $service_type);
-      })->get();
+        $users = $users->where('service_type', 'Static')
+        ->limit(25)
+        ->get();
+      }      
 
       $packages = Package::where('status', 'Active')
       ->select('id', 'speed')
