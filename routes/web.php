@@ -128,6 +128,10 @@ Route::group(['middleware' => ['web']], function()
         Route::get('/profile', 'Admin\AdminsController@profile');
         Route::put('/profile', 'Admin\AdminsController@update');
         // Route::delete('/user/{id}', 'Admin\UsersController@destroy')->name('admin.user.delete');
+        Route::controller(BackupController::class)->group(function()
+        {
+          Route::get('database-backup', 'downloadRawSql')->name('backup.database');
+        });
         Route::resource('/admin', 'Admin\AdminsController');
 
         //////////////////-/\\/-///////////////////

@@ -1,3 +1,8 @@
+@php
+use \App\Http\Controllers\SourceCtrl;
+$source = new SourceCtrl;
+@endphp
+
 @extends('home')
 @section('title', '')
 @section('content')
@@ -20,7 +25,7 @@
                         {{-- <h3>{{bcrypt('tstadmin')}}</h3> --}}
                         <form class="form-horizontal" action="{{route('account.check.post')}}">
                               <div class="input-group">
-                                <input type="number" name="contact" id="search"class="form-control" style="background:#efefef; padding:20px;box-shadow: 1px 1px 5px; text-align:cente" placeholder="আপনার মোবাইল নম্বর লিখুন">
+                                <input type="number" name="contact" id="search"class="form-control" style="background:#efefef; padding:20px;box-shadow: 1px 1px 5px; text-align:cente" placeholder="আপনার মোবাইল নম্বর লিখুন" required>
                                 <span class="input-group-addon">
                                   <button class="btn btn-info">Submit</button>
                                 </span>
@@ -42,23 +47,26 @@
                               </tr>
                               <tr>
                                 <td>টাকা প্রদানের তারিখ:</td>
-                                <th>{{$user->payment_date}}</th>
+                                <th>{{$source->dtformat($user->payment_date)}}</th>
                               </tr>
                             </table>
                             @if($user->status == 'Expire')
                             <hr>
                             <h3>বিকাশ সেন্ড মানি: 
                               <br>
-                              <b>017 03 58 79 11</b></h3>
+                              <b>017 03 58 79 11</b>
+                            </h3>
                             @endif
                           </div>
                         </div>
                         
                         <p id="bengali-text">
-                          @if($user->status == 'Expire')
-                          {{$user->name}}; আপনার ইন্টারনেটের মেয়াদ শেষ হয়ে গেছে। নিচের বিকাশ নাম্বারে টাকা পাঠান, তারপর শরিফুল কে কল দেন।
+                          @if($user->status == 'Active')
+                          আপনার ইন্টারনেট একটিভ আছে। ইন্টারনেটের মেয়াদ শেষ হবে - {{$user->payment_date}}
+                          @elseif($user->status == 'Expire')
+                          {{$user->name}}, আপনার ইন্টারনেটের মেয়াদ শেষ হয়ে গেছে। পুনরায় লাইন চালু করতে, বিল প্রদান করুন। প্রয়োজনে যোগাযোগ করুন ০১৭৭৮৫৭৩৩৯৬ অথবা, ০১৭০৩৫৮৭৯১১ চলনবিল টেকনলজির সাথে থাকার জন্য আপনাকে ধন্যবাদ।                          
                           @else
-                          {{$user->name}}; আপনার ইন্টারনেট {{$user->status}}
+                          {{$user->name}}; আপনার ইন্টারনেট {{$user->status}} পুনরায় লাইন চালু করতে, বিল প্রদান করুন। প্রয়োজনে যোগাযোগ করুন ০১৭৭৮৫৭৩৩৯৬ অথবা, ০১৭০৩৫৮৭৯১১ চলনবিল টেকনলজির সাথে থাকার জন্য আপনাকে ধন্যবাদ। 
                           @endif
                         </p>
                         @endif
@@ -96,6 +104,7 @@
 
       // Call the speakBengali function when the page is fully loaded
       window.onload = speakBengali;
+      speakBengali();
 
       // Note: Some browsers, especially mobile, may require user interaction (e.g., a button click)
       // to initiate speech synthesis due to autoplay policies.

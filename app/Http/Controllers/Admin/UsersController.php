@@ -464,6 +464,7 @@ class UsersController extends Controller
     public function checkIP($pon)
     {
       $ipBlock = 0;
+      $i = 2;
 
       if($pon == 'PON1')
       {
@@ -484,6 +485,7 @@ class UsersController extends Controller
       elseif($pon == 'RADIO')
       {
         $ipBlock = 254;
+        // $i = 101;
       }
 
       $used_ip = User::where('ip', 'like', '%'.$ipBlock.'%')
@@ -493,7 +495,7 @@ class UsersController extends Controller
       $ipFormat = '192.168.';
       $availableIp = [];
 
-      for($i = 2; $i <= 254; $i++)
+      for($i; $i <= 254; $i++)
       {
         $ip = $ipFormat.$ipBlock.'.'.$i;
         if(!in_array($ip, $used_ip))

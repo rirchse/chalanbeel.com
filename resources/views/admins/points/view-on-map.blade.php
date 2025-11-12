@@ -36,7 +36,7 @@
 
     function colorForStatus(status) {
       if (status === 'Offline') return '#fa0606';
-      if (status === 'Active') return '#28a745';
+      if (status === 'Active') return '#555';
       if (status === 'New') return '#f5c007';
       if (status === 'Expire') return '#d0d5d1';
       return '#959393';
@@ -45,7 +45,7 @@
     function getIcon(color) {
         return L.divIcon({
             className: 'custom-div-icon',
-            html: `<div style="background:${color};width:16px;height:16px;border-radius:50%;border:2px solid white"></div>`,
+            html: `<div style="font-size:16px;background:${color};width:20px;height:16px;border:2px solid white"></div>`,
             iconSize: [16,16],
             iconAnchor: [8,8],
             popupAnchor: [0,-8]
@@ -58,12 +58,13 @@
         const marker = L.marker([c.lat, c.lng], {
             icon: getIcon(colorForStatus(c.status)),
             title: c.full_name
-        }).bindPopup(`
+        }).bindPopup(`<span style="font-size:12px">
         <strong>${c.address}</strong>
-        <br>
-        Status: ${c.status}
-        <br>
+        <hr style="margin:0">
+        ${c.details}
+        <hr style="margin:0">
         <a target="_blank" href="https://www.google.com/maps/place/${c.lat}, ${c.lng}">Go on location</a>
+        </span>
         `);
         marker.addTo(map);
     });

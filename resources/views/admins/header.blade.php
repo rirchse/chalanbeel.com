@@ -193,6 +193,9 @@
                         <ul class="nav">
                             <li><a href="/admin/admin/create">Add New User</a></li>
                             <li><a href="/admin/admin">Show Admins</a></li>
+                            <li>
+                              <a onclick="return confirm('Are you sure, you want to download the database?')" href="{{route('backup.database')}}">Database Backup</a>
+                            </li>
                         </ul>
                     </div>
                 </li>
