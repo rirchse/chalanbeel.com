@@ -31,7 +31,7 @@ $source = new SourceCtrl;
                                 </span>
                             </div>
                         </form>
-                        @if(isset($user) && $user != [])
+                      @if(isset($user) && $user != [])
                         <div class="panel panel-info" style="background:#fff; border:2px solid; {{$user->status == 'Expire'? 'border-color: red': ''}}">
                           <div class="panel-body">
                             <table class="table">
@@ -60,7 +60,7 @@ $source = new SourceCtrl;
                           </div>
                         </div>
                         
-                        <p id="bengali-text">
+                        <p style="display: none" id="bengali-text">
                           @if($user->status == 'Active')
                           আপনার ইন্টারনেট একটিভ আছে। ইন্টারনেটের মেয়াদ শেষ হবে - {{$user->payment_date}}
                           @elseif($user->status == 'Expire')
@@ -104,7 +104,7 @@ $source = new SourceCtrl;
 
       // Call the speakBengali function when the page is fully loaded
       window.onload = speakBengali;
-      speakBengali();
+      // speakBengali();
 
       // Note: Some browsers, especially mobile, may require user interaction (e.g., a button click)
       // to initiate speech synthesis due to autoplay policies.
