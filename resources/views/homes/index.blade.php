@@ -62,11 +62,12 @@ $source = new SourceCtrl;
                         
                         <p style="display: none" id="bengali-text">
                           @if($user->status == 'Active')
-                          আপনার ইন্টারনেট একটিভ আছে। ইন্টারনেটের মেয়াদ শেষ হবে - {{$user->payment_date}}
+                          আপনার ইন্টারনেট একটিভ আছে। ইন্টারনেটের মেয়াদ শেষ হবে - {{$user->payment_date}}। চলনবিল টেকনলজির সাথে থাকার জন্য আপনাকে ধন্যবাদ। 
                           @elseif($user->status == 'Expire')
-                          {{$user->name}}, আপনার ইন্টারনেটের মেয়াদ শেষ হয়ে গেছে। পুনরায় লাইন চালু করতে, বিল প্রদান করুন। প্রয়োজনে যোগাযোগ করুন ০১৭৭৮৫৭৩৩৯৬ অথবা, ০১৭০৩৫৮৭৯১১ চলনবিল টেকনলজির সাথে থাকার জন্য আপনাকে ধন্যবাদ।                          
+                          {{$user->name}}, আপনার ইন্টারনেটের মেয়াদ শেষ হয়ে গেছে। পুনরায় লাইন চালু করতে, বিল প্রদান করুন। প্রয়োজনে যোগাযোগ করুন ০১৭৭৮৫৭৩৩৯৬ অথবা, ০১৭০৩৫৮৭৯১১। চলনবিল টেকনলজির সাথে থাকার জন্য আপনাকে ধন্যবাদ।                          
                           @else
-                          {{$user->name}}; আপনার ইন্টারনেট {{$user->status}} পুনরায় লাইন চালু করতে, বিল প্রদান করুন। প্রয়োজনে যোগাযোগ করুন ০১৭৭৮৫৭৩৩৯৬ অথবা, ০১৭০৩৫৮৭৯১১ চলনবিল টেকনলজির সাথে থাকার জন্য আপনাকে ধন্যবাদ। 
+                          {{$user->name}}; আপনার ইন্টারনেট {{$user->status}} পুনরায় লাইন চালু করতে, বিল প্রদান করুন। প্রয়োজনে যোগাযোগ করুন ০১৭৭৮৫৭৩৩৯৬ অথবা, ০১৭০৩৫৮৭৯১১। 
+                          চলনবিল টেকনলজির সাথে থাকার জন্য আপনাকে ধন্যবাদ। 
                           @endif
                         </p>
                         @endif
@@ -104,7 +105,7 @@ $source = new SourceCtrl;
 
       // Call the speakBengali function when the page is fully loaded
       window.onload = speakBengali;
-      // speakBengali();
+      speakBengali();
 
       // Note: Some browsers, especially mobile, may require user interaction (e.g., a button click)
       // to initiate speech synthesis due to autoplay policies.
