@@ -48,15 +48,22 @@ $source = new SourceCtrl;
                               <tr>
                                 <td>টাকা প্রদানের তারিখ:</td>
                                 <th>{{$source->dtformat($user->payment_date)}}</th>
+                              </tr>                              
+                              @if($user->status == 'Expire')
+                                <tr>
+                                  <hr>
+                                  <h3>বিকাশ সেন্ড মানি: 
+                                    <br>
+                                    <b>017 03 58 79 11</b>
+                                  </h3>
+                                </tr>
+                              @endif
+                              <tr>
+                                <td colspan="2">প্রয়োজনে যোগাযোগ করুনঃ
+                                  017 78 57 33 96, 017 03 58 79 11
+                                </td>
                               </tr>
                             </table>
-                            @if($user->status == 'Expire')
-                            <hr>
-                            <h3>বিকাশ সেন্ড মানি: 
-                              <br>
-                              <b>017 03 58 79 11</b>
-                            </h3>
-                            @endif
                           </div>
                         </div>
                         
@@ -105,7 +112,6 @@ $source = new SourceCtrl;
 
       // Call the speakBengali function when the page is fully loaded
       window.onload = speakBengali;
-      speakBengali();
 
       // Note: Some browsers, especially mobile, may require user interaction (e.g., a button click)
       // to initiate speech synthesis due to autoplay policies.
