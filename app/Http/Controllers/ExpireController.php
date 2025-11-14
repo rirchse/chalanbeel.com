@@ -21,10 +21,30 @@ class ExpireController extends Controller
       // dd($users);
       foreach($users as $user)
       {
-        $price = $user->package?$user->package->price:0;
+        $balance = 0;
+        $status = 'Expire';
+        $payment_date = $user->payment_date;
+        $price = $user->package ? $user->package->price:0;
+
+        if($user->balance >= $price)
+        {
+          $balance = $user->balance - $price;
+        }
+        else
+        {
+          $balance = $user->balance;
+        }
+
+        if($balance >= $price)
+        {
+          $status = 'Active';
+          $payment_date = date('Y-m-d', strtotime($payment_date.' +30 days'));
+        }
+
         User::where('id', $user->id)->update([
-          'status' => 'Expire',
-          'balance' => $user->balance - $price
+          'status' => $status,
+          'balance' => $balance,
+          'payment_date' => $payment_date
         ]);
       }
     }

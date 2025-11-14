@@ -2,56 +2,89 @@
 @section('title', 'Home')
 @section('content')
 
-<?php
-// dd($locations);
-//get all users and process as type
-$allusers = DB::table('services')->get();
-$new_user = $paid_user = $free_user = $cancel_user = 0;
-foreach($allusers as $user){
-    if($user->status == 0){
-        $new_user ++;
-    }elseif($user->status == 1){
-        $paid_user ++;
-    }elseif($user->status == 2){
-        $free_user ++;
-    }elseif($user->status == 3){
-        $cancel_user ++;
-    }
-}
-?>
+{{-- {{dd($intuser)}} --}}
 
-<?php
-  $investasdate = $salesasdate = $inivest_tally = $salse_tally = $dates = $dates_tally = '';
-  $totalinvest = $totalsalse = 0;
-  $mindate = DB::table('invests')->min('date');
-  // $months = number_format((strtotime(date('Y-m-d')) - strtotime($mindate))/24/3600/30);
-  for($rs = 11; $rs >= 0; $rs--){
-    //invest calc as date
-    $invests = DB::table('invests')->where('date', 'like', '%'.date('Y-m', strtotime('-'.$rs.' month')).'%')->sum('amount');
-    $totalinvest += $invests; //total invests
-    $investmax[] = $invests; // max invest
-    $investasdate .= $invests.', ';
-    $inivest_tally .='<td>'.$invests.'</td>';
+<div class="row">
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+        <div class="card-header" data-background-color="orange">
+            <i class="material-icons">people</i>
+        </div>
+        <div class="card-content">
+            <p class="category">Total</p>
+            <h3 class="card-title">{{$intuser['total']}}</h3>
+        </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+        <div class="card-header" data-background-color="blue">
+            <i class="material-icons">people</i>
+        </div>
+        <div class="card-content">
+            <p class="category">Active</p>
+            <h3 class="card-title">{{$intuser['active']}}</h3>
+        </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+        <div class="card-header" data-background-color="green">
+            <i class="material-icons">people</i>
+        </div>
+        <div class="card-content">
+            <p class="category">Expired</p>
+            <h3 class="card-title">{{$intuser['expire']}}</h3>
+        </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+      <div class="card-header" data-background-color="green">
+          <i class="material-icons">people</i>
+      </div>
+      <div class="card-content">
+          <p class="category">Users</p>
+          <h3 class="card-title">{{$intuser['expire']}}</h3>
+      </div>
+  </div>
+  </div>
+  </div>
 
-
-    //salse calc as date
-    $payments = DB::table('payments')->where('receive_date', 'like', '%'.date('Y-m', strtotime('-'.$rs.' month')).'%')->sum('receive');
-    $totalsalse += $payments;
-    $salsemax[] = $payments;
-    $salesasdate .= $payments.', ';
-    $salse_tally .='<td>'.$payments.'</td>';
-
-    // $users = count(DB::table('users')->where('status', 0)->where('created_at', 'like', '%'.date('Y-m', strtotime('-'.$rs.' month')).'%')->get());
-    // $total_inactusers += $users;
-    // $inactusers .= $users.', ';
-
-    $dates .= "'".date('M y', strtotime('-'.$rs.' month'))."', ";
-    $dates_tally .= '<td>'.date('M y', strtotime('-'.$rs.' month')).'</td>';
-  }
-
-// dd(max(array_merge($salsemax, $investmax)));
-
-?>
+<div class="col-lg-3 col-md-6 col-sm-6">
+  <div class="card card-stats">
+      <div class="card-header" data-background-color="green">
+          <i class="fa fa-user"></i>
+      </div>
+      <div class="card-content">
+          <p class="category">Paid Services</p>
+          <h3 class="card-title">{{$intuser['expire']}}</h3>
+      </div>
+  </div>
+</div>
+<div class="col-lg-3 col-md-6 col-sm-6">
+  <div class="card card-stats">
+      <div class="card-header" data-background-color="purple">
+          <i class="fa fa-user"></i>
+      </div>
+      <div class="card-content">
+          <p class="category">Free Services</p>
+          <h3 class="card-title">{{$intuser['expire']}}</h3>
+      </div>
+  </div>
+</div>
+<div class="col-lg-3 col-md-6 col-sm-6">
+  <div class="card card-stats">
+      <div class="card-header" data-background-color="rose">
+          <i class="fa fa-user"></i>
+      </div>
+      <div class="card-content">
+          <p class="category">Cancel Services</p>
+          <h3 class="card-title">{{$intuser['expire']}}</h3>
+      </div>
+  </div>
+</div>
+</div>
 
 <div class="row">
     <div class="" style="overflow:auto">
@@ -60,133 +93,27 @@ foreach($allusers as $user){
                 <i class="material-icons">timeline</i>
             </div>
             <div class="card-content">
-                <h4 class="card-title"><span class="text-danger">Investments ({{$totalinvest}})</span> and <span class="text-info">Sales ({{$totalsalse}})</span> Graph <a href="/admin/graph_from_beginning" class="label label-info">All</a></h4>
+                <h4 class="card-title"><span class="text-danger">Investments ({{$invest['total']}})</span> and <span class="text-info">Sales ({{$invest['total']}})</span> Graph <a href="/admin/graph_from_beginning" class="label label-info">All</a></h4>
             </div>
             <div id="colouredBarsChart" class="ct-chart"></div>
             <div class="col-md-12">
                 <table class="table">
                     <tr>
                         <td></td>
-                        {!!$dates_tally!!}
+                        0
                     </tr>
                     <tr style="color:#f00">
                         <td>Investments</td>
-                        {!!$inivest_tally!!}
+                        0
                     </tr>
                     <tr style="color:#00bcd4">
                         <td>Sales</td>
-                        {!!$salse_tally!!}
+                        0
                     </tr>
                 </table>
             </div>
         </div>
     </div>
-
-    <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="card card-stats">
-            <div class="card-header" data-background-color="green">
-                <i class="fa fa-server"></i>
-            </div>
-            <div class="card-content">
-                <p class="category">Paid Services</p>
-                <h3 class="card-title">{{$paid_user}}</h3>
-            </div>
-            <div class="card-footer">
-                <div class="stats">
-                    <i class="material-icons text-success">peoples</i>
-                    <a href="/admin/view_active_services">View Paid Services</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="card card-stats">
-            <div class="card-header" data-background-color="purple">
-                <i class="fa fa-server"></i>
-            </div>
-            <div class="card-content">
-                <p class="category">Free Services</p>
-                <h3 class="card-title">{{$free_user}}</h3>
-            </div>
-            <div class="card-footer">
-                <div class="stats">
-                    <i class="material-icons text-primary">peoples</i>
-                    <a href="/admin/view_free_services">View Free Services</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="card card-stats">
-            <div class="card-header" data-background-color="rose">
-                <i class="fa fa-server"></i>
-            </div>
-            <div class="card-content">
-                <p class="category">Cancel Services</p>
-                <h3 class="card-title">{{$cancel_user}}</h3>
-            </div>
-            <div class="card-footer">
-                <div class="stats">
-                    <i class="material-icons text-danger">peoples</i>
-                    <a href="/admin/view_cancel_services">View Canceled Services</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="card card-stats">
-            <div class="card-header" data-background-color="orange">
-                <i class="material-icons">people</i>
-            </div>
-            <div class="card-content">
-                <p class="category">New Users</p>
-                <h3 class="card-title">{{$new_user}}</h3>
-            </div>
-            <div class="card-footer">
-                <div class="stats">
-                    <i class="material-icons text-warning">peoples</i>
-                    <a href="/admin/view/new/users">View New Users</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="card card-stats">
-            <div class="card-header" data-background-color="blue">
-                <i class="material-icons">people</i>
-            </div>
-            <div class="card-content">
-                <p class="category">Users</p>
-                <h3 class="card-title">{{count(DB::table('users')->get())}}</h3>
-            </div>
-            <div class="card-footer">
-                <div class="stats">
-                    <i class="material-icons">list</i>
-                    <a href="/admin/view/all/users">View Users</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="card card-stats">
-            <div class="card-header" data-background-color="green">
-                <i class="material-icons">people</i>
-            </div>
-            <div class="card-content">
-                <p class="category">Users</p>
-                <h3 class="card-title">{{count(DB::table('users')->get())}}</h3>
-            </div>
-            <div class="card-footer">
-                <div class="stats">
-                    <i class="material-icons">list</i>
-                    <a href="/admin/view/active/users">View Users</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="row">
     <div class="col-md-6">
         <div class="card card-chart">
@@ -287,7 +214,7 @@ foreach($allusers as $user){
                         <div class="table-responsive table-sales">
                             <table class="table">
                                 <tbody>
-                                    @foreach($locations as $location)
+                                    {{-- @foreach($locations as $location)
                                     <tr>
                                         <td>
                                             <div class="flag">
@@ -302,7 +229,7 @@ foreach($allusers as $user){
                                             53.23%
                                         </td>
                                     </tr>
-                                    @endforeach
+                                    @endforeach --}}
                                 </tbody>
                             </table>
                         </div>
@@ -445,6 +372,12 @@ foreach($allusers as $user){
 //         //
 //     }
 // }
+
+$dates = '';
+$investasdate = '';
+$salesasdate = '';
+$salsemax = [1,2,3];
+$investmax = [2,3,4];
 ?>
 
 @section('scripts')
@@ -458,7 +391,7 @@ foreach($allusers as $user){
     var dataWebsiteViewsChart = {
           labels: [<?php echo $dates; ?>],
           series: [
-            // [<?php echo $investasdate; ?>]
+            [<?php echo $investasdate; ?>]
             [1,2,3,4,5,6,7,8,9,10,11,12]
 
           ]
@@ -481,8 +414,6 @@ foreach($allusers as $user){
 
 <?php // ?>
 <script type="text/javascript">
-
-    /*  **************** Coloured Rounded Line Chart - Line Chart ******************** */
         dataColouredBarsChart = {
           labels: [<?php echo $dates; ?>],
           series: [

@@ -30,13 +30,37 @@ class AdminHomeController extends Controller
 
     public function index()
     {
-        // $active_services = ActiveService::leftJoin('services', 'services.id', 'active_services.service_id')
-        // ->orderBy('active_services.id', 'DESC')
-        // ->select('active_services.id', 'services.package', 'services.category', 'services.time_limit', 'services.price')
-        // ->get();
-        $active_services = [];
-        $locations = Location::where('status', 1)->get();
-        return view('admins.index', compact('active_services', 'locations'));
+      $intuser = [
+        'total' => 0,
+        'static' => 0,
+        'active' => 0,
+        'expire' => 0,
+      ];
+
+      $invest = [
+        'total' => 0
+      ];
+
+      $bill = [
+        'total' => 0
+      ];
+
+      $users = User::where('service_type', 'Static')->get();
+      $intuser['total'] = $users->count();
+      foreach($users as $user)
+      {
+        if($user->status == 'Active')
+        {
+          $intuser['active'] ++;
+        }
+        if($user->status == 'Expire')
+        {
+          $intuser['expire'] ++;
+        }
+      }
+      // dd($intuser);
+      
+      return view('admins.index', compact('intuser', 'bill', 'invest'));
     }
 
     /**

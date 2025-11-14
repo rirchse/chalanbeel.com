@@ -287,7 +287,7 @@
                               '</div>'+
                               '<div class="form-group">'+
                                   '<input type="text" name="service_password" id="" class="form-control" placeholder="Service Password">'+
-                              '</div>';;
+                              '</div>';
     }
     else
     {

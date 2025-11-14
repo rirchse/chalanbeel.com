@@ -22,9 +22,8 @@ $source = new SourceCtrl;
                       @endif
                         <a class="btn btn-sm btn-primary" title="Add New User" href="{{route('user.create')}}"><i class="fa fa-plus"></i></a>
                         <a class="btn btn-sm btn-success" title="View All Users" href="{{route('user.index')}}"><i class="fa fa-list"></i></a>
-                        <a class="text-success" title="View Active Users" href="/admin/view_active_users"><i class="material-icons">assignment</i></a>
-                        <a class="text-primary" title="View All Users" href="/admin/user"><i class="material-icons">assignment</i></a>
-                        <a class="text-warning" title="Edit" href="/admin/user/{{$user->id}}/edit"><i class="material-icons">edit</i></a>
+                        
+                        <a class="btn btn-warning btn-sm" title="Edit" href="{{route('user.edit', $user->id)}}"><i class="material-icons">edit</i></a>
                         <form class="pull-right" action="{{route('user.destroy', $user->id)}}" method="post">
                           @csrf
                           @method('DELETE')

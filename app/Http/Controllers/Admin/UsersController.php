@@ -229,8 +229,9 @@ class UsersController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        $locations = Location::where('status', 1)->get();
-        return view('admins.users.edit')->withUser($user)->withLocations($locations);
+        $packages = Package::where('status', 'Active')->get();
+
+        return view('admins.users.edit', compact('user', 'packages'));
     }
 
     /**
@@ -245,7 +246,7 @@ class UsersController extends Controller
         $user_id = Auth::guard('admin')->user()->id;
         //validate the data
         $this->validate($request, array(
-            'name'     => 'required|min:2|max:32',
+            'name'          => 'required|min:2|max:32',
             'email'         => 'email|max:50|nullable',
             'contact'       => 'required|min:11|max:11',
             'work_at'       => 'max:255|nullable',
@@ -253,10 +254,10 @@ class UsersController extends Controller
             'join_date'     => 'max:255|nullable',
             'location'      => 'max:255|nullable',
             'details'       => 'max:500|nullable',
-            'mac'   => 'max:255|nullable',
+            'mac'           => 'max:255|nullable',
             'left_long'     => 'max:255|nullable',
             'date_of_birth' => 'max:30|nullable',
-            'nid_no'           => 'max:17|nullable',
+            'nid_no'        => 'max:17|nullable',
             'details'       => 'max:999|nullable',
             'nid_image'     => 'image|nullable',
             'profile_image' => 'image|nullable'
@@ -512,21 +513,34 @@ class UsersController extends Controller
     public function getPayment(Request $request)
     {
       $data = $request->all();
-      try {
-        User::where('id', $data['user_id'])->update(
-          [
-            'payment_date' => $data['payment_date'],
-            'balance' => DB::raw("balance + ".intval($data['amount'])),
-            'status' => 'Active'
-          ]
-        );
+      $user = User::find($data['user_id']);
+      $price = $user->package ? $user->package->price : 0;
+      $balance = $user->balance + $data['amount'];
 
-        // add to the payment
-        Payment::create([
-          'receive' => $data['amount'],
-          'user_id' => $data['user_id'],
-          'status' => 'Paid'
-        ]);
+      try {
+        if($balance >= $price)
+        {          
+          User::where('id', $data['user_id'])->update(
+            [
+              'payment_date' => $data['payment_date'],
+              'balance' => DB::raw("balance + ".intval($data['amount'])),
+              'status' => 'Active'
+            ]
+          );
+
+          // add to the payment
+          Payment::create([
+            'receive' => $data['amount'],
+            'user_id' => $data['user_id'],
+            'status' => 'Paid'
+          ]);
+          
+          Session::flash('success', 'Payment successfully received.');
+        }
+        else
+        {
+          Session::flash('error', 'Insufficient balance for this package');
+        }
 
         return back();
       }
