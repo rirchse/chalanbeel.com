@@ -17,6 +17,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Username</th>
+                                <th>Contact</th>
                                 <th>Amount Tk.</th>
                                 <th>PayMethod</th>
                                 <th>Date</th>
@@ -28,6 +29,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Username</th>
+                                <th>Contact</th>
                                 <th>Amount</th>
                                 <th>PayMethod</th>
                                 <th>Date</th>
@@ -36,15 +38,14 @@
                             </tr>
                         </tfoot>
                         <tbody>
-                            <?php $r = 0; $total = 0; ?>
+                            <?php $total = 0; ?>
 
-                            @foreach($payments as $payment)
-
-                            <?php $r++; ?>
+                            @foreach($payments as $key => $payment)
 
                             <tr>
-                                <td>{{ $r }}</td>
-                                <td title="{{$payment->full_name.' - '.$payment->station}}">{{ $payment->username }}</td>
+                                <td>{{ $key+1 }}</td>
+                                <td>{{$payment->name}} </td>
+                                <td>{{ $payment->username }}</td>
                                 <td>{{ $payment->receive?$payment->receive:'Due' }}</td>
                                 <td>{{ $payment->payment_system }}</td>
                                 <td>{{ $payment->receive_date?date('d M Y', strtotime($payment->receive_date)):'' }}</td>
@@ -62,6 +63,7 @@
                                 <th></th>
                                 <th>Total = </th>
                                 <th>{{$total}}</th>
+                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>

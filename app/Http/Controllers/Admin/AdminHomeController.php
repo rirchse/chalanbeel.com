@@ -11,6 +11,7 @@ use App\Service;
 use App\ActiveService;
 use App\ServiceCat;
 use App\Location;
+use App\Payment;
 use App\User;
 use Session;
 use DB;
@@ -35,6 +36,7 @@ class AdminHomeController extends Controller
         'static' => 0,
         'active' => 0,
         'expire' => 0,
+        'cancel' => 0,
       ];
 
       $invest = [
@@ -42,7 +44,8 @@ class AdminHomeController extends Controller
       ];
 
       $bill = [
-        'total' => 0
+        'thismonth' => 0,
+        'prevmonth' => 0,
       ];
 
       $users = User::where('service_type', 'Static')->get();
@@ -53,12 +56,21 @@ class AdminHomeController extends Controller
         {
           $intuser['active'] ++;
         }
-        if($user->status == 'Expire')
+        elseif($user->status == 'Expire')
         {
           $intuser['expire'] ++;
         }
+        elseif($user->status == 'Cancel')
+        {
+          $intuser['cancel'] ++;
+        }
       }
-      // dd($intuser);
+      
+      $bills = Payment::orderBy('id', 'DESC');
+      $bill['thismonth'] = $bills->where('receive_date', 'like', '%'.date('Y-m').'%')->sum('receive');
+      $bill['prevmonth'] = Payment::where('receive_date', 'like', '%'.date('Y-m', strtotime('- 1 month')).'%')->sum('receive');
+      // dd($prevmonth);
+
       
       return view('admins.index', compact('intuser', 'bill', 'invest'));
     }

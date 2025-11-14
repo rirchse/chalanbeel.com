@@ -40,47 +40,35 @@
   </div>
   <div class="col-lg-3 col-md-6 col-sm-6">
     <div class="card card-stats">
-      <div class="card-header" data-background-color="green">
+      <div class="card-header" data-background-color="red">
           <i class="material-icons">people</i>
       </div>
       <div class="card-content">
-          <p class="category">Users</p>
-          <h3 class="card-title">{{$intuser['expire']}}</h3>
+          <p class="category">Cancel</p>
+          <h3 class="card-title">{{$intuser['cancel']}}</h3>
       </div>
-  </div>
   </div>
   </div>
 
 <div class="col-lg-3 col-md-6 col-sm-6">
   <div class="card card-stats">
       <div class="card-header" data-background-color="green">
-          <i class="fa fa-user"></i>
+          <i class="fa fa-dollar"></i>
       </div>
       <div class="card-content">
-          <p class="category">Paid Services</p>
-          <h3 class="card-title">{{$intuser['expire']}}</h3>
+          <p class="category">Bill: {{date('M Y')}}</p>
+          <h3 class="card-title">{{number_format($bill['thismonth'])}}</h3>
       </div>
   </div>
 </div>
 <div class="col-lg-3 col-md-6 col-sm-6">
   <div class="card card-stats">
       <div class="card-header" data-background-color="purple">
-          <i class="fa fa-user"></i>
+          <i class="fa fa-dollar"></i>
       </div>
       <div class="card-content">
-          <p class="category">Free Services</p>
-          <h3 class="card-title">{{$intuser['expire']}}</h3>
-      </div>
-  </div>
-</div>
-<div class="col-lg-3 col-md-6 col-sm-6">
-  <div class="card card-stats">
-      <div class="card-header" data-background-color="rose">
-          <i class="fa fa-user"></i>
-      </div>
-      <div class="card-content">
-          <p class="category">Cancel Services</p>
-          <h3 class="card-title">{{$intuser['expire']}}</h3>
+          <p class="category">Bill: {{date('M Y', strtotime('- 1 Month'))}}</p>
+          <h3 class="card-title">{{number_format($bill['prevmonth'])}}</h3>
       </div>
   </div>
 </div>

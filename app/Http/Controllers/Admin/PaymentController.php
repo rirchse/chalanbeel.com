@@ -40,12 +40,12 @@ class PaymentController extends Controller
         ->leftJoin('users', 'services.user_id', 'users.id')
         ->leftJoin('paymethods', 'payments.paymethod_id', 'paymethods.id')
         // ->leftJoin('locations', 'users.location_id', 'locations.id')
-        ->select('payments.*', 'paymethods.payment_system', 'users.full_name', 'users.contact','services.username')
+        ->select('payments.*', 'paymethods.payment_system', 'users.name', 'users.contact','services.username')
         ->orderBy('payments.id', 'DESC')->get();
         
         $services = Service::leftJoin('users', 'users.id', 'services.user_id')
         // ->leftJoin('packages', 'services.id', 'packages.service_id')
-        ->where('services.status', 1)->select('services.*', 'users.full_name', 'users.contact')->get();
+        ->where('services.status', 1)->select('services.*', 'users.name', 'users.contact')->get();
         return view('admins.billings.view_payments')->withPayments($payments)->withServices($services);
     }
 
@@ -53,7 +53,7 @@ class PaymentController extends Controller
     {        
         $services = Service::leftJoin('users', 'users.id', 'services.user_id')
         // ->leftJoin('packages', 'services.id', 'packages.service_id')
-        ->where('services.status', 1)->select('services.*', 'users.full_name', 'users.contact')->get();
+        ->where('services.status', 1)->select('services.*', 'users.name', 'users.contact')->get();
         return view('admins.billings.view_due_payments')->withServices($services);
     }
 
@@ -70,7 +70,7 @@ class PaymentController extends Controller
         $service = Service::leftJoin('packages', 'packages.id', 'services.package_id')
         ->leftJoin('users', 'users.id', 'services.user_id')
         // ->leftJoin('service_plans', 'services.id', 'service_plans.service_id')
-        ->select('services.*','users.full_name', 'users.contact', 'packages.speed', 'packages.time_limit')
+        ->select('services.*','users.name', 'users.contact', 'packages.speed', 'packages.time_limit')
         ->find($id);
 
         $payments = Payment::where('service_id', $id)->select('billing_month', 'receive')->get();
@@ -88,7 +88,7 @@ class PaymentController extends Controller
         ->leftJoin('users', 'services.user_id', 'users.id')
         ->leftJoin('payments', 'payments.service_id', 'services.id')
         ->orderBy('payments.receive_date', 'ASC')
-        ->select('services.*', 'packages.service', 'packages.speed', 'packages.time_limit', 'packages.connection', 'payments.receive', 'payments.receive_date', 'users.full_name', 'users.contact')
+        ->select('services.*', 'packages.service', 'packages.speed', 'packages.time_limit', 'packages.connection', 'payments.receive', 'payments.receive_date', 'users.name', 'users.contact')
         ->get();
         return view('admins.billings.view_services')->withServices($services);
     }
@@ -97,7 +97,7 @@ class PaymentController extends Controller
     {
         $service = Service::leftJoin('users', 'services.user_id', 'users.id')
         ->leftJoin('payments', 'services.id', 'payments.service_id')
-        ->select('services.*', 'services.username', 'users.full_name')
+        ->select('services.*', 'services.username', 'users.name')
         ->find($id);
         $paymethods = Paymethod::orderBy('id', 'DESC')->get();
         return view('admins.billings.create_payment', compact('service', 'paymethods', 'billing_date'));
@@ -210,7 +210,7 @@ class PaymentController extends Controller
         ->leftJoin('paymethods', 'paymethods.id', 'payments.paymethod_id')
         ->leftJoin('users', 'users.id', 'services.user_id')
         ->leftJoin('admins', 'admins.id', 'payments.created_by')
-        ->select('payments.*', 'paymethods.payment_system', 'users.full_name', 'admins.first_name', 'admins.last_name')
+        ->select('payments.*', 'paymethods.payment_system', 'users.name', 'admins.first_name', 'admins.last_name')
         ->find($id);
         return view('admins.billings.read_payment', compact('bill'));
     }
@@ -227,7 +227,7 @@ class PaymentController extends Controller
         $payment = Payment::find($id);
         $services = Service::leftJoin('users', 'services.user_id', 'users.id')
         ->leftJoin('packages', 'services.package_id', 'packages.id')
-        ->select('services.*', 'users.contact', 'users.full_name', 'packages.speed', 'packages.connection')->get();
+        ->select('services.*', 'users.contact', 'users.name', 'packages.speed', 'packages.connection')->get();
         return view('admins.billings.edit_payment')->withPayment($payment)->withPaymethods($paymethod)->withServices($services);
     }
 

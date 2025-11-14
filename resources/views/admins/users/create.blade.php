@@ -13,7 +13,7 @@
 
                   <form action="{{route('user.store')}}" method="POST" enctype="multipart/form-data" id="user_form">
                     @csrf
-                      <div class="row">
+                        <div class="row">
                           <div class="col-md-6">
                             <div class="form-group">
                                 <label for="contact">Mobile Number(*):</label>
@@ -26,29 +26,15 @@
                                 <input type="text" name="name" class="form-control" required>
                             </div>
                           </div>
-                          <div class="col-md-6">
-                            <div class="form-group">
-                              <input type="text" name="address" class="form-control" placeholder="Street Address">
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                              <div class="form-group">
-                                  <input type="email" name="email" class="form-control" placeholder="Email Address">
-                              </div>
-                            </div>
                           <div class="clearfix"></div>
                           <div class="col-md-6">
                               <div class="form-group">
-                                  <label for="">Join Date:</label>
-                                  <input type="date" name="join_date" class="form-control">
-                              </div>
-                              <div class="form-group">
                                   <label for="">Billing Date:</label>
-                                  <input type="date" name="billing_date" class="form-control">
+                                  <input type="date" name="billing_date" class="form-control" value="{{date('Y-m-d')}}">
                               </div>
                               <div class="form-group">
                                   <label for="">Next Payment Date:</label>
-                                  <input type="date" name="payment_date" class="form-control">
+                                  <input type="date" name="payment_date" class="form-control" value="{{date('Y-m-d', strtotime('+30 days'))}}">
                               </div>
                               <div class="form-group">
                                   <select name="status" id="" class="form-control">
@@ -86,15 +72,6 @@
                                   </select>
                               </div>
                               <div class="form-group">
-                                  <select name="location" id="" class="form-control">
-                                      <option value="">Select POP/OLT</option>
-                                      <option value="Bildahor">Bildahor</option>
-                                      <option value="Nazirpur">Nazirpur</option>
-                                      <option value="Chanchkoir">Chanchkoir</option>
-                                      <option value="Ganadanagar">Ganadanagar</option>
-                                  </select>
-                              </div>
-                              <div class="form-group">
                                   <select name="pon" id="pon" class="form-control" onchange="checkIP(this)">
                                     <option value="">Select PON:</option>
                                     <option value="PON1">PON1</option>
@@ -112,13 +89,44 @@
                               </div>
                             </div>
                             <div class="col-md-12">
-                              
                               <div class="form-group">
                                 <label for="">Details:</label>
                                 <textarea class="form-control" name="details" id="" rows="2" placeholder="write details here..."></textarea>
                             </div>
                           </div>
-                          <div class="clearfix"></div>
+                        </div>
+
+                        <button type="button" onclick="this.nextElementSibling.style.display = 'block';">Others Information: <i class="fa fa-angle-down"></i></button>
+
+                        <div class="row" style="display: none">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                                <select name="location" id="" class="form-control">
+                                    <option value="">Select POP/OLT</option>
+                                    <option value="Bildahor">Bildahor</option>
+                                    <option value="Nazirpur">Nazirpur</option>
+                                    <option value="Chanchkoir">Chanchkoir</option>
+                                    <option value="Ganadanagar">Ganadanagar</option>
+                                </select>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">Join Date:</label>
+                                <input type="date" name="join_date" class="form-control">
+                            </div>
+                          </div>
+                          
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <input type="text" name="address" class="form-control" placeholder="Street Address">
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                              <div class="form-group">
+                                  <input type="email" name="email" class="form-control" placeholder="Email Address">
+                              </div>
+                            </div>
                           
                           <div class="col-md-6">
                             <div class="form-group">
@@ -158,9 +166,8 @@
                                     <br />
                                 </div>
                             </div>
+                          </div>
                         </div>
-
-                      </div>
                       <button type="submit" class="btn btn-primary pull-right">Save</button>
                       <div class="clearfix"></div>
                   </form>
