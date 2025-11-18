@@ -56,7 +56,11 @@ Route::group(['middleware' => ['web']], function()
   });
 
 	Route::get('/', 'HomeController@index');
+	Route::get('/about', 'HomeController@about');
+	Route::get('/services', 'HomeController@services');
 	Route::get('/view-user-on-map', 'HomeController@userOnMap');
+	Route::get('/check_payment', 'PackageCtrl@check_payment');
+	Route::post('/check_payment', 'PackageCtrl@checkPayment')->name('check.payment');
 	Route::resource('/package', 'PackageCtrl', [
 		'names' => [
 			'create' => 'create/{id}',
@@ -73,7 +77,11 @@ Route::group(['middleware' => ['web']], function()
 	// });
 
 	Route::get('/package/{id}/select', 'PackageCtrl@select');
-	Route::resource('/register', 'RegisterController');
+	Route::get('/register/create/{package_id?}', 'RegisterController@create')->name('register.create');
+	Route::post('/register', 'RegisterController@store')->name('register.store');
+	Route::get('/register/{token}', 'RegisterController@show')->name('register.show');
+	Route::get('/register/{token}/edit', 'RegisterController@edit')->name('register.edit');
+	Route::put('/register/{token}', 'RegisterController@update')->name('register.update');
 	Route::put('/register/{token}/sendsms', 'RegisterController@sendSMS')->name('register.sendsms');
 
 	Route::get('/router_connect', 'Router@ConnectTest');

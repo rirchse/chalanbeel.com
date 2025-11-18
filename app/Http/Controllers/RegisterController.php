@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Location;
+use App\Package;
 use Image;
 use Session;
 
@@ -21,10 +22,19 @@ class RegisterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($package_id = null)
     {
         $locations = Location::where('status', 1)->get();
-        return view('homes.register')->withLocations($locations);
+        $package = null;
+        
+        if ($package_id) {
+            $package = Package::find($package_id);
+            if ($package) {
+                Session::put('selected_package_id', $package_id);
+            }
+        }
+        
+        return view('homes.register', compact('locations', 'package'));
     }
 
     /**
@@ -74,6 +84,12 @@ class RegisterController extends Controller
             $user->location_id  = $request->area;
             $user->created_by   = 0;
             $user->status       = 0;
+            
+            // Store package ID if selected
+            if ($request->package_id) {
+                $user->package_id = $request->package_id;
+                Session::forget('selected_package_id');
+            }
 
             //save image//
             if($request->hasFile('profile_image')){

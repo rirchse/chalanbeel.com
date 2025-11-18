@@ -4,131 +4,1414 @@ $source = new SourceCtrl;
 @endphp
 
 @extends('home')
-@section('title', '')
+@section('title', 'Welcome')
 @section('content')
 
 <style type="text/css">
-    .search{border: 1px solid #fff;}
-    .search-alert{background: #fff;padding: 10px 20px;font-size: 18px;font-weight: bold;color:orange;box-shadow: 5px 5px 15px #000;display: none;}
+    .hero-section {
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 100px 20px 40px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-container {
+        max-width: 1400px;
+        width: 100%;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+        z-index: 1;
+        position: relative;
+    }
+
+    .hero-left {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .hero-title {
+        font-size: 56px;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1.2;
+        margin: 0;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-subtitle {
+        font-size: 20px;
+        color: rgba(255, 255, 255, 0.95);
+        line-height: 1.6;
+        margin: 0;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-actions {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+    }
+
+    .hero-btn {
+        padding: 16px 32px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        border: none;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .hero-btn-primary {
+        background: #000;
+        color: #fff;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    .hero-btn-primary:hover {
+        background: #333;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+        color: #fff;
+    }
+
+    .hero-btn-outline {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+    }
+
+    .hero-btn-outline:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.5);
+        transform: translateY(-3px);
+        color: #fff;
+    }
+
+    .hero-right {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        padding: 40px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .search-card-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #000;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    .search-card-subtitle {
+        font-size: 15px;
+        color: #666;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .modern-page {
+        min-height: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        position: relative;
+        background: #fff;
+        z-index: 1;
+    }
+
+    .modern-page .main-card {
+        max-width: 650px;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        padding: 50px 40px;
+        position: relative;
+        z-index: 1;
+        animation: slideUp 0.6s ease-out;
+    }
+
+    /* YouTube Video Background - Only for Hero Section */
+    .video-background {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        transform: translateX(-50%) translateY(-50%);
+        z-index: -2;
+    }
+
+    .video-background iframe {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100vw;
+        height: 100vh;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+    }
+
+    @media (min-aspect-ratio: 16/9) {
+        .video-background iframe {
+            height: 56.25vw;
+        }
+    }
+
+    @media (max-aspect-ratio: 16/9) {
+        .video-background iframe {
+            width: 177.78vh;
+        }
+    }
+
+    /* Dark overlay for better text visibility - Only for Hero */
+    .video-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 70vh;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+    }
+
+    .main-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        max-width: 650px;
+        width: 100%;
+        padding: 50px 40px;
+        position: relative;
+        z-index: 1;
+        animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .logo-container {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .logo-container img {
+        max-width: 200px;
+        height: auto;
+        margin: 0 auto;
+        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .welcome-text {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .welcome-text h2 {
+        color: #333;
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .welcome-text p {
+        color: #666;
+        font-size: 16px;
+    }
+
+    .search-form {
+        margin-bottom: 30px;
+    }
+
+    .material-input-group {
+        position: relative;
+        margin-bottom: 30px;
+    }
+
+    .material-input-group .form-control {
+        background: #f5f5f5;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 18px 20px 18px 50px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        box-shadow: none;
+    }
+
+    .material-input-group .form-control:focus {
+        background: #fff;
+        border-color: #000;
+        box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .material-input-group .input-icon {
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #999;
+        font-size: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .material-input-group .form-control:focus ~ .input-icon {
+        color: #000;
+    }
+
+    .submit-btn {
+        background: #000;
+        border: none;
+        border-radius: 12px;
+        padding: 16px 0;
+        width: 100%;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+        background: #333;
+    }
+
+    .submit-btn:active {
+        transform: translateY(0);
+    }
+
+    .result-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 30px;
+        margin-top: 30px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .result-card.expired {
+        border: 3px solid #000;
+        background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+    }
+
+    .result-card.active {
+        border: 3px solid #000;
+        background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 10px 24px;
+        border-radius: 50px;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .status-badge.active {
+        background: #000;
+        color: #fff;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .status-badge.expired {
+        background: #666;
+        color: #fff;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 0;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .info-row:last-child {
+        border-bottom: none;
+    }
+
+    .info-label {
+        color: #666;
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    .info-value {
+        color: #333;
+        font-size: 16px;
+        font-weight: 600;
+        text-align: right;
+    }
+
+    .payment-info {
+        background: #000;
+        color: #fff;
+        padding: 25px;
+        border-radius: 16px;
+        margin: 25px 0;
+        text-align: center;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .payment-info h3 {
+        margin: 0 0 15px 0;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .payment-info .number {
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .contact-info {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .contact-info p {
+        margin: 0;
+        color: #666;
+        font-size: 15px;
+        line-height: 1.8;
+    }
+
+    .contact-info .phone {
+        color: #000;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    @media (max-width: 768px) {
+        .main-card {
+            padding: 30px 25px;
+        }
+
+        .welcome-text h2 {
+            font-size: 24px;
+        }
+
+        .payment-info .number {
+            font-size: 26px;
+        }
+
+        .info-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .info-value {
+            text-align: left;
+        }
+    }
+
+    /* Remove spinner from number input */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
 </style>
 
-<div class="full-page login-page" filter-color="" data-image="images/login.jpg">
-    <div class="content">
-        <div class="container">
-            <div class="col-md-12">
-                <div class="" style="text-align:center;width:100%;max-width:600px;margin:0 auto;">
-                    <div class="">
-                        <!-- resources/views/welcome.blade.php -->
-                        {{-- <h1>@lang('messages.welcome')</h1> --}}
-                        
-                        <img src="images/logo.png" class="img-responsive" style="margin:0 auto">
-                        {{-- <h3>{{bcrypt('tstadmin')}}</h3> --}}
-                        <form class="form-horizontal" action="{{route('account.check.post')}}">
-                              <div class="input-group">
-                                <input type="number" name="contact" id="search"class="form-control" style="background:#efefef; padding:20px;box-shadow: 1px 1px 5px; text-align:cente" placeholder="আপনার মোবাইল নম্বর লিখুন" required>
-                                <span class="input-group-addon">
-                                  <button class="btn btn-info">Submit</button>
-                                </span>
-                            </div>
-                        </form>
-                      @if(isset($user) && $user != [])
-                        <div class="panel panel-info" style="background:#fff; border:2px solid; {{$user->status == 'Expire'? 'border-color: red': ''}}">
-                          <div class="panel-body">
-                            <table class="table">
-                              <tr>
-                                <td>একাউন্টের মেয়াদ:</td>
-                                <th>
-                                  <h4 style="{{$user->status == 'Expire'? 'color:red':''}}">{{$user->status}}</h4>
-                                </th>
-                              </tr>
-                              <tr>
-                                <td>গ্রাহকের নাম:</td>
-                                <th>{{$user->name}}</th>
-                              </tr>
-                              <tr>
-                                <td>টাকা প্রদানের তারিখ:</td>
-                                <th>{{$source->dtformat($user->payment_date)}}</th>
-                              </tr>                              
-                              @if($user->status == 'Expire')
-                                <tr>
-                                  <hr>
-                                  <h3>বিকাশ সেন্ড মানি: 
-                                    <br>
-                                    <b>017 03 58 79 11</b>
-                                  </h3>
-                                </tr>
-                              @endif
-                              <tr>
-                                <td colspan="2">প্রয়োজনে যোগাযোগ করুনঃ
-                                  <br>
-                                  017 78 57 33 96, 017 03 58 79 11
-                                </td>
-                              </tr>
-                            </table>
-                          </div>
-                        </div>
-                        
-                        <p style="display: none" id="bengali-text">
-                          @if($user->status == 'Active')
-                          আপনার ইন্টারনেট একটিভ আছে। ইন্টারনেটের মেয়াদ শেষ হবে - {{$user->payment_date}}। চলনবিল টেকনলজির সাথে থাকার জন্য আপনাকে ধন্যবাদ। 
-                          @elseif($user->status == 'Expire')
-                          {{$user->name}}, আপনার ইন্টারনেটের মেয়াদ শেষ হয়ে গেছে। পুনরায় লাইন চালু করতে, বিল প্রদান করুন। প্রয়োজনে যোগাযোগ করুন ০১৭৭৮৫৭৩৩৯৬ অথবা, ০১৭০৩৫৮৭৯১১। চলনবিল টেকনলজির সাথে থাকার জন্য আপনাকে ধন্যবাদ।                          
-                          @else
-                          {{$user->name}}; আপনার ইন্টারনেট {{$user->status}} পুনরায় লাইন চালু করতে, বিল প্রদান করুন। প্রয়োজনে যোগাযোগ করুন ০১৭৭৮৫৭৩৩৯৬ অথবা, ০১৭০৩৫৮৭৯১১। 
-                          চলনবিল টেকনলজির সাথে থাকার জন্য আপনাকে ধন্যবাদ। 
-                          @endif
-                        </p>
+<!-- YouTube Video Background -->
+<div class="video-background">
+    <iframe 
+        src="https://www.youtube.com/embed/bDQ-PlPJBPY?autoplay=1&mute=1&loop=1&playlist=bDQ-PlPJBPY&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&playsinline=1&vq=hd1080"
+        frameborder="0"
+        allow="autoplay; encrypted-media"
+        allowfullscreen>
+    </iframe>
+</div>
+<div class="video-overlay"></div>
+
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="hero-container">
+        <!-- Left Side: Title, Subtitle, Action Buttons -->
+        <div class="hero-left">
+            <h1 class="hero-title">স্বাগতম<br>চলনবিল টেকনলজিতে</h1>
+            <p class="hero-subtitle">
+                বিশ্বস্ত ও নির্ভরযোগ্য ইন্টারনেট সেবা প্রদানকারী। 
+                উচ্চ গতির ইন্টারনেট সাশ্রয়ী মূল্যে। আপনার একাউন্ট পরীক্ষা করুন 
+                বা নতুন সেবা নিবন্ধন করুন।
+            </p>
+            <div class="hero-actions">
+                <a href="/register/create" class="hero-btn hero-btn-primary">
+                    <i class="material-icons">person_add</i>
+                    নিবন্ধন করুন
+                </a>
+                <a href="/package" class="hero-btn hero-btn-outline">
+                    <i class="material-icons">view_list</i>
+                    প্যাকেজ দেখুন
+                </a>
+                <a href="/view-user-on-map" class="hero-btn hero-btn-outline">
+                    <i class="material-icons">map</i>
+                    মানচিত্র দেখুন
+                </a>
+            </div>
+        </div>
+
+        <!-- Right Side: Search Form -->
+        <div class="hero-right">
+            <h3 class="search-card-title">একাউন্ট পরীক্ষা করুন</h3>
+            <p class="search-card-subtitle">আপনার মোবাইল নম্বর দিয়ে একাউন্টের অবস্থা দেখুন</p>
+            <form class="search-form" action="{{route('account.check.post')}}" method="GET">
+                <div class="material-input-group">
+                    <input 
+                        type="number" 
+                        name="contact" 
+                        id="search" 
+                        class="form-control" 
+                        placeholder="আপনার মোবাইল নম্বর লিখুন" 
+                        required
+                        maxlength="11"
+                        pattern="[0-9]{11}"
+                    >
+                    <i class="material-icons input-icon">phone</i>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="material-icons" style="vertical-align: middle; margin-right: 5px;">search</i>
+                    খুঁজুন
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Account Result Modal -->
+<div class="account-modal" id="accountModal">
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal-container">
+        <button class="modal-close" id="modalClose">
+            <i class="material-icons">close</i>
+        </button>
+        
+        @if(isset($user) && $user != [])
+        <div class="modal-content">
+            <div class="result-card {{ $user->status == 'Expire' ? 'expired' : 'active' }}">
+                <div style="text-align: center;">
+                    <span class="status-badge {{ $user->status == 'Expire' ? 'expired' : 'active' }}">
+                        @if($user->status == 'Expire')
+                            <i class="material-icons" style="vertical-align: middle; font-size: 20px;">error</i>
+                            মেয়াদ উত্তীর্ণ
+                        @else
+                            <i class="material-icons" style="vertical-align: middle; font-size: 20px;">check_circle</i>
+                            {{$user->status}}
                         @endif
+                    </span>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <div class="info-row">
+                        <span class="info-label">
+                            <i class="material-icons" style="vertical-align: middle; font-size: 18px; margin-right: 5px;">person</i>
+                            গ্রাহকের নাম
+                        </span>
+                        <span class="info-value">{{$user->name}}</span>
+                    </div>
+                    
+                    <div class="info-row">
+                        <span class="info-label">
+                            <i class="material-icons" style="vertical-align: middle; font-size: 18px; margin-right: 5px;">calendar_today</i>
+                            টাকা প্রদানের তারিখ
+                        </span>
+                        <span class="info-value">{{$source->dtformat($user->payment_date)}}</span>
+                    </div>
+                </div>
+
+                @if($user->status == 'Expire')
+                <div class="payment-info">
+                    <h3>
+                        <i class="material-icons" style="vertical-align: middle; font-size: 24px;">payment</i>
+                        বিকাশ সেন্ড মানি
+                    </h3>
+                    <div class="number">017 03 58 79 11</div>
+                </div>
+                @endif
+
+                <div class="contact-info">
+                    <p>
+                        <i class="material-icons" style="vertical-align: middle; font-size: 18px;">headset_mic</i>
+                        প্রয়োজনে যোগাযোগ করুনঃ
+                    </p>
+                    <p class="phone">017 78 57 33 96 • 017 03 58 79 11</p>
+                </div>
+
+                <p style="display: none" id="bengali-text">
+                    @if($user->status == 'Active')
+                    আপনার ইন্টারনেট একটিভ আছে। ইন্টারনেটের মেয়াদ শেষ হবে - {{$user->payment_date}}। চলনবিল টেকনলজির সাথে থাকার জন্য আপনাকে ধন্যবাদ। 
+                    @elseif($user->status == 'Expire')
+                    {{$user->name}}, আপনার ইন্টারনেটের মেয়াদ শেষ হয়ে গেছে। পুনরায় লাইন চালু করতে, বিল প্রদান করুন। প্রয়োজনে যোগাযোগ করুন ০১৭৭৮৫৭৩৩৯৬ অথবা, ০১৭০৩৫৮৭৯১১। চলনবিল টেকনলজির সাথে থাকার জন্য আপনাকে ধন্যবাদ।                          
+                    @else
+                    {{$user->name}}; আপনার ইন্টারনেট {{$user->status}} পুনরায় লাইন চালু করতে, বিল প্রদান করুন। প্রয়োজনে যোগাযোগ করুন ০১৭৭৮৫৭৩৩৯৬ অথবা, ০১৭০৩৫৮৭৯১১। 
+                    চলনবিল টেকনলজির সাথে থাকার জন্য আপনাকে ধন্যবাদ। 
+                    @endif
+                </p>
+            </div>
+        </div>
+        @endif
+    </div>
+</div>
+
+<!-- ISP Sections -->
+<div class="isp-sections">
+    <!-- Services/Packages Section -->
+    <section class="isp-section packages-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">আমাদের ইন্টারনেট প্যাকেজ</h2>
+                <p class="section-subtitle">সাশ্রয়ী মূল্যে উচ্চ গতির ইন্টারনেট</p>
+            </div>
+            <div class="packages-grid">
+                @if(isset($packages) && count($packages) > 0)
+                    @foreach($packages as $package)
+                    <div class="package-card">
+                        <div class="package-header">
+                            <h3>{{ $package->service ?? 'ইন্টারনেট' }}</h3>
+                            <div class="package-speed">{{ $package->speed ?? 'N/A' }}</div>
+                        </div>
+                        <div class="package-body">
+                            <div class="package-details">
+                                <div class="detail-item">
+                                    <i class="material-icons">speed</i>
+                                    <span>গতি: {{ $package->speed ?? 'N/A' }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="material-icons">schedule</i>
+                                    <span>সময়: {{ $package->time_limit ?? 'N/A' }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="material-icons">router</i>
+                                    <span>সংযোগ: {{ $package->connection ?? 'N/A' }}</span>
+                                </div>
+                            </div>
+                            <div class="package-price">
+                                <span class="price-amount">৳{{ number_format($package->price ?? 0) }}</span>
+                                @if(isset($package->discount) && $package->discount > 0)
+                                <span class="price-discount">৳{{ number_format($package->price + $package->discount) }}</span>
+                                @endif
+                            </div>
+                            <a href="/register/create/{{ $package->id }}" class="package-btn">এখনই কিনুন</a>
+                        </div>
+                    </div>
+                    @endforeach
+                @else
+                    <div class="package-card">
+                        <div class="package-header">
+                            <h3>স্ট্যান্ডার্ড</h3>
+                            <div class="package-speed">10 Mbps</div>
+                        </div>
+                        <div class="package-body">
+                            <div class="package-details">
+                                <div class="detail-item">
+                                    <i class="material-icons">speed</i>
+                                    <span>গতি: 10 Mbps</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="material-icons">schedule</i>
+                                    <span>সময়: 30 দিন</span>
+                                </div>
+                            </div>
+                            <div class="package-price">
+                                <span class="price-amount">৳500</span>
+                            </div>
+                            <a href="/register/create" class="package-btn">প্যাকেজ নিন</a>
+                        </div>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="isp-section features-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">আমাদের সেবা</h2>
+                <p class="section-subtitle">বিশ্বস্ত ও নির্ভরযোগ্য ইন্টারনেট সেবা</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="material-icons">speed</i>
+                    </div>
+                    <h3>উচ্চ গতি</h3>
+                    <p>দ্রুত ও স্থিতিশীল ইন্টারনেট সংযোগ</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="material-icons">support_agent</i>
+                    </div>
+                    <h3>২৪/৭ সাপোর্ট</h3>
+                    <p>যেকোনো সময় আমাদের সাথে যোগাযোগ করুন</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="material-icons">security</i>
+                    </div>
+                    <h3>নিরাপদ নেটওয়ার্ক</h3>
+                    <p>সুরক্ষিত ও নির্ভরযোগ্য সংযোগ</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="material-icons">payment</i>
+                    </div>
+                    <h3>সহজ পেমেন্ট</h3>
+                    <p>বিকাশ ও অন্যান্য সহজ পেমেন্ট মাধ্যম</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="material-icons">wifi</i>
+                    </div>
+                    <h3>স্থিতিশীল সংযোগ</h3>
+                    <p>বিরতিহীন ইন্টারনেট সেবা</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="material-icons">verified_user</i>
+                    </div>
+                    <h3>বিশ্বস্ত সেবা</h3>
+                    <p>বছরের পর বছর বিশ্বস্ত সেবা</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="material-icons">build</i>
+                    </div>
+                    <h3>দ্রুত ইনস্টলেশন</h3>
+                    <p>অর্ডার দেওয়ার পর দ্রুততম সময়ে ইনস্টলেশন</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="material-icons">settings</i>
+                    </div>
+                    <h3>বিনামূল্যে রক্ষণাবেক্ষণ</h3>
+                    <p>নিয়মিত রক্ষণাবেক্ষণ ও সমস্যা সমাধান বিনামূল্যে</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="isp-section why-choose-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">কেন আমাদের বেছে নিবেন?</h2>
+                <p class="section-subtitle">আমরা আপনাকে দিয়ে থাকি সেরা ইন্টারনেট সেবা</p>
+            </div>
+            <div class="why-choose-content">
+                <div class="why-item">
+                    <div class="why-number">01</div>
+                    <div class="why-text">
+                        <h3>দ্রুত ইনস্টলেশন</h3>
+                        <p>আমরা দ্রুততম সময়ে আপনার ইন্টারনেট সংযোগ সম্পন্ন করি</p>
+                    </div>
+                </div>
+                <div class="why-item">
+                    <div class="why-number">02</div>
+                    <div class="why-text">
+                        <h3>সাশ্রয়ী মূল্য</h3>
+                        <p>সবচেয়ে কম খরচে সেরা মানের ইন্টারনেট সেবা</p>
+                    </div>
+                </div>
+                <div class="why-item">
+                    <div class="why-number">03</div>
+                    <div class="why-text">
+                        <h3>দক্ষ টেকনিশিয়ান</h3>
+                        <p>অভিজ্ঞ ও দক্ষ টেকনিশিয়ান দ্বারা সেবা প্রদান</p>
+                    </div>
+                </div>
+                <div class="why-item">
+                    <div class="why-number">04</div>
+                    <div class="why-text">
+                        <h3>দ্রুত সমস্যা সমাধান</h3>
+                        <p>যেকোনো সমস্যা দ্রুততম সময়ে সমাধান</p>
+                    </div>
+                </div>
+                <div class="why-item">
+                    <div class="why-number">05</div>
+                    <div class="why-text">
+                        <h3>মানসম্মত সরঞ্জাম</h3>
+                        <p>উচ্চ মানের নেটওয়ার্ক সরঞ্জাম ব্যবহার করে সেবা প্রদান</p>
+                    </div>
+                </div>
+                <div class="why-item">
+                    <div class="why-number">06</div>
+                    <div class="why-text">
+                        <h3>স্থানীয় সেবা</h3>
+                        <p>আপনার এলাকায় স্থানীয় সেবা প্রদানকারী হিসেবে সহজে যোগাযোগ</p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-  <script src="https://code.responsivevoice.org/responsivevoice.js?key=Nv0NmYmz"></script>
+    <!-- Contact Section -->
+    <section class="isp-section contact-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">যোগাযোগ করুন</h2>
+                <p class="section-subtitle">আমাদের সাথে যোগাযোগ করুন যেকোনো প্রয়োজনে</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="material-icons">phone</i>
+                    </div>
+                    <h3>ফোন</h3>
+                    <p>017 78 57 33 96</p>
+                    <p>017 03 58 79 11</p>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="material-icons">email</i>
+                    </div>
+                    <h3>ইমেইল</h3>
+                    <p>info@chalanbeel.com</p>
+                    <p>support@chalanbeel.com</p>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="material-icons">schedule</i>
+                    </div>
+                    <h3>সময়</h3>
+                    <p>সকাল ৯টা - রাত ১০টা</p>
+                    <p>সপ্তাহে ৭ দিন</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
 
-  <script>
-      // Function to speak the Bengali text
-      function speakBengali() {
-          if ('speechSynthesis' in window) {
-              const textToSpeak = document.getElementById('bengali-text').textContent;
-              const utterance = new SpeechSynthesisUtterance(textToSpeak);
+<style>
+    .isp-sections {
+        position: relative;
+        z-index: 2;
+        background: #fff;
+        padding-top: 0;
+        margin-top: 0;
+    }
 
-              // Set the language to Bengali (Bangladesh) or Bengali (India)
-              // The actual voice used depends on the user's browser/OS
-              utterance.lang = 'bn-BD'; // or 'bn-IN'
-              
-              // Optional properties
-              // utterance.volume = 1; // From 0 to 1
-              // utterance.rate = 1;   // From 0.1 to 10
-              // utterance.pitch = 1;  // From 0 to 2
+    .isp-section {
+        padding: 80px 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
 
-              // Speak the text
-              window.speechSynthesis.speak(utterance);
-          } else {
-              console.error('Text-to-speech not supported in this browser.');
-              alert('Text-to-speech not supported in this browser.');
-          }
-      }
+    .section-header {
+        text-align: center;
+        margin-bottom: 60px;
+    }
 
-      // Call the speakBengali function when the page is fully loaded
-      window.onload = speakBengali;
+    .section-title {
+        font-size: 36px;
+        font-weight: 700;
+        color: #000;
+        margin-bottom: 15px;
+        letter-spacing: 1px;
+    }
 
-      // Note: Some browsers, especially mobile, may require user interaction (e.g., a button click)
-      // to initiate speech synthesis due to autoplay policies.
-      // For wider compatibility, consider adding a "Play" button as a fallback.
-  </script>
+    .section-subtitle {
+        font-size: 18px;
+        color: #666;
+        max-width: 600px;
+        margin: 0 auto;
+    }
 
-    <script type="text/javascript">
-    // var search = document.getElementById('search');
-    // search.addEventListener('keyup', check);
-    // function check() {
-        // document.getElementById('search_alert').style.display = 'block';
+    /* Packages Section */
+    .packages-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+    }
 
-        // setTimeout(function(){
-        //     document.getElementById('search_alert').style.display = 'none';
-        // }, 10000);
-    // }
+    .package-card {
+        background: #fff;
+        border: 2px solid #000;
+        border-radius: 16px;
+        padding: 30px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .package-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .package-header {
+        text-align: center;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #000;
+        margin-bottom: 20px;
+    }
+
+    .package-header h3 {
+        font-size: 24px;
+        font-weight: 700;
+        color: #000;
+        margin-bottom: 10px;
+    }
+
+    .package-speed {
+        font-size: 32px;
+        font-weight: 700;
+        color: #000;
+    }
+
+    .package-details {
+        margin-bottom: 25px;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .detail-item:last-child {
+        border-bottom: none;
+    }
+
+    .detail-item i {
+        color: #000;
+        font-size: 20px;
+    }
+
+    .detail-item span {
+        color: #333;
+        font-size: 15px;
+    }
+
+    .package-price {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .price-amount {
+        font-size: 36px;
+        font-weight: 700;
+        color: #000;
+    }
+
+    .price-discount {
+        font-size: 20px;
+        color: #999;
+        text-decoration: line-through;
+        margin-left: 10px;
+    }
+
+    .package-btn {
+        display: block;
+        width: 100%;
+        padding: 14px;
+        background: #000;
+        color: #fff;
+        text-align: center;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 16px;
+    }
+
+    .package-btn:hover {
+        background: #333;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Features Section */
+    .features-section {
+        background: #f8f9fa;
+        max-width: 100% !important;
+        margin: 0 !important;
+        width: 100%;
+    }
     
-    </script>
+    .features-section .container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+    }
+
+    .feature-card {
+        background: #fff;
+        padding: 40px 30px;
+        border-radius: 16px;
+        text-align: center;
+        border: 2px solid #e0e0e0;
+        transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+        border-color: #000;
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        background: #000;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+    }
+
+    .feature-icon i {
+        font-size: 40px;
+        color: #fff;
+    }
+
+    .feature-card h3 {
+        font-size: 20px;
+        font-weight: 700;
+        color: #000;
+        margin-bottom: 10px;
+    }
+
+    .feature-card p {
+        color: #666;
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+    /* Why Choose Section */
+    .why-choose-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 40px;
+        margin-top: 40px;
+    }
+
+    .why-item {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+    }
+
+    .why-number {
+        width: 60px;
+        height: 60px;
+        background: #000;
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    .why-text h3 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #000;
+        margin-bottom: 8px;
+    }
+
+    .why-text p {
+        color: #666;
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+    /* Contact Section */
+    .contact-section {
+        background: #262424;
+        color: #fff;
+        max-width: 100% !important;
+        margin: 0 !important;
+        width: 100%;
+    }
+    
+    .contact-section .container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .contact-section .section-title,
+    .contact-section .section-subtitle {
+        color: #fff;
+    }
+
+    .contact-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+    }
+
+    .contact-card {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 40px 30px;
+        border-radius: 16px;
+        text-align: center;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .contact-card:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.4);
+        transform: translateY(-5px);
+    }
+
+    .contact-icon {
+        width: 80px;
+        height: 80px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+    }
+
+    .contact-icon i {
+        font-size: 40px;
+        color: #fff;
+    }
+
+    .contact-card h3 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 15px;
+    }
+
+    .contact-card p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 16px;
+        margin: 5px 0;
+    }
+
+    @media (max-width: 992px) {
+        .hero-container {
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+
+        .hero-title {
+            font-size: 42px;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+        }
+
+        .hero-actions {
+            justify-content: center;
+        }
+
+        .hero-right {
+            padding: 30px 25px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hero-section {
+            min-height: 80vh;
+            padding: 80px 15px 30px;
+        }
+
+        .hero-title {
+            font-size: 36px;
+        }
+
+        .hero-subtitle {
+            font-size: 16px;
+        }
+
+        .hero-actions {
+            flex-direction: column;
+        }
+
+        .hero-btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .hero-right {
+            padding: 25px 20px;
+        }
+
+        .modern-page {
+            padding: 40px 15px 20px;
+        }
+
+        .isp-section {
+            padding: 60px 15px;
+        }
+
+        .section-title {
+            font-size: 28px;
+        }
+
+        .packages-grid,
+        .features-grid,
+        .contact-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .why-choose-content {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Smooth scrolling */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Account Result Modal */
+    .account-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 10000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .account-modal.active {
+        display: flex;
+    }
+
+    .modal-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(5px);
+        z-index: 1;
+    }
+
+    .modal-container {
+        position: relative;
+        z-index: 2;
+        background: #fff;
+        border-radius: 10px;
+        max-width: 600px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        animation: slideUp 0.4s ease-out;
+        position: relative;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(50px) scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+        background: #000;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-close:hover {
+        background: #333;
+        transform: rotate(90deg) scale(1.1);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-close i {
+        font-size: 24px;
+    }
+
+    .modal-content {
+        padding: 50px 40px 40px;
+    }
+
+    .modal-content .result-card {
+        margin: 0;
+        box-shadow: none;
+        border: none;
+        padding: 0;
+    }
+
+    @media (max-width: 768px) {
+        .modal-container {
+            max-width: 95%;
+            border-radius: 16px;
+        }
+
+        .modal-content {
+            padding: 40px 25px 30px;
+        }
+
+        .modal-close {
+            top: 10px;
+            right: 10px;
+            width: 35px;
+            height: 35px;
+        }
+    }
+</style>
+
+<script src="https://code.responsivevoice.org/responsivevoice.js?key=Nv0NmYmz"></script>
+
+<script>
+    // Function to speak the Bengali text
+    function speakBengali() {
+        var bengaliText = document.getElementById('bengali-text');
+        if (bengaliText && 'speechSynthesis' in window) {
+            const textToSpeak = bengaliText.textContent;
+            const utterance = new SpeechSynthesisUtterance(textToSpeak);
+            utterance.lang = 'bn-BD';
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+
+    // Modal functionality
+    const accountModal = document.getElementById('accountModal');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalClose = document.getElementById('modalClose');
+
+    // Show modal if user data exists
+    @if(isset($user) && $user != [])
+    window.addEventListener('load', function() {
+        accountModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        speakBengali();
+    });
+    @endif
+
+    // Close modal functions
+    function closeModal() {
+        accountModal.classList.remove('active');
+        document.body.style.overflow = '';
+        // Remove user parameter from URL
+        if (window.history.replaceState) {
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    }
+
+    if (modalClose) {
+        modalClose.addEventListener('click', closeModal);
+    }
+
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', closeModal);
+    }
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && accountModal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    // Input validation for mobile number
+    const searchInput = document.getElementById('search');
+    if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+            var value = e.target.value;
+            if (value.length > 11) {
+                e.target.value = value.slice(0, 11);
+            }
+        });
+    }
+</script>
+
 @endsection

@@ -13,6 +13,7 @@ use App\Users;
 use App\PaymentMethod;
 use App\ActiveService;
 use App\Service;
+use App\Package;
 use App\PaymentReceive;
 use App\Location;
 use App\Device;
@@ -37,6 +38,16 @@ class HomeController extends Controller
       $user = User::where('contact', $request->contact)->first();
     }
     return view('homes.index', compact('user'));
+  }
+
+  public function services()
+  {
+    return view('homes.services');
+  }
+
+  public function about()
+  {
+    return view('homes.about');
   }
     public function checkAccount()
     {
@@ -76,9 +87,13 @@ class HomeController extends Controller
     public function index()
     {
         $message = Lang::get('messages.welcome');
+        $packages = Package::where('status', 1)
+            ->orderBy('price', 'ASC')
+            ->limit(6)
+            ->get();
         // dd($message);
         // $pppoe_users = Router::Connect()->setMenu('/ppp secret')->getAll();
-        return view('homes.index', ['message' => $message]);
+        return view('homes.index', ['message' => $message, 'packages' => $packages]);
     }
 
     public function check_package()

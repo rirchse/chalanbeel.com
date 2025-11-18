@@ -8,7 +8,7 @@
 
 </head>
 
-<body ng-app="cbTech" style="background:url(/images/bg.jpg) center center">
+<body ng-app="cbTech" style="background:url(/images/bg.jpg) center center; padding-top: 0;">
 
 	@include('homes.header')
 

@@ -44,15 +44,19 @@ class PackageCtrl extends Controller
 
     public function check_package()
     {
-        $packages = Service::where('status', 1)
-        ->select('package')
-        ->groupBy('package')
-        ->orderBy('id', 'ASC')
+        $packages = Service::leftJoin('packages', 'services.package_id', 'packages.id')
+        ->where('services.status', 1)
+        ->where('packages.status', 1)
+        ->select('packages.service')
+        ->groupBy('packages.service')
+        ->orderBy('packages.service', 'ASC')
         ->get();
-        $limits = Service::where('status', 1)
-        ->select('time_limit')
-        ->groupBy('time_limit')
-        ->orderBy('time_limit')
+        $limits = Service::leftJoin('packages', 'services.package_id', 'packages.id')
+        ->where('services.status', 1)
+        ->where('packages.status', 1)
+        ->select('packages.time_limit')
+        ->groupBy('packages.time_limit')
+        ->orderBy('packages.time_limit')
         ->get();
         return view('homes.check_package')->withPackages($packages)->withLimits($limits);
     }
@@ -64,16 +68,26 @@ class PackageCtrl extends Controller
             'package'      => 'required|max:50',
             'time_limit'   => 'required|max:50'
         ));
-        $service = Service::where('package', $request->package)->where('time_limit', $request->time_limit)->where('status', 1)->first();
-        $packages = Service::where('status', 1)
-        ->select('package')
-        ->groupBy('package')
-        ->orderBy('id', 'ASC')
+        $service = Service::leftJoin('packages', 'services.package_id', 'packages.id')
+        ->where('packages.service', $request->package)
+        ->where('packages.time_limit', $request->time_limit)
+        ->where('services.status', 1)
+        ->where('packages.status', 1)
+        ->select('services.*', 'packages.service', 'packages.speed', 'packages.time_limit', 'packages.connection', 'packages.price')
+        ->first();
+        $packages = Service::leftJoin('packages', 'services.package_id', 'packages.id')
+        ->where('services.status', 1)
+        ->where('packages.status', 1)
+        ->select('packages.service')
+        ->groupBy('packages.service')
+        ->orderBy('packages.service', 'ASC')
         ->get();
-        $limits = Service::where('status', 1)
-        ->select('time_limit')
-        ->groupBy('time_limit')
-        ->orderBy('time_limit')
+        $limits = Service::leftJoin('packages', 'services.package_id', 'packages.id')
+        ->where('services.status', 1)
+        ->where('packages.status', 1)
+        ->select('packages.time_limit')
+        ->groupBy('packages.time_limit')
+        ->orderBy('packages.time_limit')
         ->get();
         return view('homes.check_package')->withPackages($packages)->withLimits($limits)->withService($service);
     }

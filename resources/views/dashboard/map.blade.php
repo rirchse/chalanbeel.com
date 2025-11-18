@@ -1,28 +1,284 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Active Users On Router</title>
-  @include('partials.styles')
-  <style>
-    .status label{
-      padding: 0 5px
+@extends('home')
+@section('title', 'মানচিত্রে ব্যবহারকারী')
+@section('content')
+
+<style>
+    .map-page-layout {
+        display: flex;
+        padding-top: 70px;
+        min-height: calc(100vh - 70px);
+        position: relative;
     }
-  </style>
-</head>
-<body>
 
-<p class="status">
-  <label class="text-warning">New: {{$status['new']}}</label>
-  <label class="text-success">Active: {{$status['active']}}</label> |
-  <label class="text-info">Online: {{$status['online']}}</label> |
-  <label class="text-danger">Offline: {{$status['offline']}}</label> |
-  <label class="text-default">Expire: {{$status['expire']}}</label> 
-</p>
+    .status-sidebar {
+        width: 280px;
+        background: #fff;
+        padding: 20px;
+        position: fixed;
+        left: 0;
+        top: 70px;
+        height: calc(100vh - 70px);
+        overflow-y: auto;
+        z-index: 100;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-<div id="map" style="height: 100vh; margin-top:0"></div>
+    .status-sidebar h3 {
+        font-size: 20px;
+        font-weight: 700;
+        color: #000;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #000;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .status-sidebar h3 i {
+        font-size: 24px;
+    }
+
+    .status {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .status label {
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .status label:hover {
+        transform: translateX(5px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .status-label-content {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .status-count {
+        font-size: 18px;
+        font-weight: 700;
+        min-width: 30px;
+        text-align: right;
+    }
+
+    .status label.text-warning {
+        background: rgba(245, 192, 7, 0.1);
+        color: #f5c007;
+        border: 2px solid rgba(245, 192, 7, 0.3);
+    }
+
+    .status label.text-success {
+        background: rgba(40, 167, 69, 0.1);
+        color: #28a745;
+        border: 2px solid rgba(40, 167, 69, 0.3);
+    }
+
+    .status label.text-info {
+        background: rgba(23, 162, 184, 0.1);
+        color: #17a2b8;
+        border: 2px solid rgba(23, 162, 184, 0.3);
+    }
+
+    .status label.text-danger {
+        background: rgba(250, 6, 6, 0.1);
+        color: #fa0606;
+        border: 2px solid rgba(250, 6, 6, 0.3);
+    }
+
+    .status label.text-default {
+        background: rgba(208, 213, 209, 0.1);
+        color: #666;
+        border: 2px solid rgba(208, 213, 209, 0.3);
+    }
+
+    .map-content {
+        flex: 1;
+        margin-left: 280px;
+        position: relative;
+    }
+
+    #map {
+        height: calc(100vh - 70px);
+        width: 100%;
+        position: relative;
+    }
+
+    .sidebar-toggle {
+        display: none;
+        position: fixed;
+        top: 80px;
+        left: 10px;
+        z-index: 10001;
+        background: #000;
+        color: #fff;
+        border: 2px solid #fff;
+        width: 45px;
+        height: 45px;
+        border-radius: 8px;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .sidebar-toggle:hover {
+        background: #333;
+        transform: scale(1.05);
+    }
+
+    .sidebar-toggle i {
+        font-size: 24px;
+    }
+
+    @media (max-width: 992px) {
+        .status-sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .status-sidebar.open {
+            transform: translateX(0);
+        }
+
+        .map-content {
+            margin-left: 0;
+        }
+
+        .sidebar-toggle {
+            display: flex;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .map-page-layout {
+            padding-top: 60px;
+        }
+
+        .status-sidebar {
+            top: 60px;
+            height: calc(100vh - 60px);
+            width: 260px;
+        }
+
+        #map {
+            height: calc(100vh - 60px);
+        }
+
+        .sidebar-toggle {
+            top: 70px;
+        }
+
+        .status label {
+            padding: 10px 14px;
+            font-size: 13px;
+        }
+
+        .status-count {
+            font-size: 16px;
+        }
+    }
+</style>
+
+<div class="map-page-layout">
+    <!-- Sidebar Toggle Button (Mobile) -->
+    <button class="sidebar-toggle" id="sidebarToggle">
+        <i class="material-icons">menu</i>
+    </button>
+
+    <!-- Left Sidebar -->
+    <div class="status-sidebar" id="statusSidebar">
+        <h3>
+            <i class="material-icons">dashboard</i>
+            ব্যবহারকারীর অবস্থা
+        </h3>
+        <div class="status">
+            <label class="text-warning">
+                <span class="status-label-content">
+                    <i class="material-icons">fiber_new</i>
+                    <span>নতুন</span>
+                </span>
+                <span class="status-count">{{$status['new']}}</span>
+            </label>
+            <label class="text-success">
+                <span class="status-label-content">
+                    <i class="material-icons">check_circle</i>
+                    <span>সক্রিয়</span>
+                </span>
+                <span class="status-count">{{$status['active']}}</span>
+            </label>
+            <label class="text-info">
+                <span class="status-label-content">
+                    <i class="material-icons">wifi</i>
+                    <span>অনলাইন</span>
+                </span>
+                <span class="status-count">{{$status['online']}}</span>
+            </label>
+            <label class="text-danger">
+                <span class="status-label-content">
+                    <i class="material-icons">wifi_off</i>
+                    <span>অফলাইন</span>
+                </span>
+                <span class="status-count">{{$status['offline']}}</span>
+            </label>
+            <label class="text-default">
+                <span class="status-label-content">
+                    <i class="material-icons">schedule</i>
+                    <span>মেয়াদ উত্তীর্ণ</span>
+                </span>
+                <span class="status-count">{{$status['expire']}}</span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Map Content -->
+    <div class="map-content">
+        <div id="map"></div>
+    </div>
+</div>
+
+<script>
+    // Sidebar toggle for mobile
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const statusSidebar = document.getElementById('statusSidebar');
+
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', function() {
+            statusSidebar.classList.toggle('open');
+            const icon = this.querySelector('i');
+            if (statusSidebar.classList.contains('open')) {
+                icon.textContent = 'close';
+            } else {
+                icon.textContent = 'menu';
+            }
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            if (window.innerWidth <= 992) {
+                if (!statusSidebar.contains(event.target) && !sidebarToggle.contains(event.target)) {
+                    statusSidebar.classList.remove('open');
+                    sidebarToggle.querySelector('i').textContent = 'menu';
+                }
+            }
+        });
+    }
+</script>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
@@ -68,6 +324,18 @@
         });
     }
 
+    // Translate status for popup
+    function translateStatus(status) {
+        const translations = {
+            'New': 'নতুন',
+            'Active': 'সক্রিয়',
+            'Online': 'অনলাইন',
+            'Offline': 'অফলাইন',
+            'Expire': 'মেয়াদ উত্তীর্ণ'
+        };
+        return translations[status] || status;
+    }
+
     const customers = @json($customers);
 
     customers.forEach(c => {
@@ -77,16 +345,13 @@
         }).bindPopup(`
         <strong>${c.name}</strong>
         <br>
-        Status: ${c.status} 
-        ${c.status == 'Active' ? `<br>IP: ${c.ip}<br>Uptime: ${c.uptime}`:''}
+        অবস্থা: ${translateStatus(c.status)} 
+        ${c.status == 'Active' ? `<br>IP: ${c.ip}<br>আপটাইম: ${c.uptime}`:''}
         <br>
-        <a target="_blank" href="https://www.google.com/maps/place/${c.lat}, ${c.lng}">Go on location</a>
+        <a target="_blank" href="https://www.google.com/maps/place/${c.lat}, ${c.lng}">অবস্থান দেখুন</a>
         `);
         marker.addTo(map);
     });
 </script>
-{{-- @endsection --}}
 
-  
-</body>
-</html>
+@endsection
