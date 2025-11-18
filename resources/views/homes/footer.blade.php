@@ -327,15 +327,14 @@
             <!-- About Section -->
             <div class="footer-section footer-about">
                 <div class="footer-logo">
-                    <img src="/images/logo.png" alt="Chalanbeel Technology">
+                    <img src="{{ app()->getLocale() == 'en' ? '/images/logo_english.png' : '/images/logo.png' }}" alt="Chalanbeel Technology">
                 </div>
-                <h3>আমাদের সম্পর্কে</h3>
+                <h3>{{ __('messages.footer.about_us') }}</h3>
                 <p>
-                    চলনবিল টেকনলজি একটি বিশ্বস্ত ইন্টারনেট সেবা প্রদানকারী প্রতিষ্ঠান। 
-                    আমরা উচ্চ গতির ইন্টারনেট সেবা প্রদান করি সাশ্রয়ী মূল্যে।
+                    {{ __('messages.footer.about_desc') }}
                 </p>
                 <div class="footer-social">
-                    <h4>আমাদের সাথে থাকুন</h4>
+                    <h4>{{ __('messages.footer.stay_connected') }}</h4>
                     <div class="social-links">
                         <a href="#" class="social-link fb-link" title="Facebook">
                             <i class="fa fa-facebook"></i>
@@ -355,36 +354,36 @@
 
             <!-- Quick Links -->
             <div class="footer-section footer-links">
-                <h3>দ্রুত লিংক</h3>
+                <h3>{{ __('messages.footer.quick_links') }}</h3>
                 <ul>
                     <li>
                         <a href="/">
                             <i class="material-icons">home</i>
-                            <span>হোম</span>
+                            <span>{{ __('messages.header.home') }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="/register/create">
                             <i class="material-icons">person_add</i>
-                            <span>নিবন্ধন</span>
+                            <span>{{ __('messages.header.register') }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="/login">
                             <i class="material-icons">lock</i>
-                            <span>লগইন</span>
+                            <span>{{ __('messages.header.login') }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="/package">
                             <i class="material-icons">view_list</i>
-                            <span>প্যাকেজ</span>
+                            <span>{{ __('messages.header.package') }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="/check_payment">
                             <i class="material-icons">payment</i>
-                            <span>পেমেন্ট চেক</span>
+                            <span>{{ __('messages.footer.payment_check') }}</span>
                         </a>
                     </li>
                 </ul>
@@ -392,42 +391,42 @@
 
             <!-- Services -->
             <div class="footer-section footer-links">
-                <h3>আমাদের সেবা</h3>
+                <h3>{{ __('messages.services.title') }}</h3>
                 <ul>
                     <li>
                         <a href="/service/high-speed-internet">
                             <i class="material-icons">flash_on</i>
-                            <span>উচ্চ গতির ইন্টারনেট</span>
+                            <span>{{ __('messages.services.high_speed') }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="/service/stable-connection">
                             <i class="material-icons">wifi</i>
-                            <span>স্থিতিশীল সংযোগ</span>
+                            <span>{{ __('messages.services.stable_connection') }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="/service/24-7-support">
                             <i class="material-icons">headset_mic</i>
-                            <span>২৪/৭ সাপোর্ট</span>
+                            <span>{{ __('messages.services.support_247') }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="/service/secure-network">
                             <i class="material-icons">security</i>
-                            <span>নিরাপদ নেটওয়ার্ক</span>
+                            <span>{{ __('messages.services.secure_network') }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="/service/fast-installation">
                             <i class="material-icons">build</i>
-                            <span>দ্রুত ইনস্টলেশন</span>
+                            <span>{{ __('messages.services.fast_installation') }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="/service/trusted-service">
                             <i class="material-icons">verified_user</i>
-                            <span>বিশ্বস্ত সেবা</span>
+                            <span>{{ __('messages.services.trusted_service') }}</span>
                         </a>
                     </li>
                 </ul>
@@ -435,7 +434,7 @@
 
             <!-- Contact Info -->
             <div class="footer-section footer-contact">
-                <h3>যোগাযোগ</h3>
+                <h3>{{ __('messages.contact.title') }}</h3>
                 <div class="footer-contact-item">
                     <i class="material-icons">phone</i>
                     <div>
@@ -453,8 +452,8 @@
                 <div class="footer-contact-item">
                     <i class="material-icons">schedule</i>
                     <div>
-                        <div>সকাল ৯টা - রাত ১০টা</div>
-                        <div>সপ্তাহে ৭ দিন</div>
+                        <div>{{ __('messages.contact.hours') }}</div>
+                        <div>{{ __('messages.contact.days') }}</div>
                     </div>
                 </div>
                 <div class="footer-contact-item">
@@ -472,10 +471,10 @@
         <div class="footer-bottom-content">
             <div class="footer-copyright">
                 &copy; <script>document.write(new Date().getFullYear())</script>
-                <a href="/">Chalanbeel Technology</a>. All Rights Reserved.
+                <a href="/">Chalanbeel Technology</a>. {{ __('messages.footer.all_rights_reserved') }}.
             </div>
             <div class="footer-payments">
-                <span>পেমেন্ট মাধ্যম:</span>
+                <span>{{ __('messages.footer.payment_methods') }}:</span>
                 <div class="payment-method">bKash</div>
                 <div class="payment-method">Nagad</div>
                 <div class="payment-method">Rocket</div>

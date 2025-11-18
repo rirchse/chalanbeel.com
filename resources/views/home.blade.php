@@ -1,10 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}">
 <head>
+    <!-- Google Fonts - Roboto Condensed for English -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     
     @include('partials.styles')
 
     @yield('stylesheets')
+
+    <style>
+        /* Apply Roboto Condensed font for English language - exclude icon elements */
+        html[lang="en"] body {
+            font-family: 'Roboto Condensed', sans-serif !important;
+        }
+        
+        html[lang="en"] p,
+        html[lang="en"] h1,
+        html[lang="en"] h2,
+        html[lang="en"] h3,
+        html[lang="en"] h4,
+        html[lang="en"] h5,
+        html[lang="en"] h6,
+        html[lang="en"] span:not(.material-icons):not(.fa),
+        html[lang="en"] div:not(.material-icons):not(.fa),
+        html[lang="en"] a:not(.material-icons):not(.fa),
+        html[lang="en"] li:not(.material-icons):not(.fa),
+        html[lang="en"] td:not(.material-icons):not(.fa),
+        html[lang="en"] th:not(.material-icons):not(.fa),
+        html[lang="en"] label:not(.material-icons):not(.fa),
+        html[lang="en"] input:not(.material-icons):not(.fa),
+        html[lang="en"] textarea:not(.material-icons):not(.fa),
+        html[lang="en"] select:not(.material-icons):not(.fa),
+        html[lang="en"] button:not(.material-icons):not(.fa) {
+            font-family: 'Roboto Condensed', sans-serif !important;
+        }
+        
+        /* Ensure icon fonts are preserved */
+        html[lang="en"] .material-icons,
+        html[lang="en"] i.material-icons,
+        html[lang="en"] [class*="material-icons"] {
+            font-family: 'Material Icons' !important;
+        }
+        
+        html[lang="en"] .fa,
+        html[lang="en"] i.fa,
+        html[lang="en"] [class*="fa-"],
+        html[lang="en"] i[class*="fa"] {
+            font-family: 'FontAwesome' !important;
+        }
+        
+        /* Keep Bengali-friendly fonts for Bengali language */
+        html[lang="bn"] body {
+            font-family: 'Noto Sans Bengali', 'Kalpurush', 'SolaimanLipi', sans-serif;
+        }
+        
+        html[lang="bn"] p,
+        html[lang="bn"] h1,
+        html[lang="bn"] h2,
+        html[lang="bn"] h3,
+        html[lang="bn"] h4,
+        html[lang="bn"] h5,
+        html[lang="bn"] h6,
+        html[lang="bn"] span:not(.material-icons):not(.fa),
+        html[lang="bn"] div:not(.material-icons):not(.fa),
+        html[lang="bn"] a:not(.material-icons):not(.fa),
+        html[lang="bn"] li:not(.material-icons):not(.fa),
+        html[lang="bn"] td:not(.material-icons):not(.fa),
+        html[lang="bn"] th:not(.material-icons):not(.fa),
+        html[lang="bn"] label:not(.material-icons):not(.fa),
+        html[lang="bn"] input:not(.material-icons):not(.fa),
+        html[lang="bn"] textarea:not(.material-icons):not(.fa),
+        html[lang="bn"] select:not(.material-icons):not(.fa),
+        html[lang="bn"] button:not(.material-icons):not(.fa) {
+            font-family: 'Noto Sans Bengali', 'Kalpurush', 'SolaimanLipi', sans-serif;
+        }
+        
+        /* Ensure icon fonts are preserved for Bengali */
+        html[lang="bn"] .material-icons,
+        html[lang="bn"] i.material-icons,
+        html[lang="bn"] [class*="material-icons"] {
+            font-family: 'Material Icons' !important;
+        }
+        
+        html[lang="bn"] .fa,
+        html[lang="bn"] i.fa,
+        html[lang="bn"] [class*="fa-"],
+        html[lang="bn"] i[class*="fa"] {
+            font-family: 'FontAwesome' !important;
+        }
+    </style>
 
 </head>
 

@@ -66,7 +66,7 @@
         display: flex;
         align-items: center;
         gap: 6px;
-        padding: 10px 18px;
+        padding: 10px 10px;
         color: #555;
         text-decoration: none;
         font-size: 15px;
@@ -254,7 +254,7 @@
     <div class="header-container">
         <!-- Logo -->
         <a href="/" class="header-logo">
-            <img src="/images/logo.png" alt="Chalanbeel Technology">
+            <img src="{{ app()->getLocale() == 'en' ? '/images/logo_english.png' : '/images/logo.png' }}" alt="Chalanbeel Technology">
         </a>
 
         <!-- Mobile Menu Toggle -->
@@ -267,56 +267,56 @@
             <li>
                 <a href="/" class="header-link active">
                     <i class="material-icons">home</i>
-                    হোম
+                    {{ __('messages.header.home') }}
                 </a>
             </li>
             
             <li>
                 <a href="/about" class="header-link">
                     <i class="material-icons">info</i>
-                    সম্পর্কে
+                    {{ __('messages.header.about') }}
                 </a>
             </li>
             <li>
                 <a href="/package" class="header-link">
                     <i class="material-icons">view_list</i>
-                    প্যাকেজ
+                    {{ __('messages.header.package') }}
                 </a>
             </li>
             <li>
                 <a href="/services" class="header-link">
                     <i class="material-icons">business</i>
-                    সেবা
+                    {{ __('messages.header.services') }}
                 </a>
             </li>
             <li>
                 <a href="/view-user-on-map" class="header-link">
                     <i class="material-icons">people</i>
-                    ব্যবহারকারী
+                    {{ __('messages.header.users') }}
                 </a>
             </li>
             <li>
                 <a href="/register/create" class="header-link">
                     <i class="material-icons">person_add</i>
-                    নিবন্ধন
+                    {{ __('messages.header.register') }}
                 </a>
             </li>
             <li>
                 <a href="/login" class="header-link">
                     <i class="material-icons">lock</i>
-                    লগইন
+                    {{ __('messages.header.login') }}
                 </a>
             </li>
             <li>
                 <a href="https://inventory.chalanbeel.com/" target="_blank" class="header-btn header-btn-outline" rel="noopener noreferrer">
                     <i class="fa fa-cubes"></i>
-                    ইনভেন্টরি
+                    {{ __('messages.header.inventory') }}
                 </a>
             </li>
             <li>
                 <a href="https://grameenbazar.vercel.app/" target="_blank" class="header-btn header-btn-outline" rel="noopener noreferrer">
                     <i class="material-icons">store</i>
-                    বাজার
+                    {{ __('messages.header.bazar') }}
                 </a>
             </li>
             

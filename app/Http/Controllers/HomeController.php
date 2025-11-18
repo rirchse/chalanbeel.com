@@ -9,6 +9,8 @@ use App\Http\Controllers\MapController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 use App\Users;
 use App\PaymentMethod;
 use App\ActiveService;
@@ -20,7 +22,6 @@ use App\Device;
 use App\User;
 use Redirect;
 use DB;
-use Session;
 use Auth;
 
 class HomeController extends Controller
@@ -298,5 +299,14 @@ class HomeController extends Controller
       $customers = $data['customers'];
       $status = $data['status'];
       return view('dashboard.map', compact('customers', 'status'));
+    }
+
+    public function changeLanguage($locale)
+    {
+        if (in_array($locale, ['en', 'bn'])) {
+            App::setLocale($locale);
+            Session::put('locale', $locale);
+        }
+        return redirect()->back();
     }
 }

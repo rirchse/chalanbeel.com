@@ -488,32 +488,30 @@ $source = new SourceCtrl;
     <div class="hero-container">
         <!-- Left Side: Title, Subtitle, Action Buttons -->
         <div class="hero-left">
-            <h1 class="hero-title">স্বাগতম<br>চলনবিল টেকনলজিতে</h1>
+            <h1 class="hero-title">{!! __('messages.hero.title') !!}</h1>
             <p class="hero-subtitle">
-                বিশ্বস্ত ও নির্ভরযোগ্য ইন্টারনেট সেবা প্রদানকারী। 
-                উচ্চ গতির ইন্টারনেট সাশ্রয়ী মূল্যে। আপনার একাউন্ট পরীক্ষা করুন 
-                বা নতুন সেবা নিবন্ধন করুন।
+                {{ __('messages.hero.subtitle') }}
             </p>
             <div class="hero-actions">
                 <a href="/register/create" class="hero-btn hero-btn-primary">
                     <i class="material-icons">person_add</i>
-                    নিবন্ধন করুন
+                    {{ __('messages.hero.register') }}
                 </a>
                 <a href="/package" class="hero-btn hero-btn-outline">
                     <i class="material-icons">view_list</i>
-                    প্যাকেজ দেখুন
+                    {{ __('messages.hero.view_packages') }}
                 </a>
                 <a href="/view-user-on-map" class="hero-btn hero-btn-outline">
                     <i class="material-icons">map</i>
-                    মানচিত্র দেখুন
+                    {{ __('messages.hero.view_map') }}
                 </a>
             </div>
         </div>
 
         <!-- Right Side: Search Form -->
         <div class="hero-right">
-            <h3 class="search-card-title">একাউন্ট পরীক্ষা করুন</h3>
-            <p class="search-card-subtitle">আপনার মোবাইল নম্বর দিয়ে একাউন্টের অবস্থা দেখুন</p>
+            <h3 class="search-card-title">{{ __('messages.search.title') }}</h3>
+            <p class="search-card-subtitle">{{ __('messages.search.subtitle') }}</p>
             <form class="search-form" action="{{route('account.check.post')}}" method="GET">
                 <div class="material-input-group">
                     <input 
@@ -521,7 +519,7 @@ $source = new SourceCtrl;
                         name="contact" 
                         id="search" 
                         class="form-control" 
-                        placeholder="আপনার মোবাইল নম্বর লিখুন" 
+                        placeholder="{{ __('messages.search.placeholder') }}" 
                         required
                         maxlength="11"
                         pattern="[0-9]{11}"
@@ -530,7 +528,7 @@ $source = new SourceCtrl;
                 </div>
                 <button type="submit" class="submit-btn">
                     <i class="material-icons" style="vertical-align: middle; margin-right: 5px;">search</i>
-                    খুঁজুন
+                    {{ __('messages.search.button') }}
                 </button>
             </form>
         </div>
@@ -552,7 +550,7 @@ $source = new SourceCtrl;
                     <span class="status-badge {{ $user->status == 'Expire' ? 'expired' : 'active' }}">
                         @if($user->status == 'Expire')
                             <i class="material-icons" style="vertical-align: middle; font-size: 20px;">error</i>
-                            মেয়াদ উত্তীর্ণ
+                            {{ __('messages.modal.expired') }}
                         @else
                             <i class="material-icons" style="vertical-align: middle; font-size: 20px;">check_circle</i>
                             {{$user->status}}
@@ -564,7 +562,7 @@ $source = new SourceCtrl;
                     <div class="info-row">
                         <span class="info-label">
                             <i class="material-icons" style="vertical-align: middle; font-size: 18px; margin-right: 5px;">person</i>
-                            গ্রাহকের নাম
+                            {{ __('messages.modal.customer_name') }}
                         </span>
                         <span class="info-value">{{$user->name}}</span>
                     </div>
@@ -572,7 +570,7 @@ $source = new SourceCtrl;
                     <div class="info-row">
                         <span class="info-label">
                             <i class="material-icons" style="vertical-align: middle; font-size: 18px; margin-right: 5px;">calendar_today</i>
-                            টাকা প্রদানের তারিখ
+                            {{ __('messages.modal.payment_date') }}
                         </span>
                         <span class="info-value">{{$source->dtformat($user->payment_date)}}</span>
                     </div>
@@ -582,7 +580,7 @@ $source = new SourceCtrl;
                 <div class="payment-info">
                     <h3>
                         <i class="material-icons" style="vertical-align: middle; font-size: 24px;">payment</i>
-                        বিকাশ সেন্ড মানি
+                        {{ __('messages.modal.bkash_send_money') }}
                     </h3>
                     <div class="number">017 03 58 79 11</div>
                 </div>
@@ -591,19 +589,19 @@ $source = new SourceCtrl;
                 <div class="contact-info">
                     <p>
                         <i class="material-icons" style="vertical-align: middle; font-size: 18px;">headset_mic</i>
-                        প্রয়োজনে যোগাযোগ করুনঃ
+                        {{ __('messages.modal.contact_us') }}
                     </p>
                     <p class="phone">017 78 57 33 96 • 017 03 58 79 11</p>
                 </div>
 
                 <p style="display: none" id="bengali-text">
                     @if($user->status == 'Active')
-                    আপনার ইন্টারনেট একটিভ আছে। ইন্টারনেটের মেয়াদ শেষ হবে - {{$user->payment_date}}। চলনবিল টেকনলজির সাথে থাকার জন্য আপনাকে ধন্যবাদ। 
+                    {{ __('messages.modal.active_message') }} - {{$user->payment_date}}। {{ __('messages.modal.thank_you') }}
                     @elseif($user->status == 'Expire')
-                    {{$user->name}}, আপনার ইন্টারনেটের মেয়াদ শেষ হয়ে গেছে। পুনরায় লাইন চালু করতে, বিল প্রদান করুন। প্রয়োজনে যোগাযোগ করুন ০১৭৭৮৫৭৩৩৯৬ অথবা, ০১৭০৩৫৮৭৯১১। চলনবিল টেকনলজির সাথে থাকার জন্য আপনাকে ধন্যবাদ।                          
+                    {{$user->name}}{{ __('messages.modal.expired_message') }}
                     @else
-                    {{$user->name}}; আপনার ইন্টারনেট {{$user->status}} পুনরায় লাইন চালু করতে, বিল প্রদান করুন। প্রয়োজনে যোগাযোগ করুন ০১৭৭৮৫৭৩৩৯৬ অথবা, ০১৭০৩৫৮৭৯১১। 
-                    চলনবিল টেকনলজির সাথে থাকার জন্য আপনাকে ধন্যবাদ। 
+                    {{$user->name}}{{ __('messages.modal.other_status_message') }} {{$user->status}}। {{ __('messages.modal.reactivate') }} 
+                    {{ __('messages.modal.thank_you') }}
                     @endif
                 </p>
             </div>
@@ -618,30 +616,30 @@ $source = new SourceCtrl;
     <section class="isp-section packages-section">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">আমাদের ইন্টারনেট প্যাকেজ</h2>
-                <p class="section-subtitle">সাশ্রয়ী মূল্যে উচ্চ গতির ইন্টারনেট</p>
+                <h2 class="section-title">{{ __('messages.packages.title') }}</h2>
+                <p class="section-subtitle">{{ __('messages.packages.subtitle') }}</p>
             </div>
             <div class="packages-grid">
                 @if(isset($packages) && count($packages) > 0)
                     @foreach($packages as $package)
                     <div class="package-card">
                         <div class="package-header">
-                            <h3>{{ $package->service ?? 'ইন্টারনেট' }}</h3>
+                            <h3>{{ $package->service ?? __('messages.packages.internet') }}</h3>
                             <div class="package-speed">{{ $package->speed ?? 'N/A' }}</div>
                         </div>
                         <div class="package-body">
                             <div class="package-details">
                                 <div class="detail-item">
                                     <i class="material-icons">speed</i>
-                                    <span>গতি: {{ $package->speed ?? 'N/A' }}</span>
+                                    <span>{{ __('messages.packages.speed') }}: {{ $package->speed ?? 'N/A' }}</span>
                                 </div>
                                 <div class="detail-item">
                                     <i class="material-icons">schedule</i>
-                                    <span>সময়: {{ $package->time_limit ?? 'N/A' }}</span>
+                                    <span>{{ __('messages.packages.time') }}: {{ $package->time_limit ?? 'N/A' }}</span>
                                 </div>
                                 <div class="detail-item">
                                     <i class="material-icons">router</i>
-                                    <span>সংযোগ: {{ $package->connection ?? 'N/A' }}</span>
+                                    <span>{{ __('messages.packages.connection') }}: {{ $package->connection ?? 'N/A' }}</span>
                                 </div>
                             </div>
                             <div class="package-price">
@@ -650,31 +648,31 @@ $source = new SourceCtrl;
                                 <span class="price-discount">৳{{ number_format($package->price + $package->discount) }}</span>
                                 @endif
                             </div>
-                            <a href="/register/create/{{ $package->id }}" class="package-btn">এখনই কিনুন</a>
+                            <a href="/register/create/{{ $package->id }}" class="package-btn">{{ __('messages.packages.buy_now') }}</a>
                         </div>
                     </div>
                     @endforeach
                 @else
                     <div class="package-card">
                         <div class="package-header">
-                            <h3>স্ট্যান্ডার্ড</h3>
+                            <h3>{{ __('messages.packages.standard') }}</h3>
                             <div class="package-speed">10 Mbps</div>
                         </div>
                         <div class="package-body">
                             <div class="package-details">
                                 <div class="detail-item">
                                     <i class="material-icons">speed</i>
-                                    <span>গতি: 10 Mbps</span>
+                                    <span>{{ __('messages.packages.speed') }}: 10 Mbps</span>
                                 </div>
                                 <div class="detail-item">
                                     <i class="material-icons">schedule</i>
-                                    <span>সময়: 30 দিন</span>
+                                    <span>{{ __('messages.packages.time') }}: 30 {{ __('messages.packages.days') }}</span>
                                 </div>
                             </div>
                             <div class="package-price">
                                 <span class="price-amount">৳500</span>
                             </div>
-                            <a href="/register/create" class="package-btn">প্যাকেজ নিন</a>
+                            <a href="/register/create" class="package-btn">{{ __('messages.packages.take_package') }}</a>
                         </div>
                     </div>
                 @endif
@@ -686,65 +684,65 @@ $source = new SourceCtrl;
     <section class="isp-section features-section">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">আমাদের সেবা</h2>
-                <p class="section-subtitle">বিশ্বস্ত ও নির্ভরযোগ্য ইন্টারনেট সেবা</p>
+                <h2 class="section-title">{{ __('messages.services.title') }}</h2>
+                <p class="section-subtitle">{{ __('messages.services.subtitle') }}</p>
             </div>
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="material-icons">speed</i>
                     </div>
-                    <h3>উচ্চ গতি</h3>
-                    <p>দ্রুত ও স্থিতিশীল ইন্টারনেট সংযোগ</p>
+                    <h3>{{ __('messages.services.high_speed') }}</h3>
+                    <p>{{ __('messages.services.high_speed_desc') }}</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="material-icons">support_agent</i>
                     </div>
-                    <h3>২৪/৭ সাপোর্ট</h3>
-                    <p>যেকোনো সময় আমাদের সাথে যোগাযোগ করুন</p>
+                    <h3>{{ __('messages.services.support_247') }}</h3>
+                    <p>{{ __('messages.services.support_247_desc') }}</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="material-icons">security</i>
                     </div>
-                    <h3>নিরাপদ নেটওয়ার্ক</h3>
-                    <p>সুরক্ষিত ও নির্ভরযোগ্য সংযোগ</p>
+                    <h3>{{ __('messages.services.secure_network') }}</h3>
+                    <p>{{ __('messages.services.secure_network_desc') }}</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="material-icons">payment</i>
                     </div>
-                    <h3>সহজ পেমেন্ট</h3>
-                    <p>বিকাশ ও অন্যান্য সহজ পেমেন্ট মাধ্যম</p>
+                    <h3>{{ __('messages.services.easy_payment') }}</h3>
+                    <p>{{ __('messages.services.easy_payment_desc') }}</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="material-icons">wifi</i>
                     </div>
-                    <h3>স্থিতিশীল সংযোগ</h3>
-                    <p>বিরতিহীন ইন্টারনেট সেবা</p>
+                    <h3>{{ __('messages.services.stable_connection') }}</h3>
+                    <p>{{ __('messages.services.stable_connection_desc') }}</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="material-icons">verified_user</i>
                     </div>
-                    <h3>বিশ্বস্ত সেবা</h3>
-                    <p>বছরের পর বছর বিশ্বস্ত সেবা</p>
+                    <h3>{{ __('messages.services.trusted_service') }}</h3>
+                    <p>{{ __('messages.services.trusted_service_desc') }}</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="material-icons">build</i>
                     </div>
-                    <h3>দ্রুত ইনস্টলেশন</h3>
-                    <p>অর্ডার দেওয়ার পর দ্রুততম সময়ে ইনস্টলেশন</p>
+                    <h3>{{ __('messages.services.fast_installation') }}</h3>
+                    <p>{{ __('messages.services.fast_installation_desc') }}</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="material-icons">settings</i>
                     </div>
-                    <h3>বিনামূল্যে রক্ষণাবেক্ষণ</h3>
-                    <p>নিয়মিত রক্ষণাবেক্ষণ ও সমস্যা সমাধান বিনামূল্যে</p>
+                    <h3>{{ __('messages.services.free_maintenance') }}</h3>
+                    <p>{{ __('messages.services.free_maintenance_desc') }}</p>
                 </div>
             </div>
         </div>
@@ -754,50 +752,50 @@ $source = new SourceCtrl;
     <section class="isp-section why-choose-section">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">কেন আমাদের বেছে নিবেন?</h2>
-                <p class="section-subtitle">আমরা আপনাকে দিয়ে থাকি সেরা ইন্টারনেট সেবা</p>
+                <h2 class="section-title">{{ __('messages.why_choose.title') }}</h2>
+                <p class="section-subtitle">{{ __('messages.why_choose.subtitle') }}</p>
             </div>
             <div class="why-choose-content">
                 <div class="why-item">
                     <div class="why-number">01</div>
                     <div class="why-text">
-                        <h3>দ্রুত ইনস্টলেশন</h3>
-                        <p>আমরা দ্রুততম সময়ে আপনার ইন্টারনেট সংযোগ সম্পন্ন করি</p>
+                        <h3>{{ __('messages.why_choose.fast_installation') }}</h3>
+                        <p>{{ __('messages.why_choose.fast_installation_desc') }}</p>
                     </div>
                 </div>
                 <div class="why-item">
                     <div class="why-number">02</div>
                     <div class="why-text">
-                        <h3>সাশ্রয়ী মূল্য</h3>
-                        <p>সবচেয়ে কম খরচে সেরা মানের ইন্টারনেট সেবা</p>
+                        <h3>{{ __('messages.why_choose.affordable_price') }}</h3>
+                        <p>{{ __('messages.why_choose.affordable_price_desc') }}</p>
                     </div>
                 </div>
                 <div class="why-item">
                     <div class="why-number">03</div>
                     <div class="why-text">
-                        <h3>দক্ষ টেকনিশিয়ান</h3>
-                        <p>অভিজ্ঞ ও দক্ষ টেকনিশিয়ান দ্বারা সেবা প্রদান</p>
+                        <h3>{{ __('messages.why_choose.skilled_technicians') }}</h3>
+                        <p>{{ __('messages.why_choose.skilled_technicians_desc') }}</p>
                     </div>
                 </div>
                 <div class="why-item">
                     <div class="why-number">04</div>
                     <div class="why-text">
-                        <h3>দ্রুত সমস্যা সমাধান</h3>
-                        <p>যেকোনো সমস্যা দ্রুততম সময়ে সমাধান</p>
+                        <h3>{{ __('messages.why_choose.quick_solution') }}</h3>
+                        <p>{{ __('messages.why_choose.quick_solution_desc') }}</p>
                     </div>
                 </div>
                 <div class="why-item">
                     <div class="why-number">05</div>
                     <div class="why-text">
-                        <h3>মানসম্মত সরঞ্জাম</h3>
-                        <p>উচ্চ মানের নেটওয়ার্ক সরঞ্জাম ব্যবহার করে সেবা প্রদান</p>
+                        <h3>{{ __('messages.why_choose.quality_equipment') }}</h3>
+                        <p>{{ __('messages.why_choose.quality_equipment_desc') }}</p>
                     </div>
                 </div>
                 <div class="why-item">
                     <div class="why-number">06</div>
                     <div class="why-text">
-                        <h3>স্থানীয় সেবা</h3>
-                        <p>আপনার এলাকায় স্থানীয় সেবা প্রদানকারী হিসেবে সহজে যোগাযোগ</p>
+                        <h3>{{ __('messages.why_choose.local_service') }}</h3>
+                        <p>{{ __('messages.why_choose.local_service_desc') }}</p>
                     </div>
                 </div>
             </div>
@@ -808,15 +806,15 @@ $source = new SourceCtrl;
     <section class="isp-section contact-section">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">যোগাযোগ করুন</h2>
-                <p class="section-subtitle">আমাদের সাথে যোগাযোগ করুন যেকোনো প্রয়োজনে</p>
+                <h2 class="section-title">{{ __('messages.contact.title') }}</h2>
+                <p class="section-subtitle">{{ __('messages.contact.subtitle') }}</p>
             </div>
             <div class="contact-grid">
                 <div class="contact-card">
                     <div class="contact-icon">
                         <i class="material-icons">phone</i>
                     </div>
-                    <h3>ফোন</h3>
+                    <h3>{{ __('messages.contact.phone') }}</h3>
                     <p>017 78 57 33 96</p>
                     <p>017 03 58 79 11</p>
                 </div>
@@ -824,7 +822,7 @@ $source = new SourceCtrl;
                     <div class="contact-icon">
                         <i class="material-icons">email</i>
                     </div>
-                    <h3>ইমেইল</h3>
+                    <h3>{{ __('messages.contact.email') }}</h3>
                     <p>info@chalanbeel.com</p>
                     <p>support@chalanbeel.com</p>
                 </div>
@@ -832,9 +830,9 @@ $source = new SourceCtrl;
                     <div class="contact-icon">
                         <i class="material-icons">schedule</i>
                     </div>
-                    <h3>সময়</h3>
-                    <p>সকাল ৯টা - রাত ১০টা</p>
-                    <p>সপ্তাহে ৭ দিন</p>
+                    <h3>{{ __('messages.contact.time') }}</h3>
+                    <p>{{ __('messages.contact.hours') }}</p>
+                    <p>{{ __('messages.contact.days') }}</p>
                 </div>
             </div>
         </div>
