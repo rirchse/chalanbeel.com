@@ -1,40 +1,225 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+# Chalanbeel Technology - ISP Management System
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+A comprehensive Internet Service Provider (ISP) management system built with Laravel 9, designed for managing customers, packages, services, payments, and network infrastructure.
 
-## About Laravel
+## 🚀 Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+### Customer Management
+- User registration and authentication
+- Customer account management
+- User location mapping with interactive map
+- Account status tracking (New, Active, Online, Offline, Expired)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Package & Service Management
+- Internet package management
+- Service creation and management
+- Package selection and assignment
+- Billing and payment tracking
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb combination of simplicity, elegance, and innovation give you tools you need to build any application with which you are tasked.
+### Payment System
+- Multiple payment methods support
+- Payment verification and tracking
+- Transaction history
+- Payment status management
 
-## Learning Laravel
+### Admin Dashboard
+- Comprehensive admin panel
+- Service management
+- User management
+- Payment management
+- Location/Area management
+- Device management
+- Reports and analytics
 
-Laravel has the most extensive and thorough documentation and video tutorial library of any modern web application framework. The [Laravel documentation](https://laravel.com/docs) is thorough, complete, and makes it a breeze to get started learning the framework.
+### Frontend Features
+- Modern Material UI design
+- Responsive layout (mobile-friendly)
+- Bengali and English language support
+- Interactive user map with Leaflet.js
+- YouTube video background support
+- Professional header and footer
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 900 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+## 🛠️ Technology Stack
 
-## Contributing
+- **Framework**: Laravel 9
+- **PHP Version**: ^8.0
+- **Frontend**: Material Dashboard CSS, Bootstrap, Font Awesome
+- **Icons**: Material Icons, Font Awesome
+- **Maps**: Leaflet.js
+- **Database**: MySQL
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+## 📋 Requirements
 
-## Security Vulnerabilities
+- PHP >= 8.0
+- Composer
+- MySQL
+- Apache/Nginx (or Laragon for Windows)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+## 🔧 Installation
 
-## License
+### Using Laragon (Windows)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd chalanbeel.com
+```
+
+2. Install dependencies:
+```bash
+composer install
+```
+
+3. Copy environment file:
+```bash
+copy .env.example .env
+```
+
+4. Generate application key:
+```bash
+php artisan key:generate
+```
+
+5. Configure database in `.env`:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=chalanbeel
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+6. Run migrations:
+```bash
+php artisan migrate
+```
+
+7. Start Laragon and access the application:
+   - Start Apache and MySQL from Laragon
+   - Access via: `http://chalanbeel.test` (if virtual host configured)
+   - Or use: `http://127.0.0.1:8000` with `php artisan serve`
+
+### Using PHP Development Server
+
+1. Follow steps 1-6 from above
+
+2. Start the development server:
+```bash
+php artisan serve
+```
+
+3. Access the application at `http://127.0.0.1:8000`
+
+## 📁 Project Structure
+
+```
+chalanbeel.com/
+├── app/
+│   ├── Http/Controllers/     # Application controllers
+│   │   ├── Admin/           # Admin controllers
+│   │   ├── User/            # User controllers
+│   │   └── ...
+│   └── Models/              # Eloquent models
+├── resources/
+│   └── views/
+│       ├── homes/           # Public pages
+│       ├── admins/          # Admin panel views
+│       └── users/           # User dashboard views
+├── routes/
+│   └── web.php             # Web routes
+├── public/                 # Public assets
+└── database/              # Migrations and seeds
+```
+
+## 🌐 Key Pages
+
+### Public Pages
+- **Home** (`/`) - Landing page with hero section, packages, services, and contact info
+- **About** (`/about`) - Company information
+- **Services** (`/services`) - Service offerings
+- **Packages** (`/package`) - Available internet packages
+- **Users Map** (`/view-user-on-map`) - Interactive map showing user locations
+- **Register** (`/register/create`) - User registration
+- **Login** (`/login`) - User login
+- **Payment Check** (`/check_payment`) - Payment verification
+
+### Admin Pages
+- Admin Dashboard
+- User Management
+- Service Management
+- Payment Management
+- Package Management
+- Location Management
+- Device Management
+
+## 🎨 Design Features
+
+- **Color Scheme**: Black and white Material UI design
+- **Responsive**: Mobile-first responsive design
+- **Icons**: Material Icons and Font Awesome
+- **Typography**: Bengali and English support
+- **Layout**: Max-width containers (1400px) for optimal viewing
+
+## 🔗 External Integrations
+
+- **Inventory System**: `https://inventory.chalanbeel.com/`
+- **Bazar**: `https://grameenbazar.vercel.app/`
+
+## 📝 Configuration
+
+### Environment Variables
+
+Key environment variables in `.env`:
+- `APP_NAME` - Application name
+- `APP_URL` - Application URL
+- `DB_*` - Database configuration
+- `MAIL_*` - Email configuration (if needed)
+
+### Storage
+
+Ensure these directories exist and are writable:
+- `storage/framework/sessions`
+- `storage/framework/cache`
+- `storage/framework/views`
+- `storage/logs`
+
+## 🚀 Development
+
+### Clear Cache
+```bash
+php artisan cache:clear
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+```
+
+### Run Migrations
+```bash
+php artisan migrate
+```
+
+### Generate Application Key
+```bash
+php artisan key:generate
+```
+
+## 📞 Contact Information
+
+**Chalanbeel Technology**
+- Location: Chanchkoir Bazar, Gurudaspur Natore
+- Phone: 017 78 57 33 96, 017 03 58 79 11
+- Email: info@chalanbeel.com, support@chalanbeel.com
+- Hours: সকাল ৯টা - রাত ১০টা, সপ্তাহে ৭ দিন
+
+## 📄 License
+
+This project is proprietary software. All rights reserved.
+
+## 👥 Credits
+
+Built with Laravel Framework and Material Dashboard.
+
+---
+
+For setup instructions specific to Laragon, see [LARAGON_SETUP.md](LARAGON_SETUP.md)
