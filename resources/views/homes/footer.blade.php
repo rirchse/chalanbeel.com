@@ -395,37 +395,37 @@
                 <h3>আমাদের সেবা</h3>
                 <ul>
                     <li>
-                        <a href="#">
+                        <a href="/service/high-speed-internet">
                             <i class="material-icons">flash_on</i>
                             <span>উচ্চ গতির ইন্টারনেট</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="/service/stable-connection">
                             <i class="material-icons">wifi</i>
                             <span>স্থিতিশীল সংযোগ</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="/service/24-7-support">
                             <i class="material-icons">headset_mic</i>
                             <span>২৪/৭ সাপোর্ট</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="/service/secure-network">
                             <i class="material-icons">security</i>
                             <span>নিরাপদ নেটওয়ার্ক</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="/service/fast-installation">
                             <i class="material-icons">build</i>
                             <span>দ্রুত ইনস্টলেশন</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="/service/trusted-service">
                             <i class="material-icons">verified_user</i>
                             <span>বিশ্বস্ত সেবা</span>
                         </a>

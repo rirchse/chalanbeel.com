@@ -58,6 +58,12 @@ Route::group(['middleware' => ['web']], function()
 	Route::get('/', 'HomeController@index');
 	Route::get('/about', 'HomeController@about');
 	Route::get('/services', 'HomeController@services');
+	Route::get('/service/high-speed-internet', 'HomeController@highSpeedInternet');
+	Route::get('/service/stable-connection', 'HomeController@stableConnection');
+	Route::get('/service/24-7-support', 'HomeController@support247');
+	Route::get('/service/secure-network', 'HomeController@secureNetwork');
+	Route::get('/service/fast-installation', 'HomeController@fastInstallation');
+	Route::get('/service/trusted-service', 'HomeController@trustedService');
 	Route::get('/view-user-on-map', 'HomeController@userOnMap');
 	Route::get('/check_payment', 'PackageCtrl@check_payment');
 	Route::post('/check_payment', 'PackageCtrl@checkPayment')->name('check.payment');

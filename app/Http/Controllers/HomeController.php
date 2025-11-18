@@ -49,6 +49,36 @@ class HomeController extends Controller
   {
     return view('homes.about');
   }
+
+  public function highSpeedInternet()
+  {
+    return view('homes.service-high-speed-internet');
+  }
+
+  public function stableConnection()
+  {
+    return view('homes.service-stable-connection');
+  }
+
+  public function support247()
+  {
+    return view('homes.service-24-7-support');
+  }
+
+  public function secureNetwork()
+  {
+    return view('homes.service-secure-network');
+  }
+
+  public function fastInstallation()
+  {
+    return view('homes.service-fast-installation');
+  }
+
+  public function trustedService()
+  {
+    return view('homes.service-trusted-service');
+  }
     public function checkAccount()
     {
         $user = User::find(1);
