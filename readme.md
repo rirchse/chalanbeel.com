@@ -1,6 +1,6 @@
 # Chalanbeel Technology - ISP Management System
 
-A comprehensive Internet Service Provider (ISP) management system built with Laravel 9, designed for managing customers, packages, services, payments, and network infrastructure.
+A comprehensive Internet Service Provider (ISP) management system built with Laravel 10, designed for managing customers, packages, services, payments, and network infrastructure.
 
 ## 🚀 Features
 
@@ -41,8 +41,8 @@ A comprehensive Internet Service Provider (ISP) management system built with Lar
 
 ## 🛠️ Technology Stack
 
-- **Framework**: Laravel 9
-- **PHP Version**: ^8.0
+- **Framework**: Laravel 10
+- **PHP Version**: ^8.1
 - **Frontend**: Material Dashboard CSS, Bootstrap, Font Awesome
 - **Icons**: Material Icons, Font Awesome
 - **Maps**: Leaflet.js
@@ -50,7 +50,7 @@ A comprehensive Internet Service Provider (ISP) management system built with Lar
 
 ## 📋 Requirements
 
-- PHP >= 8.0
+- PHP >= 8.1
 - Composer
 - MySQL
 - Apache/Nginx (or Laragon for Windows)
