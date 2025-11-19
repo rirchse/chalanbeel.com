@@ -21,7 +21,13 @@ class SetLocale
             $locale = Session::get('locale');
             if (in_array($locale, ['en', 'bn'])) {
                 App::setLocale($locale);
+            } else {
+                App::setLocale('bn'); // Default to Bengali
             }
+        } else {
+            // Set Bengali as default if no session locale is set
+            App::setLocale('bn');
+            Session::put('locale', 'bn');
         }
         
         return $next($request);
