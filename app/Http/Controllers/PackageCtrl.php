@@ -38,7 +38,7 @@ class PackageCtrl extends Controller
 
     public function index()
     {
-        $packages = Package::where('status', 1)->get();
+        $packages = Package::where('status', 'Active')->get();
         return view('homes.view-packages', compact('packages'));
     }
 

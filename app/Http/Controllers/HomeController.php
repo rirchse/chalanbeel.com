@@ -118,7 +118,7 @@ class HomeController extends Controller
     public function index()
     {
         $message = Lang::get('messages.welcome');
-        $packages = Package::where('status', 1)
+        $packages = Package::where('status', 'Active')
             ->orderBy('price', 'ASC')
             ->limit(6)
             ->get();
