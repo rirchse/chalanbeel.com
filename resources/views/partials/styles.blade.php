@@ -30,6 +30,8 @@
 <meta property="og:site_name" content="" />
 
 <!--link href="https://fonts.googleapis.com/css?family=Lato|Open+Sans|Oswald|Playfair+Display|Roboto" rel="stylesheet"-->
+<!-- Bangla Font Support -->
+<link href="https://fonts.maateen.me/bangla/font.css" rel="stylesheet">
 <link rel="apple-touch-icon" sizes="76x76" href="{{'/images/apple-icon.png'}}" />
 <link rel="icon" type="image/png" href="{{'/images/favicon.png'}}" />
 <!-- Bootstrap core CSS     -->
@@ -43,3 +45,36 @@
 <link href="{{'/css/material-icons.css'}}" rel="stylesheet">
 <!--link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" /-->
 <link rel="stylesheet" type="text/css" href="{{'/css/customization.css'}}"/>
+
+<style>
+    /* Bangla Font Support - Apply site-wide */
+    body, 
+    p, h1, h2, h3, h4, h5, h6,
+    span:not(.material-icons):not(.fa),
+    div:not(.material-icons):not(.fa),
+    a:not(.material-icons):not(.fa),
+    li:not(.material-icons):not(.fa),
+    td:not(.material-icons):not(.fa),
+    th:not(.material-icons):not(.fa),
+    label:not(.material-icons):not(.fa),
+    input:not(.material-icons):not(.fa),
+    textarea:not(.material-icons):not(.fa),
+    select:not(.material-icons):not(.fa),
+    button:not(.material-icons):not(.fa) {
+        font-family: 'Bangla', 'Noto Sans Bengali', 'Kalpurush', 'SolaimanLipi', sans-serif;
+    }
+    
+    /* Ensure icon fonts are preserved */
+    .material-icons,
+    i.material-icons,
+    [class*="material-icons"] {
+        font-family: 'Material Icons' !important;
+    }
+    
+    .fa,
+    i.fa,
+    [class*="fa-"],
+    i[class*="fa"] {
+        font-family: 'FontAwesome' !important;
+    }
+</style>

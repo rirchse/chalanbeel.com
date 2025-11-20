@@ -53,7 +53,7 @@
         
         /* Keep Bengali-friendly fonts for Bengali language */
         html[lang="bn"] body {
-            font-family: 'Noto Sans Bengali', 'Kalpurush', 'SolaimanLipi', sans-serif;
+            font-family: 'Bangla', 'Noto Sans Bengali', 'Kalpurush', 'SolaimanLipi', sans-serif;
         }
         
         html[lang="bn"] p,
@@ -74,7 +74,7 @@
         html[lang="bn"] textarea:not(.material-icons):not(.fa),
         html[lang="bn"] select:not(.material-icons):not(.fa),
         html[lang="bn"] button:not(.material-icons):not(.fa) {
-            font-family: 'Noto Sans Bengali', 'Kalpurush', 'SolaimanLipi', sans-serif;
+            font-family: 'Bangla', 'Noto Sans Bengali', 'Kalpurush', 'SolaimanLipi', sans-serif;
         }
         
         /* Ensure icon fonts are preserved for Bengali */
