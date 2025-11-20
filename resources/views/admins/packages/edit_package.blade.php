@@ -50,20 +50,34 @@
                                       if (!empty($package->details)) {
                                           $decoded = json_decode($package->details, true);
                                           if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
-                                              $listItems = $decoded;
+                                              // Check if it's the new format (array of objects with en/bn) or old format (simple array)
+                                              if (isset($decoded[0]) && is_array($decoded[0]) && (isset($decoded[0]['en']) || isset($decoded[0]['bn']))) {
+                                                  // New format: [{"en": "...", "bn": "..."}, ...]
+                                                  $listItems = $decoded;
+                                              } else {
+                                                  // Old format: ["item1", "item2", ...] - convert to new format
+                                                  foreach ($decoded as $item) {
+                                                      $listItems[] = ['en' => $item, 'bn' => $item];
+                                                  }
+                                              }
                                           } else {
                                               // If it's not JSON, treat as single item
-                                              $listItems = [$package->details];
+                                              $listItems = [['en' => $package->details, 'bn' => $package->details]];
                                           }
                                       }
                                       if (empty($listItems)) {
-                                          $listItems = [''];
+                                          $listItems = [['en' => '', 'bn' => '']];
                                       }
                                   @endphp
                                   @foreach($listItems as $item)
-                                  <div class="list-item-row" style="display: flex; gap: 10px; margin-bottom: 10px; align-items: center;">
-                                      <input type="text" class="form-control list-item-input" name="list_items[]" value="{{ $item }}" placeholder="Enter feature/item">
-                                      <button type="button" class="btn btn-danger btn-sm remove-item-btn" onclick="removeListItem(this)" style="display: none;">
+                                  <div class="list-item-row" style="display: flex; gap: 10px; margin-bottom: 10px; align-items: flex-start; flex-wrap: wrap;">
+                                      <div style="flex: 1; min-width: 200px;">
+                                          <input type="text" class="form-control list-item-input-en" name="list_items_en[]" value="{{ $item['en'] ?? '' }}" placeholder="English feature/item">
+                                      </div>
+                                      <div style="flex: 1; min-width: 200px;">
+                                          <input type="text" class="form-control list-item-input-bn" name="list_items_bn[]" value="{{ $item['bn'] ?? '' }}" placeholder="বাংলা ফিচার/আইটেম">
+                                      </div>
+                                      <button type="button" class="btn btn-danger btn-sm remove-item-btn" onclick="removeListItem(this)" style="display: none; align-self: center;">
                                           <i class="material-icons">delete</i>
                                       </button>
                                   </div>
@@ -92,10 +106,15 @@ function addListItem() {
     const container = document.getElementById('list-items-container');
     const newRow = document.createElement('div');
     newRow.className = 'list-item-row';
-    newRow.style.cssText = 'display: flex; gap: 10px; margin-bottom: 10px; align-items: center;';
+    newRow.style.cssText = 'display: flex; gap: 10px; margin-bottom: 10px; align-items: flex-start; flex-wrap: wrap;';
     newRow.innerHTML = `
-        <input type="text" class="form-control list-item-input" name="list_items[]" placeholder="Enter feature/item">
-        <button type="button" class="btn btn-danger btn-sm remove-item-btn" onclick="removeListItem(this)">
+        <div style="flex: 1; min-width: 200px;">
+            <input type="text" class="form-control list-item-input-en" name="list_items_en[]" placeholder="English feature/item">
+        </div>
+        <div style="flex: 1; min-width: 200px;">
+            <input type="text" class="form-control list-item-input-bn" name="list_items_bn[]" placeholder="বাংলা ফিচার/আইটেম">
+        </div>
+        <button type="button" class="btn btn-danger btn-sm remove-item-btn" onclick="removeListItem(this)" style="align-self: center;">
             <i class="material-icons">delete</i>
         </button>
     `;

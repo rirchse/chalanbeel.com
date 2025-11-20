@@ -86,8 +86,10 @@ class PackageController extends Controller
             'price'       => 'required|min:1|max:255',
             'discount'    => 'max:3',
             'status'      => 'nullable',
-            'list_items'  => 'nullable|array',
-            'list_items.*' => 'nullable|string|max:255'
+            'list_items_en'  => 'nullable|array',
+            'list_items_en.*' => 'nullable|string|max:255',
+            'list_items_bn'  => 'nullable|array',
+            'list_items_bn.*' => 'nullable|string|max:255'
         ));
 
         $data = $request->all();
@@ -102,17 +104,31 @@ class PackageController extends Controller
           unset($data['_method']);
         }
 
-        // Handle list items - convert array to JSON
-        if(isset($data['list_items']) && is_array($data['list_items'])) {
-            // Filter out empty items
-            $listItems = array_filter($data['list_items'], function($item) {
-                return !empty(trim($item));
-            });
-            $data['details'] = !empty($listItems) ? json_encode(array_values($listItems)) : null;
-            unset($data['list_items']);
+        // Handle list items - combine English and Bangla into bilingual format
+        $listItems = [];
+        if(isset($data['list_items_en']) && isset($data['list_items_bn']) && 
+           is_array($data['list_items_en']) && is_array($data['list_items_bn'])) {
+            $enItems = $data['list_items_en'];
+            $bnItems = $data['list_items_bn'];
+            $maxCount = max(count($enItems), count($bnItems));
+            
+            for($i = 0; $i < $maxCount; $i++) {
+                $en = isset($enItems[$i]) ? trim($enItems[$i]) : '';
+                $bn = isset($bnItems[$i]) ? trim($bnItems[$i]) : '';
+                
+                // Only add if at least one language has content
+                if(!empty($en) || !empty($bn)) {
+                    $listItems[] = [
+                        'en' => $en,
+                        'bn' => $bn
+                    ];
+                }
+            }
+            $data['details'] = !empty($listItems) ? json_encode($listItems) : null;
         } else {
             $data['details'] = null;
         }
+        unset($data['list_items_en'], $data['list_items_bn']);
 
         //store in the database
         try{
@@ -205,8 +221,10 @@ class PackageController extends Controller
             'price'       => 'required|min:1|max:255',
             'discount'    => 'max:100',
             'status'      => 'nullable',
-            'list_items'  => 'nullable|array',
-            'list_items.*' => 'nullable|string|max:255'
+            'list_items_en'  => 'nullable|array',
+            'list_items_en.*' => 'nullable|string|max:255',
+            'list_items_bn'  => 'nullable|array',
+            'list_items_bn.*' => 'nullable|string|max:255'
             ));
 
         //save the data to the database
@@ -220,13 +238,27 @@ class PackageController extends Controller
         $package->price          =   $request->input('price');
         $package->discount       =   $request->input('discount');
         
-        // Handle list items - convert array to JSON
-        if($request->has('list_items') && is_array($request->input('list_items'))) {
-            // Filter out empty items
-            $listItems = array_filter($request->input('list_items'), function($item) {
-                return !empty(trim($item));
-            });
-            $package->details = !empty($listItems) ? json_encode(array_values($listItems)) : null;
+        // Handle list items - combine English and Bangla into bilingual format
+        $listItems = [];
+        if($request->has('list_items_en') && $request->has('list_items_bn') && 
+           is_array($request->input('list_items_en')) && is_array($request->input('list_items_bn'))) {
+            $enItems = $request->input('list_items_en');
+            $bnItems = $request->input('list_items_bn');
+            $maxCount = max(count($enItems), count($bnItems));
+            
+            for($i = 0; $i < $maxCount; $i++) {
+                $en = isset($enItems[$i]) ? trim($enItems[$i]) : '';
+                $bn = isset($bnItems[$i]) ? trim($bnItems[$i]) : '';
+                
+                // Only add if at least one language has content
+                if(!empty($en) || !empty($bn)) {
+                    $listItems[] = [
+                        'en' => $en,
+                        'bn' => $bn
+                    ];
+                }
+            }
+            $package->details = !empty($listItems) ? json_encode($listItems) : null;
         } else {
             $package->details = null;
         }

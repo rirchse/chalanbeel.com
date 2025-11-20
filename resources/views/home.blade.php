@@ -6,6 +6,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     
+    <!-- BenSen Handwriting Font for Bangla Hero Section -->
+    <link href="https://fonts.maateen.me/bensen-handwriting/font.css" rel="stylesheet">
+    
     @include('partials.styles')
 
     @yield('stylesheets')

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Users;
-use App\PaymentMethod;
+use App\Paymethod;
 use App\ActiveService;
 use App\Service;
 use App\Package;
@@ -90,7 +90,7 @@ class PackageCtrl extends Controller
 
     public function check_payment()
     {
-        $payments = PaymentMethod::where('status', 1)->get();
+        $payments = Paymethod::where('status', 1)->get();
         return view('users.check_payment')->withPayments($payments);
     }
 

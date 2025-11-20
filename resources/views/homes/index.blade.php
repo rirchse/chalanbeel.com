@@ -62,6 +62,18 @@ $source = new SourceCtrl;
         text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     }
 
+    /* Apply BenSen Handwriting font for Bangla text in hero section */
+    html[lang="bn"] .hero-title,
+    html[lang="bn"] .hero-subtitle {
+        font-family: 'BenSen Handwriting', 'Bangla', 'Noto Sans Bengali', 'Kalpurush', 'SolaimanLipi', sans-serif;
+    }
+
+    /* Keep current font for English text in hero section */
+    html[lang="en"] .hero-title,
+    html[lang="en"] .hero-subtitle {
+        font-family: 'Roboto Condensed', sans-serif;
+    }
+
     .hero-subtitle {
         font-size: 20px;
         color: rgba(255, 255, 255, 0.95);
@@ -666,10 +678,24 @@ $source = new SourceCtrl;
                             <div class="package-details">
                                 @php
                                     $listItems = [];
+                                    $locale = app()->getLocale(); // Get current locale (en or bn)
+                                    
                                     if (!empty($package->details)) {
                                         $decoded = json_decode($package->details, true);
                                         if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
-                                            $listItems = $decoded;
+                                            // Check if it's the new bilingual format
+                                            if (isset($decoded[0]) && is_array($decoded[0]) && (isset($decoded[0]['en']) || isset($decoded[0]['bn']))) {
+                                                // New format: extract items based on locale
+                                                foreach ($decoded as $item) {
+                                                    $text = $item[$locale] ?? $item['en'] ?? $item['bn'] ?? '';
+                                                    if (!empty($text)) {
+                                                        $listItems[] = $text;
+                                                    }
+                                                }
+                                            } else {
+                                                // Old format: simple array
+                                                $listItems = $decoded;
+                                            }
                                         }
                                     }
                                     // If no list items, show default items

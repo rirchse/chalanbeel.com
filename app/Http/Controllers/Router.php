@@ -5,7 +5,7 @@ use PEAR2\Net\RouterOS;
 
 use Illuminate\Http\Request;
 use App\Users;
-use App\PaymentMethod;
+use App\Paymethod;
 use App\ActiveService;
 use App\Service;
 use App\PaymentReceive;

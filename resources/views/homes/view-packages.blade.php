@@ -407,10 +407,24 @@
                     <div class="package-details">
                         @php
                             $listItems = [];
+                            $locale = app()->getLocale(); // Get current locale (en or bn)
+                            
                             if (!empty($package->details)) {
                                 $decoded = json_decode($package->details, true);
                                 if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
-                                    $listItems = $decoded;
+                                    // Check if it's the new bilingual format
+                                    if (isset($decoded[0]) && is_array($decoded[0]) && (isset($decoded[0]['en']) || isset($decoded[0]['bn']))) {
+                                        // New format: extract items based on locale
+                                        foreach ($decoded as $item) {
+                                            $text = $item[$locale] ?? $item['en'] ?? $item['bn'] ?? '';
+                                            if (!empty($text)) {
+                                                $listItems[] = $text;
+                                            }
+                                        }
+                                    } else {
+                                        // Old format: simple array
+                                        $listItems = $decoded;
+                                    }
                                 }
                             }
                             // If no list items, show default items

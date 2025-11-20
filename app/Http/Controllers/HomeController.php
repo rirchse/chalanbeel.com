@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 use App\Users;
-use App\PaymentMethod;
+use App\Paymethod;
 use App\ActiveService;
 use App\Service;
 use App\Package;
@@ -382,7 +382,7 @@ class HomeController extends Controller
 
     public function check_payment()
     {
-        $payments = PaymentMethod::where('status', 1)->get();
+        $payments = Paymethod::where('status', 1)->get();
         return view('homes.check_payment')->withPayments($payments);
     }
 
