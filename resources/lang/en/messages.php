@@ -42,6 +42,9 @@ return [
     'search.subtitle' => 'View your account status using your mobile number',
     'search.placeholder' => 'Enter your mobile number',
     'search.button' => 'Search',
+    'search.error_not_found' => 'No account found with this contact number.',
+    'search.error_occurred' => 'An error occurred. Please try again.',
+    'search.error_invalid_number' => 'Please enter a valid 11-digit contact number.',
     
     // Modal
     'modal.expired' => 'Expired',
@@ -61,7 +64,7 @@ return [
     'packages.speed' => 'Speed',
     'packages.time' => 'Time',
     'packages.connection' => 'Connection',
-    'packages.buy_now' => 'Buy Now',
+    'packages.buy_now' => 'Get Connection',
     'packages.take_package' => 'Take Package',
     'packages.internet' => 'Internet',
     'packages.standard' => 'Standard',

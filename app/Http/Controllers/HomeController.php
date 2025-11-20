@@ -55,7 +55,7 @@ class HomeController extends Controller
       } else {
         return response()->json([
           'success' => false,
-          'message' => 'No account found with this contact number.'
+          'message' => __('messages.search.error_not_found')
         ]);
       }
     }

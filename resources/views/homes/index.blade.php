@@ -1835,6 +1835,29 @@ $source = new SourceCtrl;
         modalContent.innerHTML = modalHTML;
     }
     
+    // Function to show error message in modal
+    function showErrorModal(errorMessage) {
+        const errorModalHTML = `
+            <div class="result-card expired" style="text-align: center;">
+                <div style="margin-bottom: 20px;">
+                    <span class="status-badge expired">
+                        <i class="material-icons" style="vertical-align: middle; font-size: 24px;">error</i>
+                    </span>
+                </div>
+                <h3 style="color: #f44336; margin: 20px 0; font-size: 24px;">${errorMessage}</h3>
+                <div class="contact-info" style="margin-top: 30px;">
+                    <p>
+                        <i class="material-icons" style="vertical-align: middle; font-size: 18px;">headset_mic</i>
+                        {{ __('messages.modal.contact_us') }}
+                    </p>
+                    <p class="phone">017 78 57 33 96 • 017 03 58 79 11</p>
+                </div>
+            </div>
+        `;
+        modalContent.innerHTML = errorModalHTML;
+        openModal();
+    }
+    
     // Function to open modal
     function openModal() {
         // Maintain grid columns before opening modal
@@ -1869,7 +1892,8 @@ $source = new SourceCtrl;
             
             // Validation
             if (!contact || contact.length !== 11) {
-                alert('Please enter a valid 11-digit contact number.');
+                const errorMessage = '{{ __('messages.search.error_invalid_number') }}';
+                showErrorModal(errorMessage);
                 return;
             }
             
@@ -1900,8 +1924,9 @@ $source = new SourceCtrl;
                     populateModal(data.user);
                     openModal();
                 } else {
-                    // Show error message
-                    alert(data.message || 'No account found with this contact number.');
+                    // Show error message in modal
+                    const errorMessage = data.message || '{{ __('messages.search.error_not_found') }}';
+                    showErrorModal(errorMessage);
                 }
             })
             .catch(error => {
@@ -1912,7 +1937,8 @@ $source = new SourceCtrl;
                 }
                 
                 console.error('Error:', error);
-                alert('An error occurred. Please try again.');
+                const errorMessage = '{{ __('messages.search.error_occurred') }}';
+                showErrorModal(errorMessage);
             });
         });
     }

@@ -42,6 +42,9 @@ return [
     'search.subtitle' => 'আপনার মোবাইল নম্বর দিয়ে একাউন্টের অবস্থা দেখুন',
     'search.placeholder' => 'আপনার মোবাইল নম্বর লিখুন',
     'search.button' => 'খুঁজুন',
+    'search.error_not_found' => 'এই যোগাযোগ নম্বর দিয়ে কোনো একাউন্ট পাওয়া যায়নি।',
+    'search.error_occurred' => 'একটি ত্রুটি ঘটেছে। অনুগ্রহ করে আবার চেষ্টা করুন।',
+    'search.error_invalid_number' => 'অনুগ্রহ করে একটি বৈধ ১১ সংখ্যার যোগাযোগ নম্বর লিখুন।',
     
     // Modal
     'modal.expired' => 'মেয়াদ উত্তীর্ণ',
@@ -61,7 +64,7 @@ return [
     'packages.speed' => 'গতি',
     'packages.time' => 'সময়',
     'packages.connection' => 'সংযোগ',
-    'packages.buy_now' => 'এখনই কিনুন',
+    'packages.buy_now' => 'কানেকশান নিন',
     'packages.take_package' => 'প্যাকেজ নিন',
     'packages.internet' => 'ইন্টারনেট',
     'packages.standard' => 'স্ট্যান্ডার্ড',
