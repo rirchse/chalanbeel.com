@@ -38,6 +38,29 @@ class HomeController extends Controller
     {
       $user = User::where('contact', $request->contact)->first();
     }
+    
+    // If AJAX request, return JSON
+    if ($request->ajax() || $request->wantsJson()) {
+      if ($user) {
+        $source = new \App\Http\Controllers\SourceCtrl;
+        return response()->json([
+          'success' => true,
+          'user' => [
+            'name' => $user->name,
+            'status' => $user->status,
+            'payment_date' => $source->dtformat($user->payment_date),
+            'payment_date_raw' => $user->payment_date
+          ]
+        ]);
+      } else {
+        return response()->json([
+          'success' => false,
+          'message' => 'No account found with this contact number.'
+        ]);
+      }
+    }
+    
+    // For non-AJAX requests, return view (backward compatibility)
     return view('homes.index', compact('user'));
   }
 

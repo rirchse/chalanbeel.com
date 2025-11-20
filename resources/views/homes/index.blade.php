@@ -298,7 +298,7 @@ $source = new SourceCtrl;
         margin: 10px 0 0 0 !important;
     }
     .phone-icon { 
-        margin-top: 5px;
+        margin-top: 0px;
     }
 
     .material-input-group {
@@ -584,7 +584,7 @@ $source = new SourceCtrl;
         <div class="hero-right">
             <h3 class="search-card-title">{{ __('messages.search.title') }}</h3>
             <p class="search-card-subtitle">{{ __('messages.search.subtitle') }}</p>
-            <form class="search-form" action="{{route('account.check.post')}}" method="GET">
+            <form class="search-form" id="accountCheckForm" action="{{route('account.check.post')}}" method="GET">
                 <div class="google-search-wrapper">
                     <div class="material-input-group">
                         <input 
@@ -599,7 +599,7 @@ $source = new SourceCtrl;
                         >
                         <i class="material-icons input-icon phone-icon">phone</i>
                     </div>
-                    <button type="submit" class="search-submit-btn">
+                    <button type="submit" class="search-submit-btn" id="searchSubmitBtn">
                         <i class="material-icons">search</i>
                     </button>
                 </div>
@@ -616,69 +616,27 @@ $source = new SourceCtrl;
             <i class="material-icons">close</i>
         </button>
         
-        @if(isset($user) && $user != [])
-        <div class="modal-content">
-            <div class="result-card {{ $user->status == 'Expire' ? 'expired' : 'active' }}">
-                <div style="text-align: center;">
-                    <span class="status-badge {{ $user->status == 'Expire' ? 'expired' : 'active' }}">
-                        @if($user->status == 'Expire')
-                            <i class="material-icons" style="vertical-align: middle; font-size: 20px;">error</i>
-                            {{ __('messages.modal.expired') }}
-                        @else
-                            <i class="material-icons" style="vertical-align: middle; font-size: 20px;">check_circle</i>
-                            {{$user->status}}
-                        @endif
-                    </span>
-                </div>
-
-                <div style="margin-top: 20px;">
-                    <div class="info-row">
-                        <span class="info-label">
-                            <i class="material-icons" style="vertical-align: middle; font-size: 18px; margin-right: 5px;">person</i>
-                            {{ __('messages.modal.customer_name') }}
-                        </span>
-                        <span class="info-value">{{$user->name}}</span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="info-label">
-                            <i class="material-icons" style="vertical-align: middle; font-size: 18px; margin-right: 5px;">calendar_today</i>
-                            {{ __('messages.modal.payment_date') }}
-                        </span>
-                        <span class="info-value">{{$source->dtformat($user->payment_date)}}</span>
-                    </div>
-                </div>
-
-                @if($user->status == 'Expire')
-                <div class="payment-info">
-                    <h3>
-                        <i class="material-icons" style="vertical-align: middle; font-size: 24px;">payment</i>
-                        {{ __('messages.modal.bkash_send_money') }}
-                    </h3>
-                    <div class="number">017 03 58 79 11</div>
-                </div>
-                @endif
-
-                <div class="contact-info">
-                    <p>
-                        <i class="material-icons" style="vertical-align: middle; font-size: 18px;">headset_mic</i>
-                        {{ __('messages.modal.contact_us') }}
-                    </p>
-                    <p class="phone">017 78 57 33 96 • 017 03 58 79 11</p>
-                </div>
-
-                <p style="display: none" id="bengali-text">
-                    @if($user->status == 'Active')
-                    {{ __('messages.modal.active_message') }} - {{$user->payment_date}}। {{ __('messages.modal.thank_you') }}
-                    @elseif($user->status == 'Expire')
-                    {{$user->name}}{{ __('messages.modal.expired_message') }}
-                    @else
-                    {{$user->name}}{{ __('messages.modal.other_status_message') }} {{$user->status}}। {{ __('messages.modal.reactivate') }} 
-                    {{ __('messages.modal.thank_you') }}
-                    @endif
-                </p>
-            </div>
+        <div class="modal-content" id="modalContent">
+            <!-- Content will be populated via AJAX -->
         </div>
+        
+        @if(isset($user) && $user != [])
+        <script>
+            // For backward compatibility - show modal if user data exists on page load
+            // This will run after all scripts are loaded
+            window.addEventListener('load', function() {
+                if (typeof populateModal === 'function' && typeof openModal === 'function') {
+                    const userData = {
+                        name: '{{ $user->name }}',
+                        status: '{{ $user->status }}',
+                        payment_date: '{{ $source->dtformat($user->payment_date) }}',
+                        payment_date_raw: '{{ $user->payment_date }}'
+                    };
+                    populateModal(userData);
+                    openModal();
+                }
+            });
+        </script>
         @endif
     </div>
 </div>
@@ -954,12 +912,68 @@ $source = new SourceCtrl;
         background: #fff;
         padding-top: 0;
         margin-top: 0;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    /* Ensure packages section maintains layout when modal is open */
+    body.modal-open .isp-sections,
+    body:has(.account-modal.active) .isp-sections {
+        position: relative !important;
+        z-index: 2 !important;
+        width: 100% !important;
+        visibility: visible !important;
+        display: block !important;
     }
 
     .isp-section {
         padding: 80px 20px;
         max-width: 1400px;
         margin: 0 auto;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    /* Ensure packages section maintains width when modal is open */
+    body.modal-open .packages-section,
+    body:has(.account-modal.active) .packages-section {
+        width: 100% !important;
+        max-width: 1400px !important;
+        padding: 80px 20px !important;
+    }
+    
+    /* Ensure container inside packages section maintains width */
+    .packages-section .container {
+        width: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
+    
+    /* When modal is open, ensure container width is preserved */
+    body.modal-open .packages-section .container,
+    body:has(.account-modal.active) .packages-section .container {
+        width: 100% !important;
+        max-width: 1400px !important;
+        margin: 0 auto !important;
+        padding: 0 20px !important;
+        box-sizing: border-box !important;
+        min-width: 0 !important;
+    }
+    
+    /* Ensure the grid maintains its columns when container width is preserved */
+    body.modal-open .packages-grid,
+    body:has(.account-modal.active) .packages-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+    }
+    
+    /* On larger screens, ensure 3 columns are maintained if there are 3 packages */
+    @media (min-width: 920px) {
+        body.modal-open .packages-grid,
+        body:has(.account-modal.active) .packages-grid {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+        }
     }
 
     .section-header {
@@ -988,6 +1002,79 @@ $source = new SourceCtrl;
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 30px;
         margin-top: 40px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    /* Ensure packages are always visible even when modal is open */
+    body:has(.account-modal.active) .packages-grid,
+    body.modal-open .packages-grid {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+        visibility: visible !important;
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        grid-auto-flow: row !important;
+    }
+    
+    /* Force multiple columns on larger screens when modal is open - JS will override if needed */
+    @media (min-width: 920px) {
+        body.modal-open .packages-grid[data-forced-columns],
+        body:has(.account-modal.active) .packages-grid[data-forced-columns] {
+            /* Keep JS-set columns */
+        }
+        
+        /* Fallback: try to maintain 3 columns on wide screens */
+        body.modal-open .packages-grid:not([data-forced-columns]),
+        body:has(.account-modal.active) .packages-grid:not([data-forced-columns]) {
+            grid-template-columns: repeat(3, minmax(280px, 1fr)) !important;
+        }
+    }
+    
+    /* Force grid to maintain columns when modal is open - calculate based on container width */
+    @media (min-width: 900px) {
+        body.modal-open .packages-grid,
+        body:has(.account-modal.active) .packages-grid {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+        }
+    }
+    
+    @media (min-width: 600px) and (max-width: 899px) {
+        body.modal-open .packages-grid,
+        body:has(.account-modal.active) .packages-grid {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+        }
+    }
+    
+    body:has(.account-modal.active) .package-card,
+    body.modal-open .package-card {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        width: 100% !important;
+        min-width: 280px !important;
+    }
+    
+    /* Ensure body maintains width when overflow is hidden */
+    body.modal-open {
+        width: 100% !important;
+        overflow-x: hidden !important;
+        overflow-y: hidden !important;
+    }
+    
+    /* Ensure packages section isn't affected by body padding compensation */
+    body.modal-open .isp-sections {
+        width: 100% !important;
+        max-width: 100% !important;
+        position: relative !important;
+    }
+    
+    /* Prevent width recalculation when modal opens */
+    body.modal-open .isp-section,
+    body:has(.account-modal.active) .isp-section {
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     .package-card {
@@ -1649,20 +1736,224 @@ $source = new SourceCtrl;
     const accountModal = document.getElementById('accountModal');
     const modalOverlay = document.getElementById('modalOverlay');
     const modalClose = document.getElementById('modalClose');
+    const modalContent = document.getElementById('modalContent');
+    const accountCheckForm = document.getElementById('accountCheckForm');
+    const searchSubmitBtn = document.getElementById('searchSubmitBtn');
+    
+    // Function to populate modal with user data
+    function populateModal(userData) {
+        const isExpired = userData.status === 'Expire';
+        const statusClass = isExpired ? 'expired' : 'active';
+        const statusIcon = isExpired ? 'error' : 'check_circle';
+        const statusText = isExpired ? '{{ __('messages.modal.expired') }}' : userData.status;
+        
+        // Build Bengali text for speech
+        let bengaliText = '';
+        if (userData.status === 'Active') {
+            bengaliText = '{{ __('messages.modal.active_message') }} - ' + userData.payment_date_raw + '। {{ __('messages.modal.thank_you') }}';
+        } else if (userData.status === 'Expire') {
+            bengaliText = userData.name + '{{ __('messages.modal.expired_message') }}';
+        } else {
+            bengaliText = userData.name + '{{ __('messages.modal.other_status_message') }} ' + userData.status + '। {{ __('messages.modal.reactivate') }} {{ __('messages.modal.thank_you') }}';
+        }
+        
+        const modalHTML = `
+            <div class="result-card ${statusClass}">
+                <div style="text-align: center;">
+                    <span class="status-badge ${statusClass}">
+                        <i class="material-icons" style="vertical-align: middle; font-size: 20px;">${statusIcon}</i>
+                        ${statusText}
+                    </span>
+                </div>
 
-    // Show modal if user data exists
-    @if(isset($user) && $user != [])
-    window.addEventListener('load', function() {
+                <div style="margin-top: 20px;">
+                    <div class="info-row">
+                        <span class="info-label">
+                            <i class="material-icons" style="vertical-align: middle; font-size: 18px; margin-right: 5px;">person</i>
+                            {{ __('messages.modal.customer_name') }}
+                        </span>
+                        <span class="info-value">${userData.name}</span>
+                    </div>
+                    
+                    <div class="info-row">
+                        <span class="info-label">
+                            <i class="material-icons" style="vertical-align: middle; font-size: 18px; margin-right: 5px;">calendar_today</i>
+                            {{ __('messages.modal.payment_date') }}
+                        </span>
+                        <span class="info-value">${userData.payment_date}</span>
+                    </div>
+                </div>
+
+                ${isExpired ? `
+                <div class="payment-info">
+                    <h3>
+                        <i class="material-icons" style="vertical-align: middle; font-size: 24px;">payment</i>
+                        {{ __('messages.modal.bkash_send_money') }}
+                    </h3>
+                    <div class="number">017 03 58 79 11</div>
+                </div>
+                ` : ''}
+
+                <div class="contact-info">
+                    <p>
+                        <i class="material-icons" style="vertical-align: middle; font-size: 18px;">headset_mic</i>
+                        {{ __('messages.modal.contact_us') }}
+                    </p>
+                    <p class="phone">017 78 57 33 96 • 017 03 58 79 11</p>
+                </div>
+
+                <p style="display: none" id="bengali-text">${bengaliText}</p>
+            </div>
+        `;
+        
+        modalContent.innerHTML = modalHTML;
+    }
+    
+    // Function to open modal
+    function openModal() {
+        // Maintain grid columns before opening modal
+        maintainPackageGridColumns();
+        
+        // Compensate for scrollbar width
+        const scrollbarWidth = getScrollbarWidth();
+        if (scrollbarWidth > 0) {
+            document.body.style.paddingRight = scrollbarWidth + 'px';
+        }
+        
         accountModal.classList.add('active');
+        document.body.classList.add('modal-open');
         document.body.style.overflow = 'hidden';
+        
+        // Recalculate grid after modal opens
+        setTimeout(function() {
+            maintainPackageGridColumns();
+        }, 50);
+        
+        // Speak Bengali text
         speakBengali();
-    });
-    @endif
+    }
+    
+    // Handle form submission via AJAX
+    if (accountCheckForm) {
+        accountCheckForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const contactInput = document.getElementById('search');
+            const contact = contactInput.value.trim();
+            
+            // Validation
+            if (!contact || contact.length !== 11) {
+                alert('Please enter a valid 11-digit contact number.');
+                return;
+            }
+            
+            // Disable submit button and show loading state
+            if (searchSubmitBtn) {
+                searchSubmitBtn.disabled = true;
+                searchSubmitBtn.innerHTML = '<i class="material-icons">hourglass_empty</i>';
+            }
+            
+            // Make AJAX request
+            fetch('{{ route("account.check.post") }}?contact=' + encodeURIComponent(contact), {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Re-enable submit button
+                if (searchSubmitBtn) {
+                    searchSubmitBtn.disabled = false;
+                    searchSubmitBtn.innerHTML = '<i class="material-icons">search</i>';
+                }
+                
+                if (data.success && data.user) {
+                    // Populate and show modal
+                    populateModal(data.user);
+                    openModal();
+                } else {
+                    // Show error message
+                    alert(data.message || 'No account found with this contact number.');
+                }
+            })
+            .catch(error => {
+                // Re-enable submit button
+                if (searchSubmitBtn) {
+                    searchSubmitBtn.disabled = false;
+                    searchSubmitBtn.innerHTML = '<i class="material-icons">search</i>';
+                }
+                
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        });
+    }
+
+    // Function to calculate scrollbar width
+    function getScrollbarWidth() {
+        const outer = document.createElement('div');
+        outer.style.visibility = 'hidden';
+        outer.style.overflow = 'scroll';
+        outer.style.msOverflowStyle = 'scrollbar';
+        document.body.appendChild(outer);
+        const inner = document.createElement('div');
+        outer.appendChild(inner);
+        const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
+        outer.parentNode.removeChild(outer);
+        return scrollbarWidth;
+    }
+
+    // Function to calculate and set grid columns
+    function maintainPackageGridColumns() {
+        const packagesGrid = document.querySelector('.packages-grid');
+        const packageCards = document.querySelectorAll('.packages-grid .package-card');
+        const container = document.querySelector('.packages-section .container');
+        
+        if (!packagesGrid || !container || packageCards.length === 0) {
+            return;
+        }
+        
+        // Get container width - calculate before modal opens to get accurate width
+        const containerWidth = container.getBoundingClientRect().width;
+        const cardMinWidth = 280;
+        const gap = 30;
+        const numPackages = packageCards.length;
+        
+        // Calculate how many columns can fit
+        let columns = 1;
+        if (containerWidth >= (cardMinWidth * numPackages + gap * (numPackages - 1))) {
+            columns = numPackages; // Can fit all packages in a row
+        } else if (containerWidth >= (cardMinWidth * 3 + gap * 2)) {
+            columns = 3; // Can fit 3 columns
+        } else if (containerWidth >= (cardMinWidth * 2 + gap)) {
+            columns = 2; // Can fit 2 columns
+        }
+        
+        // Ensure we don't show more columns than packages
+        columns = Math.min(columns, numPackages);
+        
+        // Force grid template to maintain columns BEFORE modal opens
+        if (columns > 1) {
+            packagesGrid.style.gridTemplateColumns = 'repeat(' + columns + ', minmax(' + cardMinWidth + 'px, 1fr))';
+            packagesGrid.setAttribute('data-forced-columns', columns);
+        } else {
+            packagesGrid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(' + cardMinWidth + 'px, 1fr))';
+            packagesGrid.removeAttribute('data-forced-columns');
+        }
+    }
+
+    // For backward compatibility - if user data exists on page load, show modal
+    // This is handled in the modal HTML section above with inline script
 
     // Close modal functions
     function closeModal() {
         accountModal.classList.remove('active');
+        document.body.classList.remove('modal-open');
         document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+        
         // Remove user parameter from URL
         if (window.history.replaceState) {
             window.history.replaceState({}, document.title, window.location.pathname);
@@ -1693,6 +1984,33 @@ $source = new SourceCtrl;
                 e.target.value = value.slice(0, 11);
             }
         });
+    }
+    
+    // Maintain grid columns on window resize when modal is open
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        if (accountModal && accountModal.classList.contains('active')) {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                maintainPackageGridColumns();
+            }, 100);
+        }
+    });
+    
+    // Also maintain columns when modal is opened (for any reason)
+    if (accountModal) {
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                    if (accountModal.classList.contains('active')) {
+                        setTimeout(function() {
+                            maintainPackageGridColumns();
+                        }, 50);
+                    }
+                }
+            });
+        });
+        observer.observe(accountModal, { attributes: true });
     }
 </script>
 
