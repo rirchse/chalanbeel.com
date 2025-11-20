@@ -233,17 +233,30 @@
     }
 
     .payment-method {
-        width: 40px;
-        height: 30px;
+        width: 50px;
+        height: 35px;
         background: rgba(255, 255, 255, 0.1);
         border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 4px;
+        border-radius: 6px;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #fff;
-        font-size: 12px;
-        font-weight: 600;
+        padding: 5px;
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+
+    .payment-method:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+    }
+
+    .payment-method img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        filter: brightness(0) invert(1);
     }
 
     .back-to-top {
@@ -386,6 +399,12 @@
                             <span>{{ __('messages.footer.payment_check') }}</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="/careers">
+                            <i class="material-icons">work</i>
+                            <span>{{ __('messages.header.careers') }}</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
 
@@ -475,9 +494,15 @@
             </div>
             <div class="footer-payments">
                 <span>{{ __('messages.footer.payment_methods') }}:</span>
-                <div class="payment-method">bKash</div>
-                <div class="payment-method">Nagad</div>
-                <div class="payment-method">Rocket</div>
+                <div class="payment-method">
+                    <img src="/images/icons/bkash.png" alt="bKash">
+                </div>
+                <div class="payment-method">
+                    <img src="/images/icons/nagad.png" alt="Nagad">
+                </div>
+                <div class="payment-method">
+                    <img src="/images/icons/rocket.png" alt="Rocket">
+                </div>
             </div>
         </div>
     </div>

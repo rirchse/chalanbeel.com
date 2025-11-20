@@ -1,5 +1,5 @@
 @extends('home')
-@section('title', 'লগইন')
+@section('title', __('messages.login.title'))
 @section('content')
 
 <style type="text/css">
@@ -412,21 +412,20 @@
         <div class="login-left-content">
             <div class="login-logo">
                 <div class="login-logo-icon">CT</div>
-                <div class="login-logo-text">চলনবিল টেকনলজিতে</div>
+                <div class="login-logo-text">{{ __('messages.login.logo_text') }}</div>
             </div>
-            <h1 class="login-welcome-title">স্বাগতম!</h1>
+            <h1 class="login-welcome-title">{{ __('messages.login.welcome') }}</h1>
             <p class="login-welcome-subtitle">
-                আপনার একাউন্টে প্রবেশ করুন এবং আমাদের সেবা উপভোগ করুন। 
-                নতুন ব্যবহারকারী? এখনই নিবন্ধন করুন।
+                {{ __('messages.login.welcome_subtitle') }}
             </p>
-            <a href="/register/create" class="sign-up-btn">নিবন্ধন করুন</a>
+            <a href="/register/create" class="sign-up-btn">{{ __('messages.header.register') }}</a>
         </div>
     </div>
 
     <!-- Right Side: Login Form -->
     <div class="login-right">
         <div class="login-form-container">
-            <h2 class="login-form-title">আপনার একাউন্টে প্রবেশ করুন</h2>
+            <h2 class="login-form-title">{{ __('messages.login.form_title') }}</h2>
 
             <div class="social-login">
                 <a href="#" class="social-btn fb-btn" title="Facebook">
@@ -441,7 +440,7 @@
             </div>
 
             <div class="divider">
-                <span class="divider-text">অথবা আপনার একাউন্ট দিয়ে প্রবেশ করুন</span>
+                <span class="divider-text">{{ __('messages.login.divider_text') }}</span>
             </div>
 
             @if(session('error'))
@@ -462,22 +461,20 @@
             </div>
             @endif
 
-            <form role="form" method="POST" action="{{ route('user.login') }}">
+            <form role="form" method="POST" action="{{ route('login.post') }}">
                 {{ csrf_field() }}
 
                 <div class="form-group">
                     <div class="input-wrapper">
-                        <i class="material-icons input-icon">phone</i>
+                        <i class="material-icons input-icon">person</i>
                         <input type="text" 
                                class="form-control {{ $errors->has('email') ? 'error' : '' }}" 
                                name="email" 
                                id="email"
-                               placeholder="মোবাইল নম্বর" 
+                               placeholder="{{ __('messages.login.email_or_phone') }}" 
                                value="{{ old('email') }}"
                                required 
-                               autofocus
-                               maxlength="11"
-                               pattern="[0-9]{11}"/>
+                               autofocus/>
                     </div>
                 </div>
 
@@ -488,7 +485,7 @@
                                class="form-control {{ $errors->has('password') ? 'error' : '' }}" 
                                name="password" 
                                id="password"
-                               placeholder="পাসওয়ার্ড" 
+                               placeholder="{{ __('messages.login.password_placeholder') }}" 
                                required/>
                     </div>
                 </div>
@@ -496,13 +493,13 @@
                 <div class="remember-forgot">
                     <label class="remember-me">
                         <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
-                        <span>আমাকে মনে রাখুন</span>
+                        <span>{{ __('messages.login.remember_me') }}</span>
                     </label>
-                    <a href="#" class="forgot-password">পাসওয়ার্ড ভুলে গেছেন?</a>
+                    <a href="#" class="forgot-password">{{ __('messages.login.forgot_password') }}</a>
                 </div>
 
                 <button type="submit" class="submit-btn">
-                    প্রবেশ করুন
+                    {{ __('messages.login.submit') }}
                 </button>
             </form>
         </div>

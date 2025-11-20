@@ -102,6 +102,120 @@
 
 	@include('homes.footer')
 
+	<!-- Floating Action Buttons -->
+	<div class="floating-buttons">
+		<a href="/speed-test" class="floating-btn speed-test-btn" title="{{ __('messages.speed_test.title') }}">
+			<i class="material-icons">flash_on</i>
+		</a>
+		<a href="https://wa.me/8801703587911" target="_blank" class="floating-btn whatsapp-btn" title="WhatsApp" rel="noopener noreferrer">
+			<i class="fa fa-whatsapp"></i>
+		</a>
+	</div>
+
+	<style>
+		.floating-buttons {
+			position: fixed;
+			bottom: 30px;
+			left: 30px;
+			z-index: 1000;
+			display: flex;
+			flex-direction: column;
+			gap: 15px;
+		}
+
+		.floating-btn {
+			width: 60px;
+			height: 60px;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: #fff;
+			text-decoration: none;
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+			transition: all 0.3s ease;
+			cursor: pointer;
+			position: relative;
+		}
+
+		.floating-btn i {
+			font-size: 28px;
+		}
+
+		.floating-btn i.material-icons {
+			font-family: 'Material Icons' !important;
+			font-size: 28px !important;
+		}
+
+		.floating-btn i.fa {
+			font-family: 'FontAwesome' !important;
+			font-size: 28px !important;
+		}
+
+		.floating-btn:hover {
+			transform: translateY(-5px) scale(1.1);
+			box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+		}
+
+		.speed-test-btn {
+			background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+		}
+
+		.speed-test-btn:hover {
+			background: linear-gradient(135deg, #1a1a1a 0%, #000 100%);
+		}
+
+		.whatsapp-btn {
+			background: #25D366;
+		}
+
+		.whatsapp-btn:hover {
+			background: #20BA5A;
+		}
+
+		.floating-btn::before {
+			content: attr(title);
+			position: absolute;
+			right: 70px;
+			background: #000;
+			color: #fff;
+			padding: 8px 12px;
+			border-radius: 6px;
+			font-size: 14px;
+			white-space: nowrap;
+			opacity: 0;
+			pointer-events: none;
+			transition: all 0.3s ease;
+			font-weight: 600;
+		}
+
+		.floating-btn:hover::before {
+			opacity: 1;
+			right: 75px;
+		}
+
+		@media (max-width: 768px) {
+			.floating-buttons {
+				bottom: 20px;
+				left: 20px;
+				gap: 12px;
+			}
+
+			.floating-btn {
+				width: 55px;
+				height: 55px;
+			}
+
+			.floating-btn i {
+				font-size: 24px;
+			}
+
+			.floating-btn::before {
+				display: none;
+			}
+		}
+	</style>
+
 	<!--   Core JS Files   -->
 	@include('partials.scripts')
 

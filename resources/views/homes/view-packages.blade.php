@@ -1,5 +1,5 @@
 @extends('home')
-@section('title', 'প্যাকেজ')
+@section('title', __('messages.titles.packages'))
 @section('content')
 
 <style type="text/css">
@@ -29,7 +29,7 @@
         text-align: center;
         margin-bottom: 60px;
         padding-bottom: 30px;
-        border-bottom: 3px solid #000;
+        border-bottom: 3px solid #3f4cab;
         position: relative;
     }
 
@@ -41,7 +41,7 @@
         transform: translateX(-50%);
         width: 100px;
         height: 3px;
-        background: #000;
+        background: #03bb7f;
     }
 
     .packages-title {
@@ -76,52 +76,53 @@
 
     .packages-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 40px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
         margin-top: 50px;
     }
 
     .package-card {
         background: #fff;
-        border: 3px solid #000;
-        border-radius: 24px;
-        padding: 40px 30px;
-        transition: all 0.4s ease;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-        position: relative;
+        border-radius: 16px;
         overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         display: flex;
         flex-direction: column;
-    }
-
-    .package-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #000 0%, #333 50%, #000 100%);
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 0.4s ease;
+        position: relative;
     }
 
     .package-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
-        border-color: #333;
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
     }
 
-    .package-card:hover::before {
-        transform: scaleX(1);
+    /* Color schemes for different packages */
+    .package-card:nth-child(4n+1) .package-header,
+    .package-card:nth-child(4n+1) .package-btn {
+        background: #1E40AF; /* Dark Blue */
+    }
+
+    .package-card:nth-child(4n+2) .package-header,
+    .package-card:nth-child(4n+2) .package-btn {
+        background: #059669; /* Dark Green */
+    }
+
+    .package-card:nth-child(4n+3) .package-header,
+    .package-card:nth-child(4n+3) .package-btn {
+        background: #4ECDC4; /* Teal */
+    }
+
+    .package-card:nth-child(4n+4) .package-header,
+    .package-card:nth-child(4n+4) .package-btn {
+        background: #7C3AED; /* Dark Purple */
     }
 
     .package-badge {
         position: absolute;
         top: 20px;
-        right: 20px;
-        background: #000;
+        left: 20px;
+        background: rgba(0, 0, 0, 0.3);
         color: #fff;
         padding: 6px 16px;
         border-radius: 20px;
@@ -129,68 +130,108 @@
         font-weight: 700;
         letter-spacing: 1px;
         text-transform: uppercase;
+        z-index: 2;
     }
 
     .package-header {
-        text-align: center;
-        padding-bottom: 25px;
-        border-bottom: 2px solid #000;
-        margin-bottom: 30px;
+        background: #1E40AF;
+        padding: 30px 25px;
         position: relative;
+        color: #fff;
+        border-radius: 16px 16px 0 0;
     }
 
     .package-service {
-        font-size: 18px;
-        font-weight: 600;
-        color: #666;
-        margin-bottom: 10px;
+        font-size: 20px;
+        font-weight: 700;
+        color: #fff;
+        margin: 0;
         text-transform: uppercase;
         letter-spacing: 1px;
     }
 
-    .package-speed {
-        font-size: 48px;
-        font-weight: 800;
-        color: #000;
+    .package-price-badge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 80px;
+        height: 80px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(10px);
+    }
+
+    .package-price-badge .price-amount {
+        font-size: 20px;
+        font-weight: 700;
+        color: #fff;
         line-height: 1;
-        margin: 10px 0;
+        margin: 0;
+    }
+
+    .package-price-badge .price-period {
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.9);
+        text-transform: uppercase;
+        margin-top: 2px;
+    }
+
+    .package-speed {
+        font-size: 18px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.95);
+        margin-top: 10px;
     }
 
     .package-speed-unit {
-        font-size: 20px;
-        font-weight: 600;
-        color: #666;
+        font-size: 14px;
+        font-weight: 400;
         margin-left: 5px;
     }
 
     .package-body {
+        padding: 30px 25px;
         flex: 1;
-        margin-bottom: 30px;
+        display: flex;
+        flex-direction: column;
     }
 
     .package-details {
         margin-bottom: 25px;
+        flex: 1;
     }
 
     .detail-item {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        padding: 15px 0;
-        border-bottom: 1px solid #e0e0e0;
-        transition: all 0.3s ease;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid #f0f0f0;
     }
 
     .detail-item:last-child {
         border-bottom: none;
     }
 
-    .detail-item:hover {
-        background: rgba(0, 0, 0, 0.02);
-        margin: 0 -10px;
-        padding-left: 10px;
-        padding-right: 10px;
-        border-radius: 8px;
+    .detail-item-icon {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .detail-item-icon.check {
+        color: #4CAF50;
+    }
+
+    .detail-item-icon.cross {
+        color: #ccc;
     }
 
     .detail-label {
@@ -198,96 +239,50 @@
         align-items: center;
         gap: 12px;
         color: #666;
-        font-size: 15px;
+        font-size: 14px;
+        flex: 1;
     }
 
     .detail-label i {
         color: #000;
-        font-size: 20px;
+        font-size: 18px;
     }
 
     .detail-value {
-        font-size: 16px;
-        font-weight: 700;
-        color: #000;
-        text-align: right;
-    }
-
-    .package-price-section {
-        text-align: center;
-        padding: 25px 0;
-        border-top: 2px solid #000;
-        border-bottom: 2px solid #000;
-        margin: 25px 0;
-    }
-
-    .price-label {
         font-size: 14px;
-        color: #666;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 8px;
-    }
-
-    .price-amount {
-        font-size: 42px;
-        font-weight: 800;
-        color: #000;
-        line-height: 1;
-        margin: 0;
-    }
-
-    .price-discount {
-        font-size: 18px;
-        color: #999;
-        text-decoration: line-through;
-        margin-top: 5px;
+        font-weight: 600;
+        color: #333;
     }
 
     .package-btn {
         display: block;
         width: 100%;
-        padding: 18px;
-        background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+        padding: 16px;
+        background: #1E40AF;
         color: #fff;
-        border: 3px solid #000;
-        border-radius: 12px;
-        font-size: 18px;
-        font-weight: 700;
         text-align: center;
+        border: none;
+        border-radius: 8px;
+        font-weight: 700;
         text-decoration: none;
         transition: all 0.3s ease;
+        font-size: 14px;
         text-transform: uppercase;
         letter-spacing: 1px;
-        position: relative;
-        overflow: hidden;
         margin-top: auto;
-    }
-
-    .package-btn::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-        transition: left 0.5s ease;
-    }
-
-    .package-btn:hover::before {
-        left: 100%;
+        cursor: pointer;
     }
 
     .package-btn:hover {
-        background: linear-gradient(135deg, #1a1a1a 0%, #000 100%);
-        transform: translateY(-3px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        opacity: 0.9;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        color: #fff;
     }
 
     .package-btn i {
         margin-right: 8px;
-        font-size: 20px;
+        font-size: 18px;
         vertical-align: middle;
     }
 
@@ -361,11 +356,20 @@
         }
 
         .package-speed {
-            font-size: 36px;
+            font-size: 16px;
         }
 
-        .price-amount {
-            font-size: 36px;
+        .package-price-badge {
+            width: 70px;
+            height: 70px;
+        }
+
+        .package-price-badge .price-amount {
+            font-size: 18px;
+        }
+
+        .package-price-badge .price-period {
+            font-size: 9px;
         }
     }
 </style>
@@ -373,76 +377,72 @@
 <div class="packages-page">
     <div class="packages-container">
         <div class="packages-header">
-            <h1 class="packages-title">ইন্টারনেট প্যাকেজ</h1>
+            <h1 class="packages-title">{{ __('messages.packages.page_title') }}</h1>
             <p class="packages-subtitle">
-                আমাদের সাশ্রয়ী মূল্যের ইন্টারনেট প্যাকেজসমূহ দেখুন। 
-                আপনার প্রয়োজন অনুযায়ী সঠিক প্যাকেজ নির্বাচন করুন এবং এখনই নিবন্ধন করুন।
+                {{ __('messages.packages.page_subtitle') }}
             </p>
         </div>
 
         @if(isset($packages) && count($packages) > 0)
         <div class="packages-grid">
-            @foreach($packages as $package)
+            @foreach($packages as $index => $package)
             <div class="package-card">
                 @if(isset($package->discount) && $package->discount > 0)
-                <div class="package-badge">ছাড়</div>
+                <div class="package-badge">{{ __('messages.packages.discount') }}</div>
                 @endif
 
                 <div class="package-header">
-                    <div class="package-service">{{ $package->service ?? 'ইন্টারনেট' }}</div>
+                    <div class="package-service">{{ $package->service ?? __('messages.packages.internet') }}</div>
+                    <div class="package-price-badge">
+                        <div class="price-amount">৳{{ number_format($package->price ?? 0) }}</div>
+                        <div class="price-period">{{ __('messages.packages.per_month') }}</div>
+                    </div>
                     <div class="package-speed">
                         {{ $package->speed ?? 'N/A' }}
-                        <span class="package-speed-unit">Mbps</span>
+                        <span class="package-speed-unit">{{ __('messages.packages.mbps') }}</span>
                     </div>
                 </div>
 
                 <div class="package-body">
                     <div class="package-details">
+                        @php
+                            $listItems = [];
+                            if (!empty($package->details)) {
+                                $decoded = json_decode($package->details, true);
+                                if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                                    $listItems = $decoded;
+                                }
+                            }
+                            // If no list items, show default items
+                            if (empty($listItems)) {
+                                $listItems = [
+                                    __('messages.packages.speed_label') . ': ' . ($package->speed ?? 'N/A') . ' ' . __('messages.packages.mbps'),
+                                    __('messages.packages.time_label') . ': ' . ($package->time_limit ?? 'N/A'),
+                                    __('messages.packages.connection_label') . ': ' . ($package->connection ?? 'N/A'),
+                                    __('messages.packages.support_247')
+                                ];
+                                if(isset($package->service_mode)) {
+                                    $listItems[] = __('messages.packages.service_mode') . ': ' . $package->service_mode;
+                                }
+                            }
+                        @endphp
+                        @foreach($listItems as $item)
                         <div class="detail-item">
-                            <div class="detail-label">
-                                <i class="material-icons">speed</i>
-                                <span>গতি</span>
+                            <div class="detail-item-icon check">
+                                <i class="material-icons" style="font-size: 18px;">check</i>
                             </div>
-                            <div class="detail-value">{{ $package->speed ?? 'N/A' }} Mbps</div>
-                        </div>
-                        <div class="detail-item">
                             <div class="detail-label">
-                                <i class="material-icons">schedule</i>
-                                <span>সময় সীমা</span>
+                                <span>{{ $item }}</span>
                             </div>
-                            <div class="detail-value">{{ $package->time_limit ?? 'N/A' }}</div>
                         </div>
-                        <div class="detail-item">
-                            <div class="detail-label">
-                                <i class="material-icons">router</i>
-                                <span>সংযোগ</span>
-                            </div>
-                            <div class="detail-value">{{ $package->connection ?? 'N/A' }}</div>
-                        </div>
-                        @if(isset($package->service_mode))
-                        <div class="detail-item">
-                            <div class="detail-label">
-                                <i class="material-icons">settings</i>
-                                <span>সেবা মোড</span>
-                            </div>
-                            <div class="detail-value">{{ $package->service_mode }}</div>
-                        </div>
-                        @endif
+                        @endforeach
                     </div>
 
-                    <div class="package-price-section">
-                        <div class="price-label">মাসিক মূল্য</div>
-                        <div class="price-amount">৳{{ number_format($package->price ?? 0) }}</div>
-                        @if(isset($package->discount) && $package->discount > 0)
-                        <div class="price-discount">৳{{ number_format($package->price + $package->discount) }}</div>
-                        @endif
-                    </div>
+                    <a href="/register/create/{{ $package->id }}" class="package-btn">
+                        <i class="material-icons">shopping_cart</i>
+                        {{ __('messages.packages.buy_now') }}
+                    </a>
                 </div>
-
-                <a href="/register/create/{{ $package->id }}" class="package-btn">
-                    <i class="material-icons">shopping_cart</i>
-                    এখনই কিনুন
-                </a>
             </div>
             @endforeach
         </div>
@@ -451,8 +451,8 @@
             <div class="no-packages-icon">
                 <i class="material-icons">inbox</i>
             </div>
-            <h3>কোনো প্যাকেজ পাওয়া যায়নি</h3>
-            <p>বর্তমানে কোনো সক্রিয় প্যাকেজ নেই। অনুগ্রহ করে পরে আবার চেষ্টা করুন।</p>
+            <h3>{{ __('messages.packages.no_packages_title') }}</h3>
+            <p>{{ __('messages.packages.no_packages_message') }}</p>
         </div>
         @endif
     </div>

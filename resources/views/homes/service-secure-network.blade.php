@@ -1,5 +1,5 @@
 @extends('home')
-@section('title', 'নিরাপদ নেটওয়ার্ক')
+@section('title', __('messages.titles.service_secure_network'))
 @section('content')
 
 <style type="text/css">
@@ -171,30 +171,27 @@
         <div class="service-hero-icon">
             <i class="material-icons">security</i>
         </div>
-        <h1 class="service-hero-title">নিরাপদ নেটওয়ার্ক</h1>
+        <h1 class="service-hero-title">{{ __('messages.service_secure.hero_title') }}</h1>
         <p class="service-hero-subtitle">
-            আপনার ডেটা এবং অনলাইন কার্যক্রমের নিরাপত্তার জন্য আমাদের সুরক্ষিত নেটওয়ার্ক সেবা গ্রহণ করুন। 
-            সর্বোচ্চ মানের নিরাপত্তা ব্যবস্থা দিয়ে আপনার তথ্য সুরক্ষিত রাখুন।
+            {{ __('messages.service_secure.hero_subtitle') }}
         </p>
     </div>
 
     <div class="service-content-section">
         <p class="service-description">
-            চলনবিল টেকনলজি আপনাকে প্রদান করে সর্বোচ্চ নিরাপত্তা সমৃদ্ধ নেটওয়ার্ক সেবা। 
-            আমাদের আধুনিক ফায়ারওয়াল, এনক্রিপশন প্রযুক্তি এবং নিরাপত্তা প্রোটোকল ব্যবহার করে 
-            আমরা নিশ্চিত করি যে আপনার ডেটা এবং অনলাইন কার্যক্রম সম্পূর্ণভাবে সুরক্ষিত।
+            {{ __('messages.service_secure.description') }}
         </p>
 
-        <h2 class="section-title">নিরাপত্তা বৈশিষ্ট্য</h2>
+        <h2 class="section-title">{{ __('messages.service_secure.features_title') }}</h2>
 
         <div class="service-features">
             <div class="feature-card">
                 <div class="feature-icon">
                     <i class="material-icons">vpn_lock</i>
                 </div>
-                <h3 class="feature-title">এনক্রিপশন</h3>
+                <h3 class="feature-title">{{ __('messages.service_secure.feature_encryption_title') }}</h3>
                 <p class="feature-description">
-                    সর্বোচ্চ মানের এনক্রিপশন প্রযুক্তি ব্যবহার করে আপনার ডেটা সুরক্ষিত রাখা হয়।
+                    {{ __('messages.service_secure.feature_encryption_desc') }}
                 </p>
             </div>
 
@@ -202,9 +199,9 @@
                 <div class="feature-icon">
                     <i class="material-icons">firewall</i>
                 </div>
-                <h3 class="feature-title">ফায়ারওয়াল</h3>
+                <h3 class="feature-title">{{ __('messages.service_secure.feature_firewall_title') }}</h3>
                 <p class="feature-description">
-                    আধুনিক ফায়ারওয়াল সিস্টেম দিয়ে আপনার নেটওয়ার্ককে ক্ষতিকর হুমকি থেকে রক্ষা করা হয়।
+                    {{ __('messages.service_secure.feature_firewall_desc') }}
                 </p>
             </div>
 
@@ -212,9 +209,9 @@
                 <div class="feature-icon">
                     <i class="material-icons">shield</i>
                 </div>
-                <h3 class="feature-title">ডিডিওএস সুরক্ষা</h3>
+                <h3 class="feature-title">{{ __('messages.service_secure.feature_ddos_title') }}</h3>
                 <p class="feature-description">
-                    ডিস্টributed Denial of Service (DDoS) আক্রমণ থেকে নেটওয়ার্ক সুরক্ষিত রাখা হয়।
+                    {{ __('messages.service_secure.feature_ddos_desc') }}
                 </p>
             </div>
 
@@ -222,9 +219,9 @@
                 <div class="feature-icon">
                     <i class="material-icons">privacy_tip</i>
                 </div>
-                <h3 class="feature-title">প্রাইভেসি সুরক্ষা</h3>
+                <h3 class="feature-title">{{ __('messages.service_secure.feature_privacy_title') }}</h3>
                 <p class="feature-description">
-                    আপনার ব্যক্তিগত তথ্য এবং অনলাইন কার্যক্রম সম্পূর্ণ গোপনীয় রাখা হয়।
+                    {{ __('messages.service_secure.feature_privacy_desc') }}
                 </p>
             </div>
 
@@ -232,9 +229,9 @@
                 <div class="feature-icon">
                     <i class="material-icons">security_update</i>
                 </div>
-                <h3 class="feature-title">নিয়মিত আপডেট</h3>
+                <h3 class="feature-title">{{ __('messages.service_secure.feature_updates_title') }}</h3>
                 <p class="feature-description">
-                    নিরাপত্তা সিস্টেম নিয়মিত আপডেট করা হয় যাতে সর্বশেষ হুমকি থেকে সুরক্ষিত থাকা যায়।
+                    {{ __('messages.service_secure.feature_updates_desc') }}
                 </p>
             </div>
 
@@ -242,18 +239,18 @@
                 <div class="feature-icon">
                     <i class="material-icons">verified</i>
                 </div>
-                <h3 class="feature-title">যাচাইকৃত নিরাপত্তা</h3>
+                <h3 class="feature-title">{{ __('messages.service_secure.feature_verified_title') }}</h3>
                 <p class="feature-description">
-                    আমাদের নিরাপত্তা ব্যবস্থা আন্তর্জাতিক মানদণ্ড অনুযায়ী যাচাইকৃত এবং পরীক্ষিত।
+                    {{ __('messages.service_secure.feature_verified_desc') }}
                 </p>
             </div>
         </div>
     </div>
 
     <div class="cta-section">
-        <h2 style="font-size: 32px; margin-bottom: 15px;">নিরাপদ নেটওয়ার্কের জন্য এখনই যোগ দিন</h2>
-        <p style="font-size: 18px; margin-bottom: 30px;">আমাদের সুরক্ষিত ইন্টারনেট সেবা গ্রহণ করুন</p>
-        <a href="/package" class="cta-button">প্যাকেজ দেখুন</a>
+        <h2 style="font-size: 32px; margin-bottom: 15px;">{{ __('messages.service_secure.cta_title') }}</h2>
+        <p style="font-size: 18px; margin-bottom: 30px;">{{ __('messages.service_secure.cta_subtitle') }}</p>
+        <a href="/package" class="cta-button">{{ __('messages.service_secure.cta_button') }}</a>
     </div>
 </div>
 

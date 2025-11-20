@@ -1,5 +1,5 @@
 @extends('home')
-@section('title', 'Expire')
+@section('title', __('messages.titles.expire'))
 @section('content')
 
 <div class="full-page login-page" filter-color="black" data-image="/images/login.jpg">

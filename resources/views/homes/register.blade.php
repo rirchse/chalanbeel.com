@@ -1,5 +1,5 @@
 @extends('home')
-@section('title', 'নিবন্ধন')
+@section('title', __('messages.register.title'))
 @section('content')
 
 <style type="text/css">
@@ -263,10 +263,11 @@
         font-family: inherit;
     }
 
-    .form-control:focus {
+    .form-control:focus,
+    .form-control:active {
         outline: none;
         border-color: #000;
-        background: #fff;
+        background: transparent !important;
         box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
     }
 
@@ -274,14 +275,219 @@
         color: #999;
     }
 
+    .form-label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+        font-size: 14px;
+        font-weight: 600;
+        padding-left: 18px;
+    }
+
     select.form-control {
         padding-left: 55px;
         appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23000' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
         background-repeat: no-repeat;
         background-position: right 18px center;
+        background-color: #f8f8f8 !important;
         padding-right: 45px;
         cursor: pointer;
+        color: #000 !important;
+    }
+
+    select.form-control:focus,
+    select.form-control:active {
+        color: #000 !important;
+        background-color: transparent !important;
+    }
+
+    select.form-control option {
+        color: #000 !important;
+        background: #fff !important;
+        padding: 10px;
+    }
+
+    select.form-control option:checked,
+    select.form-control option:focus {
+        color: #000 !important;
+        background: #f8f8f8 !important;
+    }
+
+    select.form-control option:hover {
+        background: #e0e0e0 !important;
+        color: #000 !important;
+    }
+
+    /* Fix for default option (placeholder) */
+    select.form-control option[value=""] {
+        color: #999 !important;
+    }
+
+    /* Custom Searchable Select Dropdown */
+    .custom-select-wrapper {
+        position: relative;
+        width: 100%;
+    }
+
+    .custom-select {
+        position: relative;
+        width: 100%;
+    }
+
+    .custom-select-trigger {
+        width: 100%;
+        padding: 16px 16px 16px 55px;
+        border-bottom: 1px solid #bdb9b9;
+        font-size: 16px;
+        color: #000;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: all 0.3s ease;
+        min-height: 52px;
+    }
+
+    .custom-select-trigger:focus,
+    .custom-select-trigger:active {
+        outline: none;
+        border-color: #000;
+        background: transparent !important;
+        box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .custom-select-value {
+        flex: 1;
+        color: #000;
+        text-align: left;
+    }
+
+    .custom-select-value.placeholder {
+        color: #999;
+    }
+
+    .custom-select-arrow {
+        font-size: 24px;
+        color: #666;
+        transition: transform 0.3s ease;
+        margin-left: 10px;
+    }
+
+    .custom-select.open .custom-select-arrow {
+        transform: rotate(180deg);
+    }
+
+    .custom-select-options {
+        position: absolute;
+        top: calc(100% + 5px);
+        left: 0;
+        right: 0;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        max-height: 300px;
+        overflow: hidden;
+        display: none;
+    }
+
+    .custom-select.open .custom-select-options {
+        display: block;
+    }
+
+    .custom-select-search {
+        padding: 12px 15px;
+        border-bottom: 1px solid #e0e0e0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #f8f8f8;
+    }
+
+    .custom-select-search i {
+        color: #666;
+        font-size: 20px;
+    }
+
+    .custom-select-search-input {
+        flex: 1;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 14px;
+        color: #000;
+        padding: 5px 0;
+    }
+
+    .custom-select-search-input::placeholder {
+        color: #999;
+    }
+
+    .custom-select-options-list {
+        max-height: 240px;
+        overflow-y: auto;
+        padding: 5px 0;
+    }
+
+    .custom-select-option {
+        padding: 12px 20px;
+        cursor: pointer;
+        color: #000;
+        transition: all 0.2s ease;
+        font-size: 15px;
+    }
+
+    .custom-select-option:hover {
+        background: #f0f0f0;
+    }
+
+    .custom-select-option.selected {
+        background: #000;
+        color: #fff;
+    }
+
+    .custom-select-option.hidden {
+        display: none;
+    }
+
+    /* Scrollbar styling for options list */
+    .custom-select-options-list::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .custom-select-options-list::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .custom-select-options-list::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 3px;
+    }
+
+    .custom-select-options-list::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    /* No results message */
+    .no-results {
+        padding: 12px 20px;
+        color: #999;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+        .custom-select-options {
+            max-height: 250px;
+        }
+
+        .custom-select-options-list {
+            max-height: 190px;
+        }
     }
 
     textarea.form-control {
@@ -418,40 +624,39 @@
         <div class="register-left-content">
             <div class="register-logo">
                 <div class="register-logo-icon">CT</div>
-                <div class="register-logo-text">চলনবিল টেকনলজি</div>
+                <div class="register-logo-text">{{ __('messages.register.logo_text') }}</div>
             </div>
-            <h1 class="register-welcome-title">স্বাগতম!</h1>
+            <h1 class="register-welcome-title">{{ __('messages.register.welcome') }}</h1>
             <p class="register-welcome-subtitle">
-                আমাদের সাথে যুক্ত হয়ে বিশ্বস্ত ও নির্ভরযোগ্য ইন্টারনেট সেবা উপভোগ করুন। 
-                উচ্চ গতির ইন্টারনেট সাশ্রয়ী মূল্যে।
+                {{ __('messages.register.welcome_subtitle') }}
             </p>
-            <a href="/login" class="sign-in-btn">লগইন করুন</a>
+            <a href="/login" class="sign-in-btn">{{ __('messages.register.sign_in') }}</a>
         </div>
     </div>
 
     <!-- Right Side: Registration Form -->
     <div class="register-right">
         <div class="register-form-container">
-            <h2 class="register-form-title">নতুন একাউন্ট তৈরি করুন</h2>
+            <h2 class="register-form-title">{{ __('messages.register.form_title') }}</h2>
 
             @if(isset($package) && $package)
             <div class="package-info-mini">
                 <h4>
                     <i class="material-icons" style="vertical-align: middle; font-size: 18px;">check_circle</i>
-                    নির্বাচিত প্যাকেজ
+                    {{ __('messages.register.selected_package') }}
                 </h4>
                 <div class="package-details">
                     <div class="package-detail">
                         <strong>{{ $package->speed ?? 'N/A' }}</strong>
-                        <span>গতি</span>
+                        <span>{{ __('messages.register.speed') }}</span>
                     </div>
                     <div class="package-detail">
                         <strong>{{ $package->time_limit ?? 'N/A' }}</strong>
-                        <span>সময়</span>
+                        <span>{{ __('messages.register.time') }}</span>
                     </div>
                     <div class="package-detail">
                         <strong>৳{{ number_format($package->price ?? 0) }}</strong>
-                        <span>মূল্য</span>
+                        <span>{{ __('messages.register.price') }}</span>
                     </div>
                 </div>
             </div>
@@ -470,12 +675,12 @@
             </div>
 
             <div class="divider">
-                <span class="divider-text">অথবা আপনার ইমেইল দিয়ে নিবন্ধন করুন</span>
+                <span class="divider-text">{{ __('messages.register.divider_text') }}</span>
             </div>
 
             <div class="alert-mini">
                 <i class="material-icons" style="vertical-align: middle; font-size: 16px;">info</i>
-                অনুগ্রহ করে সঠিক তথ্য দিয়ে নিবন্ধন করুন এবং আপনার মোবাইল নম্বর দুবার পরীক্ষা করুন।
+                {{ __('messages.register.alert_message') }}
             </div>
 
             {!! Form::open(['route' => 'register.store', 'method' => 'POST', 'files' => true, 'id' => 'RegisterValidation']) !!}
@@ -489,51 +694,192 @@
                 <div class="form-group">
                     <div class="input-wrapper">
                         <i class="material-icons input-icon">person</i>
-                        {{ Form::text('full_name', null, ['class' => 'form-control', 'id' => 'full_name', 'required', 'placeholder' => 'আপনার পূর্ণ নাম']) }}
+                        {{ Form::text('full_name', null, ['class' => 'form-control', 'id' => 'full_name', 'required', 'placeholder' => __('messages.register.full_name')]) }}
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="input-wrapper">
                         <i class="material-icons input-icon">phone</i>
-                        {{ Form::text('contact', null, ['class' => 'form-control', 'id' => 'contact', 'required', 'maxlength' => '11', 'pattern' => '[0-9]{11}', 'placeholder' => 'মোবাইল নম্বর']) }}
+                        {{ Form::text('contact', null, ['class' => 'form-control', 'id' => 'contact', 'required', 'maxlength' => '11', 'pattern' => '[0-9]{11}', 'placeholder' => __('messages.register.mobile_number')]) }}
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="input-wrapper">
                         <i class="material-icons input-icon">phone_android</i>
-                        {{ Form::text('contact_confirmation', null, ['class' => 'form-control', 'id' => 'contact_confirmation', 'required', 'maxlength' => '11', 'pattern' => '[0-9]{11}', 'placeholder' => 'মোবাইল নম্বর নিশ্চিত করুন']) }}
+                        {{ Form::text('contact_confirmation', null, ['class' => 'form-control', 'id' => 'contact_confirmation', 'required', 'maxlength' => '11', 'pattern' => '[0-9]{11}', 'placeholder' => __('messages.register.confirm_mobile')]) }}
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="input-wrapper">
                         <i class="material-icons input-icon">email</i>
-                        {{ Form::email('email', null, ['class' => 'form-control', 'id' => 'email', 'placeholder' => 'ইমেইল ঠিকানা (ঐচ্ছিক)']) }}
+                        {{ Form::email('email', null, ['class' => 'form-control', 'id' => 'email', 'placeholder' => __('messages.register.email')]) }}
                     </div>
                 </div>
 
                 <div class="form-group">
+                    {{-- <label for="area" class="form-label">
+                        <i class="material-icons" style="vertical-align: middle; font-size: 18px; margin-right: 5px;">place</i>
+                        {{ app()->getLocale() == 'bn' ? 'এলাকা নির্বাচন করুন' : 'Select Area' }}
+                    </label> --}}
                     <div class="input-wrapper">
                         <i class="material-icons input-icon">place</i>
-                        {{ Form::select('area', ['' => 'এলাকা নির্বাচন করুন'] + $locations->pluck('name', 'id')->toArray(), null, ['class' => 'form-control', 'id' => 'area']) }}
+                        <div class="custom-select-wrapper">
+                            <input type="hidden" name="area" id="area" value="">
+                            <div class="custom-select" id="customAreaSelect">
+                                <div class="custom-select-trigger">
+                                    <span class="custom-select-value">{{ __('messages.register.select_area') }}</span>
+                                    <i class="material-icons custom-select-arrow">keyboard_arrow_down</i>
+                                </div>
+                                <div class="custom-select-options">
+                                    <div class="custom-select-search">
+                                        <i class="material-icons">search</i>
+                                        <input type="text" class="custom-select-search-input" placeholder="{{ __('messages.register.search_area') }}" id="areaSearch">
+                                    </div>
+                                    <div class="custom-select-options-list" id="areaOptionsList">
+                                        @foreach($areas as $area)
+                                            <div class="custom-select-option" data-value="{{ $area['english'] }}" data-bangla="{{ $area['bangla'] }}" data-english="{{ $area['english'] }}">
+                                                {{ app()->getLocale() == 'bn' ? $area['bangla'] : $area['english'] }}
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="input-wrapper">
                         <i class="material-icons input-icon">home</i>
-                        {{ Form::textarea('details', null, ['class' => 'form-control', 'id' => 'address', 'rows' => 3, 'placeholder' => 'সম্পূর্ণ ঠিকানা']) }}
+                        {{ Form::textarea('details', null, ['class' => 'form-control', 'id' => 'address', 'rows' => 3, 'placeholder' => __('messages.register.address')]) }}
                     </div>
                 </div>
 
                 <button type="submit" class="submit-btn">
-                    নিবন্ধন করুন
+                    {{ __('messages.register.submit') }}
                 </button>
             {!! Form::close() !!}
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const customSelect = document.getElementById('customAreaSelect');
+    const selectTrigger = customSelect.querySelector('.custom-select-trigger');
+    const selectValue = customSelect.querySelector('.custom-select-value');
+    const selectOptions = customSelect.querySelector('.custom-select-options');
+    const hiddenInput = document.getElementById('area');
+    const searchInput = document.getElementById('areaSearch');
+    const optionsList = document.getElementById('areaOptionsList');
+    const allOptions = optionsList.querySelectorAll('.custom-select-option');
+    const currentLocale = '{{ app()->getLocale() }}';
+
+    // Toggle dropdown
+    selectTrigger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        customSelect.classList.toggle('open');
+        if (customSelect.classList.contains('open')) {
+            searchInput.focus();
+        }
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!customSelect.contains(e.target)) {
+            customSelect.classList.remove('open');
+        }
+    });
+
+    // Handle option selection
+    allOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            const value = this.getAttribute('data-value');
+            const bangla = this.getAttribute('data-bangla');
+            const english = this.getAttribute('data-english');
+            
+            // Update hidden input
+            hiddenInput.value = value;
+            
+            // Update displayed value
+            selectValue.textContent = currentLocale === 'bn' ? bangla : english;
+            selectValue.classList.remove('placeholder');
+            
+            // Update selected state
+            allOptions.forEach(opt => opt.classList.remove('selected'));
+            this.classList.add('selected');
+            
+            // Close dropdown
+            customSelect.classList.remove('open');
+            
+            // Clear search
+            searchInput.value = '';
+            filterOptions('');
+        });
+    });
+
+    // Search functionality
+    searchInput.addEventListener('input', function(e) {
+        filterOptions(e.target.value);
+    });
+
+    function filterOptions(searchTerm) {
+        const term = searchTerm.toLowerCase();
+        let visibleCount = 0;
+        
+        allOptions.forEach(option => {
+            const bangla = option.getAttribute('data-bangla').toLowerCase();
+            const english = option.getAttribute('data-english').toLowerCase();
+            const matches = bangla.includes(term) || english.includes(term);
+            
+            if (matches) {
+                option.classList.remove('hidden');
+                visibleCount++;
+            } else {
+                option.classList.add('hidden');
+            }
+        });
+        
+        // Show message if no results
+        if (visibleCount === 0 && term.length > 0) {
+            if (!optionsList.querySelector('.no-results')) {
+                const noResults = document.createElement('div');
+                noResults.className = 'no-results';
+                noResults.style.padding = '12px 20px';
+                noResults.style.color = '#999';
+                noResults.style.textAlign = 'center';
+                noResults.textContent = '{{ __('messages.register.no_results') }}';
+                optionsList.appendChild(noResults);
+            }
+        } else {
+            const noResults = optionsList.querySelector('.no-results');
+            if (noResults) {
+                noResults.remove();
+            }
+        }
+    }
+
+    // Keyboard navigation
+    selectTrigger.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            customSelect.classList.toggle('open');
+            if (customSelect.classList.contains('open')) {
+                searchInput.focus();
+            }
+        }
+    });
+
+    searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            customSelect.classList.remove('open');
+            selectTrigger.focus();
+        }
+    });
+});
+</script>
 
 @endsection

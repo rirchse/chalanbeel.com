@@ -36,8 +36,18 @@
                                 <input type="radio" name="status" value="Inactive"> Inactive
                             </div>
                             <div class="form-group label-floating">
-                                <label for="">Details:</label>
-                                <textarea class="form-control" name="details" id="" rows="3"></textarea>
+                                <label for="">Package Features (List Items):</label>
+                                <div id="list-items-container">
+                                    <div class="list-item-row" style="display: flex; gap: 10px; margin-bottom: 10px; align-items: center;">
+                                        <input type="text" class="form-control list-item-input" name="list_items[]" placeholder="Enter feature/item">
+                                        <button type="button" class="btn btn-danger btn-sm remove-item-btn" onclick="removeListItem(this)" style="display: none;">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-success btn-sm" onclick="addListItem()" style="margin-top: 10px;">
+                                    <i class="material-icons">add</i> Add Item
+                                </button>
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -51,5 +61,44 @@
             </div>
         </div>
     </div>
+
+<script>
+function addListItem() {
+    const container = document.getElementById('list-items-container');
+    const newRow = document.createElement('div');
+    newRow.className = 'list-item-row';
+    newRow.style.cssText = 'display: flex; gap: 10px; margin-bottom: 10px; align-items: center;';
+    newRow.innerHTML = `
+        <input type="text" class="form-control list-item-input" name="list_items[]" placeholder="Enter feature/item">
+        <button type="button" class="btn btn-danger btn-sm remove-item-btn" onclick="removeListItem(this)">
+            <i class="material-icons">delete</i>
+        </button>
+    `;
+    container.appendChild(newRow);
+    updateRemoveButtons();
+}
+
+function removeListItem(btn) {
+    btn.closest('.list-item-row').remove();
+    updateRemoveButtons();
+}
+
+function updateRemoveButtons() {
+    const rows = document.querySelectorAll('.list-item-row');
+    rows.forEach((row, index) => {
+        const removeBtn = row.querySelector('.remove-item-btn');
+        if (rows.length > 1) {
+            removeBtn.style.display = 'block';
+        } else {
+            removeBtn.style.display = 'none';
+        }
+    });
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    updateRemoveButtons();
+});
+</script>
 
 @endsection

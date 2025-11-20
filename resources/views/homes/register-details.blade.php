@@ -1,5 +1,5 @@
 @extends('home')
-@section('title', 'Register')
+@section('title', __('messages.titles.register_details'))
 @section('content')
 <div class="full-page login-page" filter-color="black" data-image="/images/login.jpg">
     <div class="content">

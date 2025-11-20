@@ -214,7 +214,7 @@
         }
 
         .header-nav.active {
-            max-height: 500px;
+            max-height: 100vh;
             opacity: 1;
         }
 
@@ -265,44 +265,44 @@
         <!-- Navigation -->
         <ul class="header-nav" id="headerNav">
             <li>
-                <a href="/" class="header-link active">
+                <a href="/" class="header-link {{ request()->is('/') || request()->path() == '' ? 'active' : '' }}">
                     <i class="material-icons">home</i>
                     {{ __('messages.header.home') }}
                 </a>
             </li>
             
             <li>
-                <a href="/about" class="header-link">
+                <a href="/about" class="header-link {{ request()->is('about') ? 'active' : '' }}">
                     <i class="material-icons">info</i>
                     {{ __('messages.header.about') }}
                 </a>
             </li>
             <li>
-                <a href="/package" class="header-link">
+                <a href="/package" class="header-link {{ request()->is('package') || request()->is('package/*') ? 'active' : '' }}">
                     <i class="material-icons">view_list</i>
                     {{ __('messages.header.package') }}
                 </a>
             </li>
             <li>
-                <a href="/services" class="header-link">
+                <a href="/services" class="header-link {{ request()->is('services') || request()->is('service/*') ? 'active' : '' }}">
                     <i class="material-icons">business</i>
                     {{ __('messages.header.services') }}
                 </a>
             </li>
             <li>
-                <a href="/view-user-on-map" class="header-link">
+                <a href="/view-user-on-map" class="header-link {{ request()->is('view-user-on-map') ? 'active' : '' }}">
                     <i class="material-icons">people</i>
                     {{ __('messages.header.users') }}
                 </a>
             </li>
             <li>
-                <a href="/register/create" class="header-link">
+                <a href="/register/create" class="header-link {{ request()->is('register/*') ? 'active' : '' }}">
                     <i class="material-icons">person_add</i>
                     {{ __('messages.header.register') }}
                 </a>
             </li>
             <li>
-                <a href="/login" class="header-link">
+                <a href="/login" class="header-link {{ request()->is('login') ? 'active' : '' }}">
                     <i class="material-icons">lock</i>
                     {{ __('messages.header.login') }}
                 </a>

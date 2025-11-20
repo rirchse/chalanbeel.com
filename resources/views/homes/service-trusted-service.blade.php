@@ -1,5 +1,5 @@
 @extends('home')
-@section('title', 'বিশ্বস্ত সেবা')
+@section('title', __('messages.titles.service_trusted_service'))
 @section('content')
 
 <style type="text/css">
@@ -202,52 +202,49 @@
         <div class="service-hero-icon">
             <i class="material-icons">verified_user</i>
         </div>
-        <h1 class="service-hero-title">বিশ্বস্ত সেবা</h1>
+        <h1 class="service-hero-title">{{ __('messages.service_trusted.hero_title') }}</h1>
         <p class="service-hero-subtitle">
-            বছরের পর বছর বিশ্বস্ত সেবা প্রদান করে আসছি। 
-            আমাদের সাথে হাজার হাজার সন্তুষ্ট গ্রাহক রয়েছে যারা আমাদের বিশ্বস্ত সেবার উপর আস্থা রাখেন।
+            {{ __('messages.service_trusted.hero_subtitle') }}
         </p>
     </div>
 
     <div class="service-content-section">
         <p class="service-description">
-            চলনবিল টেকনলজি একটি বিশ্বস্ত এবং নির্ভরযোগ্য ইন্টারনেট সেবা প্রদানকারী প্রতিষ্ঠান। 
-            আমরা বছরের পর বছর ধরে আমাদের গ্রাহকদেরকে সর্বোচ্চ মানের সেবা প্রদান করে আসছি। 
-            আমাদের সততা, নির্ভরযোগ্যতা এবং গ্রাহক সন্তুষ্টিই আমাদের সাফল্যের মূল কারণ।
+            {{ __('messages.service_trusted.description') }}
         </p>
 
         <div class="stats-section">
-            <h2 class="section-title" style="color: #000; margin-bottom: 40px;">আমাদের অর্জন</h2>
+            <h2 class="section-title" style="color: #000; margin-bottom: 40px;">{{ __('messages.service_trusted.achievements_title') }}</h2>
             <div class="stats-grid">
                 <div class="stat-item">
                     <div class="stat-number">১০০০+</div>
-                    <div class="stat-label">সন্তুষ্ট গ্রাহক</div>
+                    <div class="stat-label">{{ __('messages.service_trusted.stat_satisfied_customers') }}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">১০+</div>
-                    <div class="stat-label">বছরের অভিজ্ঞতা</div>
+                    <div class="stat-label">{{ __('messages.service_trusted.stat_experience') }}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">৯৯.৯%</div>
-                    <div class="stat-label">আপটাইম</div>
+                    <div class="stat-label">{{ __('messages.service_trusted.stat_uptime') }}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">২৪/৭</div>
-                    <div class="stat-label">সাপোর্ট</div>
+                    <div class="stat-label">{{ __('messages.service_trusted.stat_support') }}</div>
                 </div>
             </div>
         </div>
 
-        <h2 class="section-title">কেন আমাদের বিশ্বাস করবেন?</h2>
+        <h2 class="section-title">{{ __('messages.service_trusted.why_trust_title') }}</h2>
 
         <div class="service-features">
             <div class="feature-card">
                 <div class="feature-icon">
                     <i class="material-icons">history</i>
                 </div>
-                <h3 class="feature-title">দীর্ঘমেয়াদি সেবা</h3>
+                <h3 class="feature-title">{{ __('messages.service_trusted.feature_long_term_title') }}</h3>
                 <p class="feature-description">
-                    আমরা দীর্ঘদিন ধরে এই এলাকায় সেবা প্রদান করে আসছি এবং গ্রাহকদের বিশ্বাস অর্জন করেছি।
+                    {{ __('messages.service_trusted.feature_long_term_desc') }}
                 </p>
             </div>
 
@@ -255,9 +252,9 @@
                 <div class="feature-icon">
                     <i class="material-icons">star</i>
                 </div>
-                <h3 class="feature-title">উচ্চ মানের সেবা</h3>
+                <h3 class="feature-title">{{ __('messages.service_trusted.feature_quality_title') }}</h3>
                 <p class="feature-description">
-                    আমরা সর্বদা উচ্চ মানের সেবা প্রদান করি এবং গ্রাহক সন্তুষ্টির উপর গুরুত্ব দিই।
+                    {{ __('messages.service_trusted.feature_quality_desc') }}
                 </p>
             </div>
 
@@ -265,9 +262,9 @@
                 <div class="feature-icon">
                     <i class="material-icons">handshake</i>
                 </div>
-                <h3 class="feature-title">সৎ ব্যবসা</h3>
+                <h3 class="feature-title">{{ __('messages.service_trusted.feature_honest_title') }}</h3>
                 <p class="feature-description">
-                    আমরা সৎ এবং স্বচ্ছ ব্যবসা পরিচালনা করি, কোনো লুকানো খরচ নেই।
+                    {{ __('messages.service_trusted.feature_honest_desc') }}
                 </p>
             </div>
 
@@ -275,9 +272,9 @@
                 <div class="feature-icon">
                     <i class="material-icons">groups</i>
                 </div>
-                <h3 class="feature-title">স্থানীয় প্রতিষ্ঠান</h3>
+                <h3 class="feature-title">{{ __('messages.service_trusted.feature_local_title') }}</h3>
                 <p class="feature-description">
-                    আমরা একটি স্থানীয় প্রতিষ্ঠান, তাই আমরা আমাদের গ্রাহকদের সাথে সরাসরি যোগাযোগ রাখি।
+                    {{ __('messages.service_trusted.feature_local_desc') }}
                 </p>
             </div>
 
@@ -285,9 +282,9 @@
                 <div class="feature-icon">
                     <i class="material-icons">thumb_up</i>
                 </div>
-                <h3 class="feature-title">গ্রাহক সন্তুষ্টি</h3>
+                <h3 class="feature-title">{{ __('messages.service_trusted.feature_satisfaction_title') }}</h3>
                 <p class="feature-description">
-                    আমাদের গ্রাহকদের সন্তুষ্টিই আমাদের প্রধান লক্ষ্য এবং আমরা সর্বদা তা অর্জন করি।
+                    {{ __('messages.service_trusted.feature_satisfaction_desc') }}
                 </p>
             </div>
 
@@ -295,18 +292,18 @@
                 <div class="feature-icon">
                     <i class="material-icons">award</i>
                 </div>
-                <h3 class="feature-title">স্বীকৃত সেবা</h3>
+                <h3 class="feature-title">{{ __('messages.service_trusted.feature_recognition_title') }}</h3>
                 <p class="feature-description">
-                    আমাদের সেবা স্থানীয়ভাবে স্বীকৃত এবং আমরা বিভিন্ন পুরস্কার পেয়েছি।
+                    {{ __('messages.service_trusted.feature_recognition_desc') }}
                 </p>
             </div>
         </div>
     </div>
 
     <div class="cta-section">
-        <h2 style="font-size: 32px; margin-bottom: 15px;">আমাদের বিশ্বস্ত সেবার অংশ হন</h2>
-        <p style="font-size: 18px; margin-bottom: 30px;">হাজার হাজার সন্তুষ্ট গ্রাহকের সাথে যোগ দিন</p>
-        <a href="/register/create" class="cta-button">এখনই নিবন্ধন করুন</a>
+        <h2 style="font-size: 32px; margin-bottom: 15px;">{{ __('messages.service_trusted.cta_title') }}</h2>
+        <p style="font-size: 18px; margin-bottom: 30px;">{{ __('messages.service_trusted.cta_subtitle') }}</p>
+        <a href="/register/create" class="cta-button">{{ __('messages.service_trusted.cta_button') }}</a>
     </div>
 </div>
 

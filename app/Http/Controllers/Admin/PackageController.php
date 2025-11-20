@@ -86,7 +86,8 @@ class PackageController extends Controller
             'price'       => 'required|min:1|max:255',
             'discount'    => 'max:3',
             'status'      => 'nullable',
-            'details'     => 'max:255'
+            'list_items'  => 'nullable|array',
+            'list_items.*' => 'nullable|string|max:255'
         ));
 
         $data = $request->all();
@@ -99,6 +100,18 @@ class PackageController extends Controller
         if(isset($data['_method']))
         {
           unset($data['_method']);
+        }
+
+        // Handle list items - convert array to JSON
+        if(isset($data['list_items']) && is_array($data['list_items'])) {
+            // Filter out empty items
+            $listItems = array_filter($data['list_items'], function($item) {
+                return !empty(trim($item));
+            });
+            $data['details'] = !empty($listItems) ? json_encode(array_values($listItems)) : null;
+            unset($data['list_items']);
+        } else {
+            $data['details'] = null;
         }
 
         //store in the database
@@ -192,7 +205,8 @@ class PackageController extends Controller
             'price'       => 'required|min:1|max:255',
             'discount'    => 'max:100',
             'status'      => 'nullable',
-            'details'     => 'max:255',
+            'list_items'  => 'nullable|array',
+            'list_items.*' => 'nullable|string|max:255'
             ));
 
         //save the data to the database
@@ -205,7 +219,18 @@ class PackageController extends Controller
         $package->time_limit     =   $request->input('time_limit');
         $package->price          =   $request->input('price');
         $package->discount       =   $request->input('discount');
-        $package->details        =   $request->input('details');
+        
+        // Handle list items - convert array to JSON
+        if($request->has('list_items') && is_array($request->input('list_items'))) {
+            // Filter out empty items
+            $listItems = array_filter($request->input('list_items'), function($item) {
+                return !empty(trim($item));
+            });
+            $package->details = !empty($listItems) ? json_encode(array_values($listItems)) : null;
+        } else {
+            $package->details = null;
+        }
+        
         $package->status         =   $request->input('status');
         $package->updated_by     =   $user_id;
 

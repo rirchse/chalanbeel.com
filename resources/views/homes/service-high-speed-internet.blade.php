@@ -1,5 +1,5 @@
 @extends('home')
-@section('title', 'উচ্চ গতির ইন্টারনেট')
+@section('title', __('messages.titles.service_high_speed'))
 @section('content')
 
 <style type="text/css">
@@ -171,31 +171,27 @@
         <div class="service-hero-icon">
             <i class="material-icons">flash_on</i>
         </div>
-        <h1 class="service-hero-title">উচ্চ গতির ইন্টারনেট</h1>
+        <h1 class="service-hero-title">{{ __('messages.service_high_speed.hero_title') }}</h1>
         <p class="service-hero-subtitle">
-            দ্রুততম ইন্টারনেট সংযোগের জন্য আমাদের উচ্চ গতির ইন্টারনেট সেবা গ্রহণ করুন। 
-            আপনার ব্যবসা এবং ব্যক্তিগত প্রয়োজনের জন্য সর্বোচ্চ গতির ইন্টারনেট সেবা।
+            {{ __('messages.service_high_speed.hero_subtitle') }}
         </p>
     </div>
 
     <div class="service-content-section">
         <p class="service-description">
-            চলনবিল টেকনলজি আপনাকে প্রদান করে সর্বোচ্চ মানের উচ্চ গতির ইন্টারনেট সেবা। 
-            আমাদের আধুনিক নেটওয়ার্ক ইনফ্রাস্ট্রাকচার এবং ফাইবার অপটিক্স প্রযুক্তি ব্যবহার করে 
-            আমরা নিশ্চিত করি যে আপনি সর্বোচ্চ গতির ইন্টারনেট সংযোগ পাবেন।
+            {{ __('messages.service_high_speed.description') }}
         </p>
 
-        <h2 class="section-title">আমাদের উচ্চ গতির ইন্টারনেটের বৈশিষ্ট্য</h2>
+        <h2 class="section-title">{{ __('messages.service_high_speed.features_title') }}</h2>
 
         <div class="service-features">
             <div class="feature-card">
                 <div class="feature-icon">
                     <i class="material-icons">speed</i>
                 </div>
-                <h3 class="feature-title">অত্যাধিক গতি</h3>
+                <h3 class="feature-title">{{ __('messages.service_high_speed.feature_ultra_speed_title') }}</h3>
                 <p class="feature-description">
-                    ১০ Mbps থেকে ১০০ Mbps পর্যন্ত বিভিন্ন গতির প্যাকেজ উপলব্ধ। 
-                    আপনার প্রয়োজন অনুযায়ী সেরা গতি নির্বাচন করুন।
+                    {{ __('messages.service_high_speed.feature_ultra_speed_desc') }}
                 </p>
             </div>
 
@@ -203,9 +199,9 @@
                 <div class="feature-icon">
                     <i class="material-icons">fiber_optics</i>
                 </div>
-                <h3 class="feature-title">ফাইবার অপটিক্স</h3>
+                <h3 class="feature-title">{{ __('messages.service_high_speed.feature_fiber_optics_title') }}</h3>
                 <p class="feature-description">
-                    আধুনিক ফাইবার অপটিক্স প্রযুক্তি ব্যবহার করে স্থিতিশীল এবং দ্রুত সংযোগ প্রদান করা হয়।
+                    {{ __('messages.service_high_speed.feature_fiber_optics_desc') }}
                 </p>
             </div>
 
@@ -213,9 +209,9 @@
                 <div class="feature-icon">
                     <i class="material-icons">cloud_download</i>
                 </div>
-                <h3 class="feature-title">দ্রুত ডাউনলোড</h3>
+                <h3 class="feature-title">{{ __('messages.service_high_speed.feature_fast_download_title') }}</h3>
                 <p class="feature-description">
-                    বড় ফাইল, ভিডিও, গেমস এবং সফটওয়্যার দ্রুততম সময়ে ডাউনলোড করুন।
+                    {{ __('messages.service_high_speed.feature_fast_download_desc') }}
                 </p>
             </div>
 
@@ -223,9 +219,9 @@
                 <div class="feature-icon">
                     <i class="material-icons">videocam</i>
                 </div>
-                <h3 class="feature-title">HD/4K স্ট্রিমিং</h3>
+                <h3 class="feature-title">{{ __('messages.service_high_speed.feature_hd_streaming_title') }}</h3>
                 <p class="feature-description">
-                    বাধাহীন HD এবং 4K ভিডিও স্ট্রিমিংয়ের জন্য পর্যাপ্ত ব্যান্ডউইথ।
+                    {{ __('messages.service_high_speed.feature_hd_streaming_desc') }}
                 </p>
             </div>
 
@@ -233,9 +229,9 @@
                 <div class="feature-icon">
                     <i class="material-icons">games</i>
                 </div>
-                <h3 class="feature-title">কম লেটেন্সি</h3>
+                <h3 class="feature-title">{{ __('messages.service_high_speed.feature_low_latency_title') }}</h3>
                 <p class="feature-description">
-                    অনলাইন গেমিং এবং ভিডিও কনফারেন্সিংয়ের জন্য কম লেটেন্সি প্রদান করা হয়।
+                    {{ __('messages.service_high_speed.feature_low_latency_desc') }}
                 </p>
             </div>
 
@@ -243,18 +239,18 @@
                 <div class="feature-icon">
                     <i class="material-icons">devices</i>
                 </div>
-                <h3 class="feature-title">মাল্টি ডিভাইস</h3>
+                <h3 class="feature-title">{{ __('messages.service_high_speed.feature_multi_device_title') }}</h3>
                 <p class="feature-description">
-                    একই সংযোগে একাধিক ডিভাইস ব্যবহার করুন বিনা গতি হারিয়ে।
+                    {{ __('messages.service_high_speed.feature_multi_device_desc') }}
                 </p>
             </div>
         </div>
     </div>
 
     <div class="cta-section">
-        <h2 style="font-size: 32px; margin-bottom: 15px;">আমাদের প্যাকেজ দেখুন</h2>
-        <p style="font-size: 18px; margin-bottom: 30px;">উচ্চ গতির ইন্টারনেট প্যাকেজ দেখতে এবং এখনই সাবস্ক্রাইব করতে</p>
-        <a href="/package" class="cta-button">প্যাকেজ দেখুন</a>
+        <h2 style="font-size: 32px; margin-bottom: 15px;">{{ __('messages.service_high_speed.cta_title') }}</h2>
+        <p style="font-size: 18px; margin-bottom: 30px;">{{ __('messages.service_high_speed.cta_subtitle') }}</p>
+        <a href="/package" class="cta-button">{{ __('messages.service_high_speed.cta_button') }}</a>
     </div>
 </div>
 

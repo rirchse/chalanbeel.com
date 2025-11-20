@@ -4,7 +4,7 @@ $source = new SourceCtrl;
 @endphp
 
 @extends('home')
-@section('title', 'সম্পর্কে')
+@section('title', __('messages.titles.about'))
 @section('content')
 
 <style type="text/css">
@@ -16,14 +16,31 @@ $source = new SourceCtrl;
 
     .about-hero {
         background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+        background-image: url('{{ asset("images/chalabeel.jpg") }}');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
         color: #fff;
         padding: 100px 20px 80px;
         text-align: center;
         position: relative;
         overflow: hidden;
+        min-height: 500px;
     }
 
     .about-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 1;
+    }
+
+    .about-hero::after {
         content: '';
         position: absolute;
         top: -50%;
@@ -32,6 +49,7 @@ $source = new SourceCtrl;
         height: 200%;
         background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
         animation: pulse 20s ease-in-out infinite;
+        z-index: 1;
     }
 
     @keyframes pulse {
@@ -41,7 +59,7 @@ $source = new SourceCtrl;
 
     .about-hero-content {
         position: relative;
-        z-index: 1;
+        z-index: 2;
         max-width: 900px;
         margin: 0 auto;
     }
@@ -110,7 +128,6 @@ $source = new SourceCtrl;
         color: #555;
         line-height: 2;
         text-align: center;
-        max-width: 900px;
         margin: 0 auto;
     }
 
@@ -239,7 +256,7 @@ $source = new SourceCtrl;
         position: relative;
     }
 
-    .mission-card::before, .vision-card::before {
+    /* .mission-card::before, .vision-card::before {
         content: '';
         position: absolute;
         top: 0;
@@ -247,7 +264,7 @@ $source = new SourceCtrl;
         right: 0;
         height: 4px;
         background: #000;
-    }
+    } */
 
     .mission-title, .vision-title {
         font-size: 32px;
@@ -301,6 +318,8 @@ $source = new SourceCtrl;
     @media (max-width: 768px) {
         .about-hero {
             padding: 60px 20px 50px;
+            background-attachment: scroll;
+            min-height: 400px;
         }
 
         .about-hero-title {
@@ -339,10 +358,9 @@ $source = new SourceCtrl;
     <!-- Hero Section -->
     <div class="about-hero">
         <div class="about-hero-content">
-            <h1 class="about-hero-title">আমাদের সম্পর্কে</h1>
+            <h1 class="about-hero-title">{{ __('messages.about.hero_title') }}</h1>
             <p class="about-hero-subtitle">
-                চলনবিল টেকনলজি - বিশ্বস্ত ও নির্ভরযোগ্য ইন্টারনেট সেবা প্রদানকারী। 
-                আমরা প্রতিশ্রুতিবদ্ধ আপনার ডিজিটাল জীবনকে আরও সহজ ও দ্রুত করার জন্য।
+                {{ __('messages.about.hero_subtitle') }}
             </p>
         </div>
     </div>
@@ -351,20 +369,32 @@ $source = new SourceCtrl;
         <!-- About Us Section -->
         <div class="about-section">
             <div class="section-header">
-                <h2 class="section-title">আমাদের কাহিনী</h2>
-                <p class="section-subtitle">আমাদের যাত্রা এবং উদ্দেশ্য</p>
+                <h2 class="section-title">{{ __('messages.about.story_title') }}</h2>
+                <p class="section-subtitle">{{ __('messages.about.story_subtitle') }}</p>
             </div>
             <div class="about-content">
-                <p>
-                    চলনবিল টেকনলজি একটি প্রগতিশীল ইন্টারনেট সেবা প্রদানকারী প্রতিষ্ঠান যা 
-                    গুরুদাসপুর এবং আশেপাশের এলাকায় বিশ্বস্ত ও উচ্চ গতির ইন্টারনেট সেবা প্রদান করে আসছে। 
-                    আমাদের লক্ষ্য হলো প্রতিটি গ্রাহকের কাছে সহজলভ্য, সাশ্রয়ী এবং নির্ভরযোগ্য ইন্টারনেট 
-                    সংযোগ পৌঁছে দেওয়া।
+                <p style="font-size: 19px; line-height: 2.2; text-align: justify; margin-bottom: 30px;">
+                    {!! __('messages.about.story_paragraph1') !!}
                 </p>
-                <p style="margin-top: 25px;">
-                    আমরা শুধুমাত্র ইন্টারনেট সেবা প্রদান করি না, বরং আপনার ডিজিটাল প্রয়োজনের 
-                    সম্পূর্ণ সমাধান প্রদান করি। আমাদের দক্ষ টিম সর্বদা প্রস্তুত আপনার যেকোনো 
-                    সমস্যা সমাধানে সাহায্য করতে।
+                
+                <p style="font-size: 19px; line-height: 2.2; text-align: justify; margin-bottom: 30px;">
+                    {!! __('messages.about.story_paragraph2') !!}
+                </p>
+                
+                <p style="font-size: 19px; line-height: 2.2; text-align: justify; margin-bottom: 30px;">
+                    {!! __('messages.about.story_paragraph3') !!}
+                </p>
+                
+                <p style="font-size: 19px; line-height: 2.2; text-align: justify; margin-bottom: 30px;">
+                    {!! __('messages.about.story_paragraph4') !!}
+                </p>
+                
+                <p style="font-size: 19px; line-height: 2.2; text-align: justify; margin-bottom: 30px;">
+                    {!! __('messages.about.story_paragraph5') !!}
+                </p>
+                
+                <p style="font-size: 19px; line-height: 2.2; text-align: justify; margin-top: 40px; padding-top: 30px; border-top: 2px solid #eee; font-style: italic; color: #555;">
+                    {!! __('messages.about.story_paragraph6') !!}
                 </p>
             </div>
         </div>
@@ -372,30 +402,26 @@ $source = new SourceCtrl;
         <!-- Mission & Vision -->
         <div class="about-section">
             <div class="section-header">
-                <h2 class="section-title">আমাদের লক্ষ্য ও উদ্দেশ্য</h2>
-                <p class="section-subtitle">যা আমাদের চালিত করে</p>
+                <h2 class="section-title">{{ __('messages.about.mission_vision_title') }}</h2>
+                <p class="section-subtitle">{{ __('messages.about.mission_vision_subtitle') }}</p>
             </div>
             <div class="mission-vision">
                 <div class="mission-card">
                     <h3 class="mission-title">
                         <i class="material-icons">flag</i>
-                        আমাদের মিশন
+                        {{ __('messages.about.mission_title') }}
                     </h3>
                     <p class="mission-text">
-                        প্রতিটি বাড়ি এবং ব্যবসায় উচ্চ গতির ইন্টারনেট সেবা পৌঁছে দেওয়া আমাদের মিশন। 
-                        আমরা বিশ্বাস করি যে ইন্টারনেট হলো আধুনিক জীবনের একটি মৌলিক অধিকার, এবং 
-                        আমাদের দায়িত্ব হলো এটি সবার কাছে সহজলভ্য করা।
+                        {{ __('messages.about.mission_text') }}
                     </p>
                 </div>
                 <div class="vision-card">
                     <h3 class="vision-title">
                         <i class="material-icons">visibility</i>
-                        আমাদের ভিশন
+                        {{ __('messages.about.vision_title') }}
                     </h3>
                     <p class="vision-text">
-                        বাংলাদেশের সবচেয়ে বিশ্বস্ত এবং নির্ভরযোগ্য ইন্টারনেট সেবা প্রদানকারী 
-                        প্রতিষ্ঠান হওয়া আমাদের লক্ষ্য। আমরা চাই প্রতিটি গ্রাহক আমাদের সেবায় 
-                        সন্তুষ্ট থাকুক এবং ডিজিটাল বিশ্বে সফল হোক।
+                        {{ __('messages.about.vision_text') }}
                     </p>
                 </div>
             </div>
@@ -404,68 +430,62 @@ $source = new SourceCtrl;
         <!-- Features Section -->
         <div class="about-section">
             <div class="section-header">
-                <h2 class="section-title">কেন আমাদের বেছে নিবেন</h2>
-                <p class="section-subtitle">আমাদের বিশেষত্ব</p>
+                <h2 class="section-title">{{ __('messages.about.why_choose_title') }}</h2>
+                <p class="section-subtitle">{{ __('messages.about.why_choose_subtitle') }}</p>
             </div>
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="material-icons">speed</i>
                     </div>
-                    <h3 class="feature-title">উচ্চ গতি</h3>
+                    <h3 class="feature-title">{{ __('messages.about.feature_high_speed') }}</h3>
                     <p class="feature-description">
-                        আমরা সর্বোচ্চ গতির ইন্টারনেট সেবা প্রদান করি যা আপনার সকল অনলাইন 
-                        কার্যক্রমের জন্য যথেষ্ট।
+                        {{ __('messages.about.feature_high_speed_desc') }}
                     </p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="material-icons">security</i>
                     </div>
-                    <h3 class="feature-title">নিরাপত্তা</h3>
+                    <h3 class="feature-title">{{ __('messages.about.feature_security') }}</h3>
                     <p class="feature-description">
-                        আপনার ডেটা এবং গোপনীয়তা সুরক্ষিত রাখা আমাদের অগ্রাধিকার। 
-                        আমরা সর্বোচ্চ নিরাপত্তা মান বজায় রাখি।
+                        {{ __('messages.about.feature_security_desc') }}
                     </p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="material-icons">support_agent</i>
                     </div>
-                    <h3 class="feature-title">২৪/৭ সহায়তা</h3>
+                    <h3 class="feature-title">{{ __('messages.about.feature_support') }}</h3>
                     <p class="feature-description">
-                        আমাদের দক্ষ সাপোর্ট টিম দিন-রাত আপনার পাশে রয়েছে যেকোনো 
-                        সমস্যা সমাধানের জন্য।
+                        {{ __('messages.about.feature_support_desc') }}
                     </p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="material-icons">payments</i>
                     </div>
-                    <h3 class="feature-title">সাশ্রয়ী মূল্য</h3>
+                    <h3 class="feature-title">{{ __('messages.about.feature_affordable') }}</h3>
                     <p class="feature-description">
-                        আমরা প্রতিযোগিতামূলক মূল্যে সর্বোচ্চ মানের সেবা প্রদান করি 
-                        যা সবার জন্য সহজলভ্য।
+                        {{ __('messages.about.feature_affordable_desc') }}
                     </p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="material-icons">build</i>
                     </div>
-                    <h3 class="feature-title">দ্রুত ইনস্টলেশন</h3>
+                    <h3 class="feature-title">{{ __('messages.about.feature_fast_installation') }}</h3>
                     <p class="feature-description">
-                        আমরা দ্রুততম সময়ে আপনার ইন্টারনেট সংযোগ ইনস্টল করি যাতে 
-                        আপনি দেরি না করে সেবা পেতে পারেন।
+                        {{ __('messages.about.feature_fast_installation_desc') }}
                     </p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="material-icons">verified_user</i>
                     </div>
-                    <h3 class="feature-title">বিশ্বস্ত সেবা</h3>
+                    <h3 class="feature-title">{{ __('messages.about.feature_trusted') }}</h3>
                     <p class="feature-description">
-                        বছরের পর বছর ধরে আমরা বিশ্বস্ত সেবা প্রদান করে আসছি এবং 
-                        আমাদের গ্রাহকদের আস্থা অর্জন করেছি।
+                        {{ __('messages.about.feature_trusted_desc') }}
                     </p>
                 </div>
             </div>
@@ -476,19 +496,19 @@ $source = new SourceCtrl;
             <div class="stats-grid">
                 <div class="stat-item">
                     <div class="stat-number">১০০০+</div>
-                    <div class="stat-label">সন্তুষ্ট গ্রাহক</div>
+                    <div class="stat-label">{{ __('messages.about.stats_satisfied_customers') }}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">৯৯.৯%</div>
-                    <div class="stat-label">আপটাইম</div>
+                    <div class="stat-label">{{ __('messages.about.stats_uptime') }}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">২৪/৭</div>
-                    <div class="stat-label">সাপোর্ট</div>
+                    <div class="stat-label">{{ __('messages.about.stats_support') }}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">১০+</div>
-                    <div class="stat-label">বছরের অভিজ্ঞতা</div>
+                    <div class="stat-label">{{ __('messages.about.stats_experience') }}</div>
                 </div>
             </div>
         </div>
@@ -496,21 +516,20 @@ $source = new SourceCtrl;
         <!-- Contact Section -->
         <div class="about-section">
             <div class="section-header">
-                <h2 class="section-title">আমাদের সাথে যোগাযোগ করুন</h2>
-                <p class="section-subtitle">আমরা আপনার প্রশ্নের উত্তর দিতে প্রস্তুত</p>
+                <h2 class="section-title">{{ __('messages.about.contact_title') }}</h2>
+                <p class="section-subtitle">{{ __('messages.about.contact_subtitle') }}</p>
             </div>
             <div class="about-content">
                 <p>
-                    আপনার কোনো প্রশ্ন বা সমস্যা থাকলে আমাদের সাথে যোগাযোগ করতে পারেন। 
-                    আমাদের সাপোর্ট টিম সর্বদা আপনার সাহায্যের জন্য প্রস্তুত।
+                    {{ __('messages.about.contact_text') }}
                 </p>
                 <p style="margin-top: 25px; font-weight: 600; color: #000;">
                     <i class="material-icons" style="vertical-align: middle; margin-right: 8px;">phone</i>
-                    ফোন: 017 78 57 33 96, 017 03 58 79 11
+                    {{ __('messages.about.contact_phone') }}: 017 78 57 33 96, 017 03 58 79 11
                 </p>
                 <p style="margin-top: 15px; font-weight: 600; color: #000;">
                     <i class="material-icons" style="vertical-align: middle; margin-right: 8px;">schedule</i>
-                    সময়: সকাল ৯টা - রাত ১০টা (সপ্তাহে ৭ দিন)
+                    {{ __('messages.about.contact_time') }}: {{ __('messages.about.contact_hours') }}
                 </p>
             </div>
         </div>

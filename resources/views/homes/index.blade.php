@@ -4,10 +4,25 @@ $source = new SourceCtrl;
 @endphp
 
 @extends('home')
-@section('title', 'Welcome')
+@section('title', __('messages.titles.home'))
 @section('content')
 
 <style type="text/css">
+    /* Prevent horizontal overflow on mobile */
+    body {
+        overflow-x: hidden;
+        max-width: 100%;
+    }
+    
+    html {
+        overflow-x: hidden;
+        max-width: 100%;
+    }
+    
+    * {
+        box-sizing: border-box;
+    }
+    
     .hero-section {
         min-height: 70vh;
         display: flex;
@@ -16,6 +31,8 @@ $source = new SourceCtrl;
         padding: 100px 20px 40px;
         position: relative;
         overflow: hidden;
+        width: 100%;
+        max-width: 100%;
     }
 
     .hero-container {
@@ -55,9 +72,10 @@ $source = new SourceCtrl;
 
     .hero-actions {
         display: flex;
-        gap: 20px;
-        flex-wrap: wrap;
+        gap: 15px;
+        flex-wrap: nowrap;
         margin-top: 10px;
+        align-items: center;
     }
 
     .hero-btn {
@@ -152,23 +170,25 @@ $source = new SourceCtrl;
 
     /* YouTube Video Background - Only for Hero Section */
     .video-background {
-        position: fixed;
-        top: 50%;
-        left: 50%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         min-width: 100%;
         min-height: 100%;
-        width: auto;
-        height: auto;
-        transform: translateX(-50%) translateY(-50%);
         z-index: -2;
+        overflow: hidden;
     }
 
     .video-background iframe {
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 100vw;
-        height: 100vh;
+        min-width: 100%;
+        min-height: 100%;
+        width: 100%;
+        height: 100%;
         transform: translate(-50%, -50%);
         pointer-events: none;
     }
@@ -176,22 +196,31 @@ $source = new SourceCtrl;
     @media (min-aspect-ratio: 16/9) {
         .video-background iframe {
             height: 56.25vw;
+            width: 100vw;
         }
     }
 
     @media (max-aspect-ratio: 16/9) {
         .video-background iframe {
             width: 177.78vh;
+            height: 100vh;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        /* Hide video background on mobile */
+        .video-background {
+            display: none !important;
         }
     }
 
     /* Dark overlay for better text visibility - Only for Hero */
     .video-overlay {
-        position: fixed;
+        position: absolute;
         top: 0;
         left: 0;
         width: 100%;
-        height: 70vh;
+        height: 100%;
         background: rgba(0, 0, 0, 0.5);
         z-index: -1;
     }
@@ -259,61 +288,105 @@ $source = new SourceCtrl;
         margin-bottom: 30px;
     }
 
+    .google-search-wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+    }
+    .google-search-wrapper .form-group {
+        margin: 10px 0 0 0 !important;
+    }
+    .phone-icon { 
+        margin-top: 5px;
+    }
+
     .material-input-group {
         position: relative;
-        margin-bottom: 30px;
+        flex: 1;
+        margin: 0;
     }
 
     .material-input-group .form-control {
-        background: #f5f5f5;
-        border: 2px solid #e0e0e0;
-        border-radius: 12px;
-        padding: 18px 20px 18px 50px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 5px;
+        padding: 0 20px 0 55px;
+        height: 60px;
+        max-height: 60px;
         font-size: 16px;
+        color: #000;
         transition: all 0.3s ease;
-        box-shadow: none;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        box-sizing: border-box;
+        line-height: 1.5;
     }
 
-    .material-input-group .form-control:focus {
-        background: #fff;
-        border-color: #000;
-        box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+    .material-input-group .form-control::placeholder {
+        color: #999;
+    }
+
+    .material-input-group .form-control:focus,
+    .material-input-group .form-control:active {
+        outline: none;
+        background: transparent !important;
+        border-color: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.2), 0 8px 30px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
     }
 
     .material-input-group .input-icon {
         position: absolute;
-        left: 18px;
+        left: 20px;
         top: 50%;
         transform: translateY(-50%);
-        color: #999;
-        font-size: 20px;
+        color: #666;
+        font-size: 16px;
         transition: all 0.3s ease;
+        z-index: 1;
     }
 
     .material-input-group .form-control:focus ~ .input-icon {
         color: #000;
+        transform: translateY(-50%) scale(1.1);
     }
 
-    .submit-btn {
+    .search-submit-btn {
         background: #000;
-        border: none;
-        border-radius: 12px;
-        padding: 16px 0;
-        width: 100%;
+        border: 2px solid transparent;
+        border-radius: 5px;
+        padding: 0 24px;
+        height: 60px;
+        max-height: 60px;
         color: #fff;
-        font-size: 18px;
-        font-weight: 600;
+        font-size: 16px;
         cursor: pointer;
         transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 60px;
+        flex-shrink: 0;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        text-transform: uppercase;
-        letter-spacing: 1px;
+        box-sizing: border-box;
     }
 
-    .submit-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    .search-submit-btn:hover {
         background: #333;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .search-submit-btn:active {
+        background: #1a1a1a;
+        transform: translateY(0);
+    }
+
+    .search-submit-btn i {
+        font-size: 16px;
+        color: #fff;
     }
 
     .submit-btn:active {
@@ -472,19 +545,18 @@ $source = new SourceCtrl;
     }
 </style>
 
-<!-- YouTube Video Background -->
-<div class="video-background">
-    <iframe 
-        src="https://www.youtube.com/embed/bDQ-PlPJBPY?autoplay=1&mute=1&loop=1&playlist=bDQ-PlPJBPY&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&playsinline=1&vq=hd1080"
-        frameborder="0"
-        allow="autoplay; encrypted-media"
-        allowfullscreen>
-    </iframe>
-</div>
-<div class="video-overlay"></div>
-
 <!-- Hero Section -->
 <div class="hero-section">
+    <!-- YouTube Video Background -->
+    <div class="video-background">
+        <iframe 
+            src="https://www.youtube.com/embed/bDQ-PlPJBPY?autoplay=1&mute=1&loop=1&playlist=bDQ-PlPJBPY&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&playsinline=1&vq=hd1080"
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            allowfullscreen>
+        </iframe>
+    </div>
+    <div class="video-overlay"></div>
     <div class="hero-container">
         <!-- Left Side: Title, Subtitle, Action Buttons -->
         <div class="hero-left">
@@ -497,13 +569,13 @@ $source = new SourceCtrl;
                     <i class="material-icons">person_add</i>
                     {{ __('messages.hero.register') }}
                 </a>
-                <a href="/package" class="hero-btn hero-btn-outline">
-                    <i class="material-icons">view_list</i>
-                    {{ __('messages.hero.view_packages') }}
-                </a>
                 <a href="/view-user-on-map" class="hero-btn hero-btn-outline">
                     <i class="material-icons">map</i>
                     {{ __('messages.hero.view_map') }}
+                </a>
+                <a href="/speed-test" class="hero-btn hero-btn-outline">
+                    <i class="material-icons">flash_on</i>
+                    {{ __('messages.hero.speed_test') }}
                 </a>
             </div>
         </div>
@@ -513,23 +585,24 @@ $source = new SourceCtrl;
             <h3 class="search-card-title">{{ __('messages.search.title') }}</h3>
             <p class="search-card-subtitle">{{ __('messages.search.subtitle') }}</p>
             <form class="search-form" action="{{route('account.check.post')}}" method="GET">
-                <div class="material-input-group">
-                    <input 
-                        type="number" 
-                        name="contact" 
-                        id="search" 
-                        class="form-control" 
-                        placeholder="{{ __('messages.search.placeholder') }}" 
-                        required
-                        maxlength="11"
-                        pattern="[0-9]{11}"
-                    >
-                    <i class="material-icons input-icon">phone</i>
+                <div class="google-search-wrapper">
+                    <div class="material-input-group">
+                        <input 
+                            type="number" 
+                            name="contact" 
+                            id="search" 
+                            class="form-control" 
+                            placeholder="{{ __('messages.search.placeholder') }}" 
+                            required
+                            maxlength="11"
+                            pattern="[0-9]{11}"
+                        >
+                        <i class="material-icons input-icon phone-icon">phone</i>
+                    </div>
+                    <button type="submit" class="search-submit-btn">
+                        <i class="material-icons">search</i>
+                    </button>
                 </div>
-                <button type="submit" class="submit-btn">
-                    <i class="material-icons" style="vertical-align: middle; margin-right: 5px;">search</i>
-                    {{ __('messages.search.button') }}
-                </button>
             </form>
         </div>
     </div>
@@ -621,32 +694,44 @@ $source = new SourceCtrl;
             </div>
             <div class="packages-grid">
                 @if(isset($packages) && count($packages) > 0)
-                    @foreach($packages as $package)
+                    @foreach($packages as $index => $package)
                     <div class="package-card">
                         <div class="package-header">
                             <h3>{{ $package->service ?? __('messages.packages.internet') }}</h3>
-                            <div class="package-speed">{{ $package->speed ?? 'N/A' }}</div>
+                            <div class="package-price-badge">
+                                <div class="price-amount">৳{{ number_format($package->price ?? 0) }}</div>
+                                <div class="price-period">PER MONTH</div>
+                            </div>
+                            <div class="package-speed">{{ $package->speed ?? 'N/A' }} Mbps</div>
                         </div>
                         <div class="package-body">
                             <div class="package-details">
+                                @php
+                                    $listItems = [];
+                                    if (!empty($package->details)) {
+                                        $decoded = json_decode($package->details, true);
+                                        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                                            $listItems = $decoded;
+                                        }
+                                    }
+                                    // If no list items, show default items
+                                    if (empty($listItems)) {
+                                        $listItems = [
+                                            __('messages.packages.speed') . ': ' . ($package->speed ?? 'N/A') . ' Mbps',
+                                            __('messages.packages.time') . ': ' . ($package->time_limit ?? 'N/A'),
+                                            __('messages.packages.connection') . ': ' . ($package->connection ?? 'N/A'),
+                                            '24/7 Support'
+                                        ];
+                                    }
+                                @endphp
+                                @foreach($listItems as $item)
                                 <div class="detail-item">
-                                    <i class="material-icons">speed</i>
-                                    <span>{{ __('messages.packages.speed') }}: {{ $package->speed ?? 'N/A' }}</span>
+                                    <div class="detail-item-icon check">
+                                        <i class="material-icons" style="font-size: 18px;">check</i>
+                                    </div>
+                                    <span>{{ $item }}</span>
                                 </div>
-                                <div class="detail-item">
-                                    <i class="material-icons">schedule</i>
-                                    <span>{{ __('messages.packages.time') }}: {{ $package->time_limit ?? 'N/A' }}</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="material-icons">router</i>
-                                    <span>{{ __('messages.packages.connection') }}: {{ $package->connection ?? 'N/A' }}</span>
-                                </div>
-                            </div>
-                            <div class="package-price">
-                                <span class="price-amount">৳{{ number_format($package->price ?? 0) }}</span>
-                                @if(isset($package->discount) && $package->discount > 0)
-                                <span class="price-discount">৳{{ number_format($package->price + $package->discount) }}</span>
-                                @endif
+                                @endforeach
                             </div>
                             <a href="/register/create/{{ $package->id }}" class="package-btn">{{ __('messages.packages.buy_now') }}</a>
                         </div>
@@ -656,21 +741,44 @@ $source = new SourceCtrl;
                     <div class="package-card">
                         <div class="package-header">
                             <h3>{{ __('messages.packages.standard') }}</h3>
+                            <div class="package-price-badge">
+                                <div class="price-amount">৳500</div>
+                                <div class="price-period">PER MONTH</div>
+                            </div>
                             <div class="package-speed">10 Mbps</div>
                         </div>
                         <div class="package-body">
                             <div class="package-details">
                                 <div class="detail-item">
-                                    <i class="material-icons">speed</i>
+                                    <div class="detail-item-icon check">
+                                        <i class="material-icons" style="font-size: 18px;">check</i>
+                                    </div>
                                     <span>{{ __('messages.packages.speed') }}: 10 Mbps</span>
                                 </div>
                                 <div class="detail-item">
-                                    <i class="material-icons">schedule</i>
+                                    <div class="detail-item-icon check">
+                                        <i class="material-icons" style="font-size: 18px;">check</i>
+                                    </div>
                                     <span>{{ __('messages.packages.time') }}: 30 {{ __('messages.packages.days') }}</span>
                                 </div>
-                            </div>
-                            <div class="package-price">
-                                <span class="price-amount">৳500</span>
+                                <div class="detail-item">
+                                    <div class="detail-item-icon check">
+                                        <i class="material-icons" style="font-size: 18px;">check</i>
+                                    </div>
+                                    <span>24/7 Support</span>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-item-icon check">
+                                        <i class="material-icons" style="font-size: 18px;">check</i>
+                                    </div>
+                                    <span>Free Installation</span>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-item-icon cross">
+                                        <i class="material-icons" style="font-size: 18px;">close</i>
+                                    </div>
+                                    <span>Premium Support</span>
+                                </div>
                             </div>
                             <a href="/register/create" class="package-btn">{{ __('messages.packages.take_package') }}</a>
                         </div>
@@ -690,14 +798,14 @@ $source = new SourceCtrl;
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="material-icons">speed</i>
+                        <i class="material-icons">flash_on</i>
                     </div>
                     <h3>{{ __('messages.services.high_speed') }}</h3>
                     <p>{{ __('messages.services.high_speed_desc') }}</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="material-icons">support_agent</i>
+                        <i class="material-icons">headset_mic</i>
                     </div>
                     <h3>{{ __('messages.services.support_247') }}</h3>
                     <p>{{ __('messages.services.support_247_desc') }}</p>
@@ -877,18 +985,20 @@ $source = new SourceCtrl;
     /* Packages Section */
     .packages-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 30px;
         margin-top: 40px;
     }
 
     .package-card {
         background: #fff;
-        border: 2px solid #000;
         border-radius: 16px;
-        padding: 30px;
+        overflow: hidden;
         transition: all 0.3s ease;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        position: relative;
     }
 
     .package-card:hover {
@@ -896,28 +1006,91 @@ $source = new SourceCtrl;
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
     }
 
+    /* Color schemes for different packages */
+    .package-card:nth-child(4n+1) .package-header,
+    .package-card:nth-child(4n+1) .package-btn {
+        background: #1E40AF; /* Dark Blue */
+    }
+
+    .package-card:nth-child(4n+2) .package-header,
+    .package-card:nth-child(4n+2) .package-btn {
+        background: #059669; /* Dark Green */
+    }
+
+    .package-card:nth-child(4n+3) .package-header,
+    .package-card:nth-child(4n+3) .package-btn {
+        background: #4ECDC4; /* Teal */
+    }
+
+    .package-card:nth-child(4n+4) .package-header,
+    .package-card:nth-child(4n+4) .package-btn {
+        background: #7C3AED; /* Dark Purple */
+    }
+
     .package-header {
-        text-align: center;
-        padding-bottom: 20px;
-        border-bottom: 2px solid #000;
-        margin-bottom: 20px;
+        background: #1E40AF;
+        padding: 30px 25px;
+        position: relative;
+        color: #fff;
+        border-radius: 16px 16px 0 0;
     }
 
     .package-header h3 {
-        font-size: 24px;
+        font-size: 20px;
         font-weight: 700;
-        color: #000;
-        margin-bottom: 10px;
+        color: #fff;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .package-price-badge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 80px;
+        height: 80px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(10px);
+    }
+
+    .package-price-badge .price-amount {
+        font-size: 20px;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1;
+        margin: 0;
+    }
+
+    .package-price-badge .price-period {
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.9);
+        text-transform: uppercase;
+        margin-top: 2px;
     }
 
     .package-speed {
-        font-size: 32px;
-        font-weight: 700;
-        color: #000;
+        font-size: 18px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.95);
+        margin-top: 10px;
+    }
+
+    .package-body {
+        padding: 30px 25px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
     }
 
     .package-details {
         margin-bottom: 25px;
+        flex: 1;
     }
 
     .detail-item {
@@ -925,59 +1098,60 @@ $source = new SourceCtrl;
         align-items: center;
         gap: 12px;
         padding: 12px 0;
-        border-bottom: 1px solid #e0e0e0;
+        border-bottom: 1px solid #f0f0f0;
     }
 
     .detail-item:last-child {
         border-bottom: none;
     }
 
-    .detail-item i {
-        color: #000;
-        font-size: 20px;
+    .detail-item-icon {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .detail-item-icon.check {
+        color: #4CAF50;
+    }
+
+    .detail-item-icon.cross {
+        color: #ccc;
     }
 
     .detail-item span {
-        color: #333;
-        font-size: 15px;
-    }
-
-    .package-price {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .price-amount {
-        font-size: 36px;
-        font-weight: 700;
-        color: #000;
-    }
-
-    .price-discount {
-        font-size: 20px;
-        color: #999;
-        text-decoration: line-through;
-        margin-left: 10px;
+        color: #666;
+        font-size: 14px;
+        line-height: 1.5;
     }
 
     .package-btn {
         display: block;
         width: 100%;
-        padding: 14px;
-        background: #000;
+        padding: 16px;
+        background: #1E40AF;
         color: #fff;
         text-align: center;
+        border: none;
         border-radius: 8px;
-        font-weight: 600;
+        font-weight: 700;
         text-decoration: none;
         transition: all 0.3s ease;
-        font-size: 16px;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: auto;
+        cursor: pointer;
     }
 
     .package-btn:hover {
-        background: #333;
+        opacity: 0.9;
         transform: translateY(-2px);
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        color: #fff;
     }
 
     /* Features Section */
@@ -1171,6 +1345,13 @@ $source = new SourceCtrl;
 
         .hero-actions {
             justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .hero-btn {
+            padding: 14px 24px;
+            font-size: 14px;
         }
 
         .hero-right {
@@ -1179,9 +1360,48 @@ $source = new SourceCtrl;
     }
 
     @media (max-width: 768px) {
+        body, html {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+        }
+        
         .hero-section {
             min-height: 80vh;
             padding: 80px 15px 30px;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+            background-image: url('{{ asset("images/chalabeel.jpg") }}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            position: relative;
+        }
+        
+        /* Add dark overlay on top of image background for mobile */
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+        }
+        
+        /* Ensure content is above overlay */
+        .hero-section .hero-container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-container {
+            width: 100%;
+            max-width: 100%;
+            padding: 0;
         }
 
         .hero-title {
@@ -1193,16 +1413,67 @@ $source = new SourceCtrl;
         }
 
         .hero-actions {
-            flex-direction: column;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
         }
 
         .hero-btn {
-            width: 100%;
+            flex: 1;
+            min-width: 140px;
             justify-content: center;
+            padding: 14px 20px;
+            font-size: 13px;
         }
 
         .hero-right {
             padding: 25px 20px;
+            width: 100%;
+            max-width: 100%;
+        }
+        
+        /* Ensure all sections span full width on mobile */
+        .modern-page,
+        .packages-section,
+        .features-section,
+        .contact-section {
+            width: 100%;
+            max-width: 100%;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        
+        .packages-section .container,
+        .features-section .container,
+        .contact-section .container {
+            width: 100%;
+            max-width: 100%;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .google-search-wrapper {
+            gap: 8px;
+        }
+
+        .material-input-group .form-control {
+            padding: 0 15px 0 50px;
+            height: 60px;
+            max-height: 60px;
+            font-size: 15px;
+            border-radius: 5px;
+        }
+
+        .search-submit-btn {
+            padding: 0 20px;
+            height: 60px;
+            max-height: 60px;
+            min-width: 55px;
+            border-radius: 5px;
+        }
+
+        .search-submit-btn i {
+            font-size: 15px;
         }
 
         .modern-page {
@@ -1221,6 +1492,19 @@ $source = new SourceCtrl;
         .features-grid,
         .contact-grid {
             grid-template-columns: 1fr;
+        }
+
+        .package-price-badge {
+            width: 70px;
+            height: 70px;
+        }
+
+        .package-price-badge .price-amount {
+            font-size: 18px;
+        }
+
+        .package-price-badge .price-period {
+            font-size: 9px;
         }
 
         .why-choose-content {

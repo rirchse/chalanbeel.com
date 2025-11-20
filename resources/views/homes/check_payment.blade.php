@@ -1,5 +1,5 @@
 @extends('home')
-@section('title', 'পেমেন্ট চেক')
+@section('title', __('messages.titles.check_payment'))
 @section('content')
 <div class="check-payment-page">
     <div class="check-payment-container">

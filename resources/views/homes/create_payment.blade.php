@@ -1,5 +1,5 @@
 @extends('home')
-@section('title', 'Create Payment')
+@section('title', __('messages.titles.create_payment'))
 @section('content')
 
 <div class="full-page login-page" filter-color="black" data-image="/images/login.jpg">

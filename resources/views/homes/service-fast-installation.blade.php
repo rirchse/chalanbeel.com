@@ -1,5 +1,5 @@
 @extends('home')
-@section('title', 'দ্রুত ইনস্টলেশন')
+@section('title', __('messages.titles.service_fast_installation'))
 @section('content')
 
 <style type="text/css">
@@ -210,66 +210,63 @@
         <div class="service-hero-icon">
             <i class="material-icons">build</i>
         </div>
-        <h1 class="service-hero-title">দ্রুত ইনস্টলেশন</h1>
+        <h1 class="service-hero-title">{{ __('messages.service_fast_install.hero_title') }}</h1>
         <p class="service-hero-subtitle">
-            অর্ডার দেওয়ার পর দ্রুততম সময়ে আপনার ইন্টারনেট সংযোগ সম্পন্ন করুন। 
-            আমাদের অভিজ্ঞ টেকনিশিয়ান দল আপনার বাড়িতে এসে দ্রুত ইনস্টলেশন সম্পন্ন করবে।
+            {{ __('messages.service_fast_install.hero_subtitle') }}
         </p>
     </div>
 
     <div class="service-content-section">
         <p class="service-description">
-            চলনবিল টেকনলজি আপনাকে প্রদান করে দ্রুততম ইনস্টলেশন সেবা। 
-            অর্ডার দেওয়ার পর ২৪-৪৮ ঘন্টার মধ্যে আমাদের টেকনিশিয়ান আপনার বাড়িতে এসে 
-            ইন্টারনেট সংযোগ ইনস্টল করে দেবে। আমাদের অভিজ্ঞ দল যেকোনো জটিলতা দ্রুত সমাধান করতে সক্ষম।
+            {{ __('messages.service_fast_install.description') }}
         </p>
 
-        <h2 class="section-title">ইনস্টলেশন প্রক্রিয়া</h2>
+        <h2 class="section-title">{{ __('messages.service_fast_install.process_title') }}</h2>
 
         <div class="process-steps">
             <div class="process-step">
                 <div class="step-number">১</div>
-                <h3 class="step-title">অর্ডার দিন</h3>
+                <h3 class="step-title">{{ __('messages.service_fast_install.step1_title') }}</h3>
                 <p class="step-description">
-                    আমাদের ওয়েবসাইট থেকে বা ফোনে কল করে আপনার পছন্দের প্যাকেজ অর্ডার করুন।
+                    {{ __('messages.service_fast_install.step1_desc') }}
                 </p>
             </div>
 
             <div class="process-step">
                 <div class="step-number">২</div>
-                <h3 class="step-title">সময় নির্ধারণ</h3>
+                <h3 class="step-title">{{ __('messages.service_fast_install.step2_title') }}</h3>
                 <p class="step-description">
-                    আমাদের সাপোর্ট টিম আপনার সাথে যোগাযোগ করে ইনস্টলেশনের সময় নির্ধারণ করবে।
+                    {{ __('messages.service_fast_install.step2_desc') }}
                 </p>
             </div>
 
             <div class="process-step">
                 <div class="step-number">৩</div>
-                <h3 class="step-title">ইনস্টলেশন</h3>
+                <h3 class="step-title">{{ __('messages.service_fast_install.step3_title') }}</h3>
                 <p class="step-description">
-                    আমাদের টেকনিশিয়ান নির্ধারিত সময়ে আপনার বাড়িতে এসে ইনস্টলেশন সম্পন্ন করবে।
+                    {{ __('messages.service_fast_install.step3_desc') }}
                 </p>
             </div>
 
             <div class="process-step">
                 <div class="step-number">৪</div>
-                <h3 class="step-title">পরীক্ষা</h3>
+                <h3 class="step-title">{{ __('messages.service_fast_install.step4_title') }}</h3>
                 <p class="step-description">
-                    ইনস্টলেশনের পর সংযোগ পরীক্ষা করা হবে এবং আপনি ইন্টারনেট ব্যবহার শুরু করতে পারবেন।
+                    {{ __('messages.service_fast_install.step4_desc') }}
                 </p>
             </div>
         </div>
 
-        <h2 class="section-title" style="margin-top: 60px;">ইনস্টলেশন সুবিধা</h2>
+        <h2 class="section-title" style="margin-top: 60px;">{{ __('messages.service_fast_install.benefits_title') }}</h2>
 
         <div class="service-features">
             <div class="feature-card">
                 <div class="feature-icon">
                     <i class="material-icons">schedule</i>
                 </div>
-                <h3 class="feature-title">দ্রুত সেবা</h3>
+                <h3 class="feature-title">{{ __('messages.service_fast_install.feature_fast_service_title') }}</h3>
                 <p class="feature-description">
-                    ২৪-৪৮ ঘন্টার মধ্যে ইনস্টলেশন সম্পন্ন করা হয়, কোনো বিলম্ব নেই।
+                    {{ __('messages.service_fast_install.feature_fast_service_desc') }}
                 </p>
             </div>
 
@@ -277,9 +274,9 @@
                 <div class="feature-icon">
                     <i class="material-icons">engineering</i>
                 </div>
-                <h3 class="feature-title">অভিজ্ঞ টেকনিশিয়ান</h3>
+                <h3 class="feature-title">{{ __('messages.service_fast_install.feature_experienced_tech_title') }}</h3>
                 <p class="feature-description">
-                    আমাদের প্রশিক্ষিত এবং অভিজ্ঞ টেকনিশিয়ান দল যেকোনো সমস্যা সমাধান করতে সক্ষম।
+                    {{ __('messages.service_fast_install.feature_experienced_tech_desc') }}
                 </p>
             </div>
 
@@ -287,9 +284,9 @@
                 <div class="feature-icon">
                     <i class="material-icons">tools</i>
                 </div>
-                <h3 class="feature-title">আধুনিক সরঞ্জাম</h3>
+                <h3 class="feature-title">{{ __('messages.service_fast_install.feature_modern_tools_title') }}</h3>
                 <p class="feature-description">
-                    আধুনিক সরঞ্জাম ব্যবহার করে দ্রুত এবং দক্ষতার সাথে ইনস্টলেশন করা হয়।
+                    {{ __('messages.service_fast_install.feature_modern_tools_desc') }}
                 </p>
             </div>
 
@@ -297,9 +294,9 @@
                 <div class="feature-icon">
                     <i class="material-icons">check_circle</i>
                 </div>
-                <h3 class="feature-title">গ্যারান্টি</h3>
+                <h3 class="feature-title">{{ __('messages.service_fast_install.feature_guarantee_title') }}</h3>
                 <p class="feature-description">
-                    আমাদের ইনস্টলেশন সেবার উপর সম্পূর্ণ গ্যারান্টি প্রদান করা হয়।
+                    {{ __('messages.service_fast_install.feature_guarantee_desc') }}
                 </p>
             </div>
 
@@ -307,9 +304,9 @@
                 <div class="feature-icon">
                     <i class="material-icons">home</i>
                 </div>
-                <h3 class="feature-title">বিনামূল্যে পরিদর্শন</h3>
+                <h3 class="feature-title">{{ __('messages.service_fast_install.feature_free_visit_title') }}</h3>
                 <p class="feature-description">
-                    ইনস্টলেশনের আগে বিনামূল্যে সাইট পরিদর্শন করা হয়।
+                    {{ __('messages.service_fast_install.feature_free_visit_desc') }}
                 </p>
             </div>
 
@@ -317,18 +314,18 @@
                 <div class="feature-icon">
                     <i class="material-icons">support_agent</i>
                 </div>
-                <h3 class="feature-title">২৪/৭ সহায়তা</h3>
+                <h3 class="feature-title">{{ __('messages.service_fast_install.feature_support_title') }}</h3>
                 <p class="feature-description">
-                    ইনস্টলেশনের পর যেকোনো সমস্যায় আমাদের সাপোর্ট টিম সহায়তা করবে।
+                    {{ __('messages.service_fast_install.feature_support_desc') }}
                 </p>
             </div>
         </div>
     </div>
 
     <div class="cta-section">
-        <h2 style="font-size: 32px; margin-bottom: 15px;">এখনই ইন্টারনেট সংযোগ নিন</h2>
-        <p style="font-size: 18px; margin-bottom: 30px;">দ্রুত ইনস্টলেশনের জন্য এখনই অর্ডার করুন</p>
-        <a href="/register/create" class="cta-button">এখনই নিবন্ধন করুন</a>
+        <h2 style="font-size: 32px; margin-bottom: 15px;">{{ __('messages.service_fast_install.cta_title') }}</h2>
+        <p style="font-size: 18px; margin-bottom: 30px;">{{ __('messages.service_fast_install.cta_subtitle') }}</p>
+        <a href="/register/create" class="cta-button">{{ __('messages.service_fast_install.cta_button') }}</a>
     </div>
 </div>
 

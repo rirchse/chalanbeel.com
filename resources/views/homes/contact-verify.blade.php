@@ -1,5 +1,5 @@
 @extends('home')
-@section('title', 'Verify')
+@section('title', __('messages.titles.contact_verify'))
 @section('content')
 <div class="full-page login-page" filter-color="black" data-image="{{$GBURL}}/images/login.jpg">
     <div class="content">

@@ -24,7 +24,58 @@ class RegisterController extends Controller
      */
     public function create($package_id = null)
     {
-        $locations = Location::where('status', 1)->get();
+        // Static areas array with English and Bengali translations
+        $areas = [
+            ['english' => 'Khubjipur', 'bangla' => 'খুবজিপুর'],
+            ['english' => 'Pipla', 'bangla' => 'পিপলা'],
+            ['english' => 'Palshura Patpara', 'bangla' => 'পুয়ালশুরা পাটপাড়া'],
+            ['english' => 'Kusumhati', 'bangla' => 'কুসুমহাটি'],
+            ['english' => 'Chapila', 'bangla' => 'চাপিলা'],
+            ['english' => 'Gopinathpur', 'bangla' => 'গোপীনাথপুর'],
+            ['english' => 'Rashidpur', 'bangla' => 'রশিদপুর'],
+            ['english' => 'Mokimpur', 'bangla' => 'মকিমপুর'],
+            ['english' => 'Chakrantopur', 'bangla' => 'চক্রন্তপুর'],
+            ['english' => 'Pablani', 'bangla' => 'পাবলানী'],
+            ['english' => 'Raushanpur', 'bangla' => 'রওশনপুর'],
+            ['english' => 'Telkupi', 'bangla' => 'তেলকুপী'],
+            ['english' => 'Anandanagar', 'bangla' => 'আনন্দনগর'],
+            ['english' => 'Shahapur', 'bangla' => 'শাহপুর'],
+            ['english' => 'Kalakandor', 'bangla' => 'কালাকান্দর'],
+            ['english' => 'Puthimari', 'bangla' => 'পুথিমারি'],
+            ['english' => 'Nawpara (East)', 'bangla' => 'নওয়াপাড়া (পূর্ব)'],
+            ['english' => 'Khamarpara', 'bangla' => 'খামারপাড়া'],
+            ['english' => 'Narayanpur', 'bangla' => 'নারায়ণপুর'],
+            ['english' => 'Jogendranagar', 'bangla' => 'জগেন্দ্রনগর'],
+            ['english' => 'Ganadanagar', 'bangla' => 'গণদ্রনগর'],
+            ['english' => 'Sabgari', 'bangla' => 'সাবগাড়ী'],
+            ['english' => 'Mollabazaar', 'bangla' => 'মোল্লাবাজার'],
+            ['english' => 'Hamlaikol', 'bangla' => 'হামলাইকোল'],
+            ['english' => 'Mamudpur', 'bangla' => 'মামুদপুর'],
+            ['english' => 'Jumainagar', 'bangla' => 'জুমাইনগর'],
+            ['english' => 'Bergangarampur', 'bangla' => 'বেরগঙ্গারামপুর'],
+            ['english' => 'Kumarkhali', 'bangla' => 'কুমারখালী'],
+            ['english' => 'Biaghat', 'bangla' => 'বিয়াঘাট'],
+            ['english' => 'Dharabarisha', 'bangla' => 'ধারাবরিষা'],
+            ['english' => 'Chalanali', 'bangla' => 'চালনালী'],
+            ['english' => 'Char Kadaha', 'bangla' => 'চর কদাহা'],
+            ['english' => 'Daudia Talbari', 'bangla' => 'দাউদিয়া তালবাড়ী'],
+            ['english' => 'Jhakra', 'bangla' => 'ঝাকড়া'],
+            ['english' => 'Khakradaha', 'bangla' => 'খাকরাদহ'],
+            ['english' => 'Pualsura', 'bangla' => 'পুয়ালসুরা'],
+            ['english' => 'Pualsura Arazi', 'bangla' => 'পুয়ালসুরা আরাজি'],
+            ['english' => 'Santoshpur', 'bangla' => 'সন্তোষপুর'],
+            ['english' => 'Sidhuli', 'bangla' => 'সিধুলি'],
+            ['english' => 'Sonabaju', 'bangla' => 'সোনাবাজু'],
+            ['english' => 'Udbaria', 'bangla' => 'উদবারিয়া'],
+            ['english' => 'Phulbari', 'bangla' => 'ফুলবাড়ী'],
+            ['english' => 'Phulchandrapur', 'bangla' => 'ফুলচাঁদ্রপুর'],
+            ['english' => 'Moshinda', 'bangla' => 'মশিন্দা'],
+            ['english' => 'Nazirpur', 'bangla' => 'নাজিরপুর'],
+            ['english' => 'Kusumhati Mosque area', 'bangla' => 'কুসুমহাটি মসজিদ এলাকা'],
+            ['english' => 'Bildahar', 'bangla' => 'বিলদহর'],
+            ['english' => 'Mohismari', 'bangla' => 'মহিশমারি'],
+        ];
+        
         $package = null;
         
         if ($package_id) {
@@ -34,7 +85,7 @@ class RegisterController extends Controller
             }
         }
         
-        return view('homes.register', compact('locations', 'package'));
+        return view('homes.register', compact('areas', 'package'));
     }
 
     /**

@@ -64,6 +64,13 @@ Route::group(['middleware' => ['web']], function()
 	Route::get('/service/secure-network', 'HomeController@secureNetwork');
 	Route::get('/service/fast-installation', 'HomeController@fastInstallation');
 	Route::get('/service/trusted-service', 'HomeController@trustedService');
+	Route::get('/speed-test', 'HomeController@speedTest');
+	Route::get('/speed-test/download', 'HomeController@speedTestDownload');
+	Route::post('/speed-test/upload', 'HomeController@speedTestUpload');
+	Route::get('/speed-test/ping', 'HomeController@speedTestPing');
+	Route::get('/careers', 'HomeController@careers')->name('careers');
+	Route::get('/career/{id}', 'HomeController@career')->name('public.career.show');
+	Route::post('/career/{id}/apply', 'HomeController@submitCareerApplication')->name('career.application.submit');
 	Route::get('/view-user-on-map', 'HomeController@userOnMap');
 	Route::get('/check_payment', 'PackageCtrl@check_payment');
 	Route::post('/check_payment', 'PackageCtrl@checkPayment')->name('check.payment');
@@ -124,10 +131,13 @@ Route::group(['middleware' => ['web']], function()
     {
       Route::get('/loginto/{id}', 'Admin\UsersController@loginto');
     
-      Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
-      Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.postLogin');
+      // Redirect admin login to unified login page
+      Route::get('/login', function() {
+          return redirect()->route('login');
+      });
+      
       Route::get('/', 'Admin\AdminHomeController@index')->name('admin.dashboard');
-      Route::get('/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
+      Route::get('/logout', 'Auth\UnifiedLoginController@logout')->name('admin.logout');
 
       Route::middleware('admin.auth')->group(function() 
       {
@@ -238,6 +248,10 @@ Route::group(['middleware' => ['web']], function()
         //costs
         Route::resource('/invest', 'Admin\InvestController');
 
+        //careers
+        Route::resource('/career', 'Admin\CareerController');
+        Route::get('/career/{id}/delete', 'Admin\CareerController@destroy')->name('admin.career.delete');
+
         //get data from mikrotik
         Route::get('/get_user_from_router', 'Admin\UsersController@getRouterUsers');
 
@@ -268,9 +282,9 @@ Route::group(['middleware' => ['web']], function()
 
 	//user login functionality
 	Route::get('/home', 'User\HomeController@index');
-	Route::get('/login', 'Auth\UserLoginController@getLogin');
-	Route::post('/login', 'Auth\UserLoginController@login')->name('user.login');
-	Route::get('/logout', 'Auth\UserLoginController@logout')->name('user.logout');
+	Route::get('/login', 'Auth\UnifiedLoginController@showLoginForm')->name('login');
+	Route::post('/login', 'Auth\UnifiedLoginController@login')->name('login.post');
+	Route::get('/logout', 'Auth\UnifiedLoginController@logout')->name('logout');
 
 	//user profile
 	Route::get('/profile', 'User\ProfileController@show');

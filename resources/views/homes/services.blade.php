@@ -4,13 +4,13 @@ $source = new SourceCtrl;
 @endphp
 
 @extends('home')
-@section('title', 'Services')
+@section('title', __('messages.titles.services'))
 @section('content')
 
 <style type="text/css">
     .services-page {
         min-height: calc(100vh - 200px);
-        padding: 100px 0 0;
+        padding: 77px 0 0;
         background: #fff;
     }
 
@@ -163,7 +163,7 @@ $source = new SourceCtrl;
 
     .service-divider {
         height: 2px;
-        background: linear-gradient(to right, transparent, #000, transparent);
+        background: linear-gradient(to right, transparent, #1501ab, transparent);
         margin: 0;
         border: none;
     }
@@ -231,10 +231,9 @@ $source = new SourceCtrl;
 <div class="services-page">
     <!-- Header Section -->
     <div class="services-header">
-        <h1 class="services-title">আমাদের সেবাসমূহ</h1>
+        <h1 class="services-title">{{ __('messages.services.page_title') }}</h1>
         <p class="services-subtitle">
-            আমরা আপনার ব্যবসা এবং সংযোগের সকল প্রয়োজন মেটাতে সম্পূর্ণ প্রযুক্তি সমাধান প্রদান করি। 
-            আপনার ব্যবসাকে শক্তিশালী করার জন্য ডিজাইন করা আমাদের পেশাদার সেবার পরিসর অন্বেষণ করুন।
+            {{ __('messages.services.page_subtitle') }}
         </p>
     </div>
 
@@ -247,19 +246,17 @@ $source = new SourceCtrl;
                 </div>
             </div>
             <div class="service-content">
-                <p class="service-number">সেবা ০১</p>
-                <h2 class="service-name">ফাইবার অপটিক্স ইন্টারনেট</h2>
+                <p class="service-number">{{ __('messages.services.service_number') }} ০১</p>
+                <h2 class="service-name">{{ __('messages.services.fiber_title') }}</h2>
                 <p class="service-description">
-                    আমাদের উচ্চ গতির ফাইবার অপটিক ইন্টারনেট সেবার সাথে ইন্টারনেট সংযোগের ভবিষ্যত অনুভব করুন। 
-                    আমরা আবাসিক এবং বাণিজ্যিক উভয় গ্রাহকের জন্য অতি দ্রুত, নির্ভরযোগ্য ইন্টারনেট সংযোগ প্রদান করি, 
-                    আপনার সকল অনলাইন কার্যক্রমের জন্য ন্যূনতম বিলম্ব এবং সর্বোচ্চ কর্মক্ষমতা নিশ্চিত করে।
+                    {{ __('messages.services.fiber_desc') }}
                 </p>
                 <ul class="service-features">
-                    <li>অতি দ্রুত ডাউনলোড এবং আপলোড গতি</li>
-                    <li>গেমিং এবং স্ট্রিমিংয়ের জন্য ন্যূনতম বিলম্ব</li>
-                    <li>৯৯.৯% আপটাইম গ্যারান্টি</li>
-                    <li>২৪/৭ প্রযুক্তিগত সহায়তা</li>
-                    <li>স্কেলযোগ্য ব্যান্ডউইথ অপশন</li>
+                    <li>{{ __('messages.services.fiber_feature1') }}</li>
+                    <li>{{ __('messages.services.fiber_feature2') }}</li>
+                    <li>{{ __('messages.services.fiber_feature3') }}</li>
+                    <li>{{ __('messages.services.fiber_feature4') }}</li>
+                    <li>{{ __('messages.services.fiber_feature5') }}</li>
                 </ul>
             </div>
         </div>
@@ -276,20 +273,17 @@ $source = new SourceCtrl;
                 </div>
             </div>
             <div class="service-content">
-                <p class="service-number">সেবা ০২</p>
-                <h2 class="service-name">ওয়্যারলেস ইন্টারনেট</h2>
+                <p class="service-number">{{ __('messages.services.service_number') }} ০২</p>
+                <h2 class="service-name">{{ __('messages.services.wireless_title') }}</h2>
                 <p class="service-description">
-                    গুরুদাসপুরের যেকোনো দূরবর্তী অবস্থানে রেডিও ডিভাইসের মাধ্যমে ওয়্যারলেস ইন্টারনেট। 
-                    আমাদের ওয়্যারলেস ইন্টারনেট সমাধান এমন এলাকায় নির্ভরযোগ্য সংযোগ প্রদান করে যেখানে 
-                    ঐতিহ্যগত কেবল অবকাঠামো সম্ভব নয়। দূরবর্তী অবস্থান, গ্রামীণ এলাকা এবং নমনীয় সংযোগ 
-                    বিকল্প প্রয়োজন এমন ব্যবসার জন্য উপযুক্ত।
+                    {{ __('messages.services.wireless_desc') }}
                 </p>
                 <ul class="service-features">
-                    <li>গুরুদাসপুরের দূরবর্তী অবস্থানে কভারেজ</li>
-                    <li>কোনো কেবল ইনস্টলেশন প্রয়োজন নেই</li>
-                    <li>দ্রুত সেটআপ এবং স্থাপনা</li>
-                    <li>বিভিন্ন আবহাওয়ার অবস্থায় স্থিতিশীল সংযোগ</li>
-                    <li>দূরবর্তী এলাকার জন্য খরচ-কার্যকর সমাধান</li>
+                    <li>{{ __('messages.services.wireless_feature1') }}</li>
+                    <li>{{ __('messages.services.wireless_feature2') }}</li>
+                    <li>{{ __('messages.services.wireless_feature3') }}</li>
+                    <li>{{ __('messages.services.wireless_feature4') }}</li>
+                    <li>{{ __('messages.services.wireless_feature5') }}</li>
                 </ul>
             </div>
         </div>
@@ -306,20 +300,17 @@ $source = new SourceCtrl;
                 </div>
             </div>
             <div class="service-content">
-                <p class="service-number">সেবা ০৩</p>
-                <h2 class="service-name">সফটওয়্যার ডেভেলপমেন্ট সেবা</h2>
+                <p class="service-number">{{ __('messages.services.service_number') }} ০৩</p>
+                <h2 class="service-name">{{ __('messages.services.software_title') }}</h2>
                 <p class="service-description">
-                    আমাদের কাস্টম সফটওয়্যার ডেভেলপমেন্ট সেবার সাথে আপনার ব্যবসায়িক ধারণাগুলোকে শক্তিশালী 
-                    সফটওয়্যার সমাধানে রূপান্তর করুন। ওয়েব অ্যাপ্লিকেশন থেকে এন্টারপ্রাইজ সিস্টেম পর্যন্ত, 
-                    আমরা আপনার নির্দিষ্ট ব্যবসায়িক প্রয়োজন এবং উদ্দেশ্যের জন্য তৈরি উচ্চ-মানের, 
-                    স্কেলযোগ্য সফটওয়্যার সরবরাহ করি।
+                    {{ __('messages.services.software_desc') }}
                 </p>
                 <ul class="service-features">
-                    <li>কাস্টম ওয়েব অ্যাপ্লিকেশন ডেভেলপমেন্ট</li>
-                    <li>এন্টারপ্রাইজ সফটওয়্যার সমাধান</li>
-                    <li>মোবাইল অ্যাপ ডেভেলপমেন্ট</li>
-                    <li>API ইন্টিগ্রেশন এবং ডেভেলপমেন্ট</li>
-                    <li>চলমান রক্ষণাবেক্ষণ এবং সহায়তা</li>
+                    <li>{{ __('messages.services.software_feature1') }}</li>
+                    <li>{{ __('messages.services.software_feature2') }}</li>
+                    <li>{{ __('messages.services.software_feature3') }}</li>
+                    <li>{{ __('messages.services.software_feature4') }}</li>
+                    <li>{{ __('messages.services.software_feature5') }}</li>
                 </ul>
             </div>
         </div>
@@ -336,20 +327,17 @@ $source = new SourceCtrl;
                 </div>
             </div>
             <div class="service-content">
-                <p class="service-number">সেবা ০৪</p>
-                <h2 class="service-name">ইনভেন্টরি ম্যানেজমেন্ট সেবা</h2>
+                <p class="service-number">{{ __('messages.services.service_number') }} ০৪</p>
+                <h2 class="service-name">{{ __('messages.services.inventory_title') }}</h2>
                 <p class="service-description">
-                    আমাদের সম্পূর্ণ ইনভেন্টরি ম্যানেজমেন্ট সিস্টেমের সাথে আপনার ব্যবসায়িক কার্যক্রম 
-                    সুবিন্যস্ত করুন। আমাদের সমাধান আপনাকে দক্ষতার সাথে আপনার ইনভেন্টরি ট্র্যাক, পরিচালনা 
-                    এবং অপ্টিমাইজ করতে সাহায্য করে, খরচ কমানো এবং উৎপাদনশীলতা বৃদ্ধি করে। খুচরা, 
-                    পাইকারি এবং উৎপাদন ব্যবসার জন্য উপযুক্ত।
+                    {{ __('messages.services.inventory_desc') }}
                 </p>
                 <ul class="service-features">
-                    <li>রিয়েল-টাইম ইনভেন্টরি ট্র্যাকিং</li>
-                    <li>স্বয়ংক্রিয় স্টক লেভেল সতর্কতা</li>
-                    <li>মাল্টি-লোকেশন ইনভেন্টরি ম্যানেজমেন্ট</li>
-                    <li>বিস্তারিত রিপোর্টিং এবং বিশ্লেষণ</li>
-                    <li>বিদ্যমান সিস্টেমের সাথে ইন্টিগ্রেশন</li>
+                    <li>{{ __('messages.services.inventory_feature1') }}</li>
+                    <li>{{ __('messages.services.inventory_feature2') }}</li>
+                    <li>{{ __('messages.services.inventory_feature3') }}</li>
+                    <li>{{ __('messages.services.inventory_feature4') }}</li>
+                    <li>{{ __('messages.services.inventory_feature5') }}</li>
                 </ul>
             </div>
         </div>

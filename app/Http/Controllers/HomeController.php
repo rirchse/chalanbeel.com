@@ -80,6 +80,197 @@ class HomeController extends Controller
   {
     return view('homes.service-trusted-service');
   }
+
+  public function speedTest()
+  {
+    return view('homes.speed-test');
+  }
+
+  public function careers()
+  {
+    $careers = \App\Career::where('status', 1)
+      ->orderBy('created_at', 'DESC')
+      ->get();
+    return view('homes.careers', compact('careers'));
+  }
+
+  public function career($id)
+  {
+    $career = \App\Career::where('status', 1)->findOrFail($id);
+    return view('homes.career', compact('career'));
+  }
+
+  public function submitCareerApplication(Request $request, $id)
+  {
+    $career = \App\Career::where('status', 1)->findOrFail($id);
+    
+    // Validate the form data
+    $this->validate($request, [
+      'applicant_name' => 'required|max:255',
+      'applicant_email' => 'required|email|max:255',
+      'applicant_phone' => 'required|max:20',
+      'applicant_address' => 'nullable|max:500',
+      'applicant_experience' => 'nullable|max:2000',
+      'applicant_cover_letter' => 'nullable|max:3000',
+      'applicant_resume' => 'nullable|file|mimes:pdf,doc,docx|max:5120' // 5MB max
+    ]);
+
+    try {
+      // Use PHPMailer to send email
+      require_once base_path('vendor/autoload.php');
+      
+      $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
+      
+      // Server settings
+      $mail->isSMTP();
+      $mail->Host = env('MAIL_HOST', 'smtp.gmail.com');
+      $mail->SMTPAuth = true;
+      $mail->Username = env('MAIL_USERNAME');
+      $mail->Password = env('MAIL_PASSWORD');
+      $mail->SMTPSecure = env('MAIL_ENCRYPTION', 'tls');
+      $mail->Port = env('MAIL_PORT', 587);
+      $mail->CharSet = 'UTF-8';
+      
+      // Recipients
+      $mail->setFrom(env('MAIL_FROM_ADDRESS', 'noreply@chalanbeel.com'), env('MAIL_FROM_NAME', 'Chalanbeel Technology'));
+      $mail->addAddress('career@chalanbeel.com', 'Career Department');
+      
+      // Attach resume if uploaded
+      if ($request->hasFile('applicant_resume')) {
+        $resume = $request->file('applicant_resume');
+        $mail->addAttachment($resume->getRealPath(), $resume->getClientOriginalName());
+      }
+      
+      // Content
+      $mail->isHTML(true);
+      $mail->Subject = 'Job Application: ' . $career->title;
+      
+      $mail->Body = '
+        <html>
+        <head>
+          <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background: #000; color: #fff; padding: 20px; text-align: center; }
+            .content { background: #f9f9f9; padding: 20px; }
+            .field { margin-bottom: 15px; }
+            .label { font-weight: bold; color: #000; }
+            .value { margin-top: 5px; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h2>New Job Application</h2>
+            </div>
+            <div class="content">
+              <div class="field">
+                <div class="label">Position Applied For:</div>
+                <div class="value">' . htmlspecialchars($career->title) . '</div>
+              </div>
+              <div class="field">
+                <div class="label">Applicant Name:</div>
+                <div class="value">' . htmlspecialchars($request->applicant_name) . '</div>
+              </div>
+              <div class="field">
+                <div class="label">Email:</div>
+                <div class="value">' . htmlspecialchars($request->applicant_email) . '</div>
+              </div>
+              <div class="field">
+                <div class="label">Phone:</div>
+                <div class="value">' . htmlspecialchars($request->applicant_phone) . '</div>
+              </div>
+              <div class="field">
+                <div class="label">Address:</div>
+                <div class="value">' . htmlspecialchars($request->applicant_address ?? 'N/A') . '</div>
+              </div>
+              <div class="field">
+                <div class="label">Experience:</div>
+                <div class="value">' . nl2br(htmlspecialchars($request->applicant_experience ?? 'N/A')) . '</div>
+              </div>
+              <div class="field">
+                <div class="label">Cover Letter:</div>
+                <div class="value">' . nl2br(htmlspecialchars($request->applicant_cover_letter ?? 'N/A')) . '</div>
+              </div>
+              <div class="field">
+                <div class="label">Resume:</div>
+                <div class="value">' . ($request->hasFile('applicant_resume') ? $request->file('applicant_resume')->getClientOriginalName() : 'Not attached') . '</div>
+              </div>
+              <div class="field">
+                <div class="label">Application Date:</div>
+                <div class="value">' . date('F d, Y h:i A') . '</div>
+              </div>
+            </div>
+          </div>
+        </body>
+        </html>
+      ';
+      
+      $mail->AltBody = "
+        New Job Application
+        
+        Position: {$career->title}
+        Name: {$request->applicant_name}
+        Email: {$request->applicant_email}
+        Phone: {$request->applicant_phone}
+        Address: " . ($request->applicant_address ?? 'N/A') . "
+        Experience: " . ($request->applicant_experience ?? 'N/A') . "
+        Cover Letter: " . ($request->applicant_cover_letter ?? 'N/A') . "
+        Application Date: " . date('F d, Y h:i A') . "
+      ";
+      
+      $mail->send();
+      
+      return response()->json([
+        'success' => true,
+        'message' => __('messages.careers.application_submitted')
+      ]);
+      
+    } catch (\Exception $e) {
+      return response()->json([
+        'success' => false,
+        'message' => __('messages.careers.submission_error') . ': ' . $e->getMessage()
+      ], 500);
+    }
+  }
+
+  public function speedTestDownload(Request $request)
+  {
+    // Generate a test file of specified size (in MB)
+    $size = $request->input('size', 1); // Default 1MB
+    $sizeInBytes = $size * 1024 * 1024;
+    
+    // Generate random binary data
+    $data = random_bytes($sizeInBytes);
+    
+    return response($data)
+      ->header('Content-Type', 'application/octet-stream')
+      ->header('Content-Length', $sizeInBytes)
+      ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+      ->header('Pragma', 'no-cache')
+      ->header('Expires', '0');
+  }
+
+  public function speedTestUpload(Request $request)
+  {
+    // Receive uploaded data and return size
+    // Read the actual content to ensure it's received
+    $content = $request->getContent();
+    $size = strlen($content);
+    
+    return response()->json([
+      'received' => $size,
+      'timestamp' => microtime(true)
+    ]);
+  }
+
+  public function speedTestPing()
+  {
+    return response()->json([
+      'timestamp' => microtime(true)
+    ]);
+  }
+
     public function checkAccount()
     {
         $user = User::find(1);
@@ -118,7 +309,10 @@ class HomeController extends Controller
     public function index()
     {
         $message = Lang::get('messages.welcome');
-        $packages = Package::where('status', 'Active')
+        $packages = Package::where(function($query) {
+                $query->where('status', 'Active')
+                      ->orWhere('status', 1);
+            })
             ->orderBy('price', 'ASC')
             ->limit(6)
             ->get();

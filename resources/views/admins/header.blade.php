@@ -183,6 +183,20 @@
                     </div>
                 </li>
                 <li>
+                    <a data-toggle="collapse" href="#careers">
+                        <i class="material-icons">work</i>
+                        <p>Careers
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <div class="collapse" id="careers">
+                        <ul class="nav">
+                            <li><a href="{{route('career.create')}}">Add New Career</a></li>
+                            <li><a href="{{route('career.index')}}">View All Careers</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
                     <a data-toggle="collapse" href="#cmdAdmin">
                         <i class="material-icons">build</i>
                         <p>Settings

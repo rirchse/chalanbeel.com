@@ -1,5 +1,5 @@
 @extends('home')
-@section('title', 'মানচিত্রে ব্যবহারকারী')
+@section('title', __('messages.titles.map'))
 @section('content')
 
 <style>
@@ -205,41 +205,41 @@
     <div class="status-sidebar" id="statusSidebar">
         <h3>
             <i class="material-icons">dashboard</i>
-            ব্যবহারকারীর অবস্থা
+            {{ __('messages.map.user_status') }}
         </h3>
         <div class="status">
             <label class="text-warning">
                 <span class="status-label-content">
                     <i class="material-icons">fiber_new</i>
-                    <span>নতুন</span>
+                    <span>{{ __('messages.map.status_new') }}</span>
                 </span>
                 <span class="status-count">{{$status['new']}}</span>
             </label>
             <label class="text-success">
                 <span class="status-label-content">
                     <i class="material-icons">check_circle</i>
-                    <span>সক্রিয়</span>
+                    <span>{{ __('messages.map.status_active') }}</span>
                 </span>
                 <span class="status-count">{{$status['active']}}</span>
             </label>
             <label class="text-info">
                 <span class="status-label-content">
                     <i class="material-icons">wifi</i>
-                    <span>অনলাইন</span>
+                    <span>{{ __('messages.map.status_online') }}</span>
                 </span>
                 <span class="status-count">{{$status['online']}}</span>
             </label>
             <label class="text-danger">
                 <span class="status-label-content">
                     <i class="material-icons">wifi_off</i>
-                    <span>অফলাইন</span>
+                    <span>{{ __('messages.map.status_offline') }}</span>
                 </span>
                 <span class="status-count">{{$status['offline']}}</span>
             </label>
             <label class="text-default">
                 <span class="status-label-content">
                     <i class="material-icons">schedule</i>
-                    <span>মেয়াদ উত্তীর্ণ</span>
+                    <span>{{ __('messages.map.status_expire') }}</span>
                 </span>
                 <span class="status-count">{{$status['expire']}}</span>
             </label>
@@ -325,15 +325,23 @@
     }
 
     // Translate status for popup
+    const statusTranslations = {
+        'New': @json(__('messages.map.status_new')),
+        'Active': @json(__('messages.map.status_active')),
+        'Online': @json(__('messages.map.status_online')),
+        'Offline': @json(__('messages.map.status_offline')),
+        'Expire': @json(__('messages.map.status_expire'))
+    };
+    
+    const popupLabels = {
+        'status': @json(__('messages.map.popup_status')),
+        'ip': @json(__('messages.map.popup_ip')),
+        'uptime': @json(__('messages.map.popup_uptime')),
+        'view_location': @json(__('messages.map.popup_view_location'))
+    };
+    
     function translateStatus(status) {
-        const translations = {
-            'New': 'নতুন',
-            'Active': 'সক্রিয়',
-            'Online': 'অনলাইন',
-            'Offline': 'অফলাইন',
-            'Expire': 'মেয়াদ উত্তীর্ণ'
-        };
-        return translations[status] || status;
+        return statusTranslations[status] || status;
     }
 
     const customers = @json($customers);
@@ -345,10 +353,10 @@
         }).bindPopup(`
         <strong>${c.name}</strong>
         <br>
-        অবস্থা: ${translateStatus(c.status)} 
-        ${c.status == 'Active' ? `<br>IP: ${c.ip}<br>আপটাইম: ${c.uptime}`:''}
+        ${popupLabels.status}: ${translateStatus(c.status)} 
+        ${c.status == 'Active' ? `<br>${popupLabels.ip}: ${c.ip}<br>${popupLabels.uptime}: ${c.uptime}`:''}
         <br>
-        <a target="_blank" href="https://www.google.com/maps/place/${c.lat}, ${c.lng}">অবস্থান দেখুন</a>
+        <a target="_blank" href="https://www.google.com/maps/place/${c.lat}, ${c.lng}">${popupLabels.view_location}</a>
         `);
         marker.addTo(map);
     });

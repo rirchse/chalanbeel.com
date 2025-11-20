@@ -1,5 +1,5 @@
 @extends('home')
-@section('title', 'স্থিতিশীল সংযোগ')
+@section('title', __('messages.titles.service_stable_connection'))
 @section('content')
 
 <style type="text/css">
@@ -171,31 +171,27 @@
         <div class="service-hero-icon">
             <i class="material-icons">wifi</i>
         </div>
-        <h1 class="service-hero-title">স্থিতিশীল সংযোগ</h1>
+        <h1 class="service-hero-title">{{ __('messages.service_stable.hero_title') }}</h1>
         <p class="service-hero-subtitle">
-            বিরতিহীন এবং স্থিতিশীল ইন্টারনেট সংযোগের জন্য আমাদের সেবা গ্রহণ করুন। 
-            আপনার কাজে বাধা না দিয়ে নিশ্ছিদ্র ইন্টারনেট সংযোগ উপভোগ করুন।
+            {{ __('messages.service_stable.hero_subtitle') }}
         </p>
     </div>
 
     <div class="service-content-section">
         <p class="service-description">
-            চলনবিল টেকনলজি আপনাকে প্রদান করে সর্বোচ্চ নির্ভরযোগ্য এবং স্থিতিশীল ইন্টারনেট সংযোগ। 
-            আমাদের উন্নত নেটওয়ার্ক অবকাঠামো এবং ২৪/৭ মনিটরিং সিস্টেমের মাধ্যমে আমরা নিশ্চিত করি 
-            যে আপনার ইন্টারনেট সংযোগ সর্বদা সক্রিয় এবং স্থিতিশীল থাকবে।
+            {{ __('messages.service_stable.description') }}
         </p>
 
-        <h2 class="section-title">স্থিতিশীল সংযোগের সুবিধা</h2>
+        <h2 class="section-title">{{ __('messages.service_stable.features_title') }}</h2>
 
         <div class="service-features">
             <div class="feature-card">
                 <div class="feature-icon">
                     <i class="material-icons">signal_wifi_4_bar</i>
                 </div>
-                <h3 class="feature-title">৯৯.৯% আপটাইম</h3>
+                <h3 class="feature-title">{{ __('messages.service_stable.feature_uptime_title') }}</h3>
                 <p class="feature-description">
-                    আমাদের নেটওয়ার্ক ৯৯.৯% আপটাইম গ্যারান্টি প্রদান করে, 
-                    যার অর্থ আপনার সংযোগ সর্বদা সক্রিয় থাকবে।
+                    {{ __('messages.service_stable.feature_uptime_desc') }}
                 </p>
             </div>
 
@@ -203,9 +199,9 @@
                 <div class="feature-icon">
                     <i class="material-icons">network_check</i>
                 </div>
-                <h3 class="feature-title">নিরবচ্ছিন্ন সংযোগ</h3>
+                <h3 class="feature-title">{{ __('messages.service_stable.feature_uninterrupted_title') }}</h3>
                 <p class="feature-description">
-                    বৃষ্টি, ঝড় বা যেকোনো আবহাওয়ায়ও আপনার ইন্টারনেট সংযোগ স্থিতিশীল থাকবে।
+                    {{ __('messages.service_stable.feature_uninterrupted_desc') }}
                 </p>
             </div>
 
@@ -213,9 +209,9 @@
                 <div class="feature-icon">
                     <i class="material-icons">monitoring</i>
                 </div>
-                <h3 class="feature-title">২৪/৭ মনিটরিং</h3>
+                <h3 class="feature-title">{{ __('messages.service_stable.feature_monitoring_title') }}</h3>
                 <p class="feature-description">
-                    আমাদের নেটওয়ার্ক ২৪/৭ মনিটরিং করা হয় যাতে কোনো সমস্যা হলে তাৎক্ষণিক সমাধান করা যায়।
+                    {{ __('messages.service_stable.feature_monitoring_desc') }}
                 </p>
             </div>
 
@@ -223,9 +219,9 @@
                 <div class="feature-icon">
                     <i class="material-icons">backup</i>
                 </div>
-                <h3 class="feature-title">ব্যাকআপ সিস্টেম</h3>
+                <h3 class="feature-title">{{ __('messages.service_stable.feature_backup_title') }}</h3>
                 <p class="feature-description">
-                    আমাদের নেটওয়ার্কে ব্যাকআপ সিস্টেম রয়েছে যা মূল সংযোগে সমস্যা হলে স্বয়ংক্রিয়ভাবে সক্রিয় হয়।
+                    {{ __('messages.service_stable.feature_backup_desc') }}
                 </p>
             </div>
 
@@ -233,9 +229,9 @@
                 <div class="feature-icon">
                     <i class="material-icons">speed</i>
                 </div>
-                <h3 class="feature-title">স্থির গতি</h3>
+                <h3 class="feature-title">{{ __('messages.service_stable.feature_consistent_speed_title') }}</h3>
                 <p class="feature-description">
-                    আপনার প্যাকেজ অনুযায়ী সর্বদা স্থির গতি পাবেন, কোনো সময় গতি কমবে না।
+                    {{ __('messages.service_stable.feature_consistent_speed_desc') }}
                 </p>
             </div>
 
@@ -243,18 +239,18 @@
                 <div class="feature-icon">
                     <i class="material-icons">settings_backup_restore</i>
                 </div>
-                <h3 class="feature-title">দ্রুত পুনরুদ্ধার</h3>
+                <h3 class="feature-title">{{ __('messages.service_stable.feature_fast_recovery_title') }}</h3>
                 <p class="feature-description">
-                    কোনো সমস্যা হলে আমাদের দল তাৎক্ষণিকভাবে সমাধান করে আপনার সংযোগ পুনরুদ্ধার করে।
+                    {{ __('messages.service_stable.feature_fast_recovery_desc') }}
                 </p>
             </div>
         </div>
     </div>
 
     <div class="cta-section">
-        <h2 style="font-size: 32px; margin-bottom: 15px;">স্থিতিশীল সংযোগের জন্য এখনই যোগ দিন</h2>
-        <p style="font-size: 18px; margin-bottom: 30px;">আমাদের প্যাকেজ দেখুন এবং সাবস্ক্রাইব করুন</p>
-        <a href="/package" class="cta-button">প্যাকেজ দেখুন</a>
+        <h2 style="font-size: 32px; margin-bottom: 15px;">{{ __('messages.service_stable.cta_title') }}</h2>
+        <p style="font-size: 18px; margin-bottom: 30px;">{{ __('messages.service_stable.cta_subtitle') }}</p>
+        <a href="/package" class="cta-button">{{ __('messages.service_stable.cta_button') }}</a>
     </div>
 </div>
 
