@@ -309,19 +309,19 @@ class HomeController extends Controller
     //user dashboard login by admin
     public function adminLoginTo()
     {
-        if(!empty(Session::get('_admuser'))){
-            $admuser = Session::get('_admuser');
+      if(!empty(Session::get('_admuser'))){
+          $admuser = Session::get('_admuser');
 
-            if(Auth::guard('admin')->check() == true){
+          if(Auth::guard('admin')->check() == true){
 
-                if(Auth::loginUsingId($admuser['userId'])){
-                    Session::forget('_admuser');
-                    return redirect('/home');
-                }
-            }
-        }
+              if(Auth::loginUsingId($admuser['userId'])){
+                  Session::forget('_admuser');
+                  return redirect('/home');
+              }
+          }
+      }
 
-        return redirect('admin/view_users/active');
+      return redirect('admin/view_users/active');
     }
 
     public function ConnectTest()
