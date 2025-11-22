@@ -39,8 +39,7 @@ class PackageCtrl extends Controller
     public function index()
     {
         $packages = Package::where(function($query) {
-                $query->where('status', 'Active')
-                      ->orWhere('status', 1);
+                $query->where('status', 'Active');
             })
             ->orderBy('price', 'ASC')
             ->get();

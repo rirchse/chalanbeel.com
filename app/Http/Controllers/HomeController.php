@@ -333,8 +333,7 @@ class HomeController extends Controller
     {
         $message = Lang::get('messages.welcome');
         $packages = Package::where(function($query) {
-                $query->where('status', 'Active')
-                      ->orWhere('status', 1);
+                $query->where('status', 'Active');
             })
             ->orderBy('price', 'ASC')
             ->limit(6)
