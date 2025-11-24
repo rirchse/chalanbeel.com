@@ -246,6 +246,7 @@ $source = new SourceCtrl;
 
 @section('scripts')
 <script>
+  let preloader = document.getElementById('preloader');
   const serviceParts = document.getElementById('serviceParts');
   function selectService(e)
   {
@@ -299,12 +300,14 @@ $source = new SourceCtrl;
 
   function showModal(e)
   {
+    preloader.style.display = 'block';
     const editform = document.getElementById('submitEditForm');
 
     $.ajax({
       type: 'GET',
       url: '{{route("user.show", "")}}/'+e.dataset.id,
       success: function(data){
+        preloader.style.display = 'none';
         let elm = editform.elements;
         elm.id.value = data.user.id;
         elm.name.value = data.user.name;

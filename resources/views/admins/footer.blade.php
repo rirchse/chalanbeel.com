@@ -19,6 +19,25 @@
             </footer>
         </div>
     </div>
+    <style>
+      .preloader{
+        text-align: center;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0,0,0,0.5);
+        padding-top: 25%;
+        display: none
+      }
+      .preloader img{
+        max-width: 60px
+      }
+    </style>
+    <div class="preloader" id="preloader">
+      <img src="/images/preloader.gif" alt="">
+    </div>
 @section('scripts')
 <script type="text/javascript">
     $(document).ready(function() {
