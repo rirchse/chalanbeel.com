@@ -307,7 +307,6 @@ $source = new SourceCtrl;
       type: 'GET',
       url: '{{route("user.show", "")}}/'+e.dataset.id,
       success: function(data){
-        preloader.style.display = 'none';
         let elm = editform.elements;
         elm.id.value = data.user.id;
         elm.name.value = data.user.name;
@@ -371,6 +370,8 @@ $source = new SourceCtrl;
         }
 
         elm.mac.value = data.user.mac;
+
+        preloader.style.display = 'none';
         
       },
       error: function(data){
