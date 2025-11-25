@@ -289,6 +289,7 @@ class UsersController extends Controller
         $data['lat'] = $lat;
         $data['lng'] = $long;
         $data['updated_by'] = auth()->id();
+        $data['password'] = bcrypt($data['contact']);
 
         try {
           //save image//
