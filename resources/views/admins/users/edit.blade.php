@@ -112,7 +112,7 @@
                                       <option value="PON1" {{$user->pon == 'PON1'? 'selected':''}}>PON1</option>
                                       <option value="PON2" {{$user->pon == 'PON2'? 'selected':''}}>PON2</option>
                                       <option value="PON3" {{$user->pon == 'PON3'? 'selected':''}}>PON3</option>
-                                      {{-- <option value="PON4">PON4</option> --}}
+                                      <option value="PON4">PON4</option>
                                       <option value="RADIO" {{$user->pon == 'RADIO'? 'selected':''}}>RADIO</option>
                                     </select>
                                 </div>

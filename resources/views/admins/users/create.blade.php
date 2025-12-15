@@ -77,7 +77,7 @@
                                     <option value="PON1">PON1</option>
                                     <option value="PON2">PON2</option>
                                     <option value="PON3">PON3</option>
-                                    {{-- <option value="PON4">PON4</option> --}}
+                                    <option value="PON4">PON4</option>
                                     <option value="RADIO">RADIO</option>
                                   </select>
                               </div>

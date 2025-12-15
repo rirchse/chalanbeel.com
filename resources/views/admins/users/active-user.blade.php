@@ -29,11 +29,10 @@
                         <tbody>
 
                           @foreach ($arp_users as $key => $item)
-                          <tr style="{{$item['status'] == 'Unknown' ? 'color:red':''}}">
+                          <tr style="{{$item['status'] == 'No Entry' ? 'color:red':''}}">
                             <td>{{$key+1}}</td>
                             <td>{{$item['address']}}</td>
                             <td>{{$item['status']}}</td>
-                            <td>{{$item['name']}}</td>
                             <td>{{$item['interface']}}</td>
                           </tr>
                               

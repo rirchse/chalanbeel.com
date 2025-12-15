@@ -557,6 +557,7 @@ class UsersController extends Controller
   public function activeUsers()
   {
     $url = 'https://chalanbeel.com/api/user?service_type=Static&iparray=true';
+    // $url = 'http://dev.cbt/api/user?service_type=Static&iparray=true';
     // cURL request
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -569,10 +570,22 @@ class UsersController extends Controller
     $response = curl_exec($ch);
     curl_close($ch);
     
-    $users = json_decode($response, true);
+    $ips = json_decode($response, true);
 
-    // $router = new Router;
-    // $arp_users = $router->activeArp();
+    $router = new Router;
+    $arp_users = $router->activeArp();
+
+    foreach($arp_users as $key => $ip)
+    {
+      if(in_array($ip['address'], $ips))
+      {
+        $arp_users[$key]['status'] = 'Entry';
+      }
+      else
+      {
+        $arp_users[$key]['status'] = 'No Entry';
+      }
+    }
     
     // for($u = 0; $u < count($arp_users); $u++)
     // {
@@ -592,7 +605,7 @@ class UsersController extends Controller
     //   }
     // }
 
-    dd($users);
+    // dd($users);
 
     return view('admins.users.active-user', compact('arp_users'));
   }
