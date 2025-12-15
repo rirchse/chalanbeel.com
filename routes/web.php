@@ -89,7 +89,8 @@ Route::group(['middleware' => ['web']], function()
 	// 	//
 	// });
 
-	Route::get('/package/{id}/select', 'PackageCtrl@select');
+    Route::get('/package/{id}/select', 'PackageCtrl@select');
+    
 	Route::get('/register/create/{package_id?}', 'RegisterController@create')->name('register.create');
 	Route::post('/register', 'RegisterController@store')->name('register.store');
 	Route::get('/register/{token}', 'RegisterController@show')->name('register.show');
@@ -97,15 +98,15 @@ Route::group(['middleware' => ['web']], function()
 	Route::put('/register/{token}', 'RegisterController@update')->name('register.update');
 	Route::put('/register/{token}/sendsms', 'RegisterController@sendSMS')->name('register.sendsms');
 
-	Route::get('/router_connect', 'Router@ConnectTest');
+	Route::get('/router-connect', 'Router@Connect');
 
 	Route::get('/admin_loginto', 'HomeController@adminLoginTo')->name('login');
 	Route::get('/check-account', 'HomeController@checkAccount')->name('check_account');
 	Route::post('/check-account-details', 'HomeController@checkAccountDetails')->name('check_account_details');
 
 
-
-	// Auth::routes();
+	Auth::routes();
+  Route::get('get-package/{package_id}', 'User\HomeController@getPackage')->name('user.get-package');
 	/** bkash payment API */
 	// Route::controller('Bkash\BkashController')->group(function()
 	// {
@@ -183,6 +184,8 @@ Route::group(['middleware' => ['web']], function()
 
           Route::get('check-available-ip/{ip}', 'checkIP')->name('user.check-ip');
           Route::post('get-payment', 'getPayment')->name('user.get-payment');
+
+          Route::get('/active/arp-user', 'activeUsers')->name('user.arp-user');
         });
         
         //packages

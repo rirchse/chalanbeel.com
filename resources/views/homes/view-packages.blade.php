@@ -452,7 +452,7 @@
                         @endforeach
                     </div>
 
-                    <a href="/register/create/{{ $package->id }}" class="package-btn">
+                    <a href="{{ route('user.get-package', $package->id) }}" class="package-btn">
                         <i class="material-icons">shopping_cart</i>
                         {{ __('messages.packages.buy_now') }}
                     </a>

@@ -188,7 +188,7 @@ $source = new SourceCtrl;
           <input type="hidden" name="user_id" value="{{$user->id}}">
           <div class="form-group">
             <label for="">Payment Received:</label>
-            <input type="date" name="pament_receive" class="form-control" value="{{date('Y-m-d')}}">
+            <input type="date" name="payment_receive" class="form-control" value="{{date('Y-m-d')}}">
           </div>
           <div class="form-group">
             <label for="">Amount:</label>

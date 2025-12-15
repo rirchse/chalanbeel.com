@@ -139,7 +139,7 @@ class PackageCtrl extends Controller
         //validate the data
         $this->validate($request, array(
 
-            'full_name'    => 'required|min:2|max:32',
+            'name'    => 'required|min:2|max:32',
             'email'         => 'unique:users|email|max:50|nullable',
             'contact'       => 'required|min:11|max:11|confirmed',
             'service'       => 'required|max:255',

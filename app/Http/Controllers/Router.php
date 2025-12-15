@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-use PEAR2\Net\RouterOS;
+use RouterOS\Client;
+use RouterOS\Query;
 
 use Illuminate\Http\Request;
 use App\Users;
@@ -28,13 +29,31 @@ class Router extends Controller
 
     static function Connect()
     {
-        require_once 'PEAR2/Autoload.php';
-        try { 
-        // return $util = new RouterOS\Util($client = new RouterOS\Client('160.202.145.78', 'rocky', 'rockyadmin'));// echo 'Router Connected!';
-        return $util = new RouterOS\Util($client = new RouterOS\Client('172.17.0.1', 'phpadmin', 'adm!n@AP!'));// echo 'Router Connected!';
-        // return $util = new RouterOS\Util($client = new RouterOS\Client('192.168.11.1', 'admin', 'admin'));
-        echo 'Router Connected!';
-        } catch (Exception $e) { echo 'Unable to connect to RouterOS.';}
+      $router_host = 'e14e0dffbae9.sn.mynetname.net';
+      $router_user = 'apiadmin';
+      $router_password = '@p!@dm!n122025';
+
+      $client = new Client([
+        'host' => $router_host,
+        'user' => $router_user,
+        'pass' => $router_password,
+        // 'port' => 8728, // or 8729 if using SSL
+      ]);
+
+      return $client;
+      
+      // $query = (new Query('/ip/arp/print'));
+      
+      // $response = $client->query($query)->read();
+      
+      // dd($response);
+    }
+
+    public function activeArp()
+    {
+      $query = (new Query('/ip/arp/print'));      
+      $response = $this->connect()->query($query)->read();
+      return $response;
     }
 
     static function pppuser($name)

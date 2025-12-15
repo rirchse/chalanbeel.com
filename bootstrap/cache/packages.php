@@ -1,13 +1,24 @@
 <?php return array (
-  'intervention/image' => 
+  'evilfreelancer/routeros-api-php' => 
   array (
     'aliases' => 
     array (
-      'Image' => 'Intervention\\Image\\Facades\\Image',
+      'RouterOS' => 'RouterOS\\Laravel\\Facade',
     ),
     'providers' => 
     array (
+      0 => 'RouterOS\\Laravel\\ServiceProvider',
+    ),
+  ),
+  'intervention/image' => 
+  array (
+    'providers' => 
+    array (
       0 => 'Intervention\\Image\\ImageServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Image' => 'Intervention\\Image\\Facades\\Image',
     ),
   ),
   'laravel/tinker' => 

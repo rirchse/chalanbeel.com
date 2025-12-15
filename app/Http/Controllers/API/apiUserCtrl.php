@@ -19,6 +19,8 @@ class apiUserCtrl extends Controller
     $status = $request->input('status');
     $date = $request->input('date');
     $service_type = $request->input('service_type');
+    $ip = $request->input('ip');
+    $iparray = $request->input('iparray');
 
 		$users = User::query()
     ->when($status, function($query, $status)
@@ -33,8 +35,20 @@ class apiUserCtrl extends Controller
     {
       $query->where('service_type', $service_type);
     })
-    ->select('id', 'name', 'contact', 'ip', 'mac')
-    ->get();
+    ->when($ip, function($query, $ip)
+    {
+      $query->where('ip', $ip);
+    });
+
+    if($iparray)
+    {
+      $users = $users->pluck('ip')->toArray();
+    }
+    else
+    {
+      $users = $users->select('id', 'name', 'contact', 'ip', 'mac')
+      ->get();
+    }
 
     return $users;
 	}

@@ -96,69 +96,63 @@ class RegisterController extends Controller
      */
     public function store(Request $request)
     {
-        //validate the data
-        $this->validate($request, array(
+      //validate the data
+      $this->validate($request, array(
+        'name'          => 'required|min:2|max:32',
+        'email'         => 'unique:users|email|max:50|nullable',
+        'contact'       => 'unique:users|required|min:11|max:11',
+        'address'       => 'max:255',
+        'profession'    => 'max:255',
+        'join_date'     => 'max:255',
+        'details'       => 'max:500',
+        'profile_image' => 'image'
+      ));
 
-            'full_name'     => 'required|min:2|max:32',
-            'email'         => 'unique:users|email|max:50|nullable',
-            'contact'       => 'required|confirmed|min:11|max:11',
-            'area'          => 'max:255',
-            'profession'    => 'max:255',
-            'join_date'     => 'max:255',
-            'details'       => 'max:500',
-            'profile_image' => 'image'
+      $lat = $long = null;
+      if(isset($request->lat_long))
+      {
+        $arr = explode(',', str_replace(' ', '', $request->lat_long));
+        $lat = $arr[0];
+        $long = $arr[1];
+      }
 
-        )); 
+      //store in the database
+      $user = new User;
+      $user->name         = $request->name;
+      $user->contact      = $request->contact;
+      $user->email        = $request->email;
+      $user->username     = $request->contact;
+      $user->password     = bcrypt($request->contact);
+      $user->work_at      = $request->work_at;
+      $user->profession   = $request->profession;
+      $user->join_date    = date('Y-m-d');
+      $user->details      = $request->details;
+      $user->status       = 'New';
+      $user->lat          = $lat;
+      $user->lng          = $long;
+      
+      // Store package ID if selected
+      if ($request->package_id) {
+        $user->package_id = $request->package_id;
+        Session::forget('selected_package_id');
+      }
 
-        if( !empty(User::where('contact', $request->contact)->orderBy('id', 'DESC')->first()) || !empty(User::where('email', $request->email)->orderBy('id', 'DESC')->first()) ) {
+      //save image//
+      if($request->hasFile('profile_image')){
+        $image = $request->file('profile_image');
+        $filename = time() . '.' . $image->getClientOriginalExtension();
+        $location = ('images/' . $filename);
+        Image::make($image)->resize(400, 400)->save($location);
 
-        //session flashing
-        Session::flash('error', 'You are already registered. Please login to the account using your mobile number as username and password. Otherwise, contact with service provider.');
+        $user->image = $filename;
+      }
+      $user->save();
 
-        //return to the show page
-        return redirect('/login');
+      //session flashing
+      Session::flash('success', 'Thank you for Sign up! <br> Please login to your account using your mobile number and password<br> <b>Default Username & Password your contact number</b>.');
 
-        } else {
-        
-            //store in the database
-            $user = new User;
-            $user->full_name    = $request->full_name;
-            $user->contact      = $request->contact;
-            $user->email        = $request->email;
-            $user->username     = $request->contact;
-            $user->password     = bcrypt($request->contact);
-            $user->work_at      = $request->work_at;
-            $user->profession   = $request->profession;
-            $user->join_date    = date('Y-m-d');
-            $user->details      = $request->details;
-            // $user->mac_address  = $mac;
-            $user->location_id  = $request->area;
-            $user->created_by   = 0;
-            $user->status       = 0;
-            
-            // Store package ID if selected
-            if ($request->package_id) {
-                $user->package_id = $request->package_id;
-                Session::forget('selected_package_id');
-            }
-
-            //save image//
-            if($request->hasFile('profile_image')){
-                $image = $request->file('profile_image');
-                $filename = time() . '.' . $image->getClientOriginalExtension();
-                $location = ('images/' . $filename);
-                Image::make($image)->resize(400, 400)->save($location);
-
-                $user->image = $filename;
-            }
-            $user->save();
-
-            //session flashing
-            Session::flash('success', 'Thank you for Sign up! <br> Please login to your account using your mobile number and password and get full free access of 1Day free package.');
-
-            //return to the show page
-            return redirect('/contact/verify');
-        }
+      //return to the show page
+      return redirect('/login');
     }
 
     /**

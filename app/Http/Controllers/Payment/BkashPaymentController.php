@@ -11,6 +11,7 @@ use App\Service;
 use App\ServicePlan;
 use App\User;
 use App\Payment;
+use App\Package;
 use Session;
 use DB;
 
@@ -25,15 +26,19 @@ class BkashPaymentController extends Controller
         ->first();
 
         $amount = 0;
-        $additional = [];
+        $additional = [
+          'payerReference'=> '_'.$user->contact, 
+          'merchantInvoiceNumber' => date('Ymd-H:i:s')
+        ];
 
-        if($user->package)
+        if(Session::get('_package_id'))
+        {
+          $package = Package::find(Session::get('_package_id'));
+          $amount = $package->price;
+        }
+        elseif($user->package)
         {
           $amount = $user->package->price;
-          $additional = [
-            'payerReference'=> '_'.$user->contact, 
-            'merchantInvoiceNumber' => date('Ymd-H:i:s')
-          ];
         }
         else
         {
@@ -46,6 +51,7 @@ class BkashPaymentController extends Controller
           $response = CheckoutUrl::Create($amount, $additional);  
           return redirect($response->bkashURL);
         }
+        
         Session::flash('error', 'Billing amount not decided.');
         return back();
     }
@@ -68,29 +74,37 @@ class BkashPaymentController extends Controller
             {
               // update user database
               try {
-                $user = User::find(auth()->id());
-                if($user->status != 'Active')
+                if(Session::get('_package_id'))
                 {
-                  User::where('id', auth()->id())->update(
+                  User::where('id', auth()->id())
+                  ->update(
                     [
-                      'payment_date' => date('Y-m-d', strtotime('+30 days')),
-                      'balance' => DB::raw("balance + ".intval($user->package->price)),
-                      'status' => 'Active'
+                      'package_id' => Session::get('_package_id')
                     ]
                   );
-  
-                  // add to the payment
-                  Payment::create([
-                    'receive' => $user->package->price,
-                    'user_id' => $user->id,
-                    'status' => 'Paid',
-                    'trxid' => $request->input('paymentID')
-                  ]);
-              
-                  //Database Insert Operation
-                  return redirect('/home');
-                  return CheckoutUrl::Success($response->trxID."({$response->transactionStatus})");
                 }
+
+                $user = User::find(auth()->id());
+                User::where('id', auth()->id())->update(
+                  [
+                    'payment_date' => date('Y-m-d', strtotime('+30 days')),
+                    'balance' => DB::raw("balance + ".intval($user->package->price)),
+                    'status' => 'Active'
+                  ]
+                );
+
+                // add to the payment
+                Payment::create([
+                  'receive' => $user->package->price,
+                  'receive_date' => date('Y-m-d'),
+                  'user_id' => $user->id,
+                  'status' => 'Paid',
+                  'trxid' => $request->input('paymentID')
+                ]);
+            
+                //Database Insert Operation
+                return redirect('/home');
+                return CheckoutUrl::Success($response->trxID."({$response->transactionStatus})");
               }
               catch(\Exception $e)
               {

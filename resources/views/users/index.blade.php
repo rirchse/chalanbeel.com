@@ -25,6 +25,8 @@ $source = new SourceCtrl;
                     <th>Join Date</th>
                     <td>{{$source->dtformat($user->join_date)}}</td>
                 </tr>
+
+                @if($user->package)
                 <tr>
                     <th>Billing Date</th>
                     <td>{{$source->dtformat($user->billing_date)}}</td>
@@ -71,6 +73,27 @@ $source = new SourceCtrl;
                     </td>
                 </tr>
                 @endif
+                @endif
+                <tr>
+                  <td colspan="2">
+                    
+                    {{-- <form action="">
+                      <div class="form-group">
+                        <label for="">Select Package:</label>
+                        <select name="package_id" id="" class="form-control">
+                          @foreach($packages as $package)
+                          <option value="{{$package->id}}">{{$package->speed}} Mbps -- {{$package->price}} Taka</option>
+                          @endforeach
+                        </select>
+                      </div>
+                      <button type="submit" class="btn btn-warning">
+                        <img src="/images/icons/bkash.png" alt="" style="width:60px">
+                        Pay Now
+                      </button>
+                    </form> --}}
+                    
+                  </td>
+                </tr>
             </table>
         </div>
     </div>

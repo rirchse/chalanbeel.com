@@ -694,18 +694,18 @@
                 <div class="form-group">
                     <div class="input-wrapper">
                         <i class="material-icons input-icon">person</i>
-                        {{ Form::text('full_name', null, ['class' => 'form-control', 'id' => 'full_name', 'required', 'placeholder' => __('messages.register.full_name')]) }}
+                        {{ Form::text('name', null, ['class' => 'form-control', 'id' => 'name', 'required', 'placeholder' => __('messages.register.name')]) }}
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="input-wrapper">
                         <i class="material-icons input-icon">phone</i>
-                        {{ Form::text('contact', null, ['class' => 'form-control', 'id' => 'contact', 'required', 'maxlength' => '11', 'pattern' => '[0-9]{11}', 'placeholder' => __('messages.register.mobile_number')]) }}
+                        {{ Form::text('contact', null, ['class' => 'form-control', 'id' => 'contact', 'required', 'maxlength' => '11', 'pattern' => '[0-9]{11}', 'placeholder' => __('messages.register.contact')]) }}
                     </div>
                 </div>
 
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <div class="input-wrapper">
                         <i class="material-icons input-icon">phone_android</i>
                         {{ Form::text('contact_confirmation', null, ['class' => 'form-control', 'id' => 'contact_confirmation', 'required', 'maxlength' => '11', 'pattern' => '[0-9]{11}', 'placeholder' => __('messages.register.confirm_mobile')]) }}
@@ -717,13 +717,9 @@
                         <i class="material-icons input-icon">email</i>
                         {{ Form::email('email', null, ['class' => 'form-control', 'id' => 'email', 'placeholder' => __('messages.register.email')]) }}
                     </div>
-                </div>
+                </div> --}}
 
-                <div class="form-group">
-                    {{-- <label for="area" class="form-label">
-                        <i class="material-icons" style="vertical-align: middle; font-size: 18px; margin-right: 5px;">place</i>
-                        {{ app()->getLocale() == 'bn' ? 'এলাকা নির্বাচন করুন' : 'Select Area' }}
-                    </label> --}}
+                {{-- <div class="form-group">
                     <div class="input-wrapper">
                         <i class="material-icons input-icon">place</i>
                         <div class="custom-select-wrapper">
@@ -749,7 +745,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="form-group">
                     <div class="input-wrapper">
@@ -757,6 +753,15 @@
                         {{ Form::textarea('details', null, ['class' => 'form-control', 'id' => 'address', 'rows' => 3, 'placeholder' => __('messages.register.address')]) }}
                     </div>
                 </div>
+                
+                <div class="input-group">
+                  <input type="text" name="lat_long" id="lat_long" class="form-control" placeholder="{{__('messages.register.map')}}">
+                  <span class="input-group-addon">
+                    <button type="button" data-toggle="modal" data-target="#map_modal">
+                      <i class="fa fa-map"></i>
+                    </button>
+                  </span>
+              </div>
 
                 <button type="submit" class="submit-btn">
                     {{ __('messages.register.submit') }}
@@ -766,6 +771,28 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="map_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Google Map</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <div id="map" style="width:100%; height:400px; margin-top:0"></div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-dismiss="modal">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{{'/js/open-map.js?v=1.0.2'}}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const customSelect = document.getElementById('customAreaSelect');

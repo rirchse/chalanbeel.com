@@ -167,8 +167,8 @@ return [
     'register.price' => 'মূল্য',
     'register.divider_text' => 'অথবা আপনার ইমেইল দিয়ে নিবন্ধন করুন',
     'register.alert_message' => 'অনুগ্রহ করে সঠিক তথ্য দিয়ে নিবন্ধন করুন এবং আপনার মোবাইল নম্বর দুবার পরীক্ষা করুন।',
-    'register.full_name' => 'আপনার পূর্ণ নাম',
-    'register.mobile_number' => 'মোবাইল নম্বর',
+    'register.name' => 'আপনার পূর্ণ নাম',
+    'register.contact' => 'মোবাইল নম্বর',
     'register.confirm_mobile' => 'মোবাইল নম্বর নিশ্চিত করুন',
     'register.email' => 'ইমেইল ঠিকানা (ঐচ্ছিক)',
     'register.select_area' => 'এলাকা নির্বাচন করুন',
@@ -176,6 +176,7 @@ return [
     'register.address' => 'সম্পূর্ণ ঠিকানা',
     'register.submit' => 'নিবন্ধন করুন',
     'register.no_results' => 'কোন ফলাফল পাওয়া যায়নি',
+    'register.map' => 'গুগল ম্যাপ এড্রেস',
     
     // Footer
     'footer.about_us' => 'আমাদের সম্পর্কে',

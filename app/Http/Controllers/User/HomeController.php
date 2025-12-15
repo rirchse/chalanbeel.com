@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Payment\BkashPaymentController;
 use App\Users;
 use App\Paymethod;
 use App\ActiveService;
@@ -49,7 +50,10 @@ class HomeController extends Controller
         ->leftJoin('users', 'users.id', 'services.user_id')
         ->where('services.user_id', $user->id)
         ->get();
-        return view('users.index')->withServices($services)->withPayments($payments);
+
+        $packages = Package::where('status', 'Active')->get();
+        return view('users.index', compact('services', 'payments', 'packages'));
+        // ->withServices($services)->withPayments($payments);
     }
 
     public function check_package()
@@ -273,12 +277,29 @@ class HomeController extends Controller
 
     public function get_package($id)
     {
-        $package = Package::find($id);
-        if($package->status != 1) {
-            Session::flash('error', 'Sorry! this package is not active. Please chose another package.');
-            return redirect('/view_packages');
-        } else {
-            return view('users.get_package')->withPackage($package);
-        }        
+      $package = Package::find($id);
+      if($package->status != 1) {
+        Session::flash('error', 'Sorry! this package is not active. Please chose another package.');
+        return redirect('/view_packages');
+      }
+      else
+      {
+        return view('users.get_package')->withPackage($package);
+      }
+    }
+
+    //------------------- Updated codes -----------------//
+    public function getPackage($package_id)
+    {
+      // $payment = new BkashPaymentController;
+      // $user = Auth::user();
+      // if($user)
+      // {
+      //   $request = '';
+      //   Session::put('_package_id', $package_id);
+      //   return app(\App\Http\Controllers\Payment\BkashPaymentController::class)->pay($request);
+
+      // }
+      return back();
     }
 }

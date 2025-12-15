@@ -71,9 +71,10 @@ class UsersController extends Controller
       }
       else
       {
-        $users = $users->where('service_type', 'Static')
-        ->limit(25)
-        ->get();
+        // $users = $users->where('service_type', 'Static')
+        // ->limit(25)
+        // ->get();
+        $users = [];
       }      
 
       $packages = Package::where('status', 'Active')
@@ -466,7 +467,8 @@ class UsersController extends Controller
     public function checkIP($pon)
     {
       $ipBlock = 0;
-      $i = 2;
+      $addr = 2;
+      $i = 254;
 
       if($pon == 'PON1')
       {
@@ -487,7 +489,7 @@ class UsersController extends Controller
       elseif($pon == 'RADIO')
       {
         $ipBlock = 254;
-        // $i = 101;
+        $addr = 101;
       }
 
       $used_ip = User::where('ip', 'like', '%'.$ipBlock.'%')
@@ -497,7 +499,7 @@ class UsersController extends Controller
       $ipFormat = '192.168.';
       $availableIp = [];
 
-      for($i; $i <= 254; $i++)
+      for($i; $i >= $addr; $i--)
       {
         $ip = $ipFormat.$ipBlock.'.'.$i;
         if(!in_array($ip, $used_ip))
@@ -532,6 +534,7 @@ class UsersController extends Controller
           // add to the payment
           Payment::create([
             'receive' => $data['amount'],
+            'receive_date' => $data['payment_receive'],
             'user_id' => $data['user_id'],
             'status' => 'Paid'
           ]);
@@ -550,4 +553,49 @@ class UsersController extends Controller
         return $e->getMessage();
       }
     }
+
+  public function activeUsers()
+  {
+    $url = 'https://chalanbeel.com/api/user?service_type=Static&iparray=true';
+    // cURL request
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    // curl_setopt($ch, CURLOPT_USERPWD, "$user:$pass");
+    // curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // if self-signed cert
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); // seconds to connect
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);       // total seconds to execute
+    
+    $response = curl_exec($ch);
+    curl_close($ch);
+    
+    $users = json_decode($response, true);
+
+    // $router = new Router;
+    // $arp_users = $router->activeArp();
+    
+    // for($u = 0; $u < count($arp_users); $u++)
+    // {
+    //   $array_found = array_search($arp_users[$u]['address'], array_column($users, 'ip'));
+    //   if($array_found)
+    //   {
+    //     $user = $users[$array_found];
+    //     $arp_users[$u]['status'] = 'Entry';
+    //     $arp_users[$u]['name'] = $user['name'];
+    //     $arp_users[$u]['contact'] = $user['contact'];
+    //   }
+    //   else
+    //   {
+    //     $arp_users[$u]['status'] = 'Unknown';
+    //     $arp_users[$u]['name'] = '';
+    //     $arp_users[$u]['contact'] = '';
+    //   }
+    // }
+
+    dd($users);
+
+    return view('admins.users.active-user', compact('arp_users'));
+  }
+
+
 }

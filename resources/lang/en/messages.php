@@ -167,8 +167,8 @@ return [
     'register.price' => 'Price',
     'register.divider_text' => 'Or register with your email',
     'register.alert_message' => 'Please register with correct information and double-check your mobile number.',
-    'register.full_name' => 'Your Full Name',
-    'register.mobile_number' => 'Mobile Number',
+    'register.name' => 'Your Full Name',
+    'register.contact' => 'Mobile Number',
     'register.confirm_mobile' => 'Confirm Mobile Number',
     'register.email' => 'Email Address (Optional)',
     'register.select_area' => 'Select Area',
@@ -176,6 +176,7 @@ return [
     'register.address' => 'Full Address',
     'register.submit' => 'Register',
     'register.no_results' => 'No results found',
+    'register.map' => 'Map Location',
     
     // Footer
     'footer.about_us' => 'About Us',
