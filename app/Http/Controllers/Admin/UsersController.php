@@ -484,7 +484,7 @@ class UsersController extends Controller
       }
       elseif($pon == 'PON4')
       {
-        $ipBlock = 0;
+        $ipBlock = 248;
       }
       elseif($pon == 'RADIO')
       {
