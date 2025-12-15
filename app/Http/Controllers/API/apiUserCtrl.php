@@ -14,8 +14,28 @@ use Image;
 
 class apiUserCtrl extends Controller
 {
-	public function index()
+	public function index(Request $request)
 	{
-		return User::where('status', 1)->get();
+    $status = $request->input('status');
+    $date = $request->input('date');
+    $service_type = $request->input('service_type');
+
+		$users = User::query()
+    ->when($status, function($query, $status)
+    {
+      $query->where('status', $status);
+    })
+    ->when($date, function($query, $date)
+    {
+      $query->where('payment_date', 'like',  '%'.$date);
+    })
+    ->when($service_type, function($query, $service_type)
+    {
+      $query->where('service_type', $service_type);
+    })
+    ->select('id', 'name', 'contact', 'ip', 'mac')
+    ->get();
+
+    return $users;
 	}
 }

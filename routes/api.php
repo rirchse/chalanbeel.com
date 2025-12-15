@@ -20,6 +20,6 @@ use Illuminate\Http\Request;
 // });
 
 Route::group(['middleware' => 'api'], function($router){
-	// Route::apiResource('/user', 'API\apiUserCtrl');
+	Route::apiResource('/user', 'API\apiUserCtrl');
 	// Route::apiResource('/service', 'API\apiServiceCtrl');
 });
