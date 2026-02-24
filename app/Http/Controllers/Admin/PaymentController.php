@@ -79,6 +79,7 @@ class PaymentController extends Controller
         ->find($id);
 
         $payments = Payment::where('service_id', $id)->select('billing_month', 'receive')->get();
+
         return view('admins.billings.view_total_due', compact('service', 'payments'));
     }
 
@@ -95,6 +96,7 @@ class PaymentController extends Controller
         ->orderBy('payments.receive_date', 'ASC')
         ->select('services.*', 'packages.service', 'packages.speed', 'packages.time_limit', 'packages.connection', 'payments.receive', 'payments.receive_date', 'users.name', 'users.contact')
         ->get();
+
         return view('admins.billings.view_services')->withServices($services);
     }
 
@@ -104,6 +106,7 @@ class PaymentController extends Controller
         ->leftJoin('payments', 'services.id', 'payments.service_id')
         ->select('services.*', 'services.username', 'users.name')
         ->find($id);
+
         $paymethods = Paymethod::orderBy('id', 'DESC')->get();
         return view('admins.billings.create_payment', compact('service', 'paymethods', 'billing_date'));
     }
@@ -116,7 +119,7 @@ class PaymentController extends Controller
      */
     public function store(Request $request)
     {
-        $user_id = Auth::guard('admin')->user()->id;
+        $admin = Auth::guard('admin')->user();
         //validate the data
         $this->validate($request, array(
             'payment_method'    => 'required|min:1|max:50'
@@ -139,11 +142,10 @@ class PaymentController extends Controller
             ));
         }
 
-
         //store in the database
         $payment = new Payment;
         $payment->paymethod_id  = $request->payment_method;
-        $payment->service_id    = $request->service_id;
+        $payment->package_id    = $request->service_id;
         $payment->receive       = $request->received_amount;
         $payment->account_no    = $request->account_number;
         $payment->refer_no      = $request->reference_number;
@@ -151,9 +153,8 @@ class PaymentController extends Controller
         $payment->receive_date  = $request->receive_date;
         $payment->billing_month = $request->billing_month;
         $payment->details       = $request->details;
-        $payment->status        = $request->service_id?1:0;
-        $payment->created_by    = $user_id;
-
+        $payment->status        = $request->status;
+        $payment->created_by    = $admin->id;
         $payment->save();
 
         $service = Service::find($request->service_id);
@@ -172,7 +173,7 @@ class PaymentController extends Controller
 
     public function StoreUserPayment(Request $request)
     {
-        $user_id = Auth::guard('admin')->user()->id;
+        $admin = Auth::guard('admin')->user();
         //validate the data
         $this->validate($request, array(
 
@@ -192,7 +193,7 @@ class PaymentController extends Controller
         $userPayment->transaction_id      = $request->trxid;
         $userPayment->payment_method      = $request->payment_method;
         $userPayment->details             = $request->detail;
-        $userPayment->created_by          = $user_id;
+        $userPayment->created_by          = $admin->id;
 
         $userPayment->save();
 

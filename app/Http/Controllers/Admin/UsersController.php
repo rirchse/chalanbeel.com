@@ -518,6 +518,7 @@ class UsersController extends Controller
       $data = $request->all();
       $user = User::find($data['user_id']);
       $price = $user->package ? $user->package->price : 0;
+      $package_id = $user->package ? $user->package->id : 0;
       $balance = $user->balance + $data['amount'];
 
       try {
@@ -535,6 +536,7 @@ class UsersController extends Controller
           Payment::create([
             'receive' => $data['amount'],
             'receive_date' => $data['payment_receive'],
+            'package_id' => $package_id,
             'user_id' => $data['user_id'],
             'status' => 'Paid'
           ]);

@@ -13,7 +13,7 @@ class Payment extends Model
     'trxid',
     'receive_date',
     'billing_month',
-    'service_id',
+    'package_id',
     'user_id',
     'paymethod_id',
     'user_inputs',
