@@ -21,7 +21,7 @@ use Session;
 use Auth;
 use Mail;
 
-class HomeController extends Controller
+class UserHomeController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -46,14 +46,31 @@ class HomeController extends Controller
         $user = Auth::user();
         $services = Service::leftJoin('packages', 'packages.id', 'services.package_id')
         ->where('services.user_id', $user->id)->orderBy('services.id', 'DESC')->get();
-        $payments = Payment::leftJoin('services', 'payments.service_id', 'services.id')
-        ->leftJoin('users', 'users.id', 'services.user_id')
-        ->where('services.user_id', $user->id)
+        $payments = Payment::orderBy('id', 'DESC')
+        ->where('user_id', $user->id)
+        ->where('receive_date', 'like', '%'.date('Y').'%')
         ->get();
 
         $packages = Package::where('status', 'Active')->get();
         return view('users.index', compact('services', 'payments', 'packages'));
-        // ->withServices($services)->withPayments($payments);
+    }
+
+    public function invoice($id)
+    {
+      $invoice = Payment::orderBy('id', 'desc')
+      ->find($id);
+      return view('users.payments.invoice', compact('invoice'));
+    }
+
+    public function invoiceIndex()
+    {
+      $user = auth()->user();
+
+      $payments = Payment::orderBy('id', 'desc')
+      ->where('user_id', $user->id)
+      ->get();
+
+      return view('users.payments.index', compact('payments'));
     }
 
     public function check_package()
@@ -63,11 +80,13 @@ class HomeController extends Controller
         ->groupBy('package')
         ->orderBy('id', 'ASC')
         ->get();
+
         $limits = Service::where('status', 1)
         ->select('time_limit')
         ->groupBy('time_limit')
         ->orderBy('time_limit')
         ->get();
+
         return view('users.check_package')->withPackages($packages)->withLimits($limits);
     }
 

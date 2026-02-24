@@ -1,14 +1,13 @@
 @php
 use \App\Http\Controllers\SourceCtrl;
 $source = new SourceCtrl;
-    
+$user = Auth::user();
 @endphp
 
 @extends('user')
 @section('title', 'Home')
 @section('content')
 
-<?php $user = Auth::user(); ?>
 <div class="row">
     <div class="col-md-6">
         <div class="card card-stats">
@@ -97,6 +96,42 @@ $source = new SourceCtrl;
             </table>
         </div>
     </div>
+
+  <div class="col-md-6">
+      <div class="card card-stats">
+        <div class="table-responsive">
+          <table class="table">
+            <tr>
+              <th colspan="2">Payment Details</th>
+            </tr>
+            <tr>
+              <th>#</th>
+              <th>Payment</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+            @foreach($payments as $key => $value)
+            <tr>
+              <td>{{$key+1}}</td>
+              <td>{{$value->receive}}</td>
+              <td>{{$source->dtformat($value->receive_date)}}</td>
+              <td>{{$value->status}}</td>
+              <td>
+                <a class="label label-info" href="{{route('user.invoice', $value->id)}}">Invoice</a>
+              </td>
+            </tr>
+            @endforeach
+            <tr>
+              <td colspan="5" class="text-center">
+                <a href="{{route('user.invoice.index')}}">view more</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="row">

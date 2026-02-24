@@ -19,7 +19,7 @@
                                 <th>Username</th>
                                 <th>Contact</th>
                                 <th>Amount Tk.</th>
-                                <th>PayMethod</th>
+                                <th>TrxID</th>
                                 <th>Date</th>
                                 <th>Billing Month</th>
                                 <th class="disabled-sorting text-right">Actions</th>
@@ -31,7 +31,7 @@
                                 <th>Username</th>
                                 <th>Contact</th>
                                 <th>Amount</th>
-                                <th>PayMethod</th>
+                                <th>TrxID</th>
                                 <th>Date</th>
                                 <th>Billing Month</th>
                                 <th class="text-right">Actions</th>
@@ -45,9 +45,9 @@
                             <tr>
                                 <td>{{ $key+1 }}</td>
                                 <td>{{$payment->name}} </td>
-                                <td>{{ $payment->username }}</td>
-                                <td>{{ $payment->receive?$payment->receive:'Due' }}</td>
-                                <td>{{ $payment->payment_system }}</td>
+                                <td>{{ $payment->contact }}</td>
+                                <td>{{ $payment->receive ? $payment->receive:'Due' }}</td>
+                                <td>{{ $payment->trxid }}</td>
                                 <td>{{ $payment->receive_date?date('d M Y', strtotime($payment->receive_date)):'' }}</td>
                                 <td>{{ $payment->billing_month }}</td>
                                 <td class="text-right">

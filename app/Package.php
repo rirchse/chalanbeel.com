@@ -25,4 +25,9 @@ class Package extends Model
   {
     return $this->belongsTo(User::class, 'package_id');
   }
+
+  // public function payment()
+  // {
+  //   return $this->belongsTo(Payment::class, 'package_id');
+  // }
 }

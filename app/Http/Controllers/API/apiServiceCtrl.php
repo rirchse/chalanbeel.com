@@ -2,10 +2,8 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
-use PEAR2\Net\RouterOS;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Router;
-use Auth;
 use App\Notify;
 use App\Service;
 use App\ServicePlan;
@@ -13,6 +11,7 @@ use App\Location;
 use App\Package;
 use App\Payment;
 use App\User;
+use Auth;
 use Session;
 use DB;
 use Image;

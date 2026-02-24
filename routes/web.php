@@ -6,6 +6,7 @@ use App\Http\Controllers\Payment\BkashPaymentController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\PointController;
+use App\Http\Controllers\User\UserHomeController;
 use App\Http\Controllers\ExpireController;
 
 /*
@@ -40,22 +41,19 @@ Route::group(['middleware' => ['web']], function()
   {
     Route::post("bkash/pay", 'pay')->name('bkash.pay');
     Route::get("bkash/callback", 'callback');
-  });
-
-	//global variable for all pages
-	// view()->share('info', ['name'=>'HP Link', 'url'=>'http://hplink.net', 'contact'=>'01737346868', 'panel_name'=>'HP Link', 'short_name'=>'HPL', 'logo' => 'hplink.jpg']);
-	
+  });	
 
   //web pages
-
-	Route::resource('home', 'HomeController');
-  Route::controller(HomeController::class)->group(function()
+	Route::resource('home', UserHomeController::class);
+  Route::controller(UserHomeController::class)->group(function()
   {
+    Route::get('/', 'index');
     Route::get('check', 'postCheck')->name('account.check.post');
     // Route::post('check', 'postCheck')->name('account.check.post');
+    Route::get('get-invoice/{id}', 'invoice')->name('user.invoice');
+    Route::get('view-invoice', 'invoiceIndex')->name('user.invoice.index');
   });
 
-	Route::get('/', 'HomeController@index');
 	Route::get('/about', 'HomeController@about');
 	Route::get('/services', 'HomeController@services');
 	Route::get('/service/high-speed-internet', 'HomeController@highSpeedInternet');
@@ -106,7 +104,7 @@ Route::group(['middleware' => ['web']], function()
 
 
 	Auth::routes();
-  Route::get('get-package/{package_id}', 'User\HomeController@getPackage')->name('user.get-package');
+  Route::get('get-package/{package_id}', 'User\UserHomeController@getPackage')->name('user.get-package');
 	/** bkash payment API */
 	// Route::controller('Bkash\BkashController')->group(function()
 	// {
@@ -280,11 +278,11 @@ Route::group(['middleware' => ['web']], function()
 	Route::put('/permit_as_admin/{id}', 'Admin\UsersController@permitAdmin')->name('admin.permit.admin');
 
 	//offer
-	Route::get('/my_offer', 'User\HomeController@myOffer');
-	Route::post('/my_offer', 'User\HomeController@requestForOffer')->name('user.requestOffer');
+	Route::get('/my_offer', 'User\UserHomeController@myOffer');
+	Route::post('/my_offer', 'User\UserHomeController@requestForOffer')->name('user.requestOffer');
 
 	//user login functionality
-	Route::get('/home', 'User\HomeController@index');
+	Route::get('/home', 'User\UserHomeController@index');
 	Route::get('/login', 'Auth\UnifiedLoginController@showLoginForm')->name('login');
 	Route::post('/login', 'Auth\UnifiedLoginController@login')->name('login.post');
 	Route::get('/logout', 'Auth\UnifiedLoginController@logout')->name('logout');
@@ -309,8 +307,8 @@ Route::group(['middleware' => ['web']], function()
 	Route::get('/view_due_bills', 'User\PaymentController@dueBills');
 
 	//packages for user
-	Route::get('/view_packages', 'User\HomeController@packages');
-	Route::get('/package/{id}/get', 'User\HomeController@get_package');
+	Route::get('/view_packages', 'User\UserHomeController@packages');
+	Route::get('/package/{id}/get', 'User\UserHomeController@get_package');
 
   Route::get('router-active-users', [UsersController::class, 'routerActiveUsers'])->name('router.active-users');
 

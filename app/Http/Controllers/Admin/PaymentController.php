@@ -31,22 +31,28 @@ class PaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function allBills() {
-        return Payment::billings();
+    public function allBills()
+    {
+      return Payment::billings();
     }
+
     public function index()
     {
-        $payments = Payment::leftJoin('services', 'services.id', 'payments.service_id')
-        ->leftJoin('users', 'services.user_id', 'users.id')
-        ->leftJoin('paymethods', 'payments.paymethod_id', 'paymethods.id')
-        // ->leftJoin('locations', 'users.location_id', 'locations.id')
-        ->select('payments.*', 'paymethods.payment_system', 'users.name', 'users.contact','services.username')
-        ->orderBy('payments.id', 'DESC')->get();
-        
-        $services = Service::leftJoin('users', 'users.id', 'services.user_id')
-        // ->leftJoin('packages', 'services.id', 'packages.service_id')
-        ->where('services.status', 1)->select('services.*', 'users.name', 'users.contact')->get();
-        return view('admins.billings.view_payments')->withPayments($payments)->withServices($services);
+      $date = date('Y-m-d', strtotime('-1 month'));
+      $payments = Payment::orderBy('payments.id', 'DESC')
+      ->leftJoin('users', 'payments.user_id', 'users.id')
+      ->whereRaw('DATE(payments.created_at) >= ?', $date)
+      ->select('payments.*', 'users.name', 'users.contact')
+      ->get();
+      
+      $services = Service::leftJoin('users', 'users.id', 'services.user_id')
+      ->where('services.status', 1)
+      ->select('services.*', 'users.name', 'users.contact')
+      ->get();
+      
+      return view('admins.billings.view_payments')
+      ->withPayments($payments)
+      ->withServices($services);
     }
 
     public function due()
@@ -65,8 +71,7 @@ class PaymentController extends Controller
     }
 
     public function totalDue($id)
-    {
-        
+    {        
         $service = Service::leftJoin('packages', 'packages.id', 'services.package_id')
         ->leftJoin('users', 'users.id', 'services.user_id')
         // ->leftJoin('service_plans', 'services.id', 'service_plans.service_id')
