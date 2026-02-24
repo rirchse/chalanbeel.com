@@ -97,6 +97,7 @@ class BkashPaymentController extends Controller
                 Payment::create([
                   'receive' => $user->package->price,
                   'receive_date' => date('Y-m-d'),
+                  'package_id' => $user->package->id,
                   'user_id' => $user->id,
                   'status' => 'Paid',
                   'trxid' => $request->input('paymentID')
