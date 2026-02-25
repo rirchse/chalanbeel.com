@@ -310,6 +310,10 @@ class PaymentController extends Controller
           ]);
       }
       $payment->delete();
+
+      Session::flash('success', 'The payment successfully deleted.');
+
+      return back();
     }
 
     public function delete($id)
