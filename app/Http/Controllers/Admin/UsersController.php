@@ -46,36 +46,27 @@ class UsersController extends Controller
       $status = $request->input('status');
       $date = $request->input('date');
       $service_type = $request->input('service_type');
-
-      // Get all users from database
-      $users = User::orderBy('id', 'DESC');
       
-      if($status && $status == 'All')
+      $users = [];
+
+      if($request->method() == 'POST')
       {
-        $users = $users->get();
+        // Get all users from database
+        $users = User::orderBy('id', 'DESC')
+          ->when($status, function($query, $status)
+          {
+            $query->where('status', $status);
+          })
+          ->when($date, function($query, $date)
+          {
+            $query->where('payment_date', 'like',  '%'.$date);
+          })
+          ->when($service_type, function($query, $service_type)
+          {
+            $query->where('service_type', $service_type);
+          })
+          ->get();
       }
-      elseif($status || $date || $service_type)
-      {
-        $users = $users->when($status, function($query, $status)
-        {
-          $query->where('status', $status);
-        })
-        ->when($date, function($query, $date)
-        {
-          $query->where('payment_date', 'like',  '%'.$date);
-        })
-        ->when($service_type, function($query, $service_type)
-        {
-          $query->where('service_type', $service_type);
-        })->get();
-      }
-      else
-      {
-        // $users = $users->where('service_type', 'Static')
-        // ->limit(25)
-        // ->get();
-        $users = [];
-      }      
 
       $packages = Package::where('status', 'Active')
       ->select('id', 'speed')
@@ -522,7 +513,12 @@ class UsersController extends Controller
       $balance = $user->balance + $data['amount'];
 
       try {
-        if($balance >= $price)
+        $payment = Payment::where('user_id', $data['user_id'])
+        ->where('receive_date', $data['payment_receive'])
+        ->where('package_id', $package_id)
+        ->first();
+
+        if($balance >= $price && !$payment)
         {          
           User::where('id', $data['user_id'])->update(
             [
@@ -533,19 +529,21 @@ class UsersController extends Controller
           );
 
           // add to the payment
-          Payment::create([
-            'receive' => $data['amount'],
-            'receive_date' => $data['payment_receive'],
-            'package_id' => $package_id,
-            'user_id' => $data['user_id'],
-            'status' => 'Paid'
-          ]);
+          Payment::create(
+            [
+              'receive' => $data['amount'],
+              'receive_date' => $data['payment_receive'],
+              'package_id' => $package_id,
+              'user_id' => $data['user_id'],
+              'status' => 'Paid'
+            ]
+          );
           
           Session::flash('success', 'Payment successfully received.');
         }
         else
         {
-          Session::flash('error', 'Insufficient balance for this package');
+          Session::flash('error', 'Insufficient balance or already got the payment for this package');
         }
 
         return back();

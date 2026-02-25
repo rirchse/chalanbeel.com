@@ -52,7 +52,13 @@
                                 <td>{{ $payment->billing_month }}</td>
                                 <td class="text-right">
                                     <a href="/admin/payment/{{$payment->id}}" class="btn btn-simple btn-info btn-icon"><i class="material-icons">dvr</i></a>
-                                    <a href="/admin/payment/{{$payment->id}}/edit" class="btn btn-simple btn-warning btn-icon" title="Edit the record"><i class="material-icons">mode_edit</i></a>
+                                    <form class="form-inline pull-right" action="{{route('payment.destroy', $payment->id)}}" method="POST">
+                                      @csrf
+                                      @method('DELETE')
+                                      <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure, you want to delete this payment?')">
+                                        <i class="fa fa-trash"></i>
+                                      </button>
+                                    </form>
                                 </td>
                             </tr>
 

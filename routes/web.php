@@ -211,6 +211,8 @@ Route::group(['middleware' => ['web']], function()
         //temp
         Route::get('/service_plan_create_existing', 'Admin\ServicePlanCtrl@createExisting');
 
+        Route::resource('payment', PaymentController::class);
+
         //payments
         Route::get('/payment/{id}/{billing_date}/add', 'Admin\PaymentController@addPayment');
         Route::get('/bill/paid/view', 'Admin\PaymentController@index');

@@ -38,7 +38,6 @@ $source = new SourceCtrl;
                             <option value="Active" {{$status == 'Active'? 'selected': ''}} >Active</option>
                             <option value="Expire" {{$status == 'Expire'? 'selected': ''}}>Expire</option>
                             <option value="Cancel" {{$status == 'Cancel'? 'selected': ''}}>Cancel</option>
-                            <option value="All" {{$status == 'All'? 'selected': ''}}>All</option>
                           </select>
                         </div>
                       </div>

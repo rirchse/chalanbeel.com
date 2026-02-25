@@ -50,7 +50,7 @@ class PaymentController extends Controller
       ->select('services.*', 'users.name', 'users.contact')
       ->get();
       
-      return view('admins.billings.view_payments')
+      return view('admins.billings.index')
       ->withPayments($payments)
       ->withServices($services);
     }
@@ -212,11 +212,8 @@ class PaymentController extends Controller
      */
     public function show($id)
     {
-        $bill = Payment::leftJoin('services', 'services.id', 'payments.service_id')
-        ->leftJoin('paymethods', 'paymethods.id', 'payments.paymethod_id')
-        ->leftJoin('users', 'users.id', 'services.user_id')
+        $bill = Payment::leftJoin('packages', 'packages.id', 'payments.package_id')
         ->leftJoin('admins', 'admins.id', 'payments.created_by')
-        ->select('payments.*', 'paymethods.payment_system', 'users.name', 'admins.first_name', 'admins.last_name')
         ->find($id);
         return view('admins.billings.read_payment', compact('bill'));
     }
@@ -304,7 +301,15 @@ class PaymentController extends Controller
      */
     public function destroy($id)
     {
-        //
+      $payment = Payment::find($id);
+      $user = User::find($payment->user_id);
+      if($user->balance >= $payment->receive)
+      {
+        User::where('id', $user->id)->update([
+            'balance' => DB::raw("balance - ".intval($payment->receive))
+          ]);
+      }
+      $payment->delete();
     }
 
     public function delete($id)
@@ -317,7 +322,8 @@ class PaymentController extends Controller
 
     public function print($id)
     {
-        $bill = Service::leftJoin('users', 'users.id', 'services.user_id')->find($id);
+        $bill = Service::leftJoin('users', 'users.id', 'services.user_id')
+        ->find($id);
         return view('admins.billings.print_due_bill', compact('bill'));
     }
 }
