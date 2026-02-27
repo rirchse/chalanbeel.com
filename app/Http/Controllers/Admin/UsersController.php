@@ -192,6 +192,7 @@ class UsersController extends Controller
     {
         //Grab user data by id
         $user = User::with(['package:id,speed,price'])->find($id);
+        $payments = Payment::where('user_id', $user->id)->latest()->limit(12)->get();
 
         if($request->ajax())
         {
@@ -200,8 +201,7 @@ class UsersController extends Controller
           ], 200);
         }
 
-        return view('admins.users.read_user')->withUser($user);
-        // ->withServices($services);
+        return view('admins.users.read_user', compact('user', 'payments'));
     }
 
     /**

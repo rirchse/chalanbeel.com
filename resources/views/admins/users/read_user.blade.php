@@ -8,7 +8,7 @@ $source = new SourceCtrl;
 @section('content')
     
 <div class="row">
-    <div class="col-md-7">
+    <div class="col-md-6">
         <div class="card">
             <div class="card-header card-header-icon" data-background-color="purple">
                 <i class="material-icons">assignment</i>
@@ -20,7 +20,6 @@ $source = new SourceCtrl;
                       <button class="btn btn-info btn-sm" data-target="#payment_modal" data-toggle="modal">Paid</button>
                       <a class="btn btn-sm btn-primary" title="Add New User" href="{{route('user.create')}}"><i class="fa fa-plus"></i></a>
                       <a class="btn btn-sm btn-success" title="View All Users" href="{{route('user.index')}}"><i class="fa fa-list"></i></a>
-                                            
                       <a class="btn btn-warning btn-sm" title="Edit" href="{{route('user.edit', $user->id)}}"><i class="material-icons">edit</i></a>
                       <form class="pull-right" action="{{route('user.destroy', $user->id)}}" method="post">
                         @csrf
@@ -154,7 +153,7 @@ $source = new SourceCtrl;
             </div>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
       <div class="card card-profile">
         <div class="card-avatar">
           <a href="#pablo">
@@ -170,6 +169,40 @@ $source = new SourceCtrl;
         </div>
       </div>
     </div> <!-- end content-->
+    <div class="col-md-6">
+      <div class="card card-stats">
+        <div class="table-responsive">
+          <table class="table">
+            <tr>
+              <th colspan="2">Payment Details</th>
+            </tr>
+            <tr>
+              <th>#</th>
+              <th>Payment</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+            @foreach($payments as $key => $value)
+            <tr>
+              <td>{{$key+1}}</td>
+              <td>{{$value->receive}}</td>
+              <td>{{$source->dtformat($value->receive_date)}}</td>
+              <td>{{$value->status}}</td>
+              <td>
+                <a class="label label-info" href="{{route('user.invoice', $value->id)}}">Invoice</a>
+              </td>
+            </tr>
+            @endforeach
+            <tr>
+              <td colspan="5" class="text-center">
+                {{-- <a href="{{route('user.invoice.index')}}">view more</a> --}}
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
 </div> <!-- end row -->
 
 <!-- Modal -->
