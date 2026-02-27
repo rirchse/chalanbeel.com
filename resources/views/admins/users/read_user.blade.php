@@ -164,8 +164,9 @@ $source = new SourceCtrl;
           <h6 class="card-category text-gray">{{$user->profession}}</h6>
           <h4 class="card-title">{{$user->full_name}}</h4>
           <p class="card-description">details....</p>
+          @if($user->nid_image)
           <img class="img-responsive" src="/images/{{$user->nid_image?'nid/'.$user->nid_image:'nid-sample.jpg'}}">
-          <a class="btn btn-rose btn-round" href="#pablo">Follow</a>
+          @endif
         </div>
       </div>
     </div> <!-- end content-->
@@ -190,7 +191,7 @@ $source = new SourceCtrl;
               <td>{{$source->dtformat($value->receive_date)}}</td>
               <td>{{$value->status}}</td>
               <td>
-                <a class="label label-info" href="{{route('user.invoice', $value->id)}}">Invoice</a>
+                {{-- <a class="label label-info" href="{{route('user.invoice', $value->id)}}">Invoice</a> --}}
               </td>
             </tr>
             @endforeach
