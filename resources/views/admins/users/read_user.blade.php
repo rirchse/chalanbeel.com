@@ -182,13 +182,13 @@ $source = new SourceCtrl;
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Add Payment</h4>
       </div>
-      <form action="{{route('user.get-payment')}}" method="POST">
+      <form action="{{route('user.get-payment')}}" method="POST" id="paymentForm">
         @csrf
         <div class="modal-body">
           <input type="hidden" name="user_id" value="{{$user->id}}">
           <div class="form-group">
             <label for="">Payment Received:</label>
-            <input type="date" name="payment_receive" class="form-control" value="{{date('Y-m-d')}}">
+            <input type="date" name="payment_receive" class="form-control" value="{{date('Y-m-d')}}" onkeyup="addOneMonth(this)" onchange="addOneMonth(this)">
           </div>
           <div class="form-group">
             <label for="">Amount:</label>
@@ -196,7 +196,7 @@ $source = new SourceCtrl;
           </div>
           <div class="form-group">
             <label for="">Next Payment Date:</label>
-            <input type="date" name="payment_date" class="form-control" value="{{date('Y-m-d', strtotime('+30 days'))}}">
+            <input type="date" name="payment_date" class="form-control" value="{{date('Y-m-d', strtotime('+1 months'))}}" id="paymentDate">
           </div>
         </div>
 
@@ -207,4 +207,26 @@ $source = new SourceCtrl;
     </div>
   </div>
 </div>
+<script>
+  function addOneMonth(date)
+  {
+    const form = document.getElementById('paymentForm');
+    // Create a new date object to avoid modifying the original one
+    let newDate = new Date(date.value); 
+    // getMonth() returns a zero-based index (0 for January, 11 for December)
+    let currentMonth = newDate.getMonth();
+    // setMonth() automatically adjusts the year if the month exceeds December
+    newDate.setMonth(currentMonth + 1);
+    
+    const year = newDate.getFullYear();
+    // Months are 0-indexed, so add 1
+    const month = String(newDate.getMonth() + 1).padStart(2, '0'); 
+    const day = String(newDate.getDate()).padStart(2, '0');
+
+    const formattedDate = `${year}-${month}-${day}`;
+    console.log(formattedDate); // Output: "03/01/2026"
+
+    form.elements.payment_date.value = formattedDate;
+}
+</script>
 @endsection
