@@ -24,21 +24,6 @@ class UsersController extends Controller
         $this->middleware('auth:admin');
     }
 
-    public function loginto($id)
-    {
-        $admin = Auth::guard('admin')->user()->id;
-        $admuser = [];
-        $user = User::find($id);
-        if($user->status == 1){
-            $admuser = ['adminId' => $admin, 'userId' => $id];
-        }else{
-            return redirect()->route('user.index');
-        }
-
-        Session::put('_admuser', $admuser);
-        return redirect('/admin_loginto');
-    }
-
     public function index(Request $request)
     {
       $status = $date = $service_type = '';
@@ -46,6 +31,7 @@ class UsersController extends Controller
       $status = $request->input('status');
       $date = $request->input('date');
       $service_type = $request->input('service_type');
+      $name = $request->input('name');
       
       $users = [];
 
@@ -65,6 +51,12 @@ class UsersController extends Controller
           {
             $query->where('service_type', $service_type);
           })
+          ->when($name, function($query, $name)
+          {
+            $query->where('name', 'like', '%'.$name.'%')
+            ->orWhere('contact', 'like', '%'.$name.'%')
+            ->orWhere('ip', 'like', '%'.$name.'%');
+          })
           ->get();
       }
 
@@ -79,7 +71,7 @@ class UsersController extends Controller
       //   ], 200);
       // }
 
-      return view('admins.users.index', compact('users', 'status', 'date', 'service_type', 'packages'));
+      return view('admins.users.index', compact('users', 'status', 'date', 'service_type', 'name', 'packages'));
     }
 
     /**
@@ -610,5 +602,21 @@ class UsersController extends Controller
     return view('admins.users.active-user', compact('arp_users'));
   }
 
+  public function loginto($id)
+  {
+    $admin = Auth::guard('admin')->user()->id;
+    $admuser = [];
+    $user = User::find($id);
+    if($user->status == 1)
+    {
+      $admuser = ['adminId' => $admin, 'userId' => $id];
+    }
+    else
+    {
+      return redirect()->route('user.index');
+    }
 
+    Session::put('_admuser', $admuser);
+    return redirect('/admin_loginto');
+  }
 }

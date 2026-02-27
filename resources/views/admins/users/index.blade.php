@@ -30,7 +30,7 @@ $source = new SourceCtrl;
                 <div class="toolbar">
                     <form action="{{route('user.search')}}" method="POST" class="form/-inline">
                       @csrf
-                      <div class="col-md-3">
+                      <div class="col-md-2">
                         <div class="form-group">
                           <select name="status" id="status" class="form-control">
                             <option value="">Select Status</option>
@@ -41,7 +41,7 @@ $source = new SourceCtrl;
                           </select>
                         </div>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-2">
                         <div class="form-group">
                           <select name="service_type" id="service" class="form-control">
                             <option value="">Select Service Type</option>
@@ -50,12 +50,17 @@ $source = new SourceCtrl;
                           </select>
                         </div>
                       </div>
-                      <div class="col-md-3">
-                        <div class="form-control">
+                      <div class="col-md-2">
+                        <div class="form-group">
                           <input type="date" name="date" class="form-control" value="{{$date}}">
                         </div>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <input type="text" name="name" class="form-control" value="{{$name}}" placeholder="Name, Contact, IP">
+                        </div>
+                      </div>
+                      <div class="col-md-2">
                         <button type="submit" class="btn btn-info btn-sm btn-block">Submit</button>
                       </div>
                     </form>
