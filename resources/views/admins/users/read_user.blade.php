@@ -17,18 +17,16 @@ $source = new SourceCtrl;
                 <h4 class="card-title">User Details</h4> 
                 <div class="col-md-12">
                     <div class="action-tools" style="text-align:right; margin-bottom:10px">
-                      @if($user->status == 'Expire' || $user->balance == 0)
                       <button class="btn btn-info btn-sm" data-target="#payment_modal" data-toggle="modal">Paid</button>
-                      @endif
-                        <a class="btn btn-sm btn-primary" title="Add New User" href="{{route('user.create')}}"><i class="fa fa-plus"></i></a>
-                        <a class="btn btn-sm btn-success" title="View All Users" href="{{route('user.index')}}"><i class="fa fa-list"></i></a>
-                        
-                        <a class="btn btn-warning btn-sm" title="Edit" href="{{route('user.edit', $user->id)}}"><i class="material-icons">edit</i></a>
-                        <form class="pull-right" action="{{route('user.destroy', $user->id)}}" method="post">
-                          @csrf
-                          @method('DELETE')
-                          <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this?')"><i class="fa fa-trash"></i></button>
-                        </form>
+                      <a class="btn btn-sm btn-primary" title="Add New User" href="{{route('user.create')}}"><i class="fa fa-plus"></i></a>
+                      <a class="btn btn-sm btn-success" title="View All Users" href="{{route('user.index')}}"><i class="fa fa-list"></i></a>
+                                            
+                      <a class="btn btn-warning btn-sm" title="Edit" href="{{route('user.edit', $user->id)}}"><i class="material-icons">edit</i></a>
+                      <form class="pull-right" action="{{route('user.destroy', $user->id)}}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this?')"><i class="fa fa-trash"></i></button>
+                      </form>
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -224,7 +222,6 @@ $source = new SourceCtrl;
     const day = String(newDate.getDate()).padStart(2, '0');
 
     const formattedDate = `${year}-${month}-${day}`;
-    console.log(formattedDate); // Output: "03/01/2026"
 
     form.elements.payment_date.value = formattedDate;
 }
