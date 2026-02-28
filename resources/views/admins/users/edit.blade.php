@@ -29,7 +29,7 @@
                             <div class="col-md-6">
                               <div class="form-group">
                                   <label for="contact">Mobile Number(*):</label>
-                                  <input type="number" name="contact" id="contact" class="form-control" minlength="11" maxlength="11" autofocus="true" onkeyup="checkContact(this)" required value="{{$user->contact}}">
+                                  <input type="number" name="contact" id="contact" class="form-control" minlength="11" maxlength="11" autofocus="true" required value="{{$user->contact}}">
                               </div>
                             </div>
                             <div class="col-md-6">
@@ -86,7 +86,7 @@
                                   <select name="package_id" id="package" class="form-control">
                                     <option value="">Select Package:</option>
                                     @foreach($packages as $package)
-                                    <option value="{{$package->id}}" {{$user->package_id == $package->id ? 'selected':''}}>{{$package->speed}}</option>
+                                    <option value="{{$package->id}}" {{$user->package->id == $package->id ? 'selected':''}}>{{$package->speed}}</option>
                                     @endforeach
                                   </select>
                                 </div>
@@ -117,13 +117,20 @@
                                     </select>
                                 </div>
                                 <div id="serviceParts">
-                                  
+                                  @if($user->service_type == 'Static')
+                                  <div class="form-group">
+                                      <select name="ip" id="static" class="form-control">
+                                        <option value="">Select IP:</option>
+                                        <option value="{{$user->ip}}" selected>{{$user->ip}}</option>
+                                      </select>
+                                  </div>
+                                  @endif
                                 </div>
                                 <div class="form-group">
                                     <input type="text" class="form-control" name="mac" placeholder="ONU MAC Address:" value="{{$user->mac}}">
                                 </div>
                                 <div class="form-group">
-                                    <input type="number" class="form-control" name="balance" placeholder="Balance" value="{{$user->balance}}">
+                                    <input type="number" class="form-control" name="balance" placeholder="Balance" value="{{$user->balance}}" onwheel="event.currentTarget.blur()">
                                 </div>
                               </div>
                               <div class="col-md-12">
@@ -221,113 +228,113 @@
 @section('scripts')
 <script src="{{'/js/open-map.js?v=1.0.2'}}"></script>
 <script>
-  function checkContact(e)
-  {
-    const userForm = document.getElementById('user_form');
-    let formdata = new FormData(userForm);
-    if(e.value.length == 11)
-    {
-      $.ajax({
-      type: 'GET',
-      url: '{{route("user.by-username", "")}}/'+e.value,
-      success: function(data){
-        // console.log(data);
-        let elm = userForm.elements;
-        elm.name.value = data.user.name;
-        elm.email.value = data.user.email;
-        elm.address.value = data.user.address;
-        elm.lat_long.value = data.user.lat_long;
-        elm.join_date.value = data.user.join_date;
-        elm.billing_date.value = data.user.billing_date;
-        elm.payment_date.value = data.user.payment_date;
+  // function checkContact(e)
+  // {
+  //   const userForm = document.getElementById('user_form');
+  //   let formdata = new FormData(userForm);
+  //   if(e.value.length == 11)
+  //   {
+  //     $.ajax({
+  //     type: 'GET',
+  //     url: '{{route("user.by-username", "")}}/'+e.value,
+  //     success: function(data){
+  //       // console.log(data);
+  //       let elm = userForm.elements;
+  //       elm.name.value = data.user.name;
+  //       elm.email.value = data.user.email;
+  //       elm.address.value = data.user.address;
+  //       elm.lat_long.value = data.user.lat_long;
+  //       elm.join_date.value = data.user.join_date;
+  //       elm.billing_date.value = data.user.billing_date;
+  //       elm.payment_date.value = data.user.payment_date;
 
-        if(data.user.status)
-        {
-          elm.status.options[0] = new Option(data.user.status, data.user.status, false, true);
-        }
+  //       if(data.user.status)
+  //       {
+  //         elm.status.options[0] = new Option(data.user.status, data.user.status, false, true);
+  //       }
 
-        if(data.user.location)
-        {
-          elm.location.options[0] = new Option(data.user.location, data.user.location, false, true);
-        }
+  //       if(data.user.location)
+  //       {
+  //         elm.location.options[0] = new Option(data.user.location, data.user.location, false, true);
+  //       }
 
-        if(data.user.package == null)
-        {
-          elm.package.options[0] = new Option('Select Package', '', false, true);
-        }
-        else
-        {
-          elm.package.options[0] = new Option(data.user.package.speed, data.user.package.id, false, true);
-        }
+  //       if(data.user.package == null)
+  //       {
+  //         elm.package.options[0] = new Option('Select Package', '', false, true);
+  //       }
+  //       else
+  //       {
+  //         elm.package.options[0] = new Option(data.user.package.speed, data.user.package.id, false, true);
+  //       }
 
-        if(data.user.service_type == null)
-        {
-          elm.service_type.options[0] = new Option('Select Service', '', false, true);
-        }
-        else
-        {
-          elm.service_type.options[0] = new Option(data.user.service_type, data.user.service_type, false, true);
+  //       if(data.user.service_type == null)
+  //       {
+  //         elm.service_type.options[0] = new Option('Select Service', '', false, true);
+  //       }
+  //       else
+  //       {
+  //         elm.service_type.options[0] = new Option(data.user.service_type, data.user.service_type, false, true);
 
-          selectService(document.getElementById('service_type'));
+  //         selectService(document.getElementById('service_type'));
 
-          if(data.user.service_type == 'PPPoE')
-          {
-            elm.username.value = data.user.username;
-            elm.service_password.value = data.user.service_password;
-          }
-          else if(data.user.service_type == 'Static')
-          {
-            elm.ip.options[0] = new Option(data.user.ip, data.user.ip, false, true);
+  //         if(data.user.service_type == 'PPPoE')
+  //         {
+  //           elm.username.value = data.user.username;
+  //           elm.service_password.value = data.user.service_password;
+  //         }
+  //         else if(data.user.service_type == 'Static')
+  //         {
+  //           elm.ip.options[0] = new Option(data.user.ip, data.user.ip, false, true);
 
-            // checkIP(document.getElementById('pon'));
-            // elm.ip.value = data.user.ip;
-          }
-          else
-          {
-            serviceParts.innerHTML = '';
-          }
-        }
+  //           // checkIP(document.getElementById('pon'));
+  //           // elm.ip.value = data.user.ip;
+  //         }
+  //         else
+  //         {
+  //           serviceParts.innerHTML = '';
+  //         }
+  //       }
 
-        if(data.user.pon)
-        {
-          elm.pon.options[0] = new Option(data.user.pon, data.user.pon, false, true);
-        }
+  //       if(data.user.pon)
+  //       {
+  //         elm.pon.options[0] = new Option(data.user.pon, data.user.pon, false, true);
+  //       }
 
-        if(data.user.service_type == 'PPPoE')
-        {
-          elm.username.value = data.user.username;
-          elm.service_password.value = data.user.service_password;
-        }
-        else
-        {
-          elm.ip.options[0] = new Option(data.user.ip, data.user.ip, false, true);
-          // checkIP(document.getElementById('pon'));
-          // elm.ip.value = data.user.ip;
-        }
+  //       if(data.user.service_type == 'PPPoE')
+  //       {
+  //         elm.username.value = data.user.username;
+  //         elm.service_password.value = data.user.service_password;
+  //       }
+  //       else
+  //       {
+  //         elm.ip.options[0] = new Option(data.user.ip, data.user.ip, false, true);
+  //         // checkIP(document.getElementById('pon'));
+  //         // elm.ip.value = data.user.ip;
+  //       }
         
-        elm.mac.value = data.user.mac;
+  //       elm.mac.value = data.user.mac;
 
-        elm.work_at.value = data.user.work_at;
-        elm.profession.value = data.user.profession;
-        elm.date_of_birth.value = data.user.date_of_birth;
-        elm.details.value = data.user.details;
+  //       elm.work_at.value = data.user.work_at;
+  //       elm.profession.value = data.user.profession;
+  //       elm.date_of_birth.value = data.user.date_of_birth;
+  //       elm.details.value = data.user.details;
         
-      },
-      error: function(data){
-        console.error(data);
-      }
-    });
+  //     },
+  //     error: function(data){
+  //       console.error(data);
+  //     }
+  //   });
 
-      e.style.borderBottom = '1px solid #fff';
-    }
-    else
-    {
-      e.style.borderBottom = '1px solid #f00';
-    }
-  }
+  //     e.style.borderBottom = '1px solid #fff';
+  //   }
+  //   else
+  //   {
+  //     e.style.borderBottom = '1px solid #f00';
+  //   }
+  // }
 
   // onload call 
-  checkContact(document.getElementById('contact'));
+  // checkContact(document.getElementById('contact'));
 
   function selectService(e)
   {
@@ -337,7 +344,7 @@
     if(service.value == 'PPPoE')
     {
       serviceParts.innerHTML = '<div class="form-group">'+
-                                  '<input type="text" name="username" id="" class="form-control" placeholder="Username">'+
+                                  '<input type="text" name="username" id="" class="form-control" placeholder="Username" value="{{$user->username}}">'+
                               '</div>'+
                               '<div class="form-group">'+
                                   '<input type="text" name="service_password" id="" class="form-control" placeholder="Service Password">'+
