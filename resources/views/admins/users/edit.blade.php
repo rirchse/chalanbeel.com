@@ -86,7 +86,7 @@
                                   <select name="package_id" id="package" class="form-control">
                                     <option value="">Select Package:</option>
                                     @foreach($packages as $package)
-                                    <option value="{{$package->id}}" {{$user->package->id == $package->id ? 'selected':''}}>{{$package->speed}}</option>
+                                    <option value="{{$package->id}}" {{($user->package?$user->package->id:'') == $package->id ? 'selected':''}}>{{$package->speed}}</option>
                                     @endforeach
                                   </select>
                                 </div>
