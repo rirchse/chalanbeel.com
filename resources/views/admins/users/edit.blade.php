@@ -130,7 +130,7 @@
                                     <input type="text" class="form-control" name="mac" placeholder="ONU MAC Address:" value="{{$user->mac}}">
                                 </div>
                                 <div class="form-group">
-                                    <input type="number" class="form-control" name="balance" placeholder="Balance" value="{{$user->balance}}" onwheel="event.currentTarget.blur()">
+                                    <input type="number" class="form-control" name="balance" placeholder="Balance" value="{{$user->balance ? $user->balance : 0}}" onwheel="event.currentTarget.blur()">
                                 </div>
                               </div>
                               <div class="col-md-12">
