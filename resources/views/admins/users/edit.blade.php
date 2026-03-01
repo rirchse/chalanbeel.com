@@ -355,6 +355,7 @@
       serviceParts.innerHTML = '<div class="form-group">'+
                                   '<select name="ip" id="static" class="form-control">'+
                                     '<option value="">Select IP:</option>'+
+                                    '<option value="{{$user->ip}}" selected>{{$user->ip}}</option>'+
                                   '</select>'+
                               '</div>';
     }
@@ -371,7 +372,8 @@
         url: '{{route("user.check-ip", "")}}/'+ipblock.value,
         type: 'GET',
         success: function(data){
-          let options = '<option value="">Select IP</option>';
+          let options = '<option value="">Select IP</option>'+
+          '<option value="{{$user->ip}}" selected>{{$user->ip}}</option>';
           data.ip.forEach((i) => {
             options += '<option value="'+i+'">'+i+'</option>';
           });
