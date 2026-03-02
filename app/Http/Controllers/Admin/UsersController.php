@@ -103,18 +103,17 @@ class UsersController extends Controller
             'name'     => 'required|min:2|max:32',
             'email'         => 'email|max:50|nullable',
             'contact'       => 'required|min:11|max:11',
-            'work_at'       => 'max:255|nullable',
-            'profession'    => 'max:255|nullable',
-            'location'      => 'max:255|nullable',
-            'join_date'     => 'max:255|nullable',
-            'mac_address'   => 'max:255|nullable',
-            'left_long'     => 'max:255|nullable',
+            'work_at'       => 'nullable|string',
+            'profession'    => 'nullable|string',
+            'location'      => 'nullable|string',
+            'join_date'     => 'nullable|string',
+            'mac_address'   => 'nullable|string',
+            'left_long'     => 'nullable|string',
             'date_of_birth' => 'max:30|nullable',
             'NID'           => 'max:17|nullable',
             'details'       => 'max:999|nullable',
             'nid_image'     => 'image|nullable',
             'profile_image' => 'image|nullable'
-
         ));
 
         $data = $request->all();

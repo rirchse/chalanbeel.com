@@ -24,36 +24,27 @@
                         </tr>
                     </thead>
                     <tbody>
-
-                        <?php $r = 0; ?>
-
-                        @foreach($users as $user)
-
-                        <?php $r++ ?>
-
-                        <tr>
-                            <td class="text-center">{{ $r }}</td>
-                            <td>{{ $user->first_name. ' ' .$user->last_name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->contact }}</td>
-                            <td>{{ $user->job_title }}</td>
-                            <td>{{ date('m/d/Y', strtotime($user->created_at)) }}</td>
-                            <td class="td-actions text-right">
-                                <a href="/admin/user/{{$user->id}}" rel="tooltip" class="btn btn-info btn-simple">
-                                    <i class="material-icons">person</i>
-                                </a>
-                                <a href="/admin/user/{{$user->id}}" rel="tooltip" class="btn btn-success btn-simple">
-                                    <i class="material-icons">edit</i>
-                                </a>
-                                <a href="button" rel="tooltip" class="btn btn-danger btn-simple">
-                                    <i class="material-icons">close</i>
-                                </a>
-                            </td>
-                        </tr>
-
-                        
-
-                        @endforeach
+                      @foreach($users as $key => $user)
+                      <tr>
+                        <td class="text-center">{{ $key+1 }}</td>
+                        <td>{{ $user->first_name. ' ' .$user->last_name }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->contact }}</td>
+                        <td>{{ $user->job_title }}</td>
+                        <td>{{ date('m/d/Y', strtotime($user->created_at)) }}</td>
+                        <td class="td-actions text-right">
+                            <a href="/admin/user/{{$user->id}}" rel="tooltip" class="btn btn-info btn-simple">
+                                <i class="material-icons">person</i>
+                            </a>
+                            <a href="/admin/user/{{$user->id}}" rel="tooltip" class="btn btn-success btn-simple">
+                                <i class="material-icons">edit</i>
+                            </a>
+                            <a href="button" rel="tooltip" class="btn btn-danger btn-simple">
+                                <i class="material-icons">close</i>
+                            </a>
+                        </td>
+                      </tr>
+                      @endforeach
 
                     </tbody>
                 </table>

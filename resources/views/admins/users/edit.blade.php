@@ -29,7 +29,7 @@
                             <div class="col-md-6">
                               <div class="form-group">
                                   <label for="contact">Mobile Number(*):</label>
-                                  <input type="number" name="contact" id="contact" class="form-control" minlength="11" maxlength="11" autofocus="true" required value="{{$user->contact}}">
+                                  <input type="number" name="contact" id="contact" class="form-control" minlength="11" maxlength="11" required value="{{$user->contact}}">
                               </div>
                             </div>
                             <div class="col-md-6">

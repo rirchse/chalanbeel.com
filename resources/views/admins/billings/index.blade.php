@@ -9,21 +9,47 @@
             <div class="card-content">
                 <h4 class="card-title">Received Payments</h4>
                 <div class="toolbar">
-                    <!-- Here you can write extra buttons/actions for the toolbar -->
+                  <form action="{{route('payment.index')}}" method="GET" class="">
+                    @csrf
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <select name="user_id" id="user_id" class="form-control select2">
+                          <option value="">Select User</option>
+                          @foreach($users as $user)
+                          <option value="{{$user->id}}" {{$user->id == $user_id ? 'selected' : ''}}>{{$user->name}}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <input type="date" name="start_date" class="form-control" value="{{$start_date}}">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <input type="date" name="end_date" class="form-control" value="{{$end_date}}">
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <button type="submit" class="btn btn-info btn-sm btn-block">Submit</button>
+                    </div>
+                  </form>
+                  <div class="clearfix"></div>
                 </div>
                 <div class="material-datatables">
                     <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
                         <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Username</th>
-                                <th>Contact</th>
-                                <th>Amount Tk.</th>
-                                <th>TrxID</th>
-                                <th>Date</th>
-                                <th>Billing Month</th>
-                                <th class="disabled-sorting text-right">Actions</th>
-                            </tr>
+                          <tr>
+                            <th>#</th>
+                            <th>Username</th>
+                            <th>Contact</th>
+                            <th>Amount Tk.</th>
+                            <th>TrxID</th>
+                            <th>Date</th>
+                            <th>Billing Month</th>
+                            <th class="disabled-sorting text-right">Actions</th>
+                          </tr>
                         </thead>
                         <tfoot>
                             <tr>
@@ -38,17 +64,14 @@
                             </tr>
                         </tfoot>
                         <tbody>
-                            <?php $total = 0; ?>
-
-                            @foreach($payments as $key => $payment)
-
-                            <tr>
+                          @foreach($payments as $key => $payment)
+                          <tr>
                                 <td>{{ $key+1 }}</td>
                                 <td>{{$payment->name}} </td>
                                 <td>{{ $payment->contact }}</td>
                                 <td>{{ $payment->receive ? $payment->receive:'Due' }}</td>
                                 <td>{{ $payment->trxid }}</td>
-                                <td>{{ $payment->receive_date?date('d M Y', strtotime($payment->receive_date)):'' }}</td>
+                                <td>{{ $payment->receive_date ? date('d M Y', strtotime($payment->receive_date)) : '' }}</td>
                                 <td>{{ $payment->billing_month }}</td>
                                 <td class="text-right">
                                     <a href="/admin/payment/{{$payment->id}}" class="btn btn-simple btn-info btn-icon"><i class="material-icons">dvr</i></a>
@@ -61,9 +84,6 @@
                                     </form>
                                 </td>
                             </tr>
-
-                            <?php $total += $payment->receive; ?>
-
                             @endforeach
                             <tr>
                                 <th></th>

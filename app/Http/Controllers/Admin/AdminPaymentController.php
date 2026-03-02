@@ -4,18 +4,18 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Auth;
 use App\Notify;
 use App\Address;
 use App\User;
 use App\Service;
 use App\Payment;
 use App\Paymethod;
+use Auth;
 use Session;
 use DB;
 use Image;
 
-class PaymentController extends Controller
+class AdminPaymentController extends Controller
 {
     public function __construct()
     {
@@ -36,51 +36,40 @@ class PaymentController extends Controller
       return Payment::billings();
     }
 
-    public function index()
+    public function index(Request $request)
     {
+      $user_id = $request->user_id;
+      $start_date = $request->start_date;
+      $end_date = $request->end_date;
+
       $date = date('Y-m-d', strtotime('-1 month'));
-      $payments = Payment::orderBy('payments.id', 'DESC')
-      ->leftJoin('users', 'payments.user_id', 'users.id')
-      ->whereRaw('DATE(payments.created_at) >= ?', $date)
-      ->select('payments.*', 'users.name', 'users.contact')
+      $payments = [];
+      $total = 0;
+      if($user_id || $start_date || $end_date)
+      {
+        $payments = Payment::orderBy('payments.id', 'DESC')
+        ->leftJoin('users', 'payments.user_id', 'users.id')
+        ->when($user_id, function($query, $user_id)
+        {
+          $query->where('user_id', $user_id);
+        })
+        ->when($start_date, function($query, $start_date) use($end_date)
+        {
+          $query->whereRaw('DATE(payments.receive_date) >= ?', $start_date)
+          ->whereRaw('DATE(payments.receive_date) <= ?', $end_date);
+        });
+        // ->whereRaw('DATE(payments.created_at) >= ?', $date)
+        $total = $payments->sum('receive');
+        $payments = $payments->select('payments.*', 'users.name', 'users.contact')
+        ->get();
+      }
+
+      $users = User::latest()
+      ->where('service_type', 'Static')
+      ->select('id', 'name')
       ->get();
       
-      $services = Service::leftJoin('users', 'users.id', 'services.user_id')
-      ->where('services.status', 1)
-      ->select('services.*', 'users.name', 'users.contact')
-      ->get();
-      
-      return view('admins.billings.index')
-      ->withPayments($payments)
-      ->withServices($services);
-    }
-
-    public function due()
-    {        
-        $services = Service::leftJoin('users', 'users.id', 'services.user_id')
-        // ->leftJoin('packages', 'services.id', 'packages.service_id')
-        ->where('services.status', 1)->select('services.*', 'users.name', 'users.contact')->get();
-        return view('admins.billings.view_due_payments')->withServices($services);
-    }
-
-    public function totalPaid($id)
-    {
-        $payments = Payment::leftJoin('services', 'services.id', 'payments.service_id')
-        ->where('service_id', $id)->orderBy('id', 'DESC')->select('payments.*', 'services.username')->get();
-        return view('admins.billings.view_payments', compact('payments'));
-    }
-
-    public function totalDue($id)
-    {        
-        $service = Service::leftJoin('packages', 'packages.id', 'services.package_id')
-        ->leftJoin('users', 'users.id', 'services.user_id')
-        // ->leftJoin('service_plans', 'services.id', 'service_plans.service_id')
-        ->select('services.*','users.name', 'users.contact', 'packages.speed', 'packages.time_limit')
-        ->find($id);
-
-        $payments = Payment::where('service_id', $id)->select('billing_month', 'receive')->get();
-
-        return view('admins.billings.view_total_due', compact('service', 'payments'));
+      return view('admins.billings.index', compact('payments', 'users', 'user_id', 'start_date', 'end_date', 'total'));
     }
 
     /**
@@ -88,17 +77,6 @@ class PaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        $services = Service::leftJoin('packages', 'services.package_id', 'packages.id')
-        ->leftJoin('users', 'services.user_id', 'users.id')
-        ->leftJoin('payments', 'payments.service_id', 'services.id')
-        ->orderBy('payments.receive_date', 'ASC')
-        ->select('services.*', 'packages.service', 'packages.speed', 'packages.time_limit', 'packages.connection', 'payments.receive', 'payments.receive_date', 'users.name', 'users.contact')
-        ->get();
-
-        return view('admins.billings.view_services')->withServices($services);
-    }
 
     public function addPayment($id, $billing_date)
     {

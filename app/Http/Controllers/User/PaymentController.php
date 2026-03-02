@@ -4,11 +4,11 @@ namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Auth;
 use App\Service;
 use App\Payment;
 use App\Notify;
 use App\User;
+use Auth;
 use Session;
 use DB;
 use Image;

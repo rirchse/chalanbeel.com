@@ -36,7 +36,7 @@
                 </li>
                 <li>
                     <a data-toggle="collapse" href="#user">
-                        <i class="material-icons">subject</i>
+                        <i class="fa fa-users"></i>
                         <p>Users
                             <b class="caret"></b>
                         </p>
@@ -52,25 +52,11 @@
                         </ul>
                     </div>
                 </li>
-            
                 <li>
-                    <a data-toggle="collapse" href="#service">
-                        <i class="material-icons">trending_up</i>
-                        <p>Services
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse" id="service">
-                        <ul class="nav">
-                            <li><a href="/admin/user">Add New Service</a></li>
-                            <li><a href="/admin/service/all/view">View All Services</a></li>
-                            <li><a href="/admin/service/active/view">View Active Services</a></li>
-                            <li><a href="/admin/service/unpaid">View Unpaid Services</a></li>
-                            <li><a href="/admin/service/free/view">View Free Services</a></li>
-                            <li><a href="/admin/view/live/services">View Live Services</a></li>
-                            <li><a href="/admin/service/cancelled/view">View Cancelled Services</a></li>
-                        </ul>
-                    </div>
+                  <a href="{{route('payment.index')}}">
+                    <i class="fa fa-money"></i>
+                    Payments
+                  </a>
                 </li>
             
                 <li>
@@ -84,21 +70,6 @@
                         <ul class="nav">
                             <li><a href="/admin/invest/create">Add New Invests</a></li>
                             <li><a href="/admin/invest">View Invests</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <a data-toggle="collapse" href="#payment">
-                        <i class="material-icons">subject</i>
-                        <p>Bills
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse" id="payment">
-                        <ul class="nav">
-                            <li><a href="/admin/bill/due/view">Add Bill</a></li>
-                            <li><a href="/admin/bill/due/view">View Due Bills</a></li>
-                            <li><a href="/admin/bill/paid/view">View Received Bills</a></li>
                         </ul>
                     </div>
                 </li>
@@ -123,78 +94,15 @@
                         </ul>
                     </div>
                 </li>
-                
+
                 <li>
-                    <a data-toggle="collapse" href="#PaymentMethod">
-                        <i class="material-icons">subject</i>
-                        <p>Payment Method
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse" id="PaymentMethod">
-                        <ul class="nav">
-                            <li><a href="/admin/paymethod/create">Add Payment Method</a></li>
-                            <li><a href="/admin/paymethod">View Payment Method</a></li>
-                        </ul>
-                    </div>
+                  <a href="/admin/package"> <i class="fa fa-briefcase"></i> Packages</a>
                 </li>
 
                 <li>
-                    <a data-toggle="collapse" href="#packages">
-                        <i class="material-icons">subject</i>
-                        <p>Packages
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse" id="packages">
-                        <ul class="nav">
-                            <li><a href="/admin/package/create">Create Package</a></li>
-                            <li><a href="/admin/package">View Packages</a></li>
-                        </ul>
-                    </div>
-                </li>
-
-                <li>
-                    <a data-toggle="collapse" href="#devices">
-                        <i class="material-icons">devices</i>
-                        <p>Devices
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse" id="devices">
-                        <ul class="nav">
-                            <li><a href="/admin/device/create">Add New Device</a></li>
-                            <li><a href="/admin/device">View Devices</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <a data-toggle="collapse" href="#area">
-                        <i class="material-icons">map</i>
-                        <p>Locations
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse" id="area">
-                        <ul class="nav">
-                            <li><a href="/admin/location/create">Add New Location</a></li>
-                            <li><a href="/admin/location">View All Locations</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <a data-toggle="collapse" href="#careers">
-                        <i class="material-icons">work</i>
-                        <p>Careers
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse" id="careers">
-                        <ul class="nav">
-                            <li><a href="{{route('career.create')}}">Add New Career</a></li>
-                            <li><a href="{{route('career.index')}}">View All Careers</a></li>
-                        </ul>
-                    </div>
+                  <li>
+                    <a href="/admin/device"> <i class="fa fa-binoculars"></i> Devices</a>
+                  </li>
                 </li>
                 <li>
                     <a data-toggle="collapse" href="#cmdAdmin">
@@ -205,11 +113,21 @@
                     </a>
                     <div class="collapse" id="cmdAdmin">
                         <ul class="nav">
-                            <li><a href="/admin/admin/create">Add New User</a></li>
-                            <li><a href="/admin/admin">Show Admins</a></li>
-                            <li>
-                              <a onclick="return confirm('Are you sure, you want to download the database?')" href="{{route('backup.database')}}">Database Backup</a>
-                            </li>
+                          <li>
+                            <a href="/admin/location">Locations</a>
+                          </li>
+                          <li>
+                            <a href="/admin/paymethod">Payment Methods</a>
+                          </li>
+                          <li>
+                            <a href="/admin/admin/create">Add New User</a>
+                          </li>
+                          <li>
+                            <a href="/admin/admin">Show Admins</a>
+                          </li>
+                          <li>
+                            <a onclick="return confirm('Are you sure, you want to download the database?')" href="{{route('backup.database')}}"> Database Backup</a>
+                          </li>
                         </ul>
                     </div>
                 </li>
