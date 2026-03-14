@@ -74,7 +74,7 @@
                                 <td>{{ $payment->receive_date ? date('d M Y', strtotime($payment->receive_date)) : '' }}</td>
                                 <td>{{ $payment->billing_month }}</td>
                                 <td class="text-right">
-                                    <a href="/admin/payment/{{$payment->id}}" class="btn btn-simple btn-info btn-icon"><i class="material-icons">dvr</i></a>
+                                    <a href="{{route('payment.show', $payment->id)}}" class="btn btn-info btn-sm"><i class="material-icons">dvr</i></a>
                                     <form class="form-inline pull-right" action="{{route('payment.destroy', $payment->id)}}" method="POST">
                                       @csrf
                                       @method('DELETE')

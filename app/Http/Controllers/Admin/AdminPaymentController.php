@@ -45,7 +45,7 @@ class AdminPaymentController extends Controller
       $date = date('Y-m-d', strtotime('-1 month'));
       $payments = [];
       $total = 0;
-      if($user_id || $start_date || $end_date)
+      if($user_id || $start_date && $end_date)
       {
         $payments = Payment::orderBy('payments.id', 'DESC')
         ->leftJoin('users', 'payments.user_id', 'users.id')
@@ -58,7 +58,6 @@ class AdminPaymentController extends Controller
           $query->whereRaw('DATE(payments.receive_date) >= ?', $start_date)
           ->whereRaw('DATE(payments.receive_date) <= ?', $end_date);
         });
-        // ->whereRaw('DATE(payments.created_at) >= ?', $date)
         $total = $payments->sum('receive');
         $payments = $payments->select('payments.*', 'users.name', 'users.contact')
         ->get();
@@ -190,10 +189,8 @@ class AdminPaymentController extends Controller
      */
     public function show($id)
     {
-        $bill = Payment::leftJoin('packages', 'packages.id', 'payments.package_id')
-        ->leftJoin('admins', 'admins.id', 'payments.created_by')
-        ->find($id);
-        return view('admins.billings.read_payment', compact('bill'));
+        $bill = Payment::find($id);
+        return view('admins.billings.read', compact('bill'));
     }
 
     /**
@@ -204,12 +201,9 @@ class AdminPaymentController extends Controller
      */
     public function edit($id)
     {
-        $paymethod = Paymethod::orderBy('id', 'DESC')->get();
-        $payment = Payment::find($id);
-        $services = Service::leftJoin('users', 'services.user_id', 'users.id')
-        ->leftJoin('packages', 'services.package_id', 'packages.id')
-        ->select('services.*', 'users.contact', 'users.name', 'packages.speed', 'packages.connection')->get();
-        return view('admins.billings.edit_payment')->withPayment($payment)->withPaymethods($paymethod)->withServices($services);
+      $payment = Payment::find($id);
+      $user = $payment->user;
+      return view('admins.billings.edit', compact('payment', 'user'));
     }
 
     /**
@@ -222,53 +216,27 @@ class AdminPaymentController extends Controller
     public function update(Request $request, $id)
     {
         $user_id = Auth::guard('admin')->user()->id;
+
         //validate the data
-        $this->validate($request, array(
-            'payment_method'    => 'required|min:1|max:50'
-            ));
-        $paymethod = Paymethod::find($request->payment_method);
-        if($paymethod->payment_system == 'Cash'){
-            $this->validate($request, array(
-            'service_id'      => 'required|max:255',
-            'receive_date'    => 'required|date',
-            'billing_month'   => 'required|max:20',
-            'received_amount' => 'required|min:2|max:9999'
-            ));
-        }else{
-            $this->validate($request, array(
-                'received_amount'   => 'required|min:2|max:9999',
-                'account_number'    => 'required|max:11',
-                'reference_number'  => 'required|max:255',
-                'trxid'             => 'required|max:50',
-                'detail'            => 'max:500'
-            ));
-        }
+        $data = $request->validate([
+            'receive_date' => 'required',
+            'receive'          => 'required'
+            ]);
 
-        //store in the database
-        $payment = Payment::find($id);
-        $payment->service_id    = $request->input('service_id');
-        $payment->paymethod_id  = $request->input('payment_method');
-        $payment->receive       = $request->input('received_amount');
-        $payment->account_no    = $request->input('account_number');
-        $payment->refer_no      = $request->input('reference_number');
-        $payment->trxid         = $request->input('trxid');
-        $payment->receive_date  = $request->input('receive_date');
-        $payment->billing_month = $request->input('billing_month');
-        $payment->details       = $request->input('detail');
-        $payment->status        = $request->input('service_id')?1:0;
-        $payment->updated_by    = $user_id;
-
-        $payment->save();
-
-        $service = Service::find($request->service_id);
-        $service->last_pay_at = $request->input('receive_date');
-        $service->save();
+            //update to the database
+            try {
+              $payment = Payment::where('id', $id)->update($data);
+            }
+            catch(\Exception $e)
+            {
+              return $e->getMessage();
+            }
 
         //session flashing
         Session::flash('success', 'Payment successfully updated!');
         
         //return to the show page
-        return redirect('/admin/payment/'.$id);
+        return redirect()->route('payment.show', $id);
     }
 
     /**
@@ -281,7 +249,7 @@ class AdminPaymentController extends Controller
     {
       $payment = Payment::find($id);
       $user = User::find($payment->user_id);
-      if($user->balance >= $payment->receive)
+      if($user && $user->balance >= $payment->receive)
       {
         User::where('id', $user->id)->update([
             'balance' => DB::raw("balance - ".intval($payment->receive))

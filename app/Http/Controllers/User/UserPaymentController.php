@@ -13,7 +13,7 @@ use Session;
 use DB;
 use Image;
 
-class PaymentController extends Controller
+class UserPaymentController extends Controller
 {
     public function __construct()
     {

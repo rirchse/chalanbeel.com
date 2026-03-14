@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\MapController;
+use App\Http\Controllers\SourceCtrl;
 use App\User;
 use App\Admin;
 use App\Location;
@@ -97,6 +98,7 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
+      $source = new SourceCtrl;
         $user_id = Auth::guard('admin')->user()->id;
         //validate the data
         $this->validate($request, array(
@@ -139,12 +141,7 @@ class UsersController extends Controller
         //save image//
         if($request->hasFile('profile_image'))
         {
-          $image    = $request->file('profile_image');
-          $filename = time() . '.' . $image->getClientOriginalExtension();
-          $location = ('images/profile/' . $filename);
-          Image::make($image)->resize(600, 600)->save($location);
-
-          $data['image'] = $filename;
+          $data['image'] = $source->fileUpload($request->profile_image, 'profile/');
         }
 
         if($request->hasFile('nid_image')) 
@@ -159,7 +156,7 @@ class UsersController extends Controller
         
         $data['password'] = bcrypt($data['contact']);
 
-        try{
+        try {
           $user = User::updateOrCreate(
             [
               'username' => $data['contact']
@@ -167,11 +164,11 @@ class UsersController extends Controller
             $data
           );
 
-        //session flashing
-        Session::flash('success', 'New user successfully created!');
+          //session flashing
+          Session::flash('success', 'New user successfully created!');
 
-        //return to the show page
-        return redirect()->route('user.show', $user->id);
+          //return to the show page
+          return redirect()->route('user.show', $user->id);
         }
         catch(\Exception $e)
         {

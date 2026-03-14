@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\AdminPaymentController;
 use App\Http\Controllers\Admin\PointController;
 
 use App\Http\Controllers\User\UserHomeController;
-// use App\Http\Controllers\User\PaymentController;
+use App\Http\Controllers\User\UserPaymentController;
 use App\Http\Controllers\ExpireController;
 
 /*
@@ -101,25 +101,67 @@ Route::group(['middleware' => ['web']], function()
 
 
 	Auth::routes();
-  Route::get('get-package/{package_id}', 'User\UserHomeController@getPackage')->name('user.get-package');
-	/** bkash payment API */
-	// Route::controller('Bkash\BkashController')->group(function()
-	// {
-	// 	// Payment Routes for bKash
-	// 	Route::get('/bkash/create', 'create');
-  //   Route::get('bkash/get-token', 'getToken')->name('bkash-get-token');
-  //   Route::post('bkash/create-payment', 'createPayment')->name('bkash-create-payment');
-  //   Route::post('bkash/execute-payment', 'executePayment')->name('bkash-execute-payment');
-  //   Route::get('bkash/query-payment', 'queryPayment')->name('bkash-query-payment');
-  //   Route::post('bkash/success', 'bkashSuccess')->name('bkash-success');
-	// });
+  //user routes start from here
+    Route::get('/all_users', 'Admin\UsersController@index');
+    Route::put('/permit_as_admin/{id}', 'Admin\UsersController@permitAdmin')->name('admin.permit.admin');
 
-	// Route::controller('bksah\BkashRefundController')->group(function()
-	// {
-	// 	// Refund Routes for bKash
-  //   Route::get('bkash/refund-get', 'index')->name('bkash-refund-index');
-  //   Route::post('bkash/refund', 'refund')->name('bkash-refund');
-	// });
+    //offer
+    Route::get('/my_offer', 'User\UserHomeController@myOffer');
+    Route::post('/my_offer', 'User\UserHomeController@requestForOffer')
+    ->name('user.requestOffer');
+
+    //user login functionality
+    Route::get('/home', 'User\UserHomeController@index');
+    Route::get('/login', 'Auth\UnifiedLoginController@showLoginForm')
+    ->name('login');
+    Route::post('/login', 'Auth\UnifiedLoginController@login')
+    ->name('login.post');
+    Route::get('/logout', 'Auth\UnifiedLoginController@logout')
+    ->name('logout');
+
+    //user profile
+    Route::get('/profile', 'User\ProfileController@show');
+    Route::put('/profile', 'User\ProfileController@update')
+    ->name('profile.update');
+
+    Route::get('/change_my_password', 'User\ProfileController@changePassword');
+    Route::put('/change_my_password', 'User\ProfileController@updatePassword')->name('user.password_change');
+
+    //payments
+    Route::controller(UserPaymentController::class)->group(function()
+    {
+      Route::get('/user/{id}/payment', 'create');
+      Route::post('/user-payment', 'store')->name('user.create.payment');
+      Route::get('/view_payments', 'index');
+      Route::get('/view_due_bills', 'dueBills');
+    });
+
+    //packages for user
+    Route::get('/view_packages', 'User\UserHomeController@packages');
+    Route::get('/package/{id}/get', 'User\UserHomeController@get_package');
+
+    Route::get('router-active-users', [UsersController::class, 'routerActiveUsers'])
+    ->name('router.active-users');
+    Route::get('get-package/{package_id}', 'User\UserHomeController@getPackage')->name('user.get-package');
+
+    /** bkash payment API */
+    // Route::controller('Bkash\BkashController')->group(function()
+    // {
+    // 	// Payment Routes for bKash
+    // 	Route::get('/bkash/create', 'create');
+    //   Route::get('bkash/get-token', 'getToken')->name('bkash-get-token');
+    //   Route::post('bkash/create-payment', 'createPayment')->name('bkash-create-payment');
+    //   Route::post('bkash/execute-payment', 'executePayment')->name('bkash-execute-payment');
+    //   Route::get('bkash/query-payment', 'queryPayment')->name('bkash-query-payment');
+    //   Route::post('bkash/success', 'bkashSuccess')->name('bkash-success');
+    // });
+
+    // Route::controller('bksah\BkashRefundController')->group(function()
+    // {
+    // 	// Refund Routes for bKash
+    //   Route::get('bkash/refund-get', 'index')->name('bkash-refund-index');
+    //   Route::post('bkash/refund', 'refund')->name('bkash-refund');
+    // });
 
   
     //--Admin--//
@@ -186,13 +228,6 @@ Route::group(['middleware' => ['web']], function()
         Route::get('/get_package_from_router', 'Admin\PackageController@routerpackage');
 
         Route::resource('payment', AdminPaymentController::class);
-        // Route::resource('/payment', 'Admin\PaymentController');
-
-        // payment confirm
-        Route::get('/create/{id}/user_payment', 'Admin\PaymentController@CreateUserPayment');
-        Route::get('/create/{id}/user_payment_complete', 'Admin\PaymentController@UserPaymentComplete');
-        Route::post('/create_user_payment', 'Admin\PaymentController@StoreUserPayment')
-        ->name('admin.create.user.payment');
 
         Route::resource('/paymethod', 'Admin\PaymethodController');
         Route::resource('/location', 'Admin\LocationController');
@@ -229,46 +264,6 @@ Route::group(['middleware' => ['web']], function()
         Route::get('point-view-map', 'onMap')->name('point.view.map');
       });
     });
-
-  //user routes start from here
-	Route::get('/all_users', 'Admin\UsersController@index');
-	Route::put('/permit_as_admin/{id}', 'Admin\UsersController@permitAdmin')->name('admin.permit.admin');
-
-	//offer
-	Route::get('/my_offer', 'User\UserHomeController@myOffer');
-	Route::post('/my_offer', 'User\UserHomeController@requestForOffer')
-  ->name('user.requestOffer');
-
-	//user login functionality
-	Route::get('/home', 'User\UserHomeController@index');
-	Route::get('/login', 'Auth\UnifiedLoginController@showLoginForm')
-  ->name('login');
-	Route::post('/login', 'Auth\UnifiedLoginController@login')
-  ->name('login.post');
-	Route::get('/logout', 'Auth\UnifiedLoginController@logout')
-  ->name('logout');
-
-	//user profile
-	Route::get('/profile', 'User\ProfileController@show');
-	Route::put('/profile', 'User\ProfileController@update')
-  ->name('profile.update');
-
-	Route::get('/change_my_password', 'User\ProfileController@changePassword');
-	Route::put('/change_my_password', 'User\ProfileController@updatePassword')->name('user.password_change');
-
-	//payments
-	Route::get('/{id}/payment', 'User\PaymentController@create');
-	Route::post('/payment', 'User\PaymentController@store')
-  ->name('user.create.payment');
-	Route::get('/view_payments', 'User\PaymentController@index');
-	Route::get('/view_due_bills', 'User\PaymentController@dueBills');
-
-	//packages for user
-	Route::get('/view_packages', 'User\UserHomeController@packages');
-	Route::get('/package/{id}/get', 'User\UserHomeController@get_package');
-
-  Route::get('router-active-users', [UsersController::class, 'routerActiveUsers'])
-  ->name('router.active-users');
 
 	// cache clear
 	Route::get('reboot', function () {
