@@ -29,7 +29,7 @@ class Router extends Controller
 
     static function Connect()
     {
-      $router_host = 'e14e0dffbae9.sn.mynetname.net';
+      $router_host = '192.168.254.1';
       $router_user = 'apiadmin';
       $router_password = '@p!@dm!n122025';
 
@@ -37,7 +37,7 @@ class Router extends Controller
         'host' => $router_host,
         'user' => $router_user,
         'pass' => $router_password,
-        // 'port' => 8728, // or 8729 if using SSL
+        'port' => 8728, // or 8729 if using SSL
       ]);
 
       return $client;
@@ -51,7 +51,7 @@ class Router extends Controller
 
     public function activeArp()
     {
-      $query = (new Query('/ip/arp/print'));      
+      $query = new Query('/ip/arp/print');
       $response = $this->connect()->query($query)->read();
       return $response;
     }

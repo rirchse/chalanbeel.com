@@ -563,39 +563,25 @@ class UsersController extends Controller
     $router = new Router;
     $arp_users = $router->activeArp();
 
-    foreach($arp_users as $key => $ip)
+    // dd(count($arp_users));
+
+    $entry = $noentry = 0;
+
+    foreach($arp_users as $key => $value)
     {
-      if(in_array($ip['address'], $ips))
+      if(in_array($value['address'], $ips))
       {
         $arp_users[$key]['status'] = 'Entry';
+        $entry++;
       }
       else
       {
         $arp_users[$key]['status'] = 'No Entry';
+        $noentry++;
       }
     }
-    
-    // for($u = 0; $u < count($arp_users); $u++)
-    // {
-    //   $array_found = array_search($arp_users[$u]['address'], array_column($users, 'ip'));
-    //   if($array_found)
-    //   {
-    //     $user = $users[$array_found];
-    //     $arp_users[$u]['status'] = 'Entry';
-    //     $arp_users[$u]['name'] = $user['name'];
-    //     $arp_users[$u]['contact'] = $user['contact'];
-    //   }
-    //   else
-    //   {
-    //     $arp_users[$u]['status'] = 'Unknown';
-    //     $arp_users[$u]['name'] = '';
-    //     $arp_users[$u]['contact'] = '';
-    //   }
-    // }
 
-    // dd($users);
-
-    return view('admins.users.active-user', compact('arp_users'));
+    return view('admins.users.active-user', compact('arp_users', 'entry', 'noentry'));
   }
 
   public function loginto($id)

@@ -28,7 +28,11 @@ class ScheduleTask extends Command
      */
     public function handle()
     {
+      //make expire to the users
       ExpireController::expiredCheck();
+
+      //find expire users and email to the admin
+      ExpireController::expiredUsers();
       
         // return Command::SUCCESS;
     }

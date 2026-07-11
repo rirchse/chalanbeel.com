@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\PointController;
 use App\Http\Controllers\User\UserHomeController;
 use App\Http\Controllers\User\UserPaymentController;
 use App\Http\Controllers\ExpireController;
+use App\Http\Controllers\Router;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,10 @@ use App\Http\Controllers\ExpireController;
 
 Route::group(['middleware' => ['web']], function()
 {
+  Route::get('today-expire', [ExpireController::class, 'expiredUsers']);
+
+  // arp user test from router
+  // Route::get('router-arp-user', [Router::class, 'activeArp']);
   Route::get('expired_check', [ExpireController::class, 'expiredCheck']);
   
   // expire detect
