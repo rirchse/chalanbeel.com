@@ -98,8 +98,6 @@ class ExpireController extends Controller
 
     }
 
-    // dd($today_expired, $other_expired);
-
     //style
     $style = 'table, th, td{ border:1px solid; border-collapse: collapse; padding:5px }';
 
@@ -130,8 +128,6 @@ class ExpireController extends Controller
       'email_body' => $email_body,
       'style' => $style
     ];
-
-    return $email_body;
 
     //send email
     $this->source->sendMail($email_data);
