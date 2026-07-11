@@ -77,6 +77,7 @@ $source = new SourceCtrl;
                                 <th>IP</th>
                                 <th>Lat, Long</th>
                                 <th>Status</th>
+                                <th>Balance</th>
                                 <th class="disabled-sorting text-right">Actions</th>
                             </tr>
                         </thead>
@@ -90,7 +91,8 @@ $source = new SourceCtrl;
                                 <th>IP</th>
                                 <th>Lat, Long</th>
                                 <th>Status</th>
-                                <th class="text-right" width="180">Actions</th>
+                                <th>Balance</th>
+                                <th class="text-right" width="150">Actions</th>
                             </tr>
                         </tfoot>
                         <tbody>
@@ -102,16 +104,15 @@ $source = new SourceCtrl;
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->contact }}</td>
                                 <td>{{ $user->service_type }}</td>
-                                <td>{{ $source->dtformat($user->payment_date) }}</td>
+                                <td>{{ $source->dformat($user->payment_date) }}</td>
                                 <td>{{ $user->ip }}</td>
                                 <td>{{ $user->lat.' '. $user->lng }}</td>
                                 <td>{{$user->status}}</td>
+                                <td>{{$user->balance}}</td>
                                 <td class="text-right">
                                     <a href="{{route('user.show', $user->id)}}" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
                                     
                                     <a class="btn btn-xs btn-warning" title="Edit the record" data-id="{{$user->id}}" onclick="showModal(this)"><i class="fa fa-pencil"></i></a>
-
-                                    <a href="/admin/create/{{$user->id}}/service" class="btn btn-simple btn-success btn-icon" title="Add New Servcie"><i class="material-icons">add_circle</i></a>
                                 </td>
                             </tr>
 

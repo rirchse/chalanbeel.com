@@ -331,7 +331,7 @@ class UsersController extends Controller
 
         //set flash data with success message
         Session::flash('success', 'User Information successfully updated.');
-        return back();
+        return redirect()->route('user.show', $id);
     }
 
     public function permitAdmin(Request $request, $id)

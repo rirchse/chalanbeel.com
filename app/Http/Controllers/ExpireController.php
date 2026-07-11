@@ -68,9 +68,10 @@ class ExpireController extends Controller
 
     $today = date('Y-m-d');
     $users = User::whereRaw('DATE(payment_date) <= ?', $today)
+    ->where('service_type', 'Static')
     ->whereIn('status', ['Active', 'Expire'])
     ->orderBy('payment_date', 'DESC')
-    ->select('id', 'payment_date', 'name', 'contact')
+    ->select('id', 'payment_date', 'name', 'contact', 'ip')
     ->get();
 
     $today_expired = $other_expired = '';
@@ -81,7 +82,8 @@ class ExpireController extends Controller
         $today_expired .= '<tr>'.
         '<td><a href="'.$host.'/admin/user/'.$user->id.'">'.$user->name.'</a></td>'.
         '<td>'.$user->contact.'</td>'.
-        '<td>'.$user->payment_date.'</td>'.
+        '<td>'.$this->source->dformat($user->payment_date).'</td>'.
+        '<td>'.$user->ip.'</td>'.
         '</tr>';
       }
       else
@@ -89,7 +91,8 @@ class ExpireController extends Controller
         $other_expired .= '<tr>'.
         '<td><a href="'.$host.'/admin/user/'.$user->id.'">'.$user->name.'</a></td>'.
         '<td>'.$user->contact.'</td>'.
-        '<td>'.$user->payment_date.'</td>'.
+        '<td>'.$this->source->dformat($user->payment_date).'</td>'.
+        '<td>'.$user->ip.'</td>'.
         '</tr>';
       }
 
@@ -100,16 +103,22 @@ class ExpireController extends Controller
     //style
     $style = 'table, th, td{ border:1px solid; border-collapse: collapse; padding:5px }';
 
+    $today_expire_user_list = '';
+    if($today_expired)
+    {
+      $today_expire_user_list = '<h3>These users will expire today</h3>'.
+      '<table border=1 collapsible=collapse>'.
+      $today_expired.
+      '</table>'.
+      '<br>';
+    }
+
     //email body
     $email_body = '<style>table, th, td{ border:1px solid; border-collapse: collapse; padding:5px }</style>'.
     '<div>'.
-      '<table border=1 collapsible=collapse>'.
-      '<tr><td colspan="3"><h3>These users will expire today</h3></td></tr>'.
-      $today_expired.
-      '</table>'.
-      '<hr>'.
+      $today_expire_user_list.
+      '<h4>Other Expired Users</h4>'.
       '<table style="border:1px solid">'.
-      '<tr><td colspan="3"><h4>Other Expired Users</h4></td></tr>'.
       $other_expired.
       '</table>'.
       '</div>';
@@ -122,7 +131,7 @@ class ExpireController extends Controller
       'style' => $style
     ];
 
-    // return $email_body;
+    return $email_body;
 
     //send email
     $this->source->sendMail($email_data);

@@ -13,14 +13,20 @@ class SourceCtrl extends Controller
     return $fileUrl;
   }
 
-  public function dtformat($date)
+  public function dformat($date)
   {
-    $formated_date = '';
     if($date)
     {
-      $formated_date = date('d M Y', strtotime($date));
+      return date('d M Y', strtotime($date));
     }
-    return $formated_date;
+  }
+
+  public function dtformat($date)
+  {
+    if($date)
+    {
+      return date('d M Y H:i:s', strtotime($date));
+    }
   }
 
   public function routerActiveUsers()

@@ -43,12 +43,8 @@ $source = new SourceCtrl;
                           <td>{{$user->contact}}</td>
                       </tr>
                       <tr>
-                          <th>Street Address:</th>
-                          <td>{{$user->address}}</td>
-                      </tr>
-                      <tr>
-                          <th>POP/OLT</th>
-                          <td>{{$user->location}}</td>
+                          <th>Next Payment Date:</th>
+                          <td>{{$source->dformat($user->payment_date)}}</td>
                       </tr>
                       <tr>
                           <th>Status:</th>
@@ -93,16 +89,20 @@ $source = new SourceCtrl;
                           <td>{{$user->service_password}}</td>
                       </tr>
                       <tr>
+                          <th>Street Address:</th>
+                          <td>{{$user->address}}</td>
+                      </tr>
+                      <tr>
+                          <th>POP/OLT</th>
+                          <td>{{$user->location}}</td>
+                      </tr>
+                      <tr>
                           <th>Join Date:</th>
-                          <td>{{$source->dtformat($user->join_date)}}</td>
+                          <td>{{$source->dformat($user->join_date)}}</td>
                       </tr>
                       <tr>
                           <th>Billing Date:</th>
-                          <td>{{$source->dtformat($user->billing_date)}}</td>
-                      </tr>
-                      <tr>
-                          <th>Next Payment Date:</th>
-                          <td>{{$source->dtformat($user->payment_date)}}</td>
+                          <td>{{$source->dformat($user->billing_date)}}</td>
                       </tr>
                       <tr>
                           <th>Location On Map:</th>
@@ -138,7 +138,7 @@ $source = new SourceCtrl;
                       </tr>
                       <tr>
                           <th>Created At</th>
-                          <td>{{$source->dtformat($user->created_at)}}</td>
+                          <td>{{$source->dformat($user->created_at)}}</td>
                       </tr>
                       <tr>
                           <th>Created By</th>
@@ -188,7 +188,7 @@ $source = new SourceCtrl;
             <tr>
               <td>{{$key+1}}</td>
               <td>{{$value->receive}}</td>
-              <td>{{$source->dtformat($value->receive_date)}}</td>
+              <td>{{$source->dformat($value->receive_date)}}</td>
               <td>{{$value->status}}</td>
               <td>
                 {{-- <a class="label label-info" href="{{route('user.invoice', $value->id)}}">Invoice</a> --}}
