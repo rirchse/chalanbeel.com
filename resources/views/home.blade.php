@@ -94,6 +94,7 @@
             font-family: 'FontAwesome' !important;
         }
     </style>
+    <link rel="manifest" href="/manifest.json">
 
 </head>
 
@@ -232,6 +233,16 @@
     		$('.card').removeClass('card-hidden');
     	}, 700)
     });
+  </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('Service Worker Registered!', reg))
+            .catch(err => console.error('Service Worker Failed!', err));
+      });
+    }
   </script>
 
 </body>

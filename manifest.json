@@ -1,0 +1,21 @@
+{
+  "short_name": "CBT",
+  "name": "My Secure CBT App",
+  "icons": [
+    {
+      "src": "/public/images/app-logo.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/public/images/app-logo.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#ffffff",
+  "theme_color": "#317EFB",
+  "display": "standalone",
+  "orientation": "portrait"
+}
