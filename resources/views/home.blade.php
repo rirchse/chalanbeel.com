@@ -243,6 +243,47 @@
             .catch(err => console.error('Service Worker Failed!', err));
       });
     }
+
+    //
+    // Variable to store the Chrome install event
+    let deferredPrompt;
+    const downloadBtn = document.getElementById('downloadAppBtn');
+
+    // 1. Listen for Chrome's hidden installation readiness signal
+    window.addEventListener('beforeinstallprompt', (e) => {
+        // Prevent older versions of Chrome from showing its default automatic banner
+        e.preventDefault();
+        
+        // Stash the event so we can trigger it manually later
+        deferredPrompt = e;
+        
+        // Unhide your custom HTML download button now that we know it's installable!
+        downloadBtn.style.display = 'block';
+    });
+
+    // 2. What happens when the user clicks your HTML button
+    downloadBtn.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+        
+        // Show Chrome's native "Install App" box pop-up overlay
+        deferredPrompt.prompt();
+        
+        // Wait for the user to click "Install" or "Cancel"
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`User response to install request: ${outcome}`);
+        
+        // Clear our saved event; it can only be used once
+        deferredPrompt = null;
+        
+        // Hide the button again since they made their choice
+        downloadBtn.style.display = 'none';
+    });
+
+    // 3. Optional: Hide button if they successfully install it
+    window.addEventListener('appinstalled', () => {
+        console.log('App successfully installed onto mobile home screen!');
+        downloadBtn.style.display = 'none';
+    });
   </script>
 
 </body>

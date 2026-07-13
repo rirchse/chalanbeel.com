@@ -427,6 +427,11 @@
         <div class="login-form-container">
             <h2 class="login-form-title">{{ __('messages.login.form_title') }}</h2>
 
+            <!-- Your Download Button -->
+            <button id="downloadAppBtn" style="display: none; padding: 12px 24px; background: #317EFB; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">
+              📥 Download Our Mobile App
+            </button>
+
             <div class="social-login">
                 <a href="#" class="social-btn fb-btn" title="Facebook">
                     <i class="fa fa-facebook"></i>
