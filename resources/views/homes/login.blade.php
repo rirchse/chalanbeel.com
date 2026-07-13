@@ -428,7 +428,7 @@
             <h2 class="login-form-title">{{ __('messages.login.form_title') }}</h2>
 
             <!-- Your Download Button -->
-            <button id="downloadAppBtn" style="display: none; padding: 12px 24px; background: #317EFB; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">
+            <button id="downloadAppBtn" style="display: none; padding: 12px 24px; background: #317EFB; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin:10px auto">
               📥 Download Our Mobile App
             </button>
 
