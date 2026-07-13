@@ -62,7 +62,7 @@ class ExpireController extends Controller
   }
 
   //get expired users
-  public function expiredUsers()
+  static function expiredUsers()
   {
     $host = $this->source->host();
 
@@ -97,6 +97,11 @@ class ExpireController extends Controller
       }
 
     }
+
+    // if(!$today_expired)
+    // {
+    //   return;
+    // }
 
     //style
     $style = 'table, th, td{ border:1px solid; border-collapse: collapse; padding:5px }';
