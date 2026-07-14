@@ -35,9 +35,9 @@
 <link rel="apple-touch-icon" sizes="76x76" href="{{'/images/apple-icon.png'}}" />
 <link rel="icon" type="image/png" href="{{'/images/favicon.png'}}" />
 <!-- Bootstrap core CSS     -->
-<link href="{{'/css/bootstrap.min.css'}}" rel="stylesheet" />
+<link href="{{'/css/bootstrap.min.css?v=1.0'}}" rel="stylesheet" />
 <!--  Material Dashboard CSS    -->
-<link href="{{'/css/material-dashboard.css'}}" rel="stylesheet" />
+<link href="{{'/css/material-dashboard.css?v=1.0'}}" rel="stylesheet" />
 <!--  CSS for Demo Purpose, don't include it in your project     -->
 <link href="{{'/css/demo.css'}}" rel="stylesheet" />
 <!--     Fonts and icons     -->
