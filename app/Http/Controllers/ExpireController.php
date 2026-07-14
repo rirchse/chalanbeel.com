@@ -62,9 +62,10 @@ class ExpireController extends Controller
   }
 
   //get expired users
-  static function expiredUsers()
+  public function expiredUsers()
   {
-    $host = $this->source->host();
+    $source = new SourceCtrl;
+    $host = $source->host();
 
     $today = date('Y-m-d');
     $users = User::whereRaw('DATE(payment_date) <= ?', $today)
@@ -82,7 +83,7 @@ class ExpireController extends Controller
         $today_expired .= '<tr>'.
         '<td><a href="'.$host.'/admin/user/'.$user->id.'">'.$user->name.'</a></td>'.
         '<td>'.$user->contact.'</td>'.
-        '<td>'.$this->source->dformat($user->payment_date).'</td>'.
+        '<td>'.$source->dformat($user->payment_date).'</td>'.
         '<td>'.$user->ip.'</td>'.
         '</tr>';
       }
@@ -91,7 +92,7 @@ class ExpireController extends Controller
         $other_expired .= '<tr>'.
         '<td><a href="'.$host.'/admin/user/'.$user->id.'">'.$user->name.'</a></td>'.
         '<td>'.$user->contact.'</td>'.
-        '<td>'.$this->source->dformat($user->payment_date).'</td>'.
+        '<td>'.$source->dformat($user->payment_date).'</td>'.
         '<td>'.$user->ip.'</td>'.
         '</tr>';
       }
@@ -135,6 +136,6 @@ class ExpireController extends Controller
     ];
 
     //send email
-    $this->source->sendMail($email_data);
+    $source->sendMail($email_data);
   }
 }

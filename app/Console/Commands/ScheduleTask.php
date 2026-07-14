@@ -28,11 +28,13 @@ class ScheduleTask extends Command
      */
     public function handle()
     {
-      //make expire to the users
-      ExpireController::expiredCheck();
+      // Let Laravel build the controller instance safely
+      $expireCtrl = app(\App\Http\Controllers\ExpireController::class);
 
-      //find expire users and email to the admin
-      ExpireController::expiredUsers();
+      // This will work fine assuming 'expiredCheck' is a public static method 
+      // and 'expiredUsers' is a public method that doesn't rely on an HTTP Request.
+      \App\Http\Controllers\ExpireController::expiredCheck();
+      $expireCtrl->expiredUsers();
       
         // return Command::SUCCESS;
     }
