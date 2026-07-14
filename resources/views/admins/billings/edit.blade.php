@@ -31,7 +31,7 @@
                           </div>
                           <div class="form-group">
                             <label for="">Next Payment Date:</label>
-                            <input type="date" name="payment_date" class="form-control" value="{{date('Y-m-d', strtotime('+1 months'))}}" id="paymentDate">
+                            <input type="date" name="payment_date" class="form-control" value="{{$payment->user->payment_date}}" id="paymentDate">
                           </div>
                           <button type="submit" class="btn btn-info pull-right">Submit</button>
                         </div>

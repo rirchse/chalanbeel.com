@@ -220,12 +220,27 @@ class AdminPaymentController extends Controller
         //validate the data
         $data = $request->validate([
             'receive_date' => 'required',
-            'receive'          => 'required'
+            'receive'      => 'required',
+            'payment_date' => 'required'
             ]);
+
+            // dd($data);
 
             //update to the database
             try {
-              $payment = Payment::where('id', $id)->update($data);
+              $payment = Payment::where('id', $id)
+              ->update([
+                'receive_date' => $data['receive_date'],
+                'receive' => $data['receive']
+              ]);
+
+              $payment = Payment::find($id);
+              // update user payment date
+              $payment->user()->update([
+                'payment_date' => $data['payment_date']
+              ]);
+
+              return back();
             }
             catch(\Exception $e)
             {

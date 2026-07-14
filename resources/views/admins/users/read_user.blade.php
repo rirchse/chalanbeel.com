@@ -192,6 +192,9 @@ $source = new SourceCtrl;
               <td>{{$value->status}}</td>
               <td>
                 {{-- <a class="label label-info" href="{{route('user.invoice', $value->id)}}">Invoice</a> --}}
+                <a class="label label-warning" href="{{route('payment.edit', $value->id)}}">
+                  <i class="fa fa-edit"></i>
+                </a>
               </td>
             </tr>
             @endforeach
