@@ -1,14 +1,14 @@
 {
   "short_name": "CBT",
-  "name": "My Secure CBT App",
+  "name": "Secure CBT App",
   "icons": [
     {
-      "src": "/public/images/app-logo.png",
+      "src": "/public/images/app-logo-192x192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/public/images/app-logo.png",
+      "src": "/public/images/app-logo-512x512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
