@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
       \App\Console\Commands\ScheduleTask::class,
+      \App\Console\Commands\ExpireReminderTask::class,
     ];
 
     /**
@@ -24,7 +25,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('expired:run')
+      $schedule->command('expired:run')
+                 ->everyMinute();
+
+      $schedule->command('expired_reminder:run')
                  ->everyMinute();
     }
 

@@ -5,14 +5,14 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Http\Controllers\ExpireController;
 
-class ScheduleTask extends Command
+class ExpireReminderTask extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'expired:run';
+    protected $signature = 'expired_reminder:run';
 
     /**
      * The console command description.
@@ -26,10 +26,11 @@ class ScheduleTask extends Command
      *
      * @return int
      */
-    
     public function handle()
     {
-      \App\Http\Controllers\ExpireController::expiredCheck();
+      // Let Laravel build the controller instance safely
+      $expireCtrl = app(\App\Http\Controllers\ExpireController::class);
+      $expireCtrl->expiredUsers();
       
         // return Command::SUCCESS;
     }

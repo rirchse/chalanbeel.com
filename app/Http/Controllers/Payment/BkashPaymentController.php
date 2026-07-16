@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Payment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Mahedi250\Bkash\Facade\CheckoutUrl;
+use App\Http\Controllers\SmsCtrl;
 
 /** customized */
 use App\Service;
@@ -58,6 +59,9 @@ class BkashPaymentController extends Controller
 
     public function callback(Request $request)
     {
+        //call to the sms controller
+        $sms = new SmsCtrl;
+
         $status = $request->input('status');
         $paymentId = $request->input('paymentID');
 
@@ -67,7 +71,7 @@ class BkashPaymentController extends Controller
 
             if ($response->statusCode !== '0000')
             {
-            return CheckoutUrl::Failed($response->statusMessage);
+              return CheckoutUrl::Failed($response->statusMessage);
             }
 
             if (isset($response->transactionStatus)&&($response->transactionStatus=='Completed'||$response->transactionStatus=='Authorized'))
@@ -102,10 +106,13 @@ class BkashPaymentController extends Controller
                   'status' => 'Paid',
                   'trxid' => $request->input('paymentID')
                 ]);
+
+                //send success sms
+                $sms->sendSms('88'.$user->contact, 'CBT: Your internet service activated. Username:'.$user->contact);
             
                 //Database Insert Operation
                 return redirect('/home');
-                return CheckoutUrl::Success($response->trxID."({$response->transactionStatus})");
+                // return CheckoutUrl::Success($response->trxID."({$response->transactionStatus})");
               }
               catch(\Exception $e)
               {

@@ -29,24 +29,19 @@ class Router extends Controller
 
     static function Connect()
     {
-      $router_host = '192.168.254.1';
-      $router_user = 'apiadmin';
-      $router_password = '@p!@dm!n122025';
+      $router_host = config('services.mikrotik.host');
+      $router_user = config('services.mikrotik.user');
+      $router_password = config('services.mikrotik.pass');
+      $router_port = config('services.mikrotik.port');
 
       $client = new Client([
         'host' => $router_host,
         'user' => $router_user,
         'pass' => $router_password,
-        'port' => 8728, // or 8729 if using SSL
+        'port' => $router_port,
       ]);
 
       return $client;
-      
-      // $query = (new Query('/ip/arp/print'));
-      
-      // $response = $client->query($query)->read();
-      
-      // dd($response);
     }
 
     public function activeArp()
@@ -70,47 +65,47 @@ class Router extends Controller
     {
         return Router::Connect()->setMenu('/ppp active')->getAll();
     }
-
-
-    //test
-    public function ConnectTest()
+    
+    // add ip address to the firewall address list
+    public function addExpireIP($users, $list = 'Expired')
     {
-        require_once 'PEAR2/Autoload.php';
-        try {
-        // $util = new RouterOS\Util(
-            // $client = new RouterOS\Client('192.144.84.2', 'kobir', 'kobir3320', '3303'));
-            $client = new RouterOS\Client('192.168.0.11', 'phpapi', 'phpapi');
-            // );
-        // dd($client);
+      $results = '';
+      foreach($users as $user)
+      {
+        $query = (new Query('/ip/firewall/address-list/add'))
+                  ->equal('address', $user->ip)
+                  ->equal('list', 'Expired')
+                  ->equal('comment', $user->name);
+  
+        $response = $this->connect()->query($query)->read();
+        $results = array_push($response, $results);
+      }
 
-        echo 'Router Connected!';
-        } catch (Exception $e) { echo 'Unable to connect to RouterOS.';}
+      return $results;
+    }
 
-        //add ppp secret
-        // $util->setMenu('/ppp secret')->add(array(
-        //     'name'         => 'neyamul',
-        //     'password'     => 'amijanina',
-        //     'service'      => 'pppoe',
-        //     'profile'      => '10mbps',
-        //     'comment'      => 'This account created by router api'
-        // ));
+    public function getExpireIP($ip, $list = 'Expired')
+    {
+      $listName = $list;
+      $ipAddress = $ip;
 
-        //disable a user
-        // $menu = $util->setMenu('/ppp secret');
-        // $query = RouterOS\Query::where('name', 'test1');
-        // $disable = $menu->disable($query);
-        // $enable  = $menu->enable($query);
+      // 1. Target the precise IP inside the precise list
+      $findQuery = (new Query('/ip/firewall/address-list/print'))
+      ->where('list', $listName)
+      ->where('address', $ipAddress);
 
-        // $get = $menu->get($query);
-        // if($get['disabled']){
-        //     echo 'Yes was disabled';
-        //     $menu->enable($query);
-        // }else{
-        //     echo 'No, was enabled';
-        //     $menu->disable($query);
-        // }
+      $entries = $this->connect()->query($findQuery)->read();
 
+      // 2. If it exists, remove it using its ID
+    if (!empty($entries) && isset($entries[0]['.id'])) {
+      $removeQuery = (new Query('/ip/firewall/address-list/remove'))
+          ->equal('.id', $entries[0]['.id']);
+      
+        $this->connect()->query($removeQuery)->read();
 
-        // dd($get['disabled']);
+      return response()->json(['success' => true, 'message' => "{$ipAddress} removed from {$listName}."]);
+    }
+
+    return response()->json(['success' => false, 'message' => "IP not found in that list."]);
     }
 }

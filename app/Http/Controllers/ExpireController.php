@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use DB;
 use App\Http\Controllers\SourceCtrl;
+use App\Http\Controllers\Router;
 
 class ExpireController extends Controller
 {
@@ -13,6 +14,26 @@ class ExpireController extends Controller
   public function __construct()
   {
     $this->source = new SourceCtrl;
+  }
+
+  //this method for testing perpose only
+  public function addExpireUsers()
+  {
+    $router = new Router;
+    $users = [
+      [
+        'ip' => '192.168.18.111',
+        'name' => 'api user 1'
+      ],
+      [
+        'ip' => '192.168.18.112',
+        'name' => 'api user 2'
+      ]
+    ];
+
+    $users = json_decode(json_encode($users));
+
+    $router->addExpireIP($users, $list = 'Expired');
   }
 
   static function expiredCheck()
@@ -61,7 +82,7 @@ class ExpireController extends Controller
 
   }
 
-  //get expired users
+  //get expired users and notify to the admin over email
   public function expiredUsers()
   {
     $source = new SourceCtrl;
@@ -129,7 +150,7 @@ class ExpireController extends Controller
 
     $email_data = [
       'email_to' => 'rirchse@gmail.com',
-      'email_bcc' =>  'wm.shoriful@gmail.com',
+      // 'email_bcc' =>  'wm.shoriful@gmail.com',
       'subject' => 'Expired Users List',
       'email_body' => $email_body,
       'style' => $style

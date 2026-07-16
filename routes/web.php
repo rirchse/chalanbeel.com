@@ -12,6 +12,7 @@ use App\Http\Controllers\User\UserHomeController;
 use App\Http\Controllers\User\UserPaymentController;
 use App\Http\Controllers\ExpireController;
 use App\Http\Controllers\Router;
+use App\Http\Controllers\SmsCtrl;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,13 @@ use App\Http\Controllers\Router;
 
 Route::group(['middleware' => ['web']], function()
 {
+  //test
+  Route::get('test-send-sms', [SmsCtrl::class, 'sendSms']);
+
+  Route::get('test-add-expire-user', [ExpireController::class, 'addExpireUsers']);
+
+  Route::get('test-remove-expire-user', [Router::class, 'getExpireIP']);
+
   Route::get('today-expire', [ExpireController::class, 'expiredUsers']);
 
   // arp user test from router

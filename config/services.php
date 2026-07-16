@@ -35,4 +35,17 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'mikrotik' => [
+        'host' => env('ROUTER_HOST'),
+        'user' => env('ROUTER_USERNAME'),
+        'pass' => env('ROUTER_PASSWORD'),
+        'port' => env('ROUTER_PORT'),
+    ],
+
+    'sms' => [
+      'server' => env('SMS_SERVER'),
+      'user' => env('SMS_USER'),
+      'pass' => env('SMS_PASS'),
+    ],
+
 ];
