@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Mahedi250\Bkash\Facade\CheckoutUrl;
 use App\Http\Controllers\SmsCtrl;
+use App\Http\Controllers\Router;
 
 /** customized */
 use App\Service;
@@ -62,6 +63,9 @@ class BkashPaymentController extends Controller
         //call to the sms controller
         $sms = new SmsCtrl;
 
+        //call to the router controller
+        $router = new Router;
+
         $status = $request->input('status');
         $paymentId = $request->input('paymentID');
 
@@ -91,7 +95,7 @@ class BkashPaymentController extends Controller
                 $user = User::find(auth()->id());
                 User::where('id', auth()->id())->update(
                   [
-                    'payment_date' => date('Y-m-d', strtotime('+30 days')),
+                    'payment_date' => date('Y-m-d', strtotime('+1 month')),
                     'balance' => DB::raw("balance + ".intval($user->package->price)),
                     'status' => 'Active'
                   ]
@@ -106,6 +110,9 @@ class BkashPaymentController extends Controller
                   'status' => 'Paid',
                   'trxid' => $request->input('paymentID')
                 ]);
+
+                //delete expire ip from block list
+                $router->delExpireList($user->ip);
 
                 //send success sms
                 $sms->sendSms('88'.$user->contact, 'CBT: Your internet service activated. Username:'.$user->contact);

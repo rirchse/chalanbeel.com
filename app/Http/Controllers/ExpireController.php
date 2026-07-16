@@ -33,11 +33,14 @@ class ExpireController extends Controller
 
     $users = json_decode(json_encode($users));
 
-    $router->addExpireIP($users, $list = 'Expired');
+    $router->addExpireIP($users);
   }
 
   static function expiredCheck()
   {
+    $router = new Router;
+    $smsctrl = new SmsCtrl;
+
     try{
       $users = User::with(['package:id,price'])
       ->whereRaw('DATE(payment_date) <= ?', date('Y-m-d'))
@@ -45,6 +48,9 @@ class ExpireController extends Controller
       ->where('service_type', 'Static')
       ->select('id', 'contact', 'username', 'payment_date', 'ip', 'package_id', 'balance')
       ->get();
+
+      //numbers for sms
+      $numbers = '';
       
       foreach($users as $user)
       {
@@ -65,7 +71,7 @@ class ExpireController extends Controller
         if($balance >= $price)
         {
           $status = 'Active';
-          $payment_date = date('Y-m-d', strtotime($payment_date.' +30 days'));
+          $payment_date = date('Y-m-d', strtotime($payment_date.' +1 month'));
         }
 
         User::where('id', $user->id)->update([
@@ -73,7 +79,23 @@ class ExpireController extends Controller
           'balance' => $balance,
           'payment_date' => $payment_date
         ]);
+
+        //
+        $numbers .= '88'.$user->contact.',';
       }
+
+      //expired users block from mikrotik
+      // $router->addExpireIP($users, $list = 'Expired');
+
+      //send notification by sms
+      // $smsctrl->sendSms($numbers, 'CBT: Your internet service stop. Bill pay for turn on it.');
+
+      //send sms one by one
+      // foreach($users as $user)
+      // {
+      //   $smsctrl->sendSms('88'.$user->contact, 'CBT: Your internet service stop. Bill pay for turn on it. Username:'.$user->contact);
+      // }
+      
     }
     catch(\Exception $e)
     {

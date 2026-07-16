@@ -26,10 +26,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
       $schedule->command('expired:run')
-                 ->everyMinute();
+                 ->dailyAt('12:00');
 
       $schedule->command('expired_reminder:run')
-                 ->everyMinute();
+                 ->dailyAt('12:59');
     }
 
     /**

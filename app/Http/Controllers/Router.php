@@ -13,7 +13,6 @@ use App\PaymentReceive;
 use App\Location;
 use App\Device;
 use App\User;
-// use App\Router;
 use Redirect;
 use DB;
 use Session;
@@ -38,7 +37,7 @@ class Router extends Controller
         'host' => $router_host,
         'user' => $router_user,
         'pass' => $router_password,
-        'port' => $router_port,
+        'port' => (int)$router_port,
       ]);
 
       return $client;
@@ -84,7 +83,7 @@ class Router extends Controller
       return $results;
     }
 
-    public function getExpireIP($ip, $list = 'Expired')
+    public function delExpireList($ip, $list = 'Expired')
     {
       $listName = $list;
       $ipAddress = $ip;
