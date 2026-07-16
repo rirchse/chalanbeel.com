@@ -31,6 +31,8 @@ class ExpireReminderTask extends Command
       // Let Laravel build the controller instance safely
       $expireCtrl = app(\App\Http\Controllers\ExpireController::class);
       $expireCtrl->expiredUsers();
+
+      Log::info('reminder working');
       
         // return Command::SUCCESS;
     }

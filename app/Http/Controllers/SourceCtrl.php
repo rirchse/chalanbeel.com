@@ -83,10 +83,10 @@ class SourceCtrl extends Controller
   public function host()
   {    
     $protocol = isset($_SERVER['HTTPS'])?'https://':'http://';
-    $host = $protocol.$_SERVER['HTTP_HOST'];
-    if(empty($_SERVER['HTTP_HOST']))
+    $host = $protocol.env('APP_URL');
+    if(!$host)
     {
-        $host = '/';
+        $host = url('/');
     }
     return $host;
   }
