@@ -12,6 +12,7 @@ use App\Package;
 use App\Service;
 use App\Payment;
 use App\Http\Controllers\Router;
+use App\Http\Controllers\SmsCtrl;
 use Auth;
 use Image;
 use File;
