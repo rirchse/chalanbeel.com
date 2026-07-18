@@ -494,6 +494,9 @@ class UsersController extends Controller
 
     public function getPayment(Request $request)
     {
+      $router = new Router;
+      $smsctrl = new SmsCtrl;
+
       $data = $request->all();
       $user = User::find($data['user_id']);
       $price = $user->package ? $user->package->price : 0;
@@ -526,6 +529,12 @@ class UsersController extends Controller
               'status' => 'Paid'
             ]
           );
+
+          //delete expire ip from block list
+          $router->delExpireList($user->ip);
+
+          //send success sms
+          // $sms->sendSms('88'.$user->contact, 'প্রিয় গ্রাহক, আপনার বিল পে সফল হয়েছে। হেল্প লাইন- 01703587911-CBT');
           
           Session::flash('success', 'Payment successfully received.');
         }
