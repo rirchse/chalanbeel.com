@@ -233,6 +233,7 @@ Route::group(['middleware' => ['web']], function()
           Route::get('check-available-ip/{ip}', 'checkIP')->name('user.check-ip');
           Route::post('get-payment', 'getPayment')->name('user.get-payment');
 
+          //router connection
           Route::get('/active/arp-user', 'activeUsers')->name('user.arp-user');
         });
         

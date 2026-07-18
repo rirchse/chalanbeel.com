@@ -41,7 +41,7 @@ class ExpireController extends Controller
     $router = new Router;
     $smsctrl = new SmsCtrl;
 
-    try{
+    try {
       $users = User::with(['package:id,price'])
       ->whereRaw('DATE(payment_date) <= ?', date('Y-m-d'))
       ->where('status', 'Active')
@@ -85,10 +85,10 @@ class ExpireController extends Controller
       }
 
       //expired users block from mikrotik
-      // $router->addExpireIP($users, $list = 'Expired');
+      $router->addExpireIP($users, $list = 'Expired');
 
       //send notification by sms
-      // $smsctrl->sendSms($numbers, 'CBT: Your internet service stop. Bill pay for turn on it.');
+      $smsctrl->sendSms($numbers, 'CBT: Your internet service stop. Bill pay for start it.');
 
       //send sms one by one
       // foreach($users as $user)
