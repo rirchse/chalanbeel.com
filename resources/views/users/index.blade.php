@@ -22,17 +22,17 @@ $user = Auth::user();
               </tr>
                 <tr>
                     <th>Join Date</th>
-                    <td>{{$source->dtformat($user->join_date)}}</td>
+                    <td>{{$source->dformat($user->join_date)}}</td>
                 </tr>
 
                 @if($user->package)
                 <tr>
                     <th>Billing Date</th>
-                    <td>{{$source->dtformat($user->billing_date)}}</td>
+                    <td>{{$source->dformat($user->billing_date)}}</td>
                 </tr>
                 <tr>
                     <th>Next Payment Date</th>
-                    <td>{{$source->dtformat($user->payment_date)}}</td>
+                    <td>{{$source->dformat($user->payment_date)}}</td>
                 </tr>
                 <tr>
                     <th>Package</th>
@@ -115,7 +115,7 @@ $user = Auth::user();
             <tr>
               <td>{{$key+1}}</td>
               <td>{{$value->receive}}</td>
-              <td>{{$source->dtformat($value->receive_date)}}</td>
+              <td>{{$source->dformat($value->receive_date)}}</td>
               <td>{{$value->status}}</td>
               <td>
                 <a class="label label-info" href="{{route('user.invoice', $value->id)}}">Invoice</a>
