@@ -46,7 +46,7 @@ class ExpireController extends Controller
       ->whereRaw('DATE(payment_date) <= ?', date('Y-m-d'))
       ->where('status', 'Active')
       ->where('service_type', 'Static')
-      ->select('id', 'contact', 'username', 'payment_date', 'ip', 'package_id', 'balance')
+      ->select('id', 'name', 'contact', 'username', 'payment_date', 'ip', 'package_id', 'balance')
       ->get();
 
       //numbers for sms
@@ -88,7 +88,7 @@ class ExpireController extends Controller
       $router->addExpireIP($users, $list = 'Expired');
 
       //send notification by sms
-      $smsctrl->sendSms($numbers, 'CBT: Your internet service stop. Bill pay for start it.');
+      $smsctrl->sendSms($numbers, 'আপনার ইন্টারনেট সংযোগের মেয়াদ শেষ, বিল পে করুন। বিকাশ 01703587911-CBT');
 
       //send sms one by one
       // foreach($users as $user)
@@ -180,5 +180,8 @@ class ExpireController extends Controller
 
     //send email
     $source->sendMail($email_data);
+
+    //send sms
+    //আগামীকাল ইন্টারনেটের মেয়াদ শেষ হবে। বিল পে করুন। বিকাশ 01703587911-CBT
   }
 }

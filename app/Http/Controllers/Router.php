@@ -77,7 +77,7 @@ class Router extends Controller
                   ->equal('comment', $user->name);
   
         $response = $this->connect()->query($query)->read();
-        $results = array_push($response, $results);
+        // $results = array_push($response, $results);
       }
 
       return $results;

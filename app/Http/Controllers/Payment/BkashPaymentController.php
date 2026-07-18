@@ -115,7 +115,7 @@ class BkashPaymentController extends Controller
                 $router->delExpireList($user->ip);
 
                 //send success sms
-                $sms->sendSms('88'.$user->contact, 'CBT: Your internet service activated. Username:'.$user->contact);
+                $sms->sendSms('88'.$user->contact, 'প্রিয় গ্রাহক, আপনার বিল পে সফল হয়েছে। হেল্প লাইন- 01703587911-CBT');
             
                 //Database Insert Operation
                 return redirect('/home');
