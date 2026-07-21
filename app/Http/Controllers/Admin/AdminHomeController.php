@@ -37,6 +37,7 @@ class AdminHomeController extends Controller
         'active' => 0,
         'expire' => 0,
         'cancel' => 0,
+        'today_expire' => 0,
       ];
 
       $invest = [
@@ -63,6 +64,11 @@ class AdminHomeController extends Controller
         elseif($user->status == 'Cancel')
         {
           $intuser['cancel'] ++;
+        }
+
+        if($user->payment_date == date('Y-m-d'))
+        {
+          $intuser['today_expire'] ++;
         }
       }
       

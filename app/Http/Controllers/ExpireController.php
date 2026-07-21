@@ -171,8 +171,8 @@ class ExpireController extends Controller
       '</div>';
 
     $email_data = [
-      'email_to' => 'rirchse@gmail.com',
-      // 'email_bcc' =>  'wm.shoriful@gmail.com',
+      'email_to' => config('services.email.to'),
+      'email_bcc' =>  config('services.email.bcc'),
       'subject' => 'Expired Users List',
       'email_body' => $email_body,
       'style' => $style

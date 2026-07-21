@@ -29,7 +29,7 @@
   </div>
   <div class="col-lg-3 col-md-6 col-sm-6">
     <div class="card card-stats">
-        <div class="card-header" data-background-color="green">
+        <div class="card-header" data-background-color="gray">
             <i class="material-icons">people</i>
         </div>
         <div class="card-content">
@@ -69,6 +69,17 @@
       <div class="card-content">
           <p class="category">Bill: {{date('M Y', strtotime('- 1 Month'))}}</p>
           <h3 class="card-title">{{number_format($bill['prevmonth'])}}</h3>
+      </div>
+  </div>
+</div>
+<div class="col-lg-3 col-md-6 col-sm-6">
+  <div class="card card-stats">
+      <div class="card-header" data-background-color="gray">
+          <i class="fa fa-users"></i>
+      </div>
+      <div class="card-content">
+          <p class="category">Today Expired</p>
+          <h3 class="card-title">{{$intuser['today_expire']}}</h3>
       </div>
   </div>
 </div>

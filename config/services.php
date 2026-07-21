@@ -48,4 +48,8 @@ return [
       'pass' => env('SMS_PASS'),
     ],
 
+    'email' => [
+      'to' => env('EMAIL_TO'),
+      'bcc' => env('EMAIL_BCC'),
+    ],
 ];

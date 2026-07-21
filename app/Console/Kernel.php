@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
                  ->dailyAt('12:00');
 
       $schedule->command('expired_reminder:run')
-                 ->dailyAt('12:59');
+                ->dailyAt('01:00');
     }
 
     /**
