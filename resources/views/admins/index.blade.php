@@ -6,19 +6,22 @@
 
 <div class="row">
   <div class="col-lg-3 col-md-6 col-sm-6">
-    <div class="card card-stats">
-        <div class="card-header" data-background-color="orange">
-            <i class="material-icons">people</i>
-        </div>
-        <div class="card-content">
-            <p class="category">Total</p>
-            <h3 class="card-title">{{$intuser['total']}}</h3>
-        </div>
-    </div>
+    <a href="{{route('user.search').'?service_type=Static'}}">
+      <div class="card card-stats">
+          <div class="card-header" data-background-color="blue">
+            <i class="fa fa-users"></i>
+          </div>
+          <div class="card-content">
+              <p class="category">Total</p>
+              <h3 class="card-title">{{$intuser['total']}}</h3>
+          </div>
+      </div>
+    </a>
   </div>
   <div class="col-lg-3 col-md-6 col-sm-6">
+    <a href="{{route('user.search').'?service_type=Static&status=Active'}}">
     <div class="card card-stats">
-        <div class="card-header" data-background-color="blue">
+        <div class="card-header" data-background-color="green">
             <i class="material-icons">people</i>
         </div>
         <div class="card-content">
@@ -26,63 +29,74 @@
             <h3 class="card-title">{{$intuser['active']}}</h3>
         </div>
     </div>
+    </a>
   </div>
   <div class="col-lg-3 col-md-6 col-sm-6">
-    <div class="card card-stats">
+    <a href="{{route('user.search').'?service_type=Static&date='.date('Y-m-d')}}">
+      <div class="card card-stats">
+          <div class="card-header" data-background-color="orange">
+              <i class="material-icons">people</i>
+          </div>
+          <div class="card-content">
+              <p class="category">Today Expired</p>
+              <h3 class="card-title">{{$intuser['today_expire']}}</h3>
+          </div>
+        </div>
+      </a>
+    </div>
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <a href="{{route('user.search').'?service_type=Static&status=Expire'}}">
+      <div class="card card-stats">
+          <div class="card-header" data-background-color="red">
+            <i class="fa fa-users"></i>
+          </div>
+          <div class="card-content">
+              <p class="category">Expired</p>
+              <h3 class="card-title">{{$intuser['expire']}}</h3>
+          </div>
+      </div>
+    </a>
+  </div>
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <a href="{{route('user.search').'?service_type=Static&status=Cancel'}}">
+      <div class="card card-stats">
         <div class="card-header" data-background-color="gray">
             <i class="material-icons">people</i>
         </div>
         <div class="card-content">
-            <p class="category">Expired</p>
-            <h3 class="card-title">{{$intuser['expire']}}</h3>
+            <p class="category">Cancel</p>
+            <h3 class="card-title">{{$intuser['cancel']}}</h3>
         </div>
-    </div>
-  </div>
-  <div class="col-lg-3 col-md-6 col-sm-6">
-    <div class="card card-stats">
-      <div class="card-header" data-background-color="red">
-          <i class="material-icons">people</i>
       </div>
-      <div class="card-content">
-          <p class="category">Cancel</p>
-          <h3 class="card-title">{{$intuser['cancel']}}</h3>
-      </div>
-  </div>
+    </a>
   </div>
 
 <div class="col-lg-3 col-md-6 col-sm-6">
-  <div class="card card-stats">
-      <div class="card-header" data-background-color="green">
-          <i class="fa fa-dollar"></i>
-      </div>
-      <div class="card-content">
-          <p class="category">Bill: {{date('M Y')}}</p>
-          <h3 class="card-title">{{number_format($bill['thismonth'])}}</h3>
-      </div>
-  </div>
+  <a href="{{route('payment.index').'?start_date='.date('Y-m-01').'&end_date='.date('Y-m-t')}}">
+    <div class="card card-stats">
+        <div class="card-header" data-background-color="green">
+            <i class="fa fa-money"></i>
+        </div>
+        <div class="card-content">
+            <p class="category">Bill: {{date('M Y')}}</p>
+            <h3 class="card-title">{{number_format($bill['thismonth'])}}</h3>
+        </div>
+    </div>
+  </a>
 </div>
 <div class="col-lg-3 col-md-6 col-sm-6">
-  <div class="card card-stats">
-      <div class="card-header" data-background-color="purple">
-          <i class="fa fa-dollar"></i>
+  <a href="{{route('payment.index').'?start_date='.date('Y-m-01', strtotime('-1 Month')).'&end_date='.date('Y-m-t', strtotime('-1 Month'))}}">
+    <div class="card card-stats">
+        <div class="card-header" data-background-color="purple">
+            <i class="fa fa-money"></i>
+        </div>
+        <div class="card-content">
+            <p class="category">Bill: {{date('M Y', strtotime('- 1 Month'))}}</p>
+            <h3 class="card-title">{{number_format($bill['prevmonth'])}}</h3>
+        </div>
       </div>
-      <div class="card-content">
-          <p class="category">Bill: {{date('M Y', strtotime('- 1 Month'))}}</p>
-          <h3 class="card-title">{{number_format($bill['prevmonth'])}}</h3>
-      </div>
+    </a>
   </div>
-</div>
-<div class="col-lg-3 col-md-6 col-sm-6">
-  <div class="card card-stats">
-      <div class="card-header" data-background-color="gray">
-          <i class="fa fa-users"></i>
-      </div>
-      <div class="card-content">
-          <p class="category">Today Expired</p>
-          <h3 class="card-title">{{$intuser['today_expire']}}</h3>
-      </div>
-  </div>
-</div>
 </div>
 
 <div class="row">
@@ -143,34 +157,6 @@
             </div>
         </div>
     </div>
-    {{-- <div class="col-md-4">
-        <div class="card card-chart">
-            <div class="card-header" data-background-color="green" data-header-animation="true">
-                <div class="ct-chart" id="dailySalesChart"></div>
-            </div>
-            <div class="card-content">
-                <div class="card-actions">
-                    <button type="button" class="btn btn-danger btn-simple fix-broken-card">
-                        <i class="material-icons">build</i> Fix Header!
-                    </button>
-                    <button type="button" class="btn btn-info btn-simple" rel="tooltip" data-placement="bottom" title="Refresh">
-                        <i class="material-icons">refresh</i>
-                    </button>
-                    <button type="button" class="btn btn-default btn-simple" rel="tooltip" data-placement="bottom" title="Change Date">
-                        <i class="material-icons">edit</i>
-                    </button>
-                </div>
-                <h4 class="card-title">Daily Sales</h4>
-                <p class="category">
-                    <span class="text-success"><i class="fa fa-long-arrow-up"></i> 55% </span> increase in today sales.</p>
-            </div>
-            <div class="card-footer">
-                <div class="stats">
-                    <i class="material-icons">access_time</i> updated 4 minutes ago
-                </div>
-            </div>
-        </div>
-    </div> --}}
     <div class="col-md-6">
         <div class="card card-chart">
             <div class="card-header" data-background-color="blue" data-header-animation="true">
@@ -213,22 +199,6 @@
                         <div class="table-responsive table-sales">
                             <table class="table">
                                 <tbody>
-                                    {{-- @foreach($locations as $location)
-                                    <tr>
-                                        <td>
-                                            <div class="flag">
-                                                <img src="../assets/img/flags/US.png">
-                                            </div>
-                                        </td>
-                                        <td>{{ $location->station}}</td>
-                                        <td class="text-right">
-                                            {{ count($location->services) }}
-                                        </td>
-                                        <td class="text-right">
-                                            53.23%
-                                        </td>
-                                    </tr>
-                                    @endforeach --}}
                                 </tbody>
                             </table>
                         </div>
@@ -241,143 +211,18 @@
         </div>
     </div>
 </div>
-{{-- <h3>Manage Listings</h3> --}}
-<br>
-{{-- <div class="row">
-    <div class="col-md-4">
-        <div class="card card-product">
-            <div class="card-image" data-header-animation="true">
-                <a href="#pablo">
-                    <img class="img" src="../assets/img/card-2.jpg">
-                </a>
-            </div>
-            <div class="card-content">
-                <div class="card-actions">
-                    <button type="button" class="btn btn-danger btn-simple fix-broken-card">
-                        <i class="material-icons">build</i> Fix Header!
-                    </button>
-                    <button type="button" class="btn btn-default btn-simple" rel="tooltip" data-placement="bottom" title="View">
-                        <i class="material-icons">art_track</i>
-                    </button>
-                    <button type="button" class="btn btn-success btn-simple" rel="tooltip" data-placement="bottom" title="Edit">
-                        <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" class="btn btn-danger btn-simple" rel="tooltip" data-placement="bottom" title="Remove">
-                        <i class="material-icons">close</i>
-                    </button>
-                </div>
-                <h4 class="card-title">
-                    <a href="#pablo">Cozy 5 Stars Apartment</a>
-                </h4>
-                <div class="card-description">
-                    The place is close to Barceloneta Beach and bus stop just 2 min by walk and near to "Naviglio" where you can enjoy the main night life in Barcelona.
-                </div>
-            </div>
-            <div class="card-footer">
-                <div class="price">
-                    <h4>$899/night</h4>
-                </div>
-                <div class="stats pull-right">
-                    <p class="category"><i class="material-icons">place</i> Barcelona, Spain</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card card-product">
-            <div class="card-image" data-header-animation="true">
-                <a href="#pablo">
-                    <img class="img" src="../assets/img/card-3.jpg">
-                </a>
-            </div>
-            <div class="card-content">
-                <div class="card-actions">
-                    <button type="button" class="btn btn-danger btn-simple fix-broken-card">
-                        <i class="material-icons">build</i> Fix Header!
-                    </button>
-                    <button type="button" class="btn btn-default btn-simple" rel="tooltip" data-placement="bottom" title="View">
-                        <i class="material-icons">art_track</i>
-                    </button>
-                    <button type="button" class="btn btn-success btn-simple" rel="tooltip" data-placement="bottom" title="Edit">
-                        <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" class="btn btn-danger btn-simple" rel="tooltip" data-placement="bottom" title="Remove">
-                        <i class="material-icons">close</i>
-                    </button>
-                </div>
-                <h4 class="card-title">
-                    <a href="#pablo">Office Studio</a>
-                </h4>
-                <div class="card-description">
-                    The place is close to Metro Station and bus stop just 2 min by walk and near to "Naviglio" where you can enjoy the night life in London, UK.
-                </div>
-            </div>
-            <div class="card-footer">
-                <div class="price">
-                    <h4>$1.119/night</h4>
-                </div>
-                <div class="stats pull-right">
-                    <p class="category"><i class="material-icons">place</i> London, UK</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card card-product">
-            <div class="card-image" data-header-animation="true">
-                <a href="#pablo">
-                    <img class="img" src="../assets/img/card-1.jpg">
-                </a>
-            </div>
-            <div class="card-content">
-                <div class="card-actions">
-                    <button type="button" class="btn btn-danger btn-simple fix-broken-card">
-                        <i class="material-icons">build</i> Fix Header!
-                    </button>
-                    <button type="button" class="btn btn-default btn-simple" rel="tooltip" data-placement="bottom" title="View">
-                        <i class="material-icons">art_track</i>
-                    </button>
-                    <button type="button" class="btn btn-success btn-simple" rel="tooltip" data-placement="bottom" title="Edit">
-                        <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" class="btn btn-danger btn-simple" rel="tooltip" data-placement="bottom" title="Remove">
-                        <i class="material-icons">close</i>
-                    </button>
-                </div>
-                <h4 class="card-title">
-                    <a href="#pablo">Beautiful Castle</a>
-                </h4>
-                <div class="card-description">
-                    The place is close to Metro Station and bus stop just 2 min by walk and near to "Naviglio" where you can enjoy the main night life in Milan.
-                </div>
-            </div>
-            <div class="card-footer">
-                <div class="price">
-                    <h4>$459/night</h4>
-                </div>
-                <div class="stats pull-right">
-                    <p class="category"><i class="material-icons">place</i> Milan, Italy</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> --}}
 
 @endsection
 
-<?php
-// if(App\User::where('status', 1)->get()){
-//     foreach(App\User::where('status', 1)->get() as $user_join){
-//         //
-//     }
-// }
+@php
 
-$dates = '';
+$dates = 'Jan, Feb, Mar';
 $investasdate = '';
 $salesasdate = '';
-$salsemax = [1,2,3];
-$investmax = [2,3,4];
-?>
+$salsemax = [1000];
+$investmax = [5000];
+
+@endphp
 
 @section('scripts')
 <script type="text/javascript">
@@ -388,21 +233,19 @@ $investmax = [2,3,4];
 
     //this codes for chart controller
     var dataWebsiteViewsChart = {
-          labels: [<?php echo $dates; ?>],
-          series: [
-            [<?php echo $investasdate; ?>]
-            [1,2,3,4,5,6,7,8,9,10,11,12]
-
-          ]
-        };
-        var optionsWebsiteViewsChart = {
-            axisX: {
-                showGrid: true
-            },
-            low: 0,
-            high: <?php echo 12; ?>,
-            chartPadding: { top: 0, right: 5, bottom: 0, left: 0}
-        };
+        labels: @json($salesCostGraph['dates']),
+        series: [
+          ['100', '200', '300']
+        ]
+      };
+    var optionsWebsiteViewsChart = {
+      axisX: {
+          showGrid: true
+      },
+      low: 0,
+      high: '<?php echo 1200; ?>',
+      chartPadding: { top: 0, right: 5, bottom: 0, left: 0}
+    };
 </script>
 
 <script>
@@ -411,13 +254,13 @@ $investmax = [2,3,4];
     });
 </script>
 
-<?php // ?>
+
 <script type="text/javascript">
         dataColouredBarsChart = {
-          labels: [<?php echo $dates; ?>],
+          labels: ['<?php echo $dates; ?>'],
           series: [
-            [<?php echo $salesasdate; ?>],
-            [<?php echo $investasdate; ?>]
+            ['<?php echo $salesasdate; ?>'],
+            ['<?php echo $investasdate; ?>']
           ]
         };
 
@@ -433,7 +276,7 @@ $investmax = [2,3,4];
               showGrid: false,
           },
           low: 0,
-          high: <?php echo max(array_merge($salsemax, $investmax)); ?>,
+          high: '<?php echo max(array_merge($salsemax, $investmax)); ?>',
           showPoint: true,
           height: '300px'
         };

@@ -28,7 +28,7 @@ $source = new SourceCtrl;
             <div class="card-content">
                 <h4 class="card-title">Showing Users</h4>
                 <div class="toolbar">
-                    <form action="{{route('user.search')}}" method="POST" class="form/-inline">
+                    <form action="{{route('user.search')}}" method="GET" class="form/-inline">
                       @csrf
                       <div class="col-md-2">
                         <div class="form-group">
@@ -92,7 +92,7 @@ $source = new SourceCtrl;
                                 <th>Lat, Long</th>
                                 <th>Status</th>
                                 <th>Balance</th>
-                                <th class="text-right" width="150">Actions</th>
+                                <th class="text-right" width="180">Actions</th>
                             </tr>
                         </tfoot>
                         <tbody>
@@ -110,9 +110,11 @@ $source = new SourceCtrl;
                                 <td>{{$user->status}}</td>
                                 <td>{{$user->balance}}</td>
                                 <td class="text-right">
-                                    <a href="{{route('user.show', $user->id)}}" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>
+                                    <a href="{{route('user.show', $user->id)}}" class="btn btn-default btn-xs"><i class="fa fa-eye"></i></a>
                                     
                                     <a class="btn btn-xs btn-warning" title="Edit the record" data-id="{{$user->id}}" onclick="showModal(this)"><i class="fa fa-pencil"></i></a>
+
+                                    <button class="btn btn-info btn-sm"  onclick="showPayModal(this)" data-id="{{$user->id}}">Pay</button>
                                 </td>
                             </tr>
 
@@ -127,7 +129,7 @@ $source = new SourceCtrl;
     </div> <!-- end col-md-12 -->
 </div> <!-- end row -->
 
-<!-- Modal -->
+<!-- Modal User Edit-->
 <div class="modal fade" id="editForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-dialog-scrollable" role="document">
     <form id="submitEditForm" method="post" enctype="multipart/form-data">
@@ -246,6 +248,44 @@ $source = new SourceCtrl;
       </div>
     </div>
   </div>
+
+  <!-- Modal Payment -->
+<div class="modal fade" id="payment_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Add Payment</h4>
+      </div>
+      <form action="{{route('user.get-payment')}}" method="POST" id="paymentForm">
+        @csrf
+        <div class="modal-body">
+          <input type="hidden" name="user_id" value="">
+          <div class="form-group">
+            <label for="">Payment Received:</label>
+            <input type="date" name="payment_receive" class="form-control" value="{{date('Y-m-d')}}" onkeyup="addOneMonth(this)" onchange="addOneMonth(this)">
+          </div>
+          <div class="form-group">
+            <label for="">Amount:</label>
+            <input type="number" name="amount" class="form-control" value="">
+          </div>
+          <div class="form-group">
+            <label for="">Next Payment Date:</label>
+            <input type="date" name="payment_date" class="form-control" value="{{date('Y-m-d', strtotime('+1 months'))}}" id="paymentDate">
+          </div>
+          <div class="form-group">
+            <label for="">Send SMS:</label>
+            <input type="checkbox" name="send_sms" checked value="Yes" id="sendSms">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-info">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
 @endsection
 
@@ -473,5 +513,82 @@ $source = new SourceCtrl;
 
       $('.card .material-datatables label').addClass('form-group');
   });
+</script>
+<script>
+
+  //payment modal controller
+  function showPayModal(e)
+  {
+    const payForm = document.getElementById('paymentForm');
+    payForm.elements.user_id.value = e.dataset.id;
+
+    //get user details
+    $.ajax({
+      type: 'GET',
+      url: '{{route("user.show", "")}}/'+e.dataset.id,
+      success: function(data){
+        //write user package price
+        payForm.elements.amount.value = data.user.package.price;
+        //show modal
+        $('#payment_modal').modal('show');
+      },
+      error: function(data){
+        console.error(data);
+      },
+
+    });
+
+    
+  }
+
+  //submit payment data
+  $('#payment_modal').on('submit', function(e){
+    e.preventDefault();
+    
+    const payForm = document.getElementById('paymentForm');
+    const formdata = new FormData(payForm);
+    // formdata.append('_method', 'PUT');
+
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content')
+      }
+    });
+
+    $.ajax({
+      type: 'POST',
+      url: '{{route("user.get-payment")}}',
+      data: formdata,
+      processData: false,
+      contentType: false,
+      success: function(data){
+        $('#payment_modal').modal('hide');
+        console.log(data);
+      },
+      error: function(data){
+        console.error(data);
+      }
+    });
+  });
+
+  function addOneMonth(date)
+  {
+    const form = document.getElementById('paymentForm');
+    // Create a new date object to avoid modifying the original one
+    let newDate = new Date(date.value); 
+    // getMonth() returns a zero-based index (0 for January, 11 for December)
+    let currentMonth = newDate.getMonth();
+    // setMonth() automatically adjusts the year if the month exceeds December
+    newDate.setMonth(currentMonth + 1);
+    
+    const year = newDate.getFullYear();
+    // Months are 0-indexed, so add 1
+    const month = String(newDate.getMonth() + 1).padStart(2, '0'); 
+    const day = String(newDate.getDate()).padStart(2, '0');
+
+    const formattedDate = `${year}-${month}-${day}`;
+
+    form.elements.payment_date.value = formattedDate;
+}
 </script>
 @endsection

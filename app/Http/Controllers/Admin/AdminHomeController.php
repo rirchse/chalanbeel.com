@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Auth;
 use App\Notify;
@@ -75,10 +76,34 @@ class AdminHomeController extends Controller
       $bills = Payment::orderBy('id', 'DESC');
       $bill['thismonth'] = $bills->where('receive_date', 'like', '%'.date('Y-m').'%')->sum('receive');
       $bill['prevmonth'] = Payment::where('receive_date', 'like', '%'.date('Y-m', strtotime('- 1 month')).'%')->sum('receive');
-      // dd($prevmonth);
 
+
+    $monthlyPayments = Payment::select(
+      DB::raw("DATE_FORMAT(created_at, '%Y-%m') as month_year"),
+      DB::raw("SUM(receive) as total_amount")
+    )
+    ->whereYear('created_at', Carbon::now()->year)
+    ->groupBy('month_year')
+    ->orderBy('month_year', 'desc')
+    ->get();
+
+    $payment = $cost = $dates = [];
+    $salesCostGraph = [
+      'payment' => $payment,
+      'cost' => $cost,
+      'dates' => $dates,
+    ];
+
+    foreach ($monthlyPayments as $payment)
+    {
+      // For the standard approach:
+      array_push($salesCostGraph['dates'], $payment->month_year); 
+      array_push($salesCostGraph['payment'], $payment->total_amount);
+    }
+
+      // dd( $salesCostGraph['dates']);
       
-      return view('admins.index', compact('intuser', 'bill', 'invest'));
+      return view('admins.index', compact('intuser', 'bill', 'invest', 'salesCostGraph'));
     }
 
     /**

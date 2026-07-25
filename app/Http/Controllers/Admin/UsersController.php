@@ -37,8 +37,8 @@ class UsersController extends Controller
       
       $users = [];
 
-      if($request->method() == 'POST')
-      {
+      // if($request->method() == 'POST')
+      // {
         // Get all users from database
         $users = User::orderBy('id', 'DESC')
           ->when($status, function($query, $status)
@@ -60,7 +60,7 @@ class UsersController extends Controller
             ->orWhere('ip', 'like', '%'.$name.'%');
           })
           ->get();
-      }
+      // }
 
       $packages = Package::where('status', 'Active')
       ->select('id', 'speed')
@@ -535,7 +535,18 @@ class UsersController extends Controller
           $router->delExpireList($user->ip);
 
           //send success sms
-          // $sms->sendSms('88'.$user->contact, 'প্রিয় গ্রাহক, আপনার বিল পে সফল হয়েছে। হেল্প লাইন- 01703587911-CBT');
+          if(isset($data['send_sms']))
+          {
+            $sms->sendSms('88'.$user->contact, 'প্রিয় গ্রাহক, আপনার বিল পে সফল হয়েছে। হেল্প লাইন- 01703587911-CBT');
+          }
+
+          if($request->ajax())
+          {
+            return response()->json([
+              'payment' => $payment,
+              'message' => 'Payment successfull.',
+            ], 200);
+          }
           
           Session::flash('success', 'Payment successfully received.');
         }

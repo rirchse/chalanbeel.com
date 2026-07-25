@@ -17,7 +17,7 @@ $source = new SourceCtrl;
                 <h4 class="card-title">User Details</h4> 
                 <div class="col-md-12">
                     <div class="action-tools" style="text-align:right; margin-bottom:10px">
-                      <button class="btn btn-info btn-sm" data-target="#payment_modal" data-toggle="modal">Paid</button>
+                      <button class="btn btn-info btn-sm" data-target="#payment_modal" data-toggle="modal">Pay</button>
                       <a class="btn btn-sm btn-primary" title="Add New User" href="{{route('user.create')}}"><i class="fa fa-plus"></i></a>
                       <a class="btn btn-sm btn-success" title="View All Users" href="{{route('user.index')}}"><i class="fa fa-list"></i></a>
                       <a class="btn btn-warning btn-sm" title="Edit" href="{{route('user.edit', $user->id)}}"><i class="material-icons">edit</i></a>
@@ -209,7 +209,7 @@ $source = new SourceCtrl;
     </div>
 </div> <!-- end row -->
 
-<!-- Modal -->
+<!-- Modal Payment -->
 <div class="modal fade" id="payment_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content">
@@ -232,6 +232,10 @@ $source = new SourceCtrl;
           <div class="form-group">
             <label for="">Next Payment Date:</label>
             <input type="date" name="payment_date" class="form-control" value="{{date('Y-m-d', strtotime('+1 months'))}}" id="paymentDate">
+          </div>
+          <div class="form-group">
+            <label for="">Send SMS:</label>
+            <input type="checkbox" name="send_sms" checked value="Yes" id="sendSms">
           </div>
         </div>
 
