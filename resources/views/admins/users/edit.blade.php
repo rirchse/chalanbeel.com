@@ -127,7 +127,7 @@
                                   @endif
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" name="mac" placeholder="ONU MAC Address:" value="{{$user->mac}}">
+                                    <input type="text" class="form-control" name="mac" placeholder="MAC Address:" value="{{$user->mac}}">
                                 </div>
                                 <div class="form-group">
                                     <input type="number" class="form-control" name="balance" placeholder="Balance" value="{{$user->balance ? $user->balance : 0}}" onwheel="event.currentTarget.blur()">
@@ -191,6 +191,10 @@
                             <div class="form-group">
                               <label for="">Updated at:</label>
                               <input type="datetime-local" name="updated_at" class="form-control" value="{{$user->updated_at}}">
+                            </div>
+                            <div class="form-group">
+                              <label for="">Check On Mikrotik</label>
+                                <input type="checkbox" class="form-checkbox" name="check-router" value="Yes">
                             </div>
   
                         </div>

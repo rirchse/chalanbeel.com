@@ -242,13 +242,23 @@ class UsersController extends Controller
         ));
 
         $data = $request->all();
+
         if(isset($data['_token']))
         {
           unset($data['_token']);
         }
+
         if(isset($data['_method']))
         {
           unset($data['_method']);
+        }
+
+        $checkRouter = '';
+        
+        if(isset($data['check-router']))
+        {
+          $checkRouter = $data['check-router'];
+          unset($data['check-router']);
         }
 
         //get exists image
@@ -314,7 +324,7 @@ class UsersController extends Controller
             }
           }
 
-          if(isset($data['check-router']))
+          if($checkRouter)
           {
             $arpdata = [
               'comment' => $data['name'],

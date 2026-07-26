@@ -74,6 +74,7 @@ class Router extends Controller
     public function updateARP($ip, $data = null)
     {
       $entry = $this->getARP($ip);
+
       if(empty($entry))
       {
         return response()->json([
@@ -86,9 +87,10 @@ class Router extends Controller
         $arpId = $entry[0]['.id'];
 
         //make use static
-        $makeStaticQuery = (new Query('/ip/arp/make-static'))
-        ->equal('.id', $arpId);
-        $response = $this->connect()->query($makeStaticQuery)->read();
+        // $makeStaticQuery = (new Query('/ip/arp/make-static'))
+        // ->equal('.id', $arpId);
+        // $response = $this->connect()->query($makeStaticQuery)->read();
+        // dd($response);
 
         //update user details
         $updateQuery = (new Query('/ip/arp/set'))
