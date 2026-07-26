@@ -43,13 +43,6 @@ class Router extends Controller
       return $client;
     }
 
-    public function activeArp()
-    {
-      $query = new Query('/ip/arp/print');
-      $response = $this->connect()->query($query)->read();
-      return $response;
-    }
-
     static function pppuser($name)
     {
         return Router::Connect()->setMenu('/ppp secret')->getAll(array(), RouterOS\Query::where('name', $name));
@@ -63,6 +56,70 @@ class Router extends Controller
     static function pppActiveUsers()
     {
         return Router::Connect()->setMenu('/ppp active')->getAll();
+    }
+
+    public function addARP()
+    {
+      //
+    }
+
+    public function getARP($ip)
+    {
+      $query = (new Query('/ip/arp/print'))
+      ->where('address', $ip);
+      $response = $this->connect()->query($query)->read();
+      return $response;
+    }
+
+    public function updateARP($ip, $data = null)
+    {
+      $entry = $this->getARP($ip);
+      if(empty($entry))
+      {
+        return response()->json([
+          'success' => false,
+          'message' => 'Entry not exists',
+        ]);
+      }
+      else
+      {
+        $arpId = $entry[0]['.id'];
+
+        //make use static
+        $makeStaticQuery = (new Query('/ip/arp/make-static'))
+        ->equal('.id', $arpId);
+        $response = $this->connect()->query($makeStaticQuery)->read();
+
+        //update user details
+        $updateQuery = (new Query('/ip/arp/set'))
+        ->equal('.id', $arpId);
+
+        if(isset($data['mac-address']))
+        {
+          $updateQuery->equal('mac-address', $data['mac-address']);
+        }
+
+        if(isset($data['comment']))
+        {
+          $updateQuery->equal('comment', $data['comment']);
+        }
+
+        $response = $this->connect()->query($updateQuery)->read();
+
+        return response()->json([
+            'success' => true,
+            'message' => "ARP entry for {$ip} updated successfully.",
+            'details' => $response
+        ]);
+
+      }
+    }
+
+    public function activeArp()
+    {
+      $query = new Query('/ip/arp/print');
+      $response = $this->connect()->query($query)->read();
+      return $response;
     }
     
     // add ip address to the firewall address list

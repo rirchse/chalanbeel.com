@@ -32,6 +32,7 @@ Route::group(['middleware' => ['web']], function()
 
   Route::get('test-add-expire-user', [ExpireController::class, 'addExpireUsers']);
 
+  Route::get('test-get-arp/{ip}', [Router::class, 'getARP']);
   Route::get('test-remove-expire-user/{ip}', [Router::class, 'delExpireList']);
 
   Route::get('today-expire', [ExpireController::class, 'expiredUsers']);

@@ -36,9 +36,6 @@ class UsersController extends Controller
       $name = $request->input('name');
       
       $users = [];
-
-      // if($request->method() == 'POST')
-      // {
         // Get all users from database
         $users = User::orderBy('id', 'DESC')
           ->when($status, function($query, $status)
@@ -60,18 +57,17 @@ class UsersController extends Controller
             ->orWhere('ip', 'like', '%'.$name.'%');
           })
           ->get();
-      // }
 
       $packages = Package::where('status', 'Active')
       ->select('id', 'speed')
       ->get();
 
-      // if($request->ajax())
-      // {
-      //   return response()->json([
-      //     'users' => $users
-      //   ], 200);
-      // }
+      if($request->ajax())
+      {
+        return response()->json([
+          'users' => $users
+        ], 200);
+      }
 
       return view('admins.users.index', compact('users', 'status', 'date', 'service_type', 'name', 'packages'));
     }
@@ -317,6 +313,14 @@ class UsersController extends Controller
               File::delete($ex_nid);
             }
           }
+
+          $arpdata = [
+            'comment' => $data['name'],
+            'mac-address' => $data['mac'],
+          ];
+
+          $router = new Router;
+          $router->updateARP($data['ip'], $arpdata);
         }
         catch(\Exception $e)
         {
