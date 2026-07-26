@@ -314,13 +314,16 @@ class UsersController extends Controller
             }
           }
 
-          $arpdata = [
-            'comment' => $data['name'],
-            'mac-address' => $data['mac'],
-          ];
+          if(isset($data['check-router']))
+          {
+            $arpdata = [
+              'comment' => $data['name'],
+              'mac-address' => $data['mac'],
+            ];
 
-          $router = new Router;
-          $router->updateARP($data['ip'], $arpdata);
+            $router = new Router;
+            $router->updateARP($data['ip'], $arpdata);
+          }
         }
         catch(\Exception $e)
         {
