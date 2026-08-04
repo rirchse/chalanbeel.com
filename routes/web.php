@@ -62,9 +62,10 @@ Route::group(['middleware' => ['web']], function()
 
   //web pages
 	Route::resource('home', UserHomeController::class);
+  Route::get('/', 'HomeController@index');
+
   Route::controller(UserHomeController::class)->group(function()
   {
-    Route::get('/', 'index');
     Route::get('check', 'postCheck')->name('account.check.post');
     // Route::post('check', 'postCheck')->name('account.check.post');
     Route::get('get-invoice/{id}', 'invoice')->name('user.invoice');
