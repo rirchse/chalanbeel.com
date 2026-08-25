@@ -73,11 +73,15 @@ $source = new SourceCtrl;
                           <td>{{$user->pon}}</td>
                       </tr>
                       <tr>
+                          <th>ONU MAC</th>
+                          <td>{{$user->onu_mac}}</td>
+                      </tr>
+                      <tr>
                           <th>IP Address:</th>
                           <td>{{$user->ip}}</td>
                       </tr>
                       <tr>
-                          <th>ONU MAC</th>
+                          <th>Router MAC</th>
                           <td>{{$user->mac}}</td>
                       </tr>
                       <tr>

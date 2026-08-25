@@ -80,6 +80,9 @@
                                       </button>
                                     </span>
                                 </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="onu_mac" placeholder="Onu MAC Address:" value="{{$user->onu_mac}}">
+                                </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-group">
@@ -109,6 +112,7 @@
                                 <div class="form-group">
                                     <select name="pon" id="pon" class="form-control" onchange="checkIP(this)">
                                       <option value="">Select PON:</option>
+                                      <option value="GPON1" {{$user->pon == 'GPON1'? 'selected':''}}>GPON1</option>
                                       <option value="PON1" {{$user->pon == 'PON1'? 'selected':''}}>PON1</option>
                                       <option value="PON2" {{$user->pon == 'PON2'? 'selected':''}}>PON2</option>
                                       <option value="PON3" {{$user->pon == 'PON3'? 'selected':''}}>PON3</option>

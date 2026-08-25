@@ -13,11 +13,13 @@ use App\Service;
 use App\Payment;
 use App\Http\Controllers\Router;
 use App\Http\Controllers\SmsCtrl;
+use App\Http\Controllers\OltController;
 use Auth;
 use Image;
 use File;
 use Session;
 use DB;
+use App\Services\VsolSnmpService;
 
 class UsersController extends Controller
 {
@@ -107,6 +109,7 @@ class UsersController extends Controller
             'location'      => 'nullable|string',
             'join_date'     => 'nullable|string',
             'mac_address'   => 'nullable|string',
+            'onu_mac'       => 'nullable|string',
             'left_long'     => 'nullable|string',
             'date_of_birth' => 'max:30|nullable',
             'NID'           => 'max:17|nullable',
@@ -221,8 +224,9 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         $user_id = Auth::guard('admin')->user()->id;
+
         //validate the data
-        $this->validate($request, array(
+        $data = $this->validate($request, array(
             'name'          => 'required|min:2|max:32',
             'email'         => 'email|max:50|nullable',
             'contact'       => 'required|min:11|max:11',
@@ -230,31 +234,26 @@ class UsersController extends Controller
             'profession'    => 'max:255|nullable',
             'join_date'     => 'max:255|nullable',
             'location'      => 'max:255|nullable',
-            'details'       => 'max:500|nullable',
             'mac'           => 'max:255|nullable',
-            'left_long'     => 'max:255|nullable',
+            'onu_mac'       => 'max:255|nullable',
+            'lat_long'      => 'max:255|nullable',
             'date_of_birth' => 'max:30|nullable',
             'nid_no'        => 'max:17|nullable',
             'details'       => 'max:999|nullable',
             'nid_image'     => 'image|nullable',
-            'profile_image' => 'image|nullable'
+            'profile_image' => 'image|nullable',
+            "address"       => "nullable",
+            "billing_date"  => "nullable",
+            "payment_date"  => "nullable",
+            "status"        => "nullable",
+            "package_id"    => "nullable",
+            "service_type"  => "nullable",
+            "pon"           => "nullable",
+            "ip"            => "nullable",
+            "balance"       => "nullable"
+          ));
 
-        ));
-
-        $data = $request->all();
-
-        if(isset($data['_token']))
-        {
-          unset($data['_token']);
-        }
-
-        if(isset($data['_method']))
-        {
-          unset($data['_method']);
-        }
-
-        $checkRouter = '';
-        
+        $checkRouter = '';        
         if(isset($data['check-router']))
         {
           $checkRouter = $data['check-router'];
@@ -445,9 +444,22 @@ class UsersController extends Controller
       $map = new MapController;
       $data = $map->index();
       $customers = $data['customers'];
-      // dd($customers);
       $status = $data['status'];
+
       return view('map.index', compact('customers', 'status'));
+    }
+
+    public function userOnMapOlt()
+    {
+      //existing database users
+      // $users = User::whereIn('status', ['Active', 'Expire'])
+      // ->select('name', 'contact', 'lat_long', 'mac')
+      // ->get();
+
+      //olt onus
+      // $olt = new OltController;      
+      // $onus = $olt->allOnuList();
+      // return view('map.index', compact('customers', 'status'));
     }
 
     public function byUsername($username)
@@ -467,7 +479,11 @@ class UsersController extends Controller
       $addr = 2;
       $i = 254;
 
-      if($pon == 'PON1')
+      if($pon == 'GPON1')
+      {
+        $ipBlock = 246;
+      }
+      elseif($pon == 'PON1')
       {
         $ipBlock = 249;
       }
@@ -582,26 +598,26 @@ class UsersController extends Controller
 
   public function activeUsers()
   {
-    $url = 'https://chalanbeel.com/api/user?service_type=Static&iparray=true';
-    // $url = 'http://dev.cbt/api/user?service_type=Static&iparray=true';
-    // cURL request
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    // curl_setopt($ch, CURLOPT_USERPWD, "$user:$pass");
-    // curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // if self-signed cert
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); // seconds to connect
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10);       // total seconds to execute
+    // $url = 'https://chalanbeel.com/api/user?service_type=Static&iparray=true';
+    // // $url = 'http://dev.cbt/api/user?service_type=Static&iparray=true';
+    // // cURL request
+    // $ch = curl_init($url);
+    // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    // // curl_setopt($ch, CURLOPT_USERPWD, "$user:$pass");
+    // // curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // if self-signed cert
+    // curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); // seconds to connect
+    // curl_setopt($ch, CURLOPT_TIMEOUT, 10);       // total seconds to execute
     
-    $response = curl_exec($ch);
-    curl_close($ch);
+    // $response = curl_exec($ch);
+    // curl_close($ch);
     
-    $ips = json_decode($response, true);
+    // $ips = json_decode($response, true);
 
     $router = new Router;
     $arp_users = $router->activeArp();
 
-    // dd(count($arp_users));
+    dd(count($arp_users));
 
     $entry = $noentry = 0;
 

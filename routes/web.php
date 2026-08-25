@@ -13,6 +13,7 @@ use App\Http\Controllers\User\UserPaymentController;
 use App\Http\Controllers\ExpireController;
 use App\Http\Controllers\Router;
 use App\Http\Controllers\SmsCtrl;
+use App\Http\Controllers\OltController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,17 @@ use App\Http\Controllers\SmsCtrl;
 
 Route::group(['middleware' => ['web']], function()
 {
+  Route::get('/php-test', function () {
+    return [
+        'PHP_VERSION' => PHP_VERSION,
+        'SNMP_LOADED' => extension_loaded('snmp'),
+        'SNMP_CLASS' => class_exists('SNMP'),
+        'LOADED_EXTENSIONS' => get_loaded_extensions(),
+    ];
+});
+  //test
+  Route::get('/olt-onu-list', [OltController::class, 'listOnus']);
+  Route::get('/olt-test', [OltController::class, 'test']);
   //test
   Route::get('test-send-sms', [SmsCtrl::class, 'sendSms']);
 
@@ -237,6 +249,9 @@ Route::group(['middleware' => ['web']], function()
           //router connection
           Route::get('/active/arp-user', 'activeUsers')->name('user.arp-user');
         });
+
+        // view active onu users on map
+        Route::get('/user-on-map-olt', [OltController::class, 'listOnus'])->name('user.on-map.olt');
         
         //packages
         Route::resource('/package', 'Admin\PackageController');

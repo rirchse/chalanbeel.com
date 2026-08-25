@@ -36,6 +36,7 @@ class User extends Authenticatable
         'pon',
         'ip',
         'mac',
+        'onu_mac',
         'nid_no',
         'nid_image',
         'image',

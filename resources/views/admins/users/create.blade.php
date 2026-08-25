@@ -54,6 +54,9 @@
                                     </button>
                                   </span>
                               </div>
+                              <div class="form-group">
+                                  <input type="text" class="form-control" name="onu_mac" placeholder="ONU MAC Address:">
+                              </div>
                             </div>
                             <div class="col-md-6">
                               <div class="form-group">
@@ -74,6 +77,7 @@
                               <div class="form-group">
                                   <select name="pon" id="pon" class="form-control" onchange="checkIP(this)">
                                     <option value="">Select PON:</option>
+                                    <option value="GPON1">GPON1</option>
                                     <option value="PON1">PON1</option>
                                     <option value="PON2">PON2</option>
                                     <option value="PON3">PON3</option>
@@ -85,7 +89,7 @@
                                 
                               </div>
                               <div class="form-group">
-                                  <input type="text" class="form-control" name="mac" placeholder="ONU MAC Address:">
+                                  <input type="text" class="form-control" name="mac" placeholder="Router MAC Address:">
                               </div>
                             </div>
                             <div class="col-md-12">

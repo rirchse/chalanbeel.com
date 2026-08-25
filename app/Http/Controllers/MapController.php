@@ -46,7 +46,8 @@ class MapController extends Controller
         elseif($customer->status == 'Expire')
         {
           $expire ++;
-        }elseif($customer->status == 'New')
+        }
+        elseif($customer->status == 'New')
         {
           $new ++;
         }

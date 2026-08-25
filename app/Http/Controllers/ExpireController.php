@@ -89,12 +89,6 @@ class ExpireController extends Controller
 
       //send notification by sms
       $smsctrl->sendSms($numbers, 'আপনার ইন্টারনেট সংযোগের মেয়াদ শেষ, বিল পে করুন। বিকাশ 01703587911-CBT');
-
-      //send sms one by one
-      // foreach($users as $user)
-      // {
-      //   $smsctrl->sendSms('88'.$user->contact, 'CBT: Your internet service stop. Bill pay for turn on it. Username:'.$user->contact);
-      // }
       
     }
     catch(\Exception $e)
@@ -142,46 +136,45 @@ class ExpireController extends Controller
 
     }
 
-    // if(!$today_expired)
-    // {
-    //   return;
-    // }
-
     //style
     $style = 'table, th, td{ border:1px solid; border-collapse: collapse; padding:5px }';
-
-    $today_expire_user_list = '';
+    
     if($today_expired)
     {
-      $today_expire_user_list = '<h3>These users will expire today</h3>'.
-      '<table border=1 collapsible=collapse>'.
-      $today_expired.
-      '</table>'.
-      '<br>';
+      $today_expire_user_list = '';
+      if($today_expired)
+      {
+        $today_expire_user_list = '<h3>These users will expire today</h3>'.
+        '<table border=1 collapsible=collapse>'.
+        $today_expired.
+        '</table>'.
+        '<br>';
+      }
+
+      //email body
+      $email_body = '<style>table, th, td{ border:1px solid; border-collapse: collapse; padding:5px }</style>'.
+      '<div>'.
+        $today_expire_user_list.
+        '<h4>Other Expired Users</h4>'.
+        '<table style="border:1px solid">'.
+        $other_expired.
+        '</table>'.
+        '</div>';
+
+      $email_data = [
+        'email_to' => config('services.email.to'),
+        'email_bcc' =>  config('services.email.bcc'),
+        'subject' => 'Expired Users List',
+        'email_body' => $email_body,
+        'style' => $style
+      ];
+
+      //send email
+      $source->sendMail($email_data);
+
+      //send sms
+      //আগামীকাল ইন্টারনেটের মেয়াদ শেষ হবে। বিল পে করুন। বিকাশ 01703587911-CBT
     }
 
-    //email body
-    $email_body = '<style>table, th, td{ border:1px solid; border-collapse: collapse; padding:5px }</style>'.
-    '<div>'.
-      $today_expire_user_list.
-      '<h4>Other Expired Users</h4>'.
-      '<table style="border:1px solid">'.
-      $other_expired.
-      '</table>'.
-      '</div>';
-
-    $email_data = [
-      'email_to' => config('services.email.to'),
-      'email_bcc' =>  config('services.email.bcc'),
-      'subject' => 'Expired Users List',
-      'email_body' => $email_body,
-      'style' => $style
-    ];
-
-    //send email
-    $source->sendMail($email_data);
-
-    //send sms
-    //আগামীকাল ইন্টারনেটের মেয়াদ শেষ হবে। বিল পে করুন। বিকাশ 01703587911-CBT
   }
 }

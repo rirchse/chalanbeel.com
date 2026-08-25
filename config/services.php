@@ -52,4 +52,10 @@ return [
       'to' => env('EMAIL_TO'),
       'bcc' => env('EMAIL_BCC'),
     ],
+    
+    'vsol_olt' => [
+      'host' => env('OLT_HOST'),
+      'community' => env('OLT_COM'),
+      'port' => env('OLT_PORT'),
+    ],
 ];
