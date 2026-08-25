@@ -7,6 +7,11 @@ $source = new SourceCtrl;
 @section('title', 'View All Users')
 @section('content')
 <style>
+  @media print {
+  .temp-hide-print {
+    display: none !important;
+  }
+}
   .form-group{
     margin-top: 0;
   }
@@ -28,6 +33,10 @@ $source = new SourceCtrl;
             <div class="card-content">
                 <h4 class="card-title">Showing Users</h4>
                 <div class="toolbar">
+                  <!-- Hides 3rd column (Action) dynamically when button is clicked -->
+                  <button onclick="printDivWithHiddenColumns('datatables', [6, 6, 7, 7])">
+                    <i class="fa fa-print"></i>
+                  </button>
                     <form action="{{route('user.search')}}" method="GET" class="form/-inline">
                       @csrf
                       <div class="col-md-2">
@@ -65,7 +74,7 @@ $source = new SourceCtrl;
                       </div>
                     </form>
                 </div>
-                <div class="material-datatables">
+                <div class="material-datatables" id="printAbleArea">
                     <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
                         <thead>
                             <tr>
@@ -290,6 +299,117 @@ $source = new SourceCtrl;
 @endsection
 
 @section('scripts')
+<script type="text/javascript">
+function printDivWithHiddenColumns(tableId, columnsToHide) {
+  var originalTable = document.getElementById(tableId);
+  if (!originalTable) return;
+
+  // 1. Clone the table so we don't alter the actual table on your web page
+  var clonedTable = originalTable.cloneNode(true);
+
+  // 2. Remove specified columns (columnsToHide expects 1-based indexes, e.g., [3, 6, 9])
+  columnsToHide.forEach(function(colIndex) {
+    // Select the Nth <th> and <td> in every row
+    var cells = clonedTable.querySelectorAll(`tr > *:nth-child(${colIndex})`);
+    cells.forEach(function(cell) {
+      cell.remove();
+    });
+  });
+
+  // 3. Create a hidden iframe
+  var iframe = document.createElement('iframe');
+  iframe.style.position = 'fixed';
+  iframe.style.right = '0';
+  iframe.style.bottom = '0';
+  iframe.style.width = '0';
+  iframe.style.height = '0';
+  iframe.style.border = '0';
+  document.body.appendChild(iframe);
+
+  // 4. Construct printable document with cloned table
+  var doc = iframe.contentWindow.document;
+  var htmlContent = '<!DOCTYPE html><html><head><title>Print</title>' +
+    '<style type="text/css">' +
+    '.pageheader { font-size:12px; }' +
+    'table { border-collapse:collapse; font-size:14px; width:100%; }' +
+    'table th, table td { border:1px solid #666; padding: 10px; }' +
+    '</style></head><body>' +
+    '<h2 style="text-align:center">Chalanbeel Technology</h2>'+
+    '<h4 style="text-align:center">Expired Users List</h4>'+
+    clonedTable.outerHTML +
+    '</body></html>';
+
+  // 5. Render and trigger print
+  doc.open();
+  doc.write(htmlContent);
+  doc.close();
+
+  iframe.contentWindow.focus();
+  setTimeout(function() {
+    iframe.contentWindow.print();
+    document.body.removeChild(iframe); // Clean up iframe after print
+  }, 500);
+}
+
+  function printDiv() {
+  var divToPrint = document.getElementById('datatables');
+  if (!divToPrint) return;
+
+  // 1. Create a hidden iframe
+  var iframe = document.createElement('iframe');
+  iframe.style.position = 'fixed';
+  iframe.style.right = '0';
+  iframe.style.bottom = '0';
+  iframe.style.width = '0';
+  iframe.style.height = '0';
+  iframe.style.border = '0';
+  document.body.appendChild(iframe);
+
+  // 2. Prepare HTML content
+  var doc = iframe.contentWindow.document;
+  var htmlContent = '<!DOCTYPE html><html><head><title>Print</title>' +
+    '<style type="text/css">' +
+    '.pageheader{font-size:12px}' +
+    'table { border-collapse:collapse; font-size:14px; width:100%; }' +
+    'table th, table td { border:1px solid #666; padding: 10px; }' +
+    '</style></head><body>' +
+    divToPrint.outerHTML +
+    '</body></html>';
+
+  // 3. Write content to iframe and trigger print
+  doc.open();
+  doc.write(htmlContent);
+  doc.close();
+
+  iframe.contentWindow.focus();
+  setTimeout(function() {
+    iframe.contentWindow.print();
+    document.body.removeChild(iframe); // Clean up after print
+  }, 500);
+}
+</script>
+
+<script type="text/javascript">
+  function printTableByColumnIndex(tableId, targetColumnIndexes) {
+  const table = document.getElementById(tableId);
+  if (!table) return;
+
+  // 1. Add temporary class to specified column indexes (1-based index)
+  targetColumnIndexes.forEach(columnIndex => {
+    const cells = table.querySelectorAll(`tr > *:nth-child(${columnIndex})`);
+    cells.forEach(cell => cell.classList.add('temp-hide-print'));
+  });
+
+  // 2. Trigger print dialog
+  window.print();
+
+  // 3. Clean up classes after print dialog opens/closes
+  targetColumnIndexes.forEach(columnIndex => {
+    const cells = table.querySelectorAll(`tr > *:nth-child(${columnIndex})`);
+    cells.forEach(cell => cell.classList.remove('temp-hide-print'));
+  });
+}
+</script>
 <script>
   let preloader = document.getElementById('preloader');
   const serviceParts = document.getElementById('serviceParts');
