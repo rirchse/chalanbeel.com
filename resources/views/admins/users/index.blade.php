@@ -203,10 +203,11 @@ $source = new SourceCtrl;
         <div class="form-group">
             <select name="pon" id="pon" class="form-control" onchange="checkIP(this)">
               <option value="">Select PON:</option>
+              <option value="GPON1">GPON1</option>
               <option value="PON1">PON1</option>
               <option value="PON2">PON2</option>
               <option value="PON3">PON3</option>
-              {{-- <option value="PON4">PON4</option> --}}
+              <option value="PON4">PON4</option>
               <option value="RADIO">RADIO</option>
             </select>
         </div>
@@ -214,7 +215,10 @@ $source = new SourceCtrl;
           
         </div>
         <div class="form-group">
-            <input type="text" class="form-control" name="mac" placeholder="ONU MAC Address:">
+            <input type="text" class="form-control" name="mac" placeholder="MAC Address:">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" name="onu_mac" placeholder="ONU MAC Address:">
         </div>
         <div class="input-group">
           <input type="text" name="lat_long" id="lat_long" class="form-control" placeholder="Lat Long">
@@ -478,7 +482,6 @@ function printDivWithHiddenColumns(tableId, columnsToHide) {
         elm.contact.value = data.user.contact;
         elm.address.value = data.user.address;
         elm.lat_long.value = data.user.lat_long;
-        // elm.lat_long.value = data.user.lat ? data.user.lat+', '+data.user.lng : '';
         elm.join_date.value = data.user.join_date;
         elm.payment_date.value = data.user.payment_date;
         elm.lat_long.parentNode.classList.add('is-focused');
@@ -519,9 +522,6 @@ function printDivWithHiddenColumns(tableId, columnsToHide) {
           else if(data.user.service_type == 'Static')
           {
             elm.ip.options[0] = new Option(data.user.ip, data.user.ip, false, true);
-
-            // checkIP(document.getElementById('pon'));
-            // elm.ip.value = data.user.ip;
           }
           else
           {
@@ -535,6 +535,7 @@ function printDivWithHiddenColumns(tableId, columnsToHide) {
         }
 
         elm.mac.value = data.user.mac;
+        elm.onu_mac.value = data.user.onu_mac;
 
         preloader.style.display = 'none';
         
@@ -568,7 +569,7 @@ function printDivWithHiddenColumns(tableId, columnsToHide) {
       contentType: false,
       success: function(data){
         $('#editForm').modal('hide');
-        console.log(data);
+        //console.log(data);
       },
       error: function(data){
         console.error(data);
