@@ -30,6 +30,7 @@ class UsersController extends Controller
 
     public function index(Request $request)
     {
+      // dd(User::where('service_type', 'static')->orderByRaw('INET_ATON(ip) ASC')->pluck('ip')->toArray());
       $status = $date = $service_type = '';
       
       $status = $request->input('status');
@@ -39,14 +40,22 @@ class UsersController extends Controller
       
       $users = [];
         // Get all users from database
-        $users = User::orderBy('id', 'DESC')
+        $users = User::query()
+          ->when($service_type === 'Static', function($query)
+          {
+            return $query->orderByRaw('INET_ATON(ip) ASC');
+          })
+          ->when($service_type !== 'Static', function ($query)
+          {
+            return $query->orderBy('id', 'DESC');
+          })
           ->when($status, function($query, $status)
           {
             $query->where('status', $status);
           })
           ->when($date, function($query, $date)
           {
-            $query->where('payment_date', 'like',  '%'.$date);
+            $query->where('payment_date', 'like', '%'.$date);
           })
           ->when($service_type, function($query, $service_type)
           {
