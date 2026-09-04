@@ -511,7 +511,7 @@ class UsersController extends Controller
       elseif($pon == 'RADIO')
       {
         $ipBlock = 254;
-        $addr = 101;
+        // $addr = 101;
       }
 
       $used_ip = User::where('ip', 'like', '%'.$ipBlock.'%')
