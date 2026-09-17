@@ -12,7 +12,9 @@ class MapController extends Controller
       $active = $new = $expire = $online = $offline = $cancel = 0;
 
       $source = new SourceCtrl;
-      $routerUsers = $source->routerActiveUsers();
+      $router = new Router;
+
+      $routerUsers = $router->pppActiveUsers();
       $routerUsersIndex = array_keys($routerUsers);
 
       // get all customers with lat/lng and by the status

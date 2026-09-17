@@ -53,9 +53,12 @@ class Router extends Controller
         return Router::Connect()->setMenu('/ip hotspot user')->getAll(array(), RouterOS\Query::where('name', $name));
     }
 
-    static function pppActiveUsers()
+    public function pppActiveUsers()
     {
-        return Router::Connect()->setMenu('/ppp active')->getAll();
+      $client = $this->connect();
+      $query = new Query('/ppp/active/print');
+      $secrets = $client->query($query)->read();
+      return $secrets;
     }
 
     public function addARP()

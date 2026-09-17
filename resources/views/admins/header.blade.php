@@ -48,8 +48,8 @@
                             </li>
                             <li><a href="/admin/user/create">Add New user</a></li>
                             <li><a href="/admin/user">View Users</a></li>
-                            {{-- <li><a href="{{route('user.on-map')}}">View Users On Map</a></li> --}}
-                            <li><a href="{{route('user.on-map.olt')}}">View Users On Map OLT</a></li>
+                            <li><a href="{{route('user.on-map')}}">View Users On Map</a></li>
+                            {{-- <li><a href="{{route('user.on-map.olt')}}">View Users On Map OLT</a></li> --}}
                         </ul>
                     </div>
                 </li>
