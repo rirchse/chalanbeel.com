@@ -108,7 +108,7 @@ $source = new SourceCtrl;
 
                             @foreach($users as $key => $user)
 
-                            <tr style="color:{{$user->status == 'Expire'? 'red':''}}">
+                            <tr>
                                 <td>{{$key+1}}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->contact }}</td>
@@ -116,7 +116,19 @@ $source = new SourceCtrl;
                                 <td>{{ $source->dformat($user->payment_date) }}</td>
                                 <td>{{ $user->ip }}</td>
                                 <td>{{ $user->lat.' '. $user->lng }}</td>
-                                <td>{{$user->status}}</td>
+                                <td>
+                                  @if($user->status == 'Active')
+                                  <label class="label label-success">{{$user->status}}</label>
+                                  @elseif($user->status == 'Expire')
+                                  <label class="label label-warning">{{$user->status}}</label>
+                                  @elseif($user->status == 'Deactive')
+                                  <label class="label label-default">{{$user->status}}</label>
+                                  @elseif($user->status == 'Cancel')
+                                  <label class="label label-danger">{{$user->status}}</label>
+                                  @else
+                                  <label class="label label-primary">{{$user->status}}</label>
+                                  @endif
+                                </td>
                                 <td>{{$user->balance}}</td>
                                 <td class="text-right">
                                     <a href="{{route('user.show', $user->id)}}" class="btn btn-default btn-xs"><i class="fa fa-eye"></i></a>
