@@ -89,7 +89,7 @@ $source = new SourceCtrl;
                           <td>{{$user->username}}</td>
                       </tr>
                       <tr>
-                          <th>Service Password:</th>
+                          <th>PPPoE Password:</th>
                           <td>{{$user->service_password}}</td>
                       </tr>
                       <tr>
@@ -125,24 +125,16 @@ $source = new SourceCtrl;
                           <td>{{$user->nid_no}}</td>
                       </tr>
                       <tr>
-                          <th>Date of Birth</th>
-                          <td>{{$user->date_of_birth}}</td>
-                      </tr>
-                      <tr>
-                          <th>Work At</th>
-                          <td>{{$user->work_at}}</td>
-                      </tr>
-                      <tr>
-                          <th>Station</th>
-                          <td>{{$user->station}}</td>
-                      </tr>
-                      <tr>
                           <th>Details:</th>
                           <td>{{$user->details}}</td>
                       </tr>
                       <tr>
                           <th>Created At</th>
                           <td>{{$source->dformat($user->created_at)}}</td>
+                      </tr>
+                      <tr>
+                          <th>Updated At</th>
+                          <td>{{$source->dformat($user->updated_at)}}</td>
                       </tr>
                       <tr>
                           <th>Created By</th>

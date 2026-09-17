@@ -259,7 +259,9 @@ class UsersController extends Controller
             "service_type"  => "nullable",
             "pon"           => "nullable",
             "ip"            => "nullable",
-            "balance"       => "nullable"
+            "username"         => "nullable",
+            "service_password" => "nullable",
+            "balance"          => "nullable"
           ));
 
         $checkRouter = '';        

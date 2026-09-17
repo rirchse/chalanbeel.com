@@ -227,7 +227,10 @@ $source = new SourceCtrl;
               <i class="fa fa-map"></i>
             </button>
           </span>
-      </div>
+        </div>
+        <div class="form-group">
+          <input type="number" class="form-control" name="balance" placeholder="Balance" value="" onwheel="event.currentTarget.blur()">
+        </div>
       </div>
 
       <div class="modal-footer">
@@ -536,16 +539,18 @@ function printDivWithHiddenColumns(tableId, columnsToHide) {
 
         elm.mac.value = data.user.mac;
         elm.onu_mac.value = data.user.onu_mac;
+        elm.balance.value = data.user.balance ? data.user.balance : 0;
 
         preloader.style.display = 'none';
+
+        //show modal
+        $('#editForm').modal('show');
         
       },
       error: function(data){
         console.error(data);
       }
     });
-    //show modal
-    $('#editForm').modal('show');
   }
 
   //submit data
@@ -554,6 +559,8 @@ function printDivWithHiddenColumns(tableId, columnsToHide) {
     const editform = document.getElementById('submitEditForm');
     const formdata = new FormData(editform);
     formdata.append('_method', 'PUT');
+
+    preloader.style.display = 'block';
 
     $.ajaxSetup({
       headers: {
@@ -569,6 +576,7 @@ function printDivWithHiddenColumns(tableId, columnsToHide) {
       contentType: false,
       success: function(data){
         $('#editForm').modal('hide');
+        preloader.style.display = 'none';
         //console.log(data);
       },
       error: function(data){

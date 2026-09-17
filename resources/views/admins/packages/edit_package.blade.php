@@ -24,6 +24,10 @@
 
                     <div class="row">
                       <div class=" col-md-12">
+                        <div class="form-group label-floating">
+                            <label for="">Name(*):</label>
+                            <input type="text" class="form-control" name="name" required value="{{$package->name}}">
+                        </div>
                           <div class="form-group label-floating">
                               <label for="">Speed(*):</label>
                               <input type="text" class="form-control" name="speed" required value="{{$package->speed}}">
