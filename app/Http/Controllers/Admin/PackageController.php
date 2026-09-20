@@ -265,8 +265,6 @@ class PackageController extends Controller
         {
           echo $e->getMessage();
         }
-
-        return back();
     }
 
     /**
