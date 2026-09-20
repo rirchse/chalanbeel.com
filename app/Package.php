@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Package extends Model
 {
   protected $fillable = [
-    'service', 
+    'name',
+    'slug',
+    'service',
     'service_mode', 
     'server', 
     'connection', 

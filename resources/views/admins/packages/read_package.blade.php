@@ -1,5 +1,5 @@
 @extends('admin')
-@section('title', 'package Details')
+@section('title', 'Package Details')
 @section('content')
     
 <div class="row">
@@ -10,7 +10,7 @@
             </div>
             <div class="card-content" style="">
                 <div class="col-md-4">
-                    <h4 class="card-title">package Details</h4>
+                    <h4 class="card-title">Package Details</h4>
                 </div>
                 <div class="toolbar">
                     <a class="btn btn-sm btn-warning" href="/admin/package/{{$package->id}}/edit"><i class="material-icons">edit</i></a>
@@ -30,9 +30,13 @@
                             <div class="table-responsive table-space">
                                 <table class="table table-bordered table-space">
                                         <tbody>
+                                          <tr>
+                                            <th>Name</th>
+                                            <td>{{ $package->name }}</td>
+                                          </tr>
                                             <tr>
-                                                <th>Package</th>
-                                                <td>{{ $package->service_mode }}</td>
+                                              <th>Slug</th>
+                                              <td>{{ $package->slug }}</td>
                                             </tr>
                                             <tr>
                                                 <td>Speed</td>
@@ -55,6 +59,10 @@
                                                     <label class="label label-danger">Inactive</label>
                                                     @endif
                                                 </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Details:</td>
+                                                <td>{{ $package->details }}</td>
                                             </tr>
                                         </tbody>
                                     </table>

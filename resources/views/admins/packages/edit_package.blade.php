@@ -28,6 +28,10 @@
                             <label for="">Name(*):</label>
                             <input type="text" class="form-control" name="name" required value="{{$package->name}}">
                         </div>
+                        <div class="form-group label-floating">
+                            <label for="">Slug(*):</label>
+                            <input type="text" class="form-control" name="slug" required value="{{$package->slug}}" readonly ondblclick="this.removeAttribute('readonly')">
+                        </div>
                           <div class="form-group label-floating">
                               <label for="">Speed(*):</label>
                               <input type="text" class="form-control" name="speed" required value="{{$package->speed}}">

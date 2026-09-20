@@ -12,12 +12,13 @@
                 <h4 class="card-title">Showing all Packages ({{count($packages)}})</h4>
                 <div class="toolbar" style="text-align:right">
                     <a class="btn btn-info btn-xs" href="{{route('package.create')}}" title="Add New package"><i class="material-icons">add</i> Add</a>
-                    {{-- <a class="btn btn-xs btn-info" href="/admin/get_package_from_router">Get Pacakge From Router</a> --}}
                 </div>
                 <div class="material-datatables">
                     <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
                         <thead>
                             <tr>
+                                <th>Name</th>
+                                <th>Slug</th>
                                 <th>Speed</th>
                                 <th>Time Limit</th>
                                 <th>Price</th>
@@ -27,18 +28,22 @@
                         </thead>
                         <tfoot>
                             <tr>
-                                <th>Speed</th>
-                                <th>Time Limit</th>
-                                <th>Price</th>
-                                <th>Status</th>
-                                <th class="text-right">Actions</th>
+                              <th>Name</th>
+                              <th>Slug</th>
+                              <th>Speed</th>
+                              <th>Time Limit</th>
+                              <th>Price</th>
+                              <th>Status</th>
+                              <th class="text-right">Actions</th>
                             </tr>
                         </tfoot>
                         <tbody>
                             @foreach($packages as $package)
                             <tr>
-                                <td>{{ $package->speed }}</td>
-                                <td>{{ $package->time_limit }}</a></td>
+                                <td>{{ $package->name }}</td>
+                                <td>{{ $package->slug }}</td>
+                                <td>{{ $package->speed }} Mbps</td>
+                                <td>{{ $package->time_limit }} Days</a></td>
                                 <td>&#2547;{{ $package->price }}</a></td>
                                 <td>
                                     @if($package->status == 'Active')

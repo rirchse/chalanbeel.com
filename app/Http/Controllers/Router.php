@@ -33,32 +33,117 @@ class Router extends Controller
       $router_password = config('services.mikrotik.pass');
       $router_port = config('services.mikrotik.port');
 
-      $client = new Client([
-        'host' => $router_host,
-        'user' => $router_user,
-        'pass' => $router_password,
-        'port' => (int)$router_port,
-      ]);
+      try{
+        $client = new Client([
+          'host' => $router_host,
+          'user' => $router_user,
+          'pass' => $router_password,
+          'port' => (int)$router_port,
+        ]);
 
-      return $client;
+        return $client;
+      }
+      catch(\Exception $e)
+      {
+        echo "Could not connect to the router: ";
+      }
     }
 
-    static function pppuser($name)
+    public function pppSecretAdd($secret)
     {
-        return Router::Connect()->setMenu('/ppp secret')->getAll(array(), RouterOS\Query::where('name', $name));
+      $client = $this->Connect();
+      if($client)
+      {
+        $query = new Query('/ppp/secret/add');
+        $query->equal('name', $secret['name'])
+        ->equal('password', $secret['password'])
+        ->equal('service', $secret['service'])
+        ->equal('profile', $secret['profile'])
+        ->equal('comment', $secret['comment']);
+        $secret = $client->query($query)->read();
+        return $secret;
+      }
     }
 
-    static function hpuser($name)
+    public function pppSecretDelete($name)
     {
-        return Router::Connect()->setMenu('/ip hotspot user')->getAll(array(), RouterOS\Query::where('name', $name));
+      $client = $this->Connect();
+      if($client)
+      {
+        $findActive = (new Query('/ppp/active/print'))
+        ->where('name', $name);
+        $activeResult = $client->query($findActive)->read();
+
+        if(!empty($activeResult) && isset($activeResult['.id']))
+        {
+          $removeActive = (new Query('/ppp/active/remove'))
+          ->equal('.id', $activeResult['.id']);
+
+          //
+          $client->query($removeActive)->read();
+          $response['active_session'] = 'Disconnected';
+        }
+        else
+        {
+          $response['active_session'] = 'No active session found';
+        }
+
+        $findSecret =(new Query('/ppp/secret/print'))
+        ->where('name', $name);
+
+        $result = $client->query($findSecret)->read();
+        if(!empty($result) && isset($result[0]['.id']))
+        {
+          $secretId = $result[0]['.id'];
+          
+          $removeQuery = (new Query('/ppp/secret/remove'))
+          ->equal('.id', $secretId);
+          $client->query($removeQuery)->read();
+          $response['secret'] = 'Deleted successfully';
+        }
+        else
+        {
+          $response['secret'] = 'Secret not found';
+        }
+        return $response;
+      }
     }
 
-    public function pppActiveUsers()
+    public function pppSecrets()
     {
       $client = $this->connect();
-      $query = new Query('/ppp/active/print');
-      $secrets = $client->query($query)->read();
-      return $secrets;
+      if($client)
+      {
+        $query = new Query('/ppp/secret/print');
+        $secrets = $client->query($query)->read();
+        return $secrets;
+      }
+      return [];
+    }
+
+    public function pppSecret($name)
+    {
+      $client = $this->connect();
+      if($client)
+      {
+        $query = (new Query('/ppp/secret/print'))
+        ->where('name', $name);
+        $secret = $client->query($query)->read();
+        return $secret;
+      }
+      return [];
+    }
+
+    public function pppActives()
+    {
+      $client = $this->connect();
+      if($client)
+      {
+        $query = new Query('/ppp/active/print');
+        $actives = $client->query($query)->read();
+        return $actives;
+      }
+      return [];
     }
 
     public function addARP()
@@ -133,13 +218,20 @@ class Router extends Controller
       $results = '';
       foreach($users as $user)
       {
-        $query = (new Query('/ip/firewall/address-list/add'))
-                  ->equal('address', $user->ip)
-                  ->equal('list', 'Expired')
-                  ->equal('comment', $user->name);
-  
-        $response = $this->connect()->query($query)->read();
-        // $results = array_push($response, $results);
+        if($user->service_type == 'PPPoE')
+        {
+          //
+          $this->pppSecretDelete($user->username);
+        }
+        elseif($user->service_type == 'Static')
+        {
+          $query = (new Query('/ip/firewall/address-list/add'))
+                    ->equal('address', $user->ip)
+                    ->equal('list', 'Expired')
+                    ->equal('comment', $user->name);
+    
+          $response = $this->connect()->query($query)->read();
+        }
       }
 
       return $results;

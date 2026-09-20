@@ -516,7 +516,7 @@ function printDivWithHiddenColumns(tableId, columnsToHide) {
         }
         else
         {
-          elm.package.options[0] = new Option(data.user.package.speed, data.user.package.id, false, true);
+          elm.package.options[0] = new Option(data.user.package.name, data.user.package.id, false, true);
         }
 
         if(data.user.service_type == null)

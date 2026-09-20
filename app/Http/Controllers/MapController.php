@@ -11,18 +11,17 @@ class MapController extends Controller
       $customers = $status = [];
       $active = $new = $expire = $online = $offline = $cancel = 0;
 
-      $source = new SourceCtrl;
       $router = new Router;
 
-      $routerUsers = $router->pppActiveUsers();
+      $routerUsers = $router->pppActives();
       $routerUsersIndex = array_keys($routerUsers);
 
       // get all customers with lat/lng and by the status
       $customers = Users::whereNotNull('lat')
       ->whereNotNull('lng')
       ->whereIn('status', ['Active', 'Expire', 'New'])
-      ->select('id', 'name', 'username', 'status', 'lat', 'lng');
-      $customers = $customers->get();
+      ->select('id', 'name', 'username', 'status', 'lat', 'lng')
+      ->get();
 
       $dbUserIndex = Users::pluck('username')->toArray();
 

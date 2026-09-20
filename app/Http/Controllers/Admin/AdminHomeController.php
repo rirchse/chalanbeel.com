@@ -50,7 +50,7 @@ class AdminHomeController extends Controller
         'prevmonth' => 0,
       ];
 
-      $users = User::where('service_type', 'Static')->get();
+      $users = User::all();
       $intuser['total'] = $users->count();
       foreach($users as $user)
       {

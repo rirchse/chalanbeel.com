@@ -45,7 +45,7 @@ class ExpireController extends Controller
       $users = User::with(['package:id,price'])
       ->whereRaw('DATE(payment_date) <= ?', date('Y-m-d'))
       ->where('status', 'Active')
-      ->where('service_type', 'Static')
+      // ->where('service_type', 'Static')
       ->select('id', 'name', 'contact', 'username', 'payment_date', 'ip', 'package_id', 'balance')
       ->get();
 
@@ -106,7 +106,7 @@ class ExpireController extends Controller
 
     $today = date('Y-m-d');
     $users = User::whereRaw('DATE(payment_date) <= ?', $today)
-    ->where('service_type', 'Static')
+    // ->where('service_type', 'Static')
     ->whereIn('status', ['Active', 'Expire'])
     ->orderBy('payment_date', 'DESC')
     ->select('id', 'payment_date', 'name', 'contact', 'ip')

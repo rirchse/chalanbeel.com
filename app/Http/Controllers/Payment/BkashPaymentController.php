@@ -111,8 +111,23 @@ class BkashPaymentController extends Controller
                   'trxid' => $request->input('paymentID')
                 ]);
 
-                //delete expire ip from block list
-                $router->delExpireList($user->ip);
+                if($user->service_type == 'PPPoE')
+                {
+                  $secret = [
+                    'name' => $user->username ? $user->username : $user->contact,
+                    'password' => $user->service_password ? $user->service_password : $user->contact,
+                    'service' => 'pppoe',
+                    'profile' => $user->package ? $user->package->slug : 'default',
+                    'comment' => $user->name
+                  ];
+                  //request to the router
+                  $router->pppSecretAdd($secret);
+                }
+                elseif($user->service_type == 'Static')
+                {
+                  //delete expire ip from block list
+                  $router->delExpireList($user->ip);
+                }
 
                 //send success sms
                 $sms->sendSms('88'.$user->contact, 'প্রিয় গ্রাহক, আপনার বিল পে সফল হয়েছে। হেল্প লাইন- 01703587911-CBT');

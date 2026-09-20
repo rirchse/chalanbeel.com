@@ -18,6 +18,14 @@
 
                     <div class="row">
                         <div class=" col-md-12">
+                          <div class="form-group label-floating">
+                              <label for="">Name(*):</label>
+                              <input type="text" class="form-control" name="name" required>
+                          </div>
+                          <div class="form-group label-floating">
+                              <label for="">Slug(*):</label>
+                              <input type="text" class="form-control" name="slug" required>
+                          </div>
                             <div class="form-group label-floating">
                                 <label for="">Speed(*):</label>
                                 <input type="text" class="form-control" name="speed" required>

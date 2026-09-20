@@ -77,32 +77,19 @@ class PackageController extends Controller
     {
         $user_id = Auth::guard('admin')->user()->id;
         //validate the data
-        $this->validate($request, array(
-
-            'service'     => 'nullable|max:255',
-            'connection'  => 'nullable|max:255',
-            'speed'       => 'required|max:255',
-            'time_limit'  => 'required|max:255',
-            'price'       => 'required|min:1|max:255',
-            'discount'    => 'max:3',
-            'status'      => 'nullable',
-            'list_items_en'  => 'nullable|array',
-            'list_items_en.*' => 'nullable|string|max:255',
-            'list_items_bn'  => 'nullable|array',
-            'list_items_bn.*' => 'nullable|string|max:255'
-        ));
-
-        $data = $request->all();
-
-        if(isset($data['_token']))
-        {
-          unset($data['_token']);
-        }
-
-        if(isset($data['_method']))
-        {
-          unset($data['_method']);
-        }
+        $data = $this->validate($request, [
+          'name'            => 'required|max:255',
+          'slug'            => 'required|max:255',
+          'speed'           => 'required|max:255',
+          'time_limit'      => 'required|max:255',
+          'price'           => 'required|min:1|max:255',
+          'discount'        => 'max:3',
+          'status'          => 'nullable',
+          'list_items_en'   => 'nullable|array',
+          'list_items_en.*' => 'nullable|string|max:255',
+          'list_items_bn'   => 'nullable|array',
+          'list_items_bn.*' => 'nullable|string|max:255'
+        ]);
 
         // Handle list items - combine English and Bangla into bilingual format
         $listItems = [];
@@ -211,32 +198,20 @@ class PackageController extends Controller
     {
         $user_id = Auth::guard('admin')->user()->id;
         // validate the data
-        $this->validate($request, array(
-            'service'     => 'nullable|max:255',
-            'service_mode'=> 'nullable|max:255',
-            'server'      => 'max:255',
-            'connection'  => 'nullable|max:255',
-            'speed'       => 'required|max:255',
-            'time_limit'  => 'required|max:255',
-            'price'       => 'required|min:1|max:255',
-            'discount'    => 'max:100',
-            'status'      => 'nullable',
-            'list_items_en'  => 'nullable|array',
+        $data = $this->validate($request, [
+            'name'            => 'required|max:255',
+            'slug'            => 'required|max:255',
+            'service'         => 'nullable|max:255',
+            'speed'           => 'required|max:255',
+            'time_limit'      => 'required|max:255',
+            'price'           => 'required|min:1|max:255',
+            'discount'        => 'max:100',
+            'status'          => 'nullable',
+            'list_items_en'   => 'nullable|array',
             'list_items_en.*' => 'nullable|string|max:255',
-            'list_items_bn'  => 'nullable|array',
+            'list_items_bn'   => 'nullable|array',
             'list_items_bn.*' => 'nullable|string|max:255'
-            ));
-
-        //save the data to the database
-        $package = Package::find($id);
-        $package->service        =   $request->input('service');
-        $package->service_mode   =   $request->input('service_mode');
-        $package->server         =   $request->input('server');
-        $package->connection     =   $request->input('connection');
-        $package->speed          =   $request->input('speed');
-        $package->time_limit     =   $request->input('time_limit');
-        $package->price          =   $request->input('price');
-        $package->discount       =   $request->input('discount');
+            ]);
         
         // Handle list items - combine English and Bangla into bilingual format
         $listItems = [];
@@ -258,22 +233,40 @@ class PackageController extends Controller
                     ];
                 }
             }
-            $package->details = !empty($listItems) ? json_encode($listItems) : null;
+            $data['details'] = !empty($listItems) ? json_encode($listItems) : null;
         } else {
-            $package->details = null;
+            $data['details'] = null;
         }
         
-        $package->status         =   $request->input('status');
-        $package->updated_by     =   $user_id;
+        $data['status']         =   $request->input('status');
+        $data['updated_by']     =   $user_id;
+        if(isset($data['list_items_en']))
+        {
+          unset($data['list_items_en']);
+        }
+        if(isset($data['list_items_bn']))
+        {
+          unset($data['list_items_bn']);
+        }
 
-        $package->save();
+        // dd($data);
 
-        //set flash data with success message
-        Session::flash('success', 'The package was successfully updated.');
+        //save the data to the database
+        try{
+          Package::where('id', $id)->update($data);
 
-        //redirect with flash data to posts.show
-        //return redirect('/admin/edit_service/'.$id.'/edit');
-        return redirect('/admin/package/'.$id);
+          //set flash data with success message
+          Session::flash('success', 'The package was successfully updated.');
+  
+          //redirect with flash data to posts.show
+          return redirect('/admin/package/'.$id);
+        }
+        catch(\Exception $e)
+        {
+          echo $e->getMessage();
+        }
+
+        return back();
     }
 
     /**

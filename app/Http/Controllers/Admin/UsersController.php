@@ -30,7 +30,6 @@ class UsersController extends Controller
 
     public function index(Request $request)
     {
-      // dd(User::where('service_type', 'static')->orderByRaw('INET_ATON(ip) ASC')->pluck('ip')->toArray());
       $status = $date = $service_type = '';
       
       $status = $request->input('status');
@@ -196,7 +195,7 @@ class UsersController extends Controller
     public function show($id, Request $request)
     {
         //Grab user data by id
-        $user = User::with(['package:id,speed,price'])->find($id);
+        $user = User::with(['package:id,name,price'])->find($id);
         $payments = Payment::where('user_id', $user->id)->latest()->limit(12)->get();
 
         if($request->ajax())
@@ -565,18 +564,32 @@ class UsersController extends Controller
           );
 
           // add to the payment
-          Payment::create(
-            [
+          Payment::create([
               'receive' => $data['amount'],
               'receive_date' => $data['payment_receive'],
               'package_id' => $package_id,
               'user_id' => $data['user_id'],
               'status' => 'Paid'
-            ]
-          );
+            ]);
 
-          //delete expire ip from block list
-          $router->delExpireList($user->ip);
+          //action to the router
+          if($user->service_type == 'PPPoE')
+          {
+            $secret = [
+              'name' => $user->username ? $user->username : $user->contact,
+              'password' => $user->service_password ? $user->service_password : $user->contact,
+              'service' => 'pppoe',
+              'profile' => $user->package ? $user->package->slug : 'default',
+              'comment' => $user->name
+            ];
+            //
+            $router->pppSecretAdd($secret);
+          }
+          elseif($user->service_type == 'Static')
+          {
+            //delete expire ip from block list
+            $router->delExpireList($user->ip);
+          }
 
           //send success sms
           if(isset($data['send_sms']))

@@ -26,16 +26,31 @@ use App\Http\Controllers\OltController;
 |
 */
 
-Route::group(['middleware' => ['web']], function()
-{
-  Route::get('/php-test', function () {
-    return [
-        'PHP_VERSION' => PHP_VERSION,
-        'SNMP_LOADED' => extension_loaded('snmp'),
-        'SNMP_CLASS' => class_exists('SNMP'),
-        'LOADED_EXTENSIONS' => get_loaded_extensions(),
-    ];
-});
+  Route::group(['middleware' => ['web']], function()
+  {
+    Route::get('/php-test', function () {
+      return [
+          'PHP_VERSION' => PHP_VERSION,
+          'SNMP_LOADED' => extension_loaded('snmp'),
+          'SNMP_CLASS' => class_exists('SNMP'),
+          'LOADED_EXTENSIONS' => get_loaded_extensions(),
+      ];
+  });
+
+  //router test
+  Route::controller(Router::class)->group(function()
+  {
+    // Route::get('add-ppp-secret/{username}/{password}/{profile}/{name}', function($username, $password, $profile, $name){
+    //   $router = new Router;
+    //   dd($router->pppSecretAdd($username, $password, $profile, $name));
+    // });
+
+    // Route::get('remove-secret/{name}', function($name){
+    //   $router = new Router;
+    //   dd($router->pppSecretDelete($name));
+    // });
+  });
+
   //test
   Route::get('/olt-onu-list', [OltController::class, 'listOnus']);
   Route::get('/olt-test', [OltController::class, 'test']);
