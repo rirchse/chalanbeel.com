@@ -51,5 +51,3 @@
 <script src="{{'/js/material-dashboard.js'}}"></script>
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="{{'/js/demo.js'}}"></script>
-
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeoMZGKjy_MlK9Jhh8TWgEIHSHa4Mm7Yg"></script>
