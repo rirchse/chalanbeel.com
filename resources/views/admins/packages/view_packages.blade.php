@@ -42,7 +42,7 @@
                             <tr>
                                 <td>{{ $package->name }}</td>
                                 <td>{{ $package->slug }}</td>
-                                <td>{{ $package->speed }} Mbps</td>
+                                <td>{{ $package->speed }}</td>
                                 <td>{{ $package->time_limit }} Days</a></td>
                                 <td>&#2547;{{ $package->price }}</a></td>
                                 <td>
