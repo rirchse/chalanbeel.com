@@ -7,9 +7,9 @@ function initMap() {
   const defaultLocation = { lat: 24.4322, lng: 89.2091 };
 
   // Set default lat/long to input field immediately on load
-  if (latlong) {
-    latlong.value = defaultLocation.lat + ', ' + defaultLocation.lng;
-  }
+  // if (latlong) {
+  //   latlong.value = defaultLocation.lat + ', ' + defaultLocation.lng;
+  // }
 
   let mapid = document.getElementById("map");
   map = new google.maps.Map(mapid, {
