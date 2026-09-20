@@ -3,8 +3,13 @@ let marker;
 let latlong = document.getElementById('lat_long');
 
 function initMap() {
-  // Default location (e.g., Natore/Dhaka)
+  // Fixed default location
   const defaultLocation = { lat: 24.4322, lng: 89.2091 };
+
+  // Set default lat/long to input field immediately on load
+  if (latlong) {
+    latlong.value = defaultLocation.lat + ', ' + defaultLocation.lng;
+  }
 
   let mapid = document.getElementById("map");
   map = new google.maps.Map(mapid, {
@@ -19,18 +24,14 @@ function initMap() {
     }
   });
 
-  // Place initial marker & set initial input field value
+  // Place initial marker at default location
   marker = new google.maps.Marker({
     position: defaultLocation,
     map: map,
     draggable: true,
   });
-  
-  if (latlong) {
-    latlong.value = defaultLocation.lat + ', ' + defaultLocation.lng;
-  }
 
-  // Create custom button and error messaging elements
+  // Create custom button and error message elements
   const locationButton = document.createElement("button");
   locationButton.setAttribute('type', 'button');
   locationButton.textContent = "📍 My Location";
@@ -39,10 +40,10 @@ function initMap() {
   let errmsg = document.createElement('p');
   errmsg.setAttribute('style', 'color:red'); 
 
-  // Add button to map
+  // Add button to top-center of map
   map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
 
-  // Trigger geolocation on "My Location" button click
+  // Trigger geolocation ONLY on button click
   locationButton.addEventListener("click", () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -52,7 +53,7 @@ function initMap() {
             lng: position.coords.longitude,
           };
 
-          // Update Map, Marker, and Input Field
+          // Update Map, Marker, and Field on Button Tap
           marker.setPosition(pos);
           map.setCenter(pos);
           map.setZoom(15);
@@ -71,14 +72,14 @@ function initMap() {
     }
   });
 
-  // Update input fields when dragging marker
+  // Update field when user drags the marker
   google.maps.event.addListener(marker, "dragend", function (event) {
     if (latlong) {
       latlong.value = event.latLng.lat() + ', ' + event.latLng.lng();
     }
   });
 
-  // Update marker & input fields when clicking map
+  // Update marker & field when user clicks anywhere on map
   google.maps.event.addListener(map, "click", function (event) {
     marker.setPosition(event.latLng);
     if (latlong) {
