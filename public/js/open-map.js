@@ -84,4 +84,4 @@ function initMap() {
 }
 
 // Load map
-// window.onload = initMap;
+window.onload = initMap;
