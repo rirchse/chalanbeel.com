@@ -5,6 +5,8 @@
     @include('partials.styles')
 
     @yield('stylesheets')
+    
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeoMZGKjy_MlK9Jhh8TWgEIHSHa4Mm7Yg&callback=initMap" async defer></script>
 
 </head>
 

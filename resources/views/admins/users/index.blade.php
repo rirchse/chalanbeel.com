@@ -235,7 +235,7 @@ $source = new SourceCtrl;
         <div class="input-group">
           <input type="text" name="lat_long" id="lat_long" class="form-control" placeholder="Lat Long">
           <span class="input-group-addon">
-            <button type="button" data-toggle="modal" data-target="#map_modal">
+            <button type="button" onclick="showMap()">
               <i class="fa fa-map"></i>
             </button>
           </span>
@@ -597,7 +597,18 @@ function printDivWithHiddenColumns(tableId, columnsToHide) {
     });
   });
 </script>
-<script src="{{'/js/open-map.js?v=1.0.2'}}"></script>
+
+<script src="{{'/js/open-map.js?v=1.0.3'}}"></script>
+<script>
+  function showMap()
+  {
+    // Load map
+    initMap();
+
+    $('#map_modal').modal('show');
+  }
+</script>
+
 <script type="text/javascript">
   $(document).ready(function() {
       $('#datatables').DataTable({
@@ -730,6 +741,6 @@ function printDivWithHiddenColumns(tableId, columnsToHide) {
     const formattedDate = `${year}-${month}-${day}`;
 
     form.elements.payment_date.value = formattedDate;
-}
+  }
 </script>
 @endsection
