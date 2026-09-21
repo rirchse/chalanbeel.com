@@ -598,15 +598,13 @@ function printDivWithHiddenColumns(tableId, columnsToHide) {
   });
 </script>
 
-<script src="{{'/js/open-map.js?v=1.0.3'}}"></script>
-    
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeoMZGKjy_MlK9Jhh8TWgEIHSHa4Mm7Yg&callback=initMap" async defer></script>
+<script src="{{'/js/open-map.js?v=1.0.4'}}"></script>
 
 <script>
   function showMap()
   {
     // Load map
-    initMap();
+    // initMap();
 
     $('#map_modal').modal('show');
   }

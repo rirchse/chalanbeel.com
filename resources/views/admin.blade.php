@@ -37,7 +37,7 @@
 
 	<script type="text/javascript">
     $(document).ready(function() {
-        md.initSliders()
+        // md.initSliders()
         demo.initFormExtendedDatetimepickers();
     });
 </script>

@@ -46,6 +46,11 @@
 <!--link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" /-->
 <link rel="stylesheet" type="text/css" href="{{'/css/customization.css'}}"/>
 
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <style>
     /* Bangla Font Support - Apply site-wide */
     body, 
@@ -76,5 +81,10 @@
     [class*="fa-"],
     i[class*="fa"] {
         font-family: 'FontAwesome' !important;
+    }
+
+    #map {
+      height: 100%; /* Or any explicit pixel/percentage height */
+      width: 100%;
     }
 </style>

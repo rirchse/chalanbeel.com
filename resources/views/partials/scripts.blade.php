@@ -1,15 +1,4 @@
 <script src="{{'/js/jquery-3.1.1.min.js'}}" type="text/javascript"></script>
-{{-- <script src="{{'/js/angular.min.js'}}" type="text/javascript"></script> --}}
-{{-- <script src="{{'/js/angular.customization.js'}}" type="text/javascript"></script> --}}
-<!--Angular App-->
-{{-- <script src="{{'/js/app/app.js'}}" type="text/javascript"></script> --}}
-<!--Angular Controllers-->
-
-{{-- <script src="{{'/js/app/controllers/angularController.js'}}" type="text/javascript"></script> --}}
-{{-- <script src="{{'/js/app/controllers/registerController.js'}}" type="text/javascript"></script> --}}
-<!--Angular App Services-->
-{{-- <script src="{{'/js/app/services/registerService.js'}}" type="text/javascript"></script> --}}
-{{-- <script src="{{'/js/app/services/angularService.js'}}" type="text/javascript"></script> --}}
 
 <script src="{{'/js/jquery-ui.min.js'}}" type="text/javascript"></script>
 <script src="{{'/js/bootstrap.min.js'}}" type="text/javascript"></script>
@@ -32,7 +21,7 @@
 <!-- Vector Map plugin -->
 <script src="{{'/js/jquery-jvectormap.js'}}"></script>
 <!-- Sliders Plugin -->
-<script src="{{'/js/nouislider.min.js'}}"></script>
+{{-- <script src="{{'/js/nouislider.min.js'}}"></script> --}}
 <!-- Select Plugin -->
 <script src="{{'/js/jquery.select-bootstrap.js'}}"></script>
 <!--  DataTables.net Plugin    -->

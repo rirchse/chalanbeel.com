@@ -3,85 +3,104 @@ let marker;
 let latlong = document.getElementById('lat_long');
 
 function initMap() {
-  // Fixed default location
-  const defaultLocation = { lat: 24.4322, lng: 89.2091 };
+  const defaultLocation = [24.4251, 89.1987];
 
-  let mapid = document.getElementById("map");
-  map = new google.maps.Map(mapid, {
+  // 1. Define Base Layers
+  const osmStreet = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  });
+
+  const esriSatellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 19,
+    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+  });
+
+  // 2. Initialize map with default street layer
+  map = L.map('map', {
     center: defaultLocation,
     zoom: 15,
-    mapTypeId: "roadmap",
-    mapTypeControl: true,
-    mapTypeControlOptions: {
-      style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-      position: google.maps.ControlPosition.TOP_RIGHT,
-      mapTypeIds: ["roadmap", "satellite", "hybrid", "terrain"]
+    layers: [osmStreet] // default active layer
+  });
+
+  // Force Leaflet to recalculate container size
+  setTimeout(function() {
+    map.invalidateSize();
+  }, 200);
+
+  // 3. Add Layer Control (Map Switcher Widget)
+  const baseMaps = {
+    "Street Map": osmStreet,
+    "Satellite": esriSatellite
+  };
+  
+  L.control.layers(baseMaps, null, { position: 'topright' }).addTo(map);
+
+  // 4. Add Draggable Marker
+  marker = L.marker(defaultLocation, { draggable: true }).addTo(map);
+
+  // Update input on marker drag
+  marker.on('dragend', function () {
+    const position = marker.getLatLng();
+    if (latlong) {
+      latlong.value = position.lat.toFixed(6) + ', ' + position.lng.toFixed(6);
     }
   });
 
-  // Place initial marker at default location
-  marker = new google.maps.Marker({
-    position: defaultLocation,
-    map: map,
-    draggable: true,
+  // Update marker and input on map click
+  map.on('click', function (event) {
+    const clickedLat = event.latlng.lat;
+    const clickedLng = event.latlng.lng;
+
+    marker.setLatLng([clickedLat, clickedLng]);
+
+    if (latlong) {
+      latlong.value = clickedLat.toFixed(6) + ', ' + clickedLng.toFixed(6);
+    }
   });
 
-  // Create custom button and error message elements
-  const locationButton = document.createElement("button");
-  locationButton.setAttribute('type', 'button');
-  locationButton.textContent = "📍 My Location";
-  locationButton.classList.add("custom-map-control-button");
+  // 5. Add "📍 My Location" Button
+  const locationButton = L.control({ position: 'topright' });
 
-  let errmsg = document.createElement('p');
-  errmsg.setAttribute('style', 'color:red'); 
+  locationButton.onAdd = function () {
+    const btn = L.DomUtil.create('button', 'custom-map-control-button');
+    btn.type = 'button';
+    btn.innerHTML = '🔵';
+    btn.style.padding = '8px 12px';
+    btn.style.cursor = 'pointer';
+    btn.style.backgroundColor = '#fff';
+    btn.style.border = '2px solid rgba(0,0,0,0.2)';
+    btn.style.borderRadius = '4px';
 
-  // Add button to top-center of map
-  map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+    L.DomEvent.disableClickPropagation(btn);
 
-  // Trigger geolocation ONLY on button click
-  locationButton.addEventListener("click", () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
+    btn.addEventListener('click', () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const userLat = position.coords.latitude;
+            const userLng = position.coords.longitude;
 
-          // Update Map, Marker, and Field on Button Tap
-          marker.setPosition(pos);
-          map.setCenter(pos);
-          map.setZoom(15);
-          if (latlong) {
-            latlong.value = pos.lat + ', ' + pos.lng;
+            map.setView([userLat, userLng], 15);
+            marker.setLatLng([userLat, userLng]);
+
+            if (latlong) {
+              latlong.value = userLat.toFixed(6) + ', ' + userLng.toFixed(6);
+            }
+          },
+          () => {
+            alert("Error: Unable to access your location.");
           }
-        },
-        () => {
-          errmsg.innerHTML = "Error: Unable to access your location.";
-          mapid.prepend(errmsg);
-        }
-      );
-    } else {
-      errmsg.innerHTML = "Your browser doesn't support geolocation.";
-      mapid.prepend(errmsg);
-    }
-  });
+        );
+      } else {
+        alert("Your browser doesn't support geolocation.");
+      }
+    });
 
-  // Update field when user drags the marker
-  google.maps.event.addListener(marker, "dragend", function (event) {
-    if (latlong) {
-      latlong.value = event.latLng.lat() + ', ' + event.latLng.lng();
-    }
-  });
+    return btn;
+  };
 
-  // Update marker & field when user clicks anywhere on map
-  google.maps.event.addListener(map, "click", function (event) {
-    marker.setPosition(event.latLng);
-    if (latlong) {
-      latlong.value = event.latLng.lat() + ', ' + event.latLng.lng();
-    }
-  });
+  locationButton.addTo(map);
 }
 
-// Load map
 window.onload = initMap;
