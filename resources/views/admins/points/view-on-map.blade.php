@@ -12,7 +12,7 @@
 @section('scripts')
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-    const map = L.map('map').setView([24.408425968764224, 89.23363527502185], 12); // center on Dhaka
+    const map = L.map('map').setView([24.408425, 89.233635], 12); 
 
     // OpenStreetMap
     const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

@@ -49,6 +49,11 @@ use App\Http\Controllers\OltController;
     //   $router = new Router;
     //   dd($router->pppSecretDelete($name));
     // });
+    // Route::get('ppp-profile-change/{name}/{profile}', function($name, $profile)
+    // {
+    //   $router = new Router;
+    //   dd($router->pppProfileChange($name, $profile));
+    // });
   });
 
   //test

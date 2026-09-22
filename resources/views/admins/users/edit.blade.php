@@ -234,7 +234,9 @@
 @endsection
 
 @section('scripts')
-<script src="{{'/js/open-map.js?v=1.0.4'}}"></script>
+<script src="{{'/js/open-map-google.js?v=1.0.4'}}"></script>
+<!-- 2. Google Maps script with callback=initMap -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLZ_xehpqleMTt3ZFAMCVoQAJ_YTu2LLA&callback=initMap" async defer></script>
 
 <script>
   // function checkContact(e)

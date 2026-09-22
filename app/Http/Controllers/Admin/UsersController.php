@@ -429,7 +429,6 @@ class UsersController extends Controller
 
         while (($row = fgetcsv($handle)) !== false) {
             $data = array_combine($header, $row);
-            // dd($data);
 
             User::updateOrInsert(
               [
@@ -558,8 +557,8 @@ class UsersController extends Controller
           User::where('id', $data['user_id'])->update(
             [
               'payment_date' => $data['payment_date'],
-              'balance' => DB::raw("balance + ".intval($data['amount'])),
-              'status' => 'Active'
+              'balance'      => DB::raw("balance + ".intval($data['amount'])),
+              'status'       => 'Active'
             ]
           );
 
@@ -575,15 +574,24 @@ class UsersController extends Controller
           //action to the router
           if($user->service_type == 'PPPoE')
           {
-            $secret = [
-              'name' => $user->username ? $user->username : $user->contact,
-              'password' => $user->service_password ? $user->service_password : $user->contact,
-              'service' => 'pppoe',
-              'profile' => $user->package ? $user->package->slug : 'default',
-              'comment' => $user->name
-            ];
+            // $secret = [
+            //   'name' => $user->username ? $user->username : $user->contact,
+            //   'password' => $user->service_password ? $user->service_password : $user->contact,
+            //   'service' => 'pppoe',
+            //   'profile' => $user->package ? $user->package->slug : 'default',
+            //   'comment' => $user->name
+            // ];
             //
-            $router->pppSecretAdd($secret);
+            // $router->pppSecretAdd($secret);
+
+            $secrets = [
+              [
+                'name' => $user->username ? $user->username : $user->contact,
+                'profile' => $user->package ? $user->package->slug : 'default'
+              ]
+            ];
+            //request to the router for profile change
+            $router->pppProfileChange($secrets);
           }
           elseif($user->service_type == 'Static')
           {

@@ -81,11 +81,11 @@ class Router extends Controller
 
           //
           $client->query($removeActive)->read();
-          $response['active_session'] = 'Disconnected';
+          $response['active'] = 'Disconnected';
         }
         else
         {
-          $response['active_session'] = 'No active session found';
+          $response['active'] = 'No active session found';
         }
 
         $findSecret =(new Query('/ppp/secret/print'))
@@ -107,6 +107,56 @@ class Router extends Controller
         }
         return $response;
       }
+    }
+
+    public function pppProfileChange($secrets)
+    {
+      $client = $this->Connect();
+      if($client)
+      {
+        foreach($secrets as $secret)
+        {
+          $findSecret =(new Query('/ppp/secret/print'))
+          ->where('name', $secret['name']);
+
+          $result = $client->query($findSecret)->read();
+          if(!empty($result) && isset($result[0]['.id']))
+          {
+            $secretId = $result[0]['.id'];
+            
+            $updateQuery = (new Query('/ppp/secret/set'))
+            ->equal('.id', $secretId)
+            ->equal('profile', $secret['profile']);
+            $client->query($updateQuery)->read();
+            $response['secret'] = 'Profile changed successfully';
+          }
+          else
+          {
+            $response['secret'] = 'Secret not found';
+          }
+
+          $findActive = (new Query('/ppp/active/print'))
+          ->where('name', $secret['name']);
+          $activeResult = $client->query($findActive)->read();
+
+          if(!empty($activeResult) && isset($activeResult['.id']))
+          {
+            $removeActive = (new Query('/ppp/active/remove'))
+            ->equal('.id', $activeResult['.id']);
+
+            //
+            $client->query($removeActive)->read();
+            $response['active'] = 'Disconnected';
+          }
+          else
+          {
+            $response['active'] = 'No active session found';
+          }
+        }
+
+        // return $response;
+      }
+      return [];
     }
 
     public function pppSecrets()
@@ -213,28 +263,20 @@ class Router extends Controller
     }
     
     // add ip address to the firewall address list
-    public function addExpireIP($users, $list = 'Expired')
+    public function addExpireIP($arps, $list = 'Expired')
     {
-      $results = '';
-      foreach($users as $user)
+      $client = $this->connect();
+      foreach($arps as $arp)
       {
-        if($user->service_type == 'PPPoE')
-        {
-          //
-          $this->pppSecretDelete($user->username);
-        }
-        elseif($user->service_type == 'Static')
-        {
-          $query = (new Query('/ip/firewall/address-list/add'))
-                    ->equal('address', $user->ip)
+        $query = (new Query('/ip/firewall/address-list/add'))
+                    ->equal('address', $arp['ip'])
                     ->equal('list', 'Expired')
-                    ->equal('comment', $user->name);
+                    ->equal('comment', $arp['name']);
     
-          $response = $this->connect()->query($query)->read();
-        }
+          $response = $client->query($query)->read();
       }
 
-      return $results;
+      return [];
     }
 
     public function delExpireList($ip, $list = 'Expired')

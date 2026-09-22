@@ -113,15 +113,24 @@ class BkashPaymentController extends Controller
 
                 if($user->service_type == 'PPPoE')
                 {
-                  $secret = [
-                    'name' => $user->username ? $user->username : $user->contact,
-                    'password' => $user->service_password ? $user->service_password : $user->contact,
-                    'service' => 'pppoe',
-                    'profile' => $user->package ? $user->package->slug : 'default',
-                    'comment' => $user->name
-                  ];
+                  // $secret = [
+                  //   'name' => $user->username ? $user->username : $user->contact,
+                  //   'password' => $user->service_password ? $user->service_password : $user->contact,
+                  //   'service' => 'pppoe',
+                  //   'profile' => $user->package ? $user->package->slug : 'default',
+                  //   'comment' => $user->name
+                  // ];
                   //request to the router
-                  $router->pppSecretAdd($secret);
+                  // $router->pppSecretAdd($secret);
+
+                  $secrets = [
+                    [
+                      'name' => $user->username ? $user->username : $user->contact,
+                      'profile' => $user->package ? $user->package->slug : 'default'
+                    ]
+                  ];
+                  //request to the router for profile change
+                  $router->pppProfileChange($secrets);
                 }
                 elseif($user->service_type == 'Static')
                 {

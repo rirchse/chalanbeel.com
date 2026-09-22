@@ -10,12 +10,17 @@ function initMap() {
   map = new google.maps.Map(mapid, {
     center: defaultLocation,
     zoom: 15,
-    mapTypeId: "roadmap",
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
     mapTypeControl: true,
     mapTypeControlOptions: {
-      style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+      style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
       position: google.maps.ControlPosition.TOP_RIGHT,
-      mapTypeIds: ["roadmap", "satellite", "hybrid", "terrain"]
+      mapTypeIds: [
+        google.maps.MapTypeId.ROADMAP,   // Standard street view
+        google.maps.MapTypeId.SATELLITE, // Pure satellite view
+        google.maps.MapTypeId.HYBRID,    // Satellite with street labels
+        google.maps.MapTypeId.TERRAIN    // Topographic/terrain map
+      ]
     }
   });
 
@@ -29,7 +34,7 @@ function initMap() {
   // Create custom button and error message elements
   const locationButton = document.createElement("button");
   locationButton.setAttribute('type', 'button');
-  locationButton.textContent = "📍 My Location";
+  locationButton.textContent = "🔵";
   locationButton.classList.add("custom-map-control-button");
 
   let errmsg = document.createElement('p');

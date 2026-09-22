@@ -46,11 +46,13 @@ class ExpireController extends Controller
       ->whereRaw('DATE(payment_date) <= ?', date('Y-m-d'))
       ->where('status', 'Active')
       // ->where('service_type', 'Static')
-      ->select('id', 'name', 'contact', 'username', 'payment_date', 'ip', 'package_id', 'balance')
+      ->select('id', 'name', 'contact', 'username', 'payment_date', 'ip', 'package_id', 'balance', 'service_type')
       ->get();
 
       //numbers for sms
       $numbers = '';
+
+      $secrets = $arps = [];
       
       foreach($users as $user)
       {
@@ -73,19 +75,48 @@ class ExpireController extends Controller
           $status = 'Active';
           $payment_date = date('Y-m-d', strtotime($payment_date.' +1 month'));
         }
+        else
+        {
+          //manage user for expire list
+          if($user->service_type == 'PPPoE')
+          {
+            array_push($secrets, [
+              'name' => $user->username, 
+              'profile' => 'expire'
+            ]);
+          }
+          elseif($user->service_type == 'Static')
+          {
+            array_push($arps, [
+              'ip' => $user->ip,
+              'list' => 'Expired',
+              'comment' => $user->name
+            ]);
+          }
+        }
 
+        //update user information to the database.
         User::where('id', $user->id)->update([
           'status' => $status,
           'balance' => $balance,
           'payment_date' => $payment_date
         ]);
 
-        //
+        // manage user contact numbers for send sms.
         $numbers .= '88'.$user->contact.',';
       }
 
+      //ppp profile change
+      if($secrets)
+      {
+        $router->pppProfileChange($secrets);
+      }
+
       //expired users block from mikrotik
-      $router->addExpireIP($users, $list = 'Expired');
+      if($arps)
+      {
+        $router->addExpireIP($users, $list = 'Expired');
+      }
 
       //send notification by sms
       $smsctrl->sendSms($numbers, 'আপনার ইন্টারনেট সংযোগের মেয়াদ শেষ, বিল পে করুন। বিকাশ 01703587911-CBT');
