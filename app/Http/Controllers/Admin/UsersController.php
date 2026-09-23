@@ -20,6 +20,7 @@ use File;
 use Session;
 use DB;
 use App\Services\VsolSnmpService;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class UsersController extends Controller
 {
@@ -686,5 +687,80 @@ class UsersController extends Controller
 
     Session::put('_admuser', $admuser);
     return redirect('/admin_loginto');
+  }
+
+  // user export as .csv file
+  public function exportCsv(): StreamedResponse
+  {
+    $fileName = 'users.csv';
+
+    $headers = [
+        "Content-type"        => "text/csv",
+        "Content-Disposition" => "attachment; filename=$fileName",
+        "Pragma"              => "no-cache",
+        "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+        "Expires"             => "0"
+    ];
+
+    $callback = function() {
+        $file = fopen('php://output', 'w');
+
+        // 1. Add CSV Header Row
+        fputcsv($file, [
+        'user_id', 
+        'full_name', 
+        'phone', 
+        'address', 
+        'zone_name', 
+        'subzone_name', 
+        'package_name', 
+        'connection_type', 
+        'pppoe_username', 
+        'pppoe_password', 
+        'monthly_bill', 
+        'due_amount', 
+        'last_paid_at', 
+        'status', 
+        'expiry_date', 
+        'email (Optional)', 
+        'nid_number (Optional)', 
+        'activation_date (Optional)'
+      ]);
+
+        // 2. Fetch users in chunks to save RAM
+        User::whereIn('service_type',['PPPoE', 'Static'])
+        ->whereIn('status', ['Active', 'Expire'])
+        ->select(['id', 'name', 'contact', 'username', 'service_password', 'join_date', 'billing_date', 'payment_date', 'balance', 'address', 'status'])
+            ->chunk(2000, function ($users) use ($file) {
+                foreach ($users as $user) {
+                  // $contact = "".$user->contact;
+                  $last_paid = $user->payment_date ? date('Y-m-d H:i:s', strtotime($user->payment_date.'-1 month')) : '';
+                    fputcsv($file, [
+                        (string)$user->contact,
+                        $user->name,
+                        (string)$user->contact,
+                        $user->address,
+                        '',
+                        '',
+                        '15 Mbps Home',
+                        $user->service_type,
+                        (string)$user->username,
+                        (string)$user->service_password,
+                        500,
+                        '',
+                        $last_paid,
+                        $user->status,
+                        $user->payment_date,
+                        $user->email,
+                        '',
+                        $user->join_date
+                    ]);
+                }
+            });
+
+        fclose($file);
+    };
+
+    return response()->stream($callback, 200, $headers);
   }
 }

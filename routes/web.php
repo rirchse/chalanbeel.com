@@ -269,6 +269,8 @@ use App\Http\Controllers\OltController;
 
           //router connection
           Route::get('/active/arp-user', 'activeUsers')->name('user.arp-user');
+          //user download as .csv file
+          Route::get('user-download', 'exportCsv');
         });
 
         // view active onu users on map
