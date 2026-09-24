@@ -283,24 +283,30 @@ class Router extends Controller
     {
       $listName = $list;
       $ipAddress = $ip;
+      $client = $this->connect();
 
-      // 1. Target the precise IP inside the precise list
-      $findQuery = (new Query('/ip/firewall/address-list/print'))
-      ->where('list', $listName)
-      ->where('address', $ipAddress);
+      if($client)
+      {
+        // 1. Target the precise IP inside the precise list
+        $findQuery = (new Query('/ip/firewall/address-list/print'))
+        ->where('list', $listName)
+        ->where('address', $ipAddress);
 
-      $entries = $this->connect()->query($findQuery)->read();
+        $entries = $client->query($findQuery)->read();
 
-      // 2. If it exists, remove it using its ID
-    if (!empty($entries) && isset($entries[0]['.id'])) {
-      $removeQuery = (new Query('/ip/firewall/address-list/remove'))
-          ->equal('.id', $entries[0]['.id']);
-      
-        $this->connect()->query($removeQuery)->read();
+        // 2. If it exists, remove it using its ID
+        if (!empty($entries) && isset($entries[0]['.id']))
+        {
+          $removeQuery = (new Query('/ip/firewall/address-list/remove'))
+              ->equal('.id', $entries[0]['.id']);
+          
+            $client->query($removeQuery)->read();
 
-      return response()->json(['success' => true, 'message' => "{$ipAddress} removed from {$listName}."]);
-    }
+          return response()->json(['success' => true, 'message' => "{$ipAddress} removed from {$listName}."]);
+        }
 
-    return response()->json(['success' => false, 'message' => "IP not found in that list."]);
-    }
+        return response()->json(['success' => false, 'message' => "IP not found in that list."]);
+      }
+      return [];
+  }
 }

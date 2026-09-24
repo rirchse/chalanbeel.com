@@ -94,7 +94,7 @@
                                   </select>
                                 </div>
                                 <div class="form-group">
-                                    <select name="service_type" id="service_type" class="form-control" onchange="selectService(this)">
+                                    <select name="service_type" id="service_type" class="form-control">
                                       <option value="">Service Type:</option>
                                       <option value="PPPoE" {{$user->service_type == 'PPPoE'? 'selected':''}}>PPPoE</option>
                                       <option value="Static" {{$user->service_type == 'Static'? 'selected':''}}>Static</option>
@@ -103,10 +103,10 @@
                                 <div class="form-group">
                                     <select name="location" id="" class="form-control">
                                         <option value="">Select POP/OLT</option>
-                                        <option value="Bildahor" {{$user->location == 'Bildahor'? 'selected':''}}>Bildahor</option>
-                                        <option value="Nazirpur" {{$user->location == 'Nazirpur'? 'selected':''}}>Nazirpur</option>
-                                        <option value="Chanchkoir" {{$user->location == 'Chanchkoir'? 'selected':''}}>Chanchkoir</option>
-                                        <option value="Ganadanagar" {{$user->location == 'Ganadanagar'? 'selected':''}}>Ganadanagar</option>
+                                        <option value="Bildahor EPON" {{$user->location == 'Bildahor EPON'? 'selected':''}}>Bildahor EPON</option>
+                                        <option value="Bildahor GPON" {{$user->location == 'Bildahor GPON'? 'selected':''}}>Bildahor GPON</option>
+                                        <option value="Nazirpur EPON" {{$user->location == 'Nazirpur EPON'? 'selected':''}}>Nazirpur EPON</option>
+                                        <option value="Chanchkoir RADIO" {{$user->location == 'Chanchkoir RADION'? 'selected':''}}>Chanchkoir RADIO</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -121,14 +121,18 @@
                                     </select>
                                 </div>
                                 <div id="serviceParts">
-                                  @if($user->service_type == 'Static')
                                   <div class="form-group">
                                       <select name="ip" id="static" class="form-control">
                                         <option value="">Select IP:</option>
                                         <option value="{{$user->ip}}" selected>{{$user->ip}}</option>
                                       </select>
                                   </div>
-                                  @endif
+                                  <div class="form-group">
+                                    <input type="text" name="username" id="" class="form-control" placeholder="Username" value="{{$user->username}}">
+                                  </div>
+                                  <div class="form-group">
+                                      <input type="text" name="service_password" id="" class="form-control" placeholder="Service Password" value="{{$user->service_password}}">
+                                  </div>
                                 </div>
                                 <div class="form-group">
                                     <input type="text" class="form-control" name="mac" placeholder="MAC Address:" value="{{$user->mac}}">

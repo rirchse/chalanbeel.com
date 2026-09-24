@@ -742,7 +742,7 @@ class UsersController extends Controller
                         $user->address,
                         '',
                         '',
-                        '15 Mbps Home',
+                        '15mbps',
                         $user->service_type,
                         (string)$user->username,
                         (string)$user->service_password,

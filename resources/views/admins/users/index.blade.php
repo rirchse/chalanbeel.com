@@ -169,24 +169,12 @@ $source = new SourceCtrl;
           <input type="text" name="contact" class="form-control" placeholder="Contact">
         </div>
         <div class="form-group">
-          <input type="text" name="address" class="form-control" placeholder="Address">
-        </div>
-        <div class="form-group">
           <label for="">Join Date:</label>
           <input type="date" name="join_date" class="form-control" placeholder="Join Date">
         </div>
         <div class="form-group">
           <label for="">Next Payment Date:</label>
           <input type="date" name="payment_date" class="form-control" placeholder="Join Date">
-        </div>
-        <div class="form-group">
-            <select name="location" id="" class="form-control">
-                <option value="">Select POP/OLT</option>
-                <option value="Bildahor">Bildahor</option>
-                <option value="Nazirpur">Nazirpur</option>
-                <option value="Chanchkoir">Chanchkoir</option>
-                <option value="Ganadanagar">Ganadanagar</option>
-            </select>
         </div>
         <div class="form-group">
           <select name="status" class="form-control" id="status">
@@ -206,7 +194,7 @@ $source = new SourceCtrl;
           </select>
         </div>
         <div class="form-group">
-            <select name="service_type" id="service_type" class="form-control" onchange="selectService(this)">
+            <select name="service_type" id="service_type" class="form-control">
               <option value="">Service Type:</option>
               <option value="PPPoE">PPPoE</option>
               <option value="Static">Static</option>
@@ -223,8 +211,18 @@ $source = new SourceCtrl;
               <option value="RADIO">RADIO</option>
             </select>
         </div>
-        <div id="serviceParts">
-          
+        <div>
+          <div class="form-group">
+            <select name="ip" id="static" class="form-control">
+              <option value="">Select IP:</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="text" name="username" id="" class="form-control" placeholder="Username">
+          </div>
+          <div class="form-group">
+              <input type="text" name="service_password" id="" class="form-control" placeholder="PPPoE Password">
+          </div>
         </div>
         <div class="form-group">
             <input type="text" class="form-control" name="mac" placeholder="MAC Address:">
@@ -242,6 +240,18 @@ $source = new SourceCtrl;
         </div>
         <div class="form-group">
           <input type="number" class="form-control" name="balance" placeholder="Balance" value="" onwheel="event.currentTarget.blur()">
+        </div>
+        <div class="form-group">
+            <select name="location" id="" class="form-control">
+                <option value="">Select POP/OLT</option>
+                <option value="Bildahor EPON">Bildahor EPON</option>
+                <option value="Bildahor GPON">Bildahor GPON</option>
+                <option value="Nazirpur EPON">Nazirpur EPON</option>
+                <option value="Chanchkoir RADIO">Chanchkoir RADIO</option>
+            </select>
+        </div>
+        <div class="form-group">
+          <input type="text" name="address" class="form-control" placeholder="Address">
         </div>
       </div>
 
@@ -431,29 +441,29 @@ function printDivWithHiddenColumns(tableId, columnsToHide) {
 </script>
 <script>
   let preloader = document.getElementById('preloader');
-  const serviceParts = document.getElementById('serviceParts');
-  function selectService(e)
-  {
-    let service = e.options[e.selectedIndex];
+  // const serviceParts = document.getElementById('serviceParts');
+  // function selectService(e)
+  // {
+  //   let service = e.options[e.selectedIndex];
 
-    if(service.value == 'PPPoE')
-    {
-      serviceParts.innerHTML = '<div class="form-group">'+
-                                  '<input type="text" name="username" id="" class="form-control" placeholder="Username">'+
-                              '</div>'+
-                              '<div class="form-group">'+
-                                  '<input type="text" name="service_password" id="" class="form-control" placeholder="PPPoE Password">'+
-                              '</div>';
-    }
-    else
-    {
-      serviceParts.innerHTML = '<div class="form-group">'+
-                                  '<select name="ip" id="static" class="form-control">'+
-                                    '<option value="">Select IP:</option>'+
-                                  '</select>'+
-                              '</div>';
-    }
-  }
+  //   if(service.value == 'PPPoE')
+  //   {
+  //     serviceParts.innerHTML = '<div class="form-group">'+
+  //                                 '<input type="text" name="username" id="" class="form-control" placeholder="Username">'+
+  //                             '</div>'+
+  //                             '<div class="form-group">'+
+  //                                 '<input type="text" name="service_password" id="" class="form-control" placeholder="PPPoE Password">'+
+  //                             '</div>';
+  //   }
+  //   else
+  //   {
+  //     serviceParts.innerHTML = '<div class="form-group">'+
+  //                                 '<select name="ip" id="static" class="form-control">'+
+  //                                   '<option value="">Select IP:</option>'+
+  //                                 '</select>'+
+  //                             '</div>';
+  //   }
+  // }
 
   function checkIP(e)
   {
@@ -492,13 +502,13 @@ function printDivWithHiddenColumns(tableId, columnsToHide) {
       url: '{{route("user.show", "")}}/'+e.dataset.id,
       success: function(data){
         let elm = editform.elements;
-        elm.id.value = data.user.id;
-        elm.name.value = data.user.name;
-        elm.contact.value = data.user.contact;
-        elm.address.value = data.user.address;
-        elm.lat_long.value = data.user.lat_long;
-        elm.join_date.value = data.user.join_date;
-        elm.payment_date.value = data.user.payment_date;
+        elm.id.value = data.user.id ? data.user.id : '';
+        elm.name.value = data.user.name ? data.user.name : '';
+        elm.contact.value = data.user.contact ? data.user.contact : '';
+        elm.address.value = data.user.address ? data.user.address : '';
+        elm.lat_long.value = data.user.lat_long ? data.user.lat_long : '';
+        elm.join_date.value = data.user.join_date ? data.user.join_date : '';
+        elm.payment_date.value = data.user.payment_date ? data.user.payment_date : '';
         elm.lat_long.parentNode.classList.add('is-focused');
         if(data.user.status)
         {
@@ -523,34 +533,19 @@ function printDivWithHiddenColumns(tableId, columnsToHide) {
         {
           elm.service_type.options[0] = new Option('Select Service', '', false, true);
         }
-        else
-        {
-          elm.service_type.options[0] = new Option(data.user.service_type, data.user.service_type, false, true);
 
-          selectService(document.getElementById('service_type'));
-
-          if(data.user.service_type == 'PPPoE')
-          {
-            elm.username.value = data.user.username;
-            elm.service_password.value = data.user.service_password;
-          }
-          else if(data.user.service_type == 'Static')
-          {
-            elm.ip.options[0] = new Option(data.user.ip, data.user.ip, false, true);
-          }
-          else
-          {
-            serviceParts.innerHTML = '';
-          }
-        }
+        elm.service_type.options[0] = new Option(data.user.service_type, data.user.service_type, false, true);
+        elm.ip.options[0] = new Option(data.user.ip, data.user.ip, false, true);
+        elm.username.value = data.user.username ? data.user.username : '';
+        elm.service_password.value = data.user.service_password ? data.user.service_password : '';
 
         if(data.user.pon)
         {
           elm.pon.options[0] = new Option(data.user.pon, data.user.pon, false, true);
         }
 
-        elm.mac.value = data.user.mac;
-        elm.onu_mac.value = data.user.onu_mac;
+        elm.mac.value = data.user.mac ? data.user.mac : '';
+        elm.onu_mac.value = data.user.onu_mac ? data.user.onu_mac : '';
         elm.balance.value = data.user.balance ? data.user.balance : 0;
 
         preloader.style.display = 'none';
