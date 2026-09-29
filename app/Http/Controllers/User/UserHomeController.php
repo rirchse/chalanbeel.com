@@ -44,15 +44,17 @@ class UserHomeController extends Controller
     public function index()
     {
         $user = Auth::user();
+
         $services = Service::leftJoin('packages', 'packages.id', 'services.package_id')
         ->where('services.user_id', $user->id)->orderBy('services.id', 'DESC')->get();
+
         $payments = Payment::orderBy('id', 'DESC')
         ->where('user_id', $user->id)
         ->where('receive_date', 'like', '%'.date('Y').'%')
         ->get();
 
         $packages = Package::where('status', 'Active')->get();
-        return view('users.index', compact('services', 'payments', 'packages'));
+        return view('users.index', compact('user', 'services', 'payments', 'packages'));
     }
 
     public function invoice($id)

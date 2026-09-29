@@ -9,6 +9,58 @@ $user = Auth::user();
 @section('content')
 
 <div class="row">
+
+  <div class="col-lg-3 col-md-4 col-xs-6">
+    <a href="">
+      <div class="card card-stats">
+          <div class="card-header" data-background-color="blue">
+            Balance
+          </div>
+          <div class="card-content">
+              <h3 class="card-title">{{number_format($user->balance, 0)}}Tk.</h3>
+          </div>
+      </div>
+    </a>
+  </div>
+  <div class="col-lg-3 col-md-4 col-xs-6">
+    <a href="">
+      <div class="card card-stats">
+          <div class="card-header" data-background-color="orange">
+            Packages
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">{{$user->package->name}}</h3>
+          </div>
+      </div>
+    </a>
+  </div>
+  <div class="col-lg-3 col-md-4 col-xs-6">
+    <a href="">
+      <div class="card card-stats">
+          <div class="card-header" data-background-color="green">
+            Recharge
+          </div>
+          <div class="card-content">
+              <h3 class="card-title">{{number_format($user->package->price)}}Tk.</h3>
+          </div>
+      </div>
+    </a>
+  </div>
+  <div class="col-lg-3 col-md-4 col-xs-6">
+    <a href="">
+      <div class="card card-stats">
+          <div class="card-header" data-background-color="gray">
+            Payment History
+          </div>
+          <div class="card-content">
+              <h3 class="card-title">{{count($payments)}}</h3>
+          </div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<div class="row">
     <div class="col-md-6">
         <div class="card card-stats">
             <table class="table table-bordered">

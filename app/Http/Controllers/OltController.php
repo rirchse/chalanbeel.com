@@ -49,7 +49,7 @@ class OltController extends Controller
     {
         try {
             $onus = $oltService->getAllOnus();
-            // dd($onus);
+            dd($onus);
 
             // return response()->json([
             //     'success' => true,

@@ -32,84 +32,48 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
-                {{-- <li><a href="/my_offer"><i class="material-icons">wifi</i> My Offers</a></li> --}}
-                {{-- <li>
-                    <a data-toggle="collapse" href="#pagesExamples">
-                        <i class="material-icons">subject</i>
-                        <p>Services
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse" id="pagesExamples">
-                        <ul class="nav">
-                            <li><a href="/create_service">Add New Service</a></li>
-                            <li><a href="/view_services">View Services</a></li>
-                        </ul>
-                    </div>
-                </li> --}}
-                {{-- <li>
-                    <a data-toggle="collapse" href="#componentsExamples">
-                        <i class="material-icons">subject</i>
-                        <p>Payments
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse" id="componentsExamples">
-                        <ul class="nav">
-                            <li><a href="/view_payments">View Payments</a></li>
-                            <li><a href="/view_due_bills">View Due Payments</a></li>
-                        </ul>
-                    </div>
-                </li> --}}
-                {{-- <li>
-                    <a data-toggle="collapse" href="#client">
-                        <i class="material-icons">card_travel</i>
-                        <p>Client Manager
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse" id="client">
-                        <ul class="nav">
-                            <li><a href="/add_client">Add Client</a></li>
-                            <li><a href="/show_clients">Show Clients</a></li>
-                        </ul>
-                    </div>
+                <li>
+                  <a href="">
+                    <i class="material-icons">payment</i> 
+                    Billings
+                  </a>
                 </li>
                 <li>
-                    <a data-toggle="collapse" href="#tablesExamples">
-                        <i class="material-icons">message</i>
-                        <p>Address Manager
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse" id="tablesExamples">
-                        <ul class="nav">
-                            <li><a href="/add_address">Add Address</a></li>
-                            <li><a href="/show_address">Show Address</a></li>
-                            <li><a href="/show_bol_address">Show BOL Address</a></li>
-                        </ul>
-                    </div>
-                </li> --}}
-                <li>
-                    <a data-toggle="collapse" href="#formsExamples">
-                        <i class="material-icons">supervisor_account</i>
-                        <p>Account Settings
-                            <b class="caret"></b>
-                        </p>
-                    </a>
-                    <div class="collapse" id="formsExamples">
-                        <ul class="nav">
-                            <li>
-                                <a href="/change_my_password">Change Password</a>
-                            </li>
-                            <li>
-                                <a href="/profile">My Profile</a>
-                            </li>
-                        </ul>
-                    </div>
+                  <a href="">
+                    <i class="material-icons">card_travel</i> 
+                    Packages
+                  </a>
                 </li>
-                
-            </ul>
+                <li>
+                  <a href="">
+                    <i class="material-icons">message</i> 
+                    Complain
+                  </a>
+                </li>
+                <li>
+                  <a href="">
+                    <i class="material-icons">supervisor_account</i> 
+                    Contact Us
+                  </a>
+                </li>
+                <li>
+                  <a href="/profile">
+                    <i class="material-icons">user</i>
+                    My Profile
+                  </a>
+                </li>
+                <li>
+                  <a href="/change_my_password"><i class="material-icons"> supervisor_account</i>
+                    Change Password
+                  </a>
+                </li>
+                <li>
+                  <a href="/profile">
+                    <i class="material-icons">logout</i>
+                    Logout
+                  </a>
+                </li>
+              </ul>
         </div>
     </div>
 

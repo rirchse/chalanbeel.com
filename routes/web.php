@@ -37,9 +37,10 @@ use App\Http\Controllers\OltController;
       ];
   });
 
-  //router test
+  
   Route::controller(Router::class)->group(function()
   {
+    //router test
     // Route::get('add-ppp-secret/{username}/{password}/{profile}/{name}', function($username, $password, $profile, $name){
     //   $router = new Router;
     //   dd($router->pppSecretAdd($username, $password, $profile, $name));
@@ -53,6 +54,11 @@ use App\Http\Controllers\OltController;
     // {
     //   $router = new Router;
     //   dd($router->pppProfileChange($name, $profile));
+    // });
+    // Route::get('arp-update-test/{ip}', function($ip)
+    // {
+    //   $router = new Router;
+    //   dd($router->updateARP($ip));
     // });
   });
 
@@ -148,6 +154,18 @@ use App\Http\Controllers\OltController;
 
 
 	Auth::routes();
+  // Route::controller(Router::class)->group(function()
+  // {
+  //   //get static single user
+  //   Route::get('static-user/{ip}', 'getARP')->name('static.user');
+  // });
+
+  //users routes
+    Route::controller(UserHomeController::class)->group(function()
+    {
+      Route::get('/home', 'index');
+      Route::get('user-billing', 'index')->name('user.billing');
+    });
   //user routes start from here
     Route::get('/all_users', 'Admin\UsersController@index');
     Route::put('/permit_as_admin/{id}', 'Admin\UsersController@permitAdmin')->name('admin.permit.admin');
@@ -158,7 +176,6 @@ use App\Http\Controllers\OltController;
     ->name('user.requestOffer');
 
     //user login functionality
-    Route::get('/home', 'User\UserHomeController@index');
     Route::get('/login', 'Auth\UnifiedLoginController@showLoginForm')
     ->name('login');
     Route::post('/login', 'Auth\UnifiedLoginController@login')
@@ -269,6 +286,8 @@ use App\Http\Controllers\OltController;
 
           //router connection
           Route::get('/active/arp-user', 'activeUsers')->name('user.arp-user');
+          Route::get('active-arp/{ip}', 'activeArp')->name('active.arp');
+
           //user download as .csv file
           Route::get('user-download', 'exportCsv');
         });

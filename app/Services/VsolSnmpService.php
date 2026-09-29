@@ -26,6 +26,8 @@ class VsolSnmpService
         $snmp->valueretrieval = SNMP_VALUE_PLAIN;
         $snmp->quick_print = 1;
 
+        // dd($snmp);
+
         // OIDs for VSOL V1600
         $macOid    = '.1.3.6.1.4.1.37950.1.1.5.12.1.25.1.5'; // ONU Serial/MAC
         $statusOid = '.1.3.6.1.4.1.37950.1.1.5.12.1.25.1.4'; // ONU Status

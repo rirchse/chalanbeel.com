@@ -109,7 +109,7 @@ class ExpireController extends Controller
       //ppp profile change
       if($secrets)
       {
-        $router->pppProfileChange($secrets);
+        // $router->pppProfileChange($secrets);
       }
 
       //expired users block from mikrotik
@@ -137,7 +137,6 @@ class ExpireController extends Controller
 
     $today = date('Y-m-d');
     $users = User::whereRaw('DATE(payment_date) <= ?', $today)
-    // ->where('service_type', 'Static')
     ->whereIn('status', ['Active', 'Expire'])
     ->orderBy('payment_date', 'DESC')
     ->select('id', 'payment_date', 'name', 'contact', 'ip')

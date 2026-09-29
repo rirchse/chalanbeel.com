@@ -232,9 +232,7 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user_id = Auth::guard('admin')->user()->id;
-
-        //validate the data
+      //validate the data
         $data = $this->validate($request, array(
             'name'          => 'required|min:2|max:32',
             'email'         => 'email|max:50|nullable',
@@ -289,6 +287,10 @@ class UsersController extends Controller
         $data['password'] = bcrypt($data['contact']);
 
         try {
+
+          $user_id = Auth::guard('admin')->user()->id;
+          $router = new Router;
+
           //save image//
           if($request->hasFile('profile_image'))
           {
@@ -314,6 +316,50 @@ class UsersController extends Controller
           User::where('id', $id)
           ->update($data);
 
+          //action to the router
+          if($data['service_type'] == 'PPPoE')
+          {
+            $profile = 'expire';
+            $package = Package::find($data['package_id']);
+            if($data['status'] == 'Active')
+            {
+              $profile = $package && $package->slug ? $package->slug : 'default';
+            }
+
+            $secrets = [
+              [
+                'name' => $data['username'] ? $data['username'] : $data['contact'], 
+                'profile' => $profile
+              ]
+            ];
+
+            $router->pppProfileChange($secrets);
+          }
+          elseif($data['service_type'] == 'Static')
+          {
+            $arpdata = [
+              'comment' => $data['name'],
+              'mac-address' => $data['mac'],
+            ];
+
+            if($data['status'] == 'Active')
+            {
+              //remove expired ip
+              $router->delExpireList($data['ip']);
+            }
+            else
+            {
+              $arps = [
+                [
+                  'ip' => $data['ip'],
+                  'name' => $data['name']
+                ]
+              ];
+              $router->addExpireIP($data['ip']);
+            }
+          }
+
+          //delete profile image
           if($request->hasFile('profile_image'))
           {
             //delete exists image
@@ -333,33 +379,26 @@ class UsersController extends Controller
               File::delete($ex_nid);
             }
           }
-
-          if($checkRouter)
+          
+          if($request->ajax())
           {
-            $arpdata = [
-              'comment' => $data['name'],
-              'mac-address' => $data['mac'],
-            ];
-
-            $router = new Router;
-            $router->updateARP($data['ip'], $arpdata);
+            return response()->json(
+              [
+                'user' => $data
+              ], 200);
           }
+          else
+          {
+            //set flash data with success message
+            Session::flash('success', 'User Information successfully updated.');
+            return redirect()->route('user.show', $id);
+          }
+          return [];
         }
         catch(\Exception $e)
         {
           return $e->getMessage();
         }
-
-        if($request->ajax())
-        {
-          return response()->json([
-            'message' => 'success'
-          ], 200);
-        }        
-
-        //set flash data with success message
-        Session::flash('success', 'User Information successfully updated.');
-        return redirect()->route('user.show', $id);
     }
 
     public function permitAdmin(Request $request, $id)
@@ -631,44 +670,50 @@ class UsersController extends Controller
 
   public function activeUsers()
   {
-    // $url = 'https://chalanbeel.com/api/user?service_type=Static&iparray=true';
-    // // $url = 'http://dev.cbt/api/user?service_type=Static&iparray=true';
-    // // cURL request
+    // $url = 'https://chalanbeel.com/api/user?service_type=Static';
+    // $url = 'http://dev.cbt/api/user?service_type=Static&iparray=true';
+
+    // cURL request
     // $ch = curl_init($url);
     // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    // // curl_setopt($ch, CURLOPT_USERPWD, "$user:$pass");
-    // // curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // if self-signed cert
-    // curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); // seconds to connect
-    // curl_setopt($ch, CURLOPT_TIMEOUT, 10);       // total seconds to execute
     
     // $response = curl_exec($ch);
     // curl_close($ch);
-    
-    // $ips = json_decode($response, true);
+
+    $users = User::where('service_type', 'Static')
+    ->select('id', 'name', 'contact', 'ip', 'mac', 'status as db_status')
+    ->get();
+    $users = json_decode($users, true);
 
     $router = new Router;
-    $arp_users = $router->activeArp();
+    $arps = $router->activeArp();
 
-    dd(count($arp_users));
+    // For two lists keyed by IP/address:
+    $collection1 = collect($arps)->keyBy('address');
+    $collection2 = collect($users)->keyBy('ip');
 
-    $entry = $noentry = 0;
+    $mergedList = $collection1->map(function ($item, $ip) use ($collection2) {
+        return array_merge($item, $collection2->get($ip, []));
+    })->values()->all();
 
-    foreach($arp_users as $key => $value)
+    // dd( $mergedList);
+    $users_count = count($users);
+    $arps_count = count($arps);
+
+    return view('admins.routers.index', compact('mergedList', 'users_count', 'arps_count'));
+  }
+
+  public function activeArp($ip)
+  {
+    $router = new Router;
+    $arp = $router->getArp($ip);
+    if($arp)
     {
-      if(in_array($value['address'], $ips))
-      {
-        $arp_users[$key]['status'] = 'Entry';
-        $entry++;
-      }
-      else
-      {
-        $arp_users[$key]['status'] = 'No Entry';
-        $noentry++;
-      }
+      return response()->json([
+        'user' => $arp
+      ], 200);
     }
-
-    return view('admins.users.active-user', compact('arp_users', 'entry', 'noentry'));
+    return [];
   }
 
   public function loginto($id)

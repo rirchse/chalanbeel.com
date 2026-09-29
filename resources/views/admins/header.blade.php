@@ -54,6 +54,19 @@
                     </div>
                 </li>
                 <li>
+                    <a data-toggle="collapse" href="#router">
+                        <i class="fas fa-wifi"></i>
+                        <p>Routers
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <div class="collapse" id="router">
+                        <ul class="nav">
+                            <li><a href="{{route('user.arp-user')}}">ARP Users</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
                   <a href="{{route('payment.index')}}">
                     <i class="fa fa-money"></i>
                     Payments

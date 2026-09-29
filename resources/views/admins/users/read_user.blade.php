@@ -146,7 +146,7 @@ $source = new SourceCtrl;
                       </tr>
                     </table>
                 </div>
-            </div>
+              </div>
         </div>
     </div>
     <div class="col-md-6">
@@ -201,6 +201,12 @@ $source = new SourceCtrl;
             </tr>
           </table>
         </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card card-stats">
+        <h4 class="text-center">Mikrotik</h4>
+        <table class="table table-responsive" id="showUser"></table>
       </div>
     </div>
 </div> <!-- end row -->
@@ -261,6 +267,46 @@ $source = new SourceCtrl;
     const formattedDate = `${year}-${month}-${day}`;
 
     form.elements.payment_date.value = formattedDate;
-}
+  }
+
+  
+</script>
+@endsection
+
+@section('scripts')
+<script>
+  //user from mikrotik
+  function routerUser()
+  {
+    const showUser = document.getElementById('showUser');
+    const ip = '{{$user->ip}}';
+    $.ajax({
+      type : 'GET',
+      url: '{{route("active.arp", "")}}/'+ip,
+      success:function(data)
+      {
+        let user = data.user[0];
+        let userTable = '<tr>'+
+            '<th>IP</th>'+
+            '<td>'+ user.address+'</td>'+
+          '</tr>'+
+          '<tr>'+
+            '<th>MAC</th>'+
+            '<td>'+ user['mac-address']+ '</td>'+
+          '</tr>'+
+          '<tr>'+
+            '<th>Status</th>'+
+            '<td>'+ user['status']+ '</td>'+
+          '</tr>';
+        showUser.innerHTML = userTable;
+        console.log(data);
+      },
+      error:function(data)
+      {
+        console.error(data);
+      }
+    });
+  }
+  routerUser();
 </script>
 @endsection

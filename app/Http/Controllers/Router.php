@@ -211,47 +211,55 @@ class Router extends Controller
 
     public function updateARP($ip, $data = null)
     {
-      $entry = $this->getARP($ip);
-
-      if(empty($entry))
+      $client = $this->connect();
+      if($client)
       {
-        return response()->json([
-          'success' => false,
-          'message' => 'Entry not exists',
-        ]);
-      }
-      else
-      {
-        $arpId = $entry[0]['.id'];
-
-        //make use static
-        // $makeStaticQuery = (new Query('/ip/arp/make-static'))
-        // ->equal('.id', $arpId);
-        // $response = $this->connect()->query($makeStaticQuery)->read();
-        // dd($response);
-
-        //update user details
-        $updateQuery = (new Query('/ip/arp/set'))
-        ->equal('.id', $arpId);
-
-        if(isset($data['mac-address']))
+        $query = (new Query('/ip/arp/print'))
+        ->where('address', $ip);
+      $arp = $client->query($query)->read();
+      dd($arp[0]['status']);
+      // if($arp && $arp[0]['status'] != '')
+  
+        if(empty($arp))
         {
-          $updateQuery->equal('mac-address', $data['mac-address']);
+          return response()->json([
+            'success' => false,
+            'message' => 'Entry not exists',
+          ]);
         }
-
-        if(isset($data['comment']))
+        else
         {
-          $updateQuery->equal('comment', $data['comment']);
+          $arpId = $entry[0]['.id'];
+  
+          //make use static
+          // $makeStaticQuery = (new Query('/ip/arp/make-static'))
+          // ->equal('.id', $arpId);
+          // $response = $this->connect()->query($makeStaticQuery)->read();
+          // dd($response);
+  
+          //update user details
+          $updateQuery = (new Query('/ip/arp/set'))
+          ->equal('.id', $arpId);
+  
+          if(isset($data['mac-address']))
+          {
+            $updateQuery->equal('mac-address', $data['mac-address']);
+          }
+  
+          if(isset($data['comment']))
+          {
+            $updateQuery->equal('comment', $data['comment']);
+          }
+  
+          $response = $client->query($updateQuery)->read();
+  
+          return response()->json([
+              'success' => true,
+              'message' => "ARP entry for {$ip} updated successfully.",
+              'details' => $response
+          ]);
+  
         }
-
-        $response = $this->connect()->query($updateQuery)->read();
-
-        return response()->json([
-            'success' => true,
-            'message' => "ARP entry for {$ip} updated successfully.",
-            'details' => $response
-        ]);
-
       }
     }
 
