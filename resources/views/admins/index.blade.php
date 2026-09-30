@@ -2,7 +2,22 @@
 @section('title', 'Home')
 @section('content')
 
-{{-- {{dd($intuser)}} --}}
+<div class="row">
+  <div class="col-md-12 card">
+    <form action="{{route('admin.dashboard')}}">
+      <div class="col-md-6">
+        <div class="form-group">
+          <select name="service_type" id="" class="form-control">
+            <option value="">Service Type</option>
+            <option value="PPPoE" {{$serviceType == 'PPPoE'? 'selected':''}}>PPPoE</option>
+            <option value="Static" {{$serviceType == 'Static'? 'selected':''}}>Static</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn btn-info">Submit</button>
+    </form>
+  </div>
+</div>
 
 <div class="row">
   <div class="col-lg-3 col-md-6 col-sm-6">
@@ -111,17 +126,13 @@
             <div id="colouredBarsChart" class="ct-chart"></div>
             <div class="col-md-12">
                 <table class="table">
-                    <tr>
-                        <td></td>
-                        0
-                    </tr>
                     <tr style="color:#f00">
-                        <td>Investments</td>
-                        0
+                        <td>Invests</td>
+                        {!! $salesCostGraph['coststr'] !!}
                     </tr>
                     <tr style="color:#00bcd4">
                         <td>Sales</td>
-                        0
+                        {!! $salesCostGraph['salestr'] !!}
                     </tr>
                 </table>
             </div>
@@ -214,53 +225,39 @@
 
 @endsection
 
-@php
-
-$dates = 'Jan, Feb, Mar';
-$investasdate = '';
-$salesasdate = '';
-$salsemax = [1000];
-$investmax = [5000];
-
-@endphp
-
 @section('scripts')
 <script type="text/javascript">
-    $(document).ready(function() {
-        md.initSliders()
-        demo.initFormExtendedDatetimepickers();
-    });
+    // $(document).ready(function()
+    // {
+    //   // md.initSliders()
+    //   demo.initFormExtendedDatetimepickers();
+    // });
 
-    //this codes for chart controller
-    var dataWebsiteViewsChart = {
-        labels: @json($salesCostGraph['dates']),
-        series: [
-          ['100', '200', '300']
-        ]
-      };
-    var optionsWebsiteViewsChart = {
-      axisX: {
-          showGrid: true
-      },
-      low: 0,
-      high: '<?php echo 1200; ?>',
-      chartPadding: { top: 0, right: 5, bottom: 0, left: 0}
-    };
-</script>
-
-<script>
-    $(document).ready(function() {
-        demo.initCharts();
-    });
+    // //this codes for chart controller
+    // var dataWebsiteViewsChart = {
+    //     labels: @json($salesCostGraph['dates']),
+    //     series: [
+    //       ['100', '200', '300']
+    //     ]
+    //   };
+    // var optionsWebsiteViewsChart = {
+    //   axisX: {
+    //       showGrid: true
+    //   },
+    //   low: @json($salesCostGraph['min']),
+    //   high: @json($salesCostGraph['max']),
+    //   chartPadding: { top: 0, right: 5, bottom: 0, left: 0}
+    // };
 </script>
 
 
 <script type="text/javascript">
         dataColouredBarsChart = {
-          labels: ['<?php echo $dates; ?>'],
+          //"'Sep 16', 'Oct 16',"
+          labels: [@php echo $salesCostGraph['dates'] @endphp],
           series: [
-            ['<?php echo $salesasdate; ?>'],
-            ['<?php echo $investasdate; ?>']
+            [@php echo $salesCostGraph['sales'] @endphp],
+            [@php echo $salesCostGraph['cost'] @endphp]
           ]
         };
 
@@ -273,10 +270,10 @@ $investmax = [5000];
               offset: 40
           },
           axisX: {
-              showGrid: false,
+              showGrid: true,
           },
-          low: 0,
-          high: '<?php echo max(array_merge($salsemax, $investmax)); ?>',
+          low: @json($salesCostGraph['min']),
+          high: @json($salesCostGraph['max']),
           showPoint: true,
           height: '300px'
         };
@@ -285,5 +282,10 @@ $investmax = [5000];
         var colouredBarsChart = new Chartist.Line('#colouredBarsChart', dataColouredBarsChart, optionsColouredBarsChart);
 
         md.startAnimationForLineChart(colouredBarsChart);
+
+        $(document).ready(function()
+        {
+          demo.initCharts();
+        });
 </script>
 @endsection

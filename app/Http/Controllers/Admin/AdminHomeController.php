@@ -22,16 +22,22 @@ class AdminHomeController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:admin');
+      $this->middleware('auth:admin');
     }
 
-    public function graph(){
-        return view('admins.graph_from_beginning');
-    }
-
-
-    public function index()
+    public function graph()
     {
+      return view('admins.graph_from_beginning');
+    }
+
+    public function index(Request $request)
+    {
+      $this->validate($request, [
+        'service_type' => 'nullable'
+      ]);
+
+      $serviceType = $request->service_type;
+
       $intuser = [
         'total' => 0,
         'static' => 0,
@@ -50,7 +56,13 @@ class AdminHomeController extends Controller
         'prevmonth' => 0,
       ];
 
-      $users = User::all();
+      $users = User::query()
+      ->when($serviceType, function($query, $serviceType)
+      {
+        $query->where('service_type', $serviceType);
+      })
+      ->get();
+
       $intuser['total'] = $users->count();
       foreach($users as $user)
       {
@@ -78,32 +90,57 @@ class AdminHomeController extends Controller
       $bill['prevmonth'] = Payment::where('receive_date', 'like', '%'.date('Y-m', strtotime('- 1 month')).'%')->sum('receive');
 
 
-    $monthlyPayments = Payment::select(
-      DB::raw("DATE_FORMAT(created_at, '%Y-%m') as month_year"),
-      DB::raw("SUM(receive) as total_amount")
-    )
-    ->whereYear('created_at', Carbon::now()->year)
-    ->groupBy('month_year')
-    ->orderBy('month_year', 'desc')
-    ->get();
+      $monthlyPayments = Payment::leftJoin('invests', function($join)
+      {
+        $join->on(DB::raw("DATE_FORMAT(payments.receive_date, '%Y-%m')"), '=', DB::raw("DATE_FORMAT(invests.date, '%Y-%m')"));
+      })
+      ->select(
+        DB::raw("DATE_FORMAT(payments.receive_date, '%Y-%m') as month_year"),
+        DB::raw("SUM(payments.receive) as sale"),
+        DB::raw("SUM(invests.amount) as cost")
+      )
+      ->whereYear('receive_date', Carbon::now()->year)
+      ->groupBy('month_year')
+      ->orderBy('month_year', 'desc')
+      ->get();
 
-    $payment = $cost = $dates = [];
-    $salesCostGraph = [
-      'payment' => $payment,
-      'cost' => $cost,
-      'dates' => $dates,
-    ];
+      // dd($monthlyPayments);
 
-    foreach ($monthlyPayments as $payment)
-    {
-      // For the standard approach:
-      array_push($salesCostGraph['dates'], $payment->month_year); 
-      array_push($salesCostGraph['payment'], $payment->total_amount);
-    }
+      $sales = $cost = $dates = $saleStr = $costStr = '';
+      $max = $min = 0;
+      $salesArr = $costsArr = [];
 
-      // dd( $salesCostGraph['dates']);
+      foreach ($monthlyPayments as $value)
+      {
+        // For the standard approach:
+        $dates .= "'".$value->month_year."',"; 
+        $sales .= "'".($value->sale ?? 0)."',";
+        $cost .= "'".($value->cost ?? 0)."',";
+
+        $saleStr .= '<td>'.$value->sale.'</td>';
+        $costStr .= '<td>'.$value->cost.'</td>';
+
+        //
+        array_push($salesArr, $value->sale);
+        array_push($costsArr, $value->cost);
+      }
+
+      $max = max(array_merge($salesArr, $costsArr));
+      $min = min(array_merge($salesArr, $costsArr));
+
+      $salesCostGraph = [
+        'sales' => $sales,
+        'cost' => $cost,
+        'dates' => $dates,
+        'max' => $max,
+        'min' => $min,
+        'salestr' => $saleStr,
+        'coststr' => $costStr,
+      ];
+
+      // dd( $salesCostGraph ) ;
       
-      return view('admins.index', compact('intuser', 'bill', 'invest', 'salesCostGraph'));
+      return view('admins.index', compact('intuser', 'bill', 'invest', 'salesCostGraph', 'serviceType'));
     }
 
     /**
