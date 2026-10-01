@@ -34,7 +34,7 @@ $source = new SourceCtrl;
                 <h4 class="card-title">Showing Users</h4>
                 <div class="toolbar">
                   <!-- Hides 3rd column (Action) dynamically when button is clicked -->
-                  <button onclick="printDivWithHiddenColumns('datatables', [6, 6, 7, 7])">
+                  <button onclick="printDivWithHiddenColumns('datatables', [4, 6, 7, 7])">
                     <i class="fa fa-print"></i>
                   </button>
                     <form action="{{route('user.search')}}" method="GET" class="form/-inline">
