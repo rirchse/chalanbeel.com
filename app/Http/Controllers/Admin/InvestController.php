@@ -27,10 +27,31 @@ class InvestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $invests = Invest::orderBy('date', 'DESC')->get();
-        return view('admins.invests.view_invests')->withInvests($invests);
+      $data = $this->validate($request, [
+        'start_date' => 'nullable',
+        'end_date' => 'nullable',
+        'whats_for' => 'nullable'
+      ]);
+
+      $start_date = $end_date = $whats_for = '';
+      if(isset($data['start_date']) || isset($data['start_date']) || isset($data['start_date']))
+      {
+        $start_date = $data['start_date'];
+        $end_date = $data['end_date'];
+        $whats_for = $data['whats_for'];
+      }
+
+        $invests = Invest::orderBy('date', 'DESC')
+        ->when($start_date, function($query, $start_date) use($end_date)
+        {
+          $query->whereRaw('DATE(date) >= ?', $start_date)
+          ->whereRaw('DATE(date) <= ?', $end_date);
+        })
+        ->get();
+
+        return view('admins.invests.index', compact('invests', 'start_date', 'end_date', 'whats_for'));
     }
 
     /**
@@ -40,8 +61,10 @@ class InvestController extends Controller
      */
     public function create()
     {
-        $invests = Invest::orderBy('id', 'DESC')->where('created_at', 'like', '%'.date('Y-m-d').'%')->Limit(5)->get();
-        return view('admins.invests.create_invest')->withInvests($invests);
+        $invests = Invest::orderBy('id', 'DESC')
+        ->Limit(10)
+        ->get();
+        return view('admins.invests.create')->withInvests($invests);
     }
 
     /**
@@ -54,34 +77,30 @@ class InvestController extends Controller
     {
         $user_id = Auth::guard('admin')->user()->id;
         //validate the data
-        $this->validate($request, array(
-
-            'amount'    => 'required|max:99999',
-            'day'       => 'required|max:31',
-            'month'     => 'required|max:12',
-            'year'      => 'required|max:50',
-            'whats_for' => 'required|max:9999',
-            'vendor'    => 'max:999',
-            'details'   => 'max:9999'
-
-        ));
+        $data = $this->validate($request, [
+          'amount'    => 'required|max:99999',
+          'date'      => 'required|max:31',
+          'whats_for' => 'required|max:9999',
+          'details'   => 'max:9999'
+        ]);
 
         //store in the database
-        $invest = new Invest;
-        $invest->amount     = $request->amount;
-        $invest->date       = $request->year.'-'.$request->month.'-'.$request->day;
-        $invest->whats_for  = $request->whats_for;
-        $invest->vendor     = $request->vendor;
-        $invest->details    = $request->detail;
-        $invest->created_by = $user_id;
+        try{
+          $data['created_by'] = auth()->id();
+          //
+          $result = Invest::create($data);
 
-        $invest->save();
-
-        //session flashing
-        Session::flash('success', 'New invest successfully created!');
-        
-        //return to the show page
-        return redirect('/admin/invest/create');
+          //session flashing
+          Session::flash('success', 'New invest successfully created!');
+          
+          //return to the show page
+          return redirect('/admin/invest/create');
+        }
+        catch(\Exception $error)
+        {
+          return $error->getMessage();
+        }
+        return back();
     }
 
     public function StoreUserPayment(Request $request)
@@ -137,7 +156,7 @@ class InvestController extends Controller
     public function edit($id)
     {
         $invest = Invest::find($id);
-        return view('admins.invests.edit_invest')->withInvest($invest);
+        return view('admins.invests.edit')->withInvest($invest);
     }
 
     /**
@@ -166,7 +185,6 @@ class InvestController extends Controller
         $invest->amount     = $request->input('amount');
         $invest->date       = $request->input('date');
         $invest->whats_for  = $request->input('whats_for');
-        $invest->vendor     = $request->input('vendor');
         $invest->details    = $request->input('details');
         $invest->status     = 1;
         $invest->updated_by = $user_id;

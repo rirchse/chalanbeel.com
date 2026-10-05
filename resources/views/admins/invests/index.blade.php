@@ -13,6 +13,27 @@
                 <div class="toolbar" style="text-align:right">
                     <a class="btn btn-success btn-xs" href="/admin/create_invest" title="Add New invest"><i class="material-icons">add</i></a>
                     <!-- Here you can write extra buttons/actions for the toolbar -->
+                    <form action="{{route('invest.index')}}" method="GET" class="form/-inline">
+                      @csrf
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <input type="date" name="start_date" class="form-control" value="{{$start_date}}">
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <input type="date" name="end_date" class="form-control" value="{{$end_date}}">
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <input type="text" name="whats_for" class="form-control" value="{{$whats_for}}" placeholder="Cost For?">
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <button type="submit" class="btn btn-info btn-sm btn-block">Submit</button>
+                      </div>
+                    </form>
                 </div>
                 <div class="material-datatables">
                     <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
